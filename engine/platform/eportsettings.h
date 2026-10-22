@@ -16,6 +16,9 @@ struct eTouchConfig;
 //   long_press_ms     "500"
 //   pinch_step        "1.30"
 //   tap_slop_px       "24"
+//   build_drag        "hold"    hold | direct  (hold: drag pans in build mode,
+//                                hold still then drag draws roads/rows)
+//   build_hold_ms     "300"
 struct ePortSettings {
     double fRenderFps = -1;      // <0: platform default
     int fUIScale = -1;           // -1 auto, else eUIScale value
@@ -23,6 +26,8 @@ struct ePortSettings {
     int fLongPressMs = 500;
     float fPinchStep = 1.30f;
     float fTapSlop = 24.f;
+    bool fHoldToDraw = true;
+    int fBuildHoldMs = 300;
 
     static std::string path();
     // Loads from path(); writes a commented default file if none exists.

@@ -123,7 +123,11 @@ public class ImportActivity extends Activity {
         scroll.addView(col);
 
         TextView title = new TextView(this);
-        title.setText("Zeus + Poseidon — native Android port (eZeus engine)");
+        String ver = "";
+        try {
+            ver = " · v" + getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (Exception ignored) { }
+        title.setText("Zeus + Poseidon — native Android port (eZeus engine)" + ver);
         title.setTextColor(Color.rgb(0xF2, 0xE6, 0xC8));
         title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
         title.setTypeface(Typeface.DEFAULT_BOLD);

@@ -1,0 +1,41 @@
+# Phone layout: road tool via side panel, quick drag must pan, hold+drag draws a road, X cancels.
+# Phone layout: Xvfb 2400x1080, settings width 2400 height 1080, EZEUS_TOUCH=1 EZEUS_UI_SCALE=large EZEUS_RENDER_FPS=60. Taps only.
+8000 finger_down 1 1200 150
+80 finger_up 1 1200 150
+2500 finger_down 1 525 495
+80 finger_up 1 525 495
+800 finger_down 1 1100 720
+80 finger_up 1 1100 720
+4000 finger_down 1 1680 832
+80 finger_up 1 1680 832
+1000 wait_game 120000
+3000 log start
+100 finger_down 1 2170 900
+80 finger_up 1 2170 900
+500 log after_road_icon_expect_build1
+# quick one-finger drag in build mode -> must pan, not build
+100 finger_down 1 1200 600
+40 finger_move 1 1150 580
+40 finger_move 1 1050 540
+40 finger_move 1 1000 520
+40 finger_up 1 1000 520
+300 log after_quick_drag_expect_pan_dx-200
+200 screenshot build/run/b01_after_pan.bmp
+# hold 450 ms, then drag -> draws a road
+100 finger_down 1 1300 600
+450 finger_move 1 1302 601
+10 log after_hold
+60 finger_move 1 1400 650
+60 finger_move 1 1500 700
+60 finger_move 1 1600 750
+10 log during_drag
+300 screenshot build/run/b02_drawing.bmp
+60 finger_up 1 1600 750
+400 screenshot build/run/b03_road.bmp
+100 log after_hold_drag
+# X button cancels the build tool
+100 finger_down 1 68 600
+80 finger_up 1 68 600
+400 log after_X_expect_build0
+200 screenshot build/run/b04_after_cancel.bmp
+300 quit

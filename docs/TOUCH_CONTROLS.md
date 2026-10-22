@@ -14,8 +14,12 @@ SDL's synthetic touch→mouse and mouse→touch events are disabled on Android
 | Tap | map | hover + left click at the touch-down point (select, open building/walker info, place building) |
 | Tap / drag | any UI panel, dialog, menu, slider, list | immediate left press, drag = left-drag, lift = release (exactly like a mouse) |
 | One-finger drag | map, no build tool | pans the camera (middle-drag in eZeus); the map stays under the finger, sub-pixel motion is accumulated |
-| One-finger drag | map, build tool active (roads, walls, building placement, erase) | left-drag starting at the touch-down point (road/wall/area drawing) |
-| Long press (500 ms, no movement) | map | right click (eZeus/Zeus: close info, cancel build tool, deselect / place army) |
+| One-finger drag | map, build tool active | **pans** (default "hold-to-draw" mode, since 0.1.3) |
+| Tap | map, build tool active | places one building / road tile at the tap |
+| Hold still 300 ms, then drag | map, build tool active | draws roads/walls, places rows/areas of buildings from the hold point; lift = build |
+| Long press (500 ms, no movement) | map, no build tool | right click (close info, deselect / place army) |
+| **X** button (appears when needed) | touch bar | leaves the build tool, closes an info panel, ends patrol editing, clears army selection |
+| Android Back | in the city | same as **X** when something is active, otherwise opens the game menu |
 | Two-finger pinch | map | one zoom step per 30 % change in finger distance, anchored at the pinch centre |
 | Two-finger drag | map (also in build mode) | pans the camera |
 | Android Back | anywhere | Escape (closes dialogs/menus, cancels) |
@@ -44,14 +48,17 @@ pan_sensitivity "1.0"
 long_press_ms "500"
 pinch_step "1.30"
 tap_slop_px "24"
+build_drag "hold"        # hold (default) | direct (0.1.0-0.1.2 behaviour: drag draws immediately)
+build_hold_ms "300"
 ```
 An in-game settings screen for these is still open (NEXT_STEPS.md).
 
 ## On-screen buttons
 
 eZeus has some actions only on the keyboard. On touch screens four framed buttons are
-added at the top-left of the map: `||` pause/resume (P), `-` / `+` game speed ([ / ]),
-`R` rotate the view (R). The in-game menu (save/load/options/exit) is on Android Back.
+added at the top-left of the map: `||` pause/resume (P), `-` / `+` game speed ([ / ]; a
+"Speed 2.5x" tip confirms the change), `R` rotate the view (R), and `X` (cancel, shown only
+when a build tool, info panel, patrol edit or army selection is active).
 
 ## Zoom: discrete, by design of the renderer
 

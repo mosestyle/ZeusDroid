@@ -163,7 +163,7 @@ void eTouchGestures::fingerMove(const int64_t id, const float x, const float y,
         if(id != mPrimary) break;
         const float d = std::hypot(x - f.fStartX, y - f.fStartY);
         if(d < mConfig.fTapSlop) break;
-        if(mSink.buildToolActive()) {
+        if(mSink.buildToolActive() && !mConfig.fHoldToDraw) {
             mState = eState::buildDrag;
             const int sx = ri(f.fStartX);
             const int sy = ri(f.fStartY);
@@ -280,9 +280,20 @@ void eTouchGestures::update(const uint32_t tMs) {
     const auto it = mFingers.find(mPrimary);
     if(it == mFingers.end()) return;
     const auto& f = it->second;
-    if(tMs - f.fDownMs < mConfig.fLongPressMs) return;
     const int sx = ri(f.fStartX);
     const int sy = ri(f.fStartY);
+    if(mConfig.fHoldToDraw && mSink.buildToolActive()) {
+        // Hold-to-draw: start the build drag where the finger rests.
+        if(tMs - f.fDownMs < mConfig.fBuildHoldMs) return;
+        mState = eState::buildDrag;
+        mSink.pointerMove(sx, sy);
+        mSink.pointerPress(eTouchSink::eButton::left, sx, sy);
+        const int cx = ri(f.fX);
+        const int cy = ri(f.fY);
+        if(cx != sx || cy != sy) mSink.pointerMove(cx, cy);
+        return;
+    }
+    if(tMs - f.fDownMs < mConfig.fLongPressMs) return;
     mSink.pointerMove(sx, sy);
     mSink.pointerPress(eTouchSink::eButton::right, sx, sy);
     mSink.pointerRelease(eTouchSink::eButton::right, sx, sy);

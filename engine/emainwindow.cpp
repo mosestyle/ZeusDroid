@@ -818,8 +818,13 @@ int eMainWindow::exec() {
                 if(mWidget) mWidget->mouseWheel(me);
             } else if(e.type == SDL_KEYDOWN) {
                 auto k = e.key.keysym.scancode;
-                // Android Back behaves like Escape (close dialog / cancel).
-                if(k == SDL_SCANCODE_AC_BACK) k = SDL_SCANCODE_ESCAPE;
+                // Android Back: first cancels the active build tool / info
+                // panel / selection (like the touch "X"), else acts as Escape.
+                if(k == SDL_SCANCODE_AC_BACK) {
+                    if(mGW && mWidget == static_cast<eWidget*>(mGW) &&
+                       mGW->touchCancel()) continue;
+                    k = SDL_SCANCODE_ESCAPE;
+                }
                 if(k == SDL_Scancode::SDL_SCANCODE_LSHIFT ||
                    k == SDL_Scancode::SDL_SCANCODE_RSHIFT) {
                     mShiftPressed++;

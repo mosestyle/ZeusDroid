@@ -17,9 +17,12 @@
 //                              press, moves are left-drags, lift = release
 //   Idle -> MapCandidate       finger lands on the map: nothing sent yet
 //   MapCandidate -> Tap        lift within slop/time: hover+left click
-//   MapCandidate -> LongPress  held still: hover+right click (info/cancel)
-//   MapCandidate -> Pan        moved beyond slop, no build tool: middle-drag
-//   MapCandidate -> BuildDrag  moved beyond slop with build tool: left-drag
+//   MapCandidate -> LongPress  held still, no build tool: hover+right click
+//   MapCandidate -> Pan        moved beyond slop (no build tool, or
+//                              hold-to-draw): middle-drag
+//   MapCandidate -> BuildDrag  build tool active and held still for
+//                              fBuildHoldMs (hold-to-draw, default) or moved
+//                              beyond slop (fHoldToDraw = false): left-drag
 //                              starting at the original touch point
 //   MapCandidate/Pan -> Pinch  second finger: zoom steps + two-finger pan
 //   Pinch -> WaitAllUp         a finger lifts: nothing more until all lift
@@ -49,6 +52,10 @@ struct eTouchConfig {
     float fPinchStepRatio = 1.30f;
     // Pan sensitivity multiplier (1 = finger follows the map exactly).
     float fPanSensitivity = 1.f;
+    // Build tools: true = one-finger drag pans, hold (fBuildHoldMs) then drag
+    // draws roads / places rows of buildings; false = drag draws immediately.
+    bool fHoldToDraw = true;
+    uint32_t fBuildHoldMs = 300;
 };
 
 class eTouchGestures {

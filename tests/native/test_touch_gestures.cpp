@@ -186,8 +186,10 @@ void testUiVsMap() {
 }
 
 void testBuildPlacementAndRoadDrag() {
-    std::puts("build tool: tap places at touch point; drag draws from start point");
-    RecSink s; s.build = true; eTouchGestures g(s);
+    std::puts("build tool (direct mode): tap places at touch point; drag draws from start point");
+    RecSink s; s.build = true;
+    eTouchConfig cfg; cfg.fHoldToDraw = false;
+    eTouchGestures g(s, cfg);
     g.fingerDown(1, 200, 200, 0);
     g.fingerUp(1, 201, 199, 40);
     CHECK(s.count("press", L) == 1 && s.count("release", L) == 1);
@@ -199,6 +201,47 @@ void testBuildPlacementAndRoadDrag() {
     CHECK(s.count("press", M) == 0);
     CHECK(s.ev[1].what == "press" && s.ev[1].b == L && s.ev[1].x == 200 && s.ev[1].y == 200);
     CHECK(s.ev.back().what == "release" && s.ev.back().x == 320);
+}
+
+void testHoldToDraw() {
+    std::puts("build tool (hold-to-draw, default): drag pans, hold then drag draws, tap places");
+    RecSink s; s.build = true; eTouchGestures g(s);
+    // quick drag -> pan, nothing built
+    g.fingerDown(1, 500, 500, 0);
+    g.fingerMove(1, 420, 470, 40);
+    g.fingerMove(1, 300, 400, 80);
+    g.update(400);                    // timer must not start drawing once panning
+    g.fingerUp(1, 300, 400, 120);
+    CHECK(s.count("press", L) == 0);
+    CHECK(s.camX == -200 && s.camY == -100);
+    // hold still 300 ms then drag -> road drawn from the hold point
+    s.ev.clear();
+    g.fingerDown(1, 600, 300, 1000);
+    g.fingerMove(1, 603, 302, 1100);  // jitter below slop
+    g.update(1200);
+    CHECK(s.count("press", L) == 0);  // not yet
+    g.update(1310);
+    CHECK(s.count("press", L) == 1);
+    CHECK(g.state() == eTouchGestures::eState::buildDrag);
+    g.fingerMove(1, 700, 350, 1400);
+    g.fingerMove(1, 800, 400, 1500);
+    g.fingerUp(1, 800, 400, 1600);
+    bool startOk = false;
+    for(const auto& e : s.ev) if(e.what == "press" && e.b == L) startOk = (e.x == 600 && e.y == 300);
+    CHECK(startOk);
+    CHECK(s.ev.back().what == "release" && s.ev.back().b == L && s.ev.back().x == 800);
+    CHECK(s.count("press", R) == 0);  // never an info/cancel click in build mode
+    // tap -> single placement
+    s.ev.clear();
+    g.fingerDown(1, 50, 60, 3000);
+    g.fingerUp(1, 52, 61, 3080);
+    CHECK(s.count("press", L) == 1 && s.count("release", L) == 1);
+    // without build tool, long press is still a right click
+    s.ev.clear(); s.build = false;
+    g.fingerDown(1, 50, 60, 5000);
+    g.update(5600);
+    g.fingerUp(1, 50, 60, 5700);
+    CHECK(s.count("press", R) == 1 && s.count("press", L) == 0);
 }
 
 void testBuildModeTwoFingerPanBeforeCommit() {
@@ -254,6 +297,7 @@ int main() {
     testPinchOut();
     testUiVsMap();
     testBuildPlacementAndRoadDrag();
+    testHoldToDraw();
     testBuildModeTwoFingerPanBeforeCommit();
     testCancel();
     testThreeFingers();

@@ -28,7 +28,9 @@ void ePortSettings::load() {
                    "pan_sensitivity \"1.0\"\n"
                    "long_press_ms \"500\"\n"
                    "pinch_step \"1.30\"\n"
-                   "tap_slop_px \"24\"\n";
+                   "tap_slop_px \"24\"\n"
+                   "build_drag \"hold\"\n"
+                   "build_hold_ms \"300\"\n";
         }
         return;
     }
@@ -50,6 +52,9 @@ void ePortSettings::load() {
     if(num("long_press_ms", v)) fLongPressMs = static_cast<int>(std::clamp(v, 200., 2000.));
     if(num("pinch_step", v)) fPinchStep = static_cast<float>(std::clamp(v, 1.05, 3.));
     if(num("tap_slop_px", v)) fTapSlop = static_cast<float>(std::clamp(v, 4., 200.));
+    if(num("build_hold_ms", v)) fBuildHoldMs = static_cast<int>(std::clamp(v, 100., 2000.));
+    const auto bd = m.find("build_drag");
+    if(bd != m.end()) fHoldToDraw = bd->second != "direct";
     const auto it = m.find("ui_scale");
     if(it != m.end()) {
         const auto& s = it->second;
@@ -65,4 +70,6 @@ void ePortSettings::applyTo(eTouchConfig& c) const {
     c.fLongPressMs = static_cast<uint32_t>(fLongPressMs);
     c.fPinchStepRatio = fPinchStep;
     c.fTapSlop = fTapSlop;
+    c.fHoldToDraw = fHoldToDraw;
+    c.fBuildHoldMs = static_cast<uint32_t>(fBuildHoldMs);
 }

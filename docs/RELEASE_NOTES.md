@@ -1,5 +1,18 @@
 # Release notes
 
+## 0.1.3-dev
+* Build tools: one-finger drag pans; tap places; hold 300 ms then drag draws roads/rows.
+  Old behaviour available with `build_drag "direct"` in port_settings.txt.
+* New `X` touch button (only visible when useful) and Back = cancel build tool / info panel.
+* Speed buttons show a "Speed Nx" tip.
+* App version shown on the import screen.
+
+## 0.1.2-dev
+* Fix: touch-bar buttons froze the city simulation.
+
+## 0.1.1-dev
+* Importer rejects GitHub's source-code zip; in-app verified download of the eZeus data pack.
+
 ## 0.1.0-dev (2026-10-22) – first native Android development build
 
 Engine: eZeus `ec765199` (2026-10-19) + port changes. Debug-signed, arm64-v8a only.

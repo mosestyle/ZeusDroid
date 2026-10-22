@@ -117,3 +117,22 @@ Rebuilt with the touch-bar simulation fix (31 objects recompiled, `egamewidgetpa
 newer than the source change). versionCode 3, 18 900 658 bytes, sha256
 `fdc32a06f0992eef9174144277cac2ca26c57402d04681e11cb0d6408bd8f58d`, v2/v3 signature OK,
 same debug key (installs over 0.1.0/0.1.1). On-device game start: still unverified.
+
+### First on-device run (user report, 2026-10-22 13:23)
+
+The user's phone (model/Android version not reported) ran the game: city view of an Athens
+adventure at 60 FPS with the large UI and the touch bar (screenshot from the user). Data
+import with the in-app eZeus pack download worked. Reported: `-`, `+`, `R` had no visible
+effect and the date stayed at 1 Jan 1500 BC – consistent with 0.1.1 (frozen-simulation bug
+fixed in 0.1.2); the reproduction on desktop with *The Founding of Athens* in 0.1.2 advanced
+to 4 Jan with working speed buttons. Device version to be confirmed (now shown on the import
+screen). Feedback: one-finger drag in build mode should pan → implemented below.
+
+### 0.1.3-dev: hold-to-draw build controls (desktop, phone layout, finger events)
+
+`tests/autotest/phone_build_hold_to_draw.txt`: road icon tap → build tool active and X shown;
+quick one-finger drag in build mode → camera dx 0→-200, dy -15→-95, nothing built
+(5000 dr); hold 450 ms then drag (1300,600)→(1600,750) → road preview 11×1 during drag,
+road built on release; X → build tool off. (A first attempt started on rocky terrain where
+eZeus cannot build roads and correctly built one tile only.) Unit tests: 60 checks, 0
+failures (x86-64 and ARM64/qemu), incl. new hold-to-draw scenario.

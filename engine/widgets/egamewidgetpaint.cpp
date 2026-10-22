@@ -336,6 +336,9 @@ void eGameWidget::paintEvent(ePainter& p) {
         }
     }
     const bool simTick = eFrameClock::tick();
+    if(mTouchCancelButton) {
+        mTouchCancelButton->setVisible(touchCancelAvailable());
+    }
     if(simTick && mBoard->duringEarthquake()) {
         mDX += (eRand::rand() % 11) - 5;
         mDY += (eRand::rand() % 11) - 5;

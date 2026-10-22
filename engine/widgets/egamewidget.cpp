@@ -68,6 +68,7 @@
 #include "estringhelpers.h"
 
 #include <algorithm>
+#include <cstdio>
 
 eGameWidget::eGameWidget(eMainWindow* const window) :
     eMainWidget(window) {}
@@ -552,6 +553,9 @@ void eGameWidget::initialize() {
         addTouchButton("-", [this]() { changeSpeed(-1); });
         addTouchButton("+", [this]() { changeSpeed(1); });
         addTouchButton("R", [this]() { rotateView(); });
+        y += p;
+        mTouchCancelButton = addTouchButton("X", [this]() { touchCancel(); });
+        mTouchCancelButton->hide();
     }
 
     const auto& setts = window()->settings();
@@ -2351,6 +2355,47 @@ bool eGameWidget::sTouchBarEnabled = false;
 void eGameWidget::changeSpeed(const int delta) {
     mSpeedId = std::clamp(mSpeedId + delta, 0, sMaxSpeedId);
     mSpeed = sSpeeds[mSpeedId];
+    if(sTouchBarEnabled && mBoard) {
+        // Feedback for the touch buttons (keyboard users get none upstream).
+        const bool turbo = mSpeedId == sMaxSpeedId;
+        const double mult = mSpeed/10.;
+        char buf[48];
+        std::snprintf(buf, sizeof(buf), "Speed %gx%s", turbo ? mult*5 : mult,
+                      turbo ? " (max)" : "");
+        showTip(mBoard->personPlayer(), buf);
+    }
+}
+
+bool eGameWidget::touchCancelAvailable() const {
+    if(mInfoWidget) return true;
+    if(mGm && mGm->mode() != eBuildingMode::none) return true;
+    if(mPatrolBuilding) return true;
+    if(mBoard && (!mBoard->selectedSoldiers().empty() ||
+                  !mBoard->selectedTriremes().empty())) return true;
+    return false;
+}
+
+bool eGameWidget::touchCancel() {
+    if(mInfoWidget) {
+        mInfoWidget->deleteLater();
+        mInfoWidget = nullptr;
+        return true;
+    }
+    if(mGm && mGm->mode() != eBuildingMode::none) {
+        mGm->clearMode();
+        return true;
+    }
+    if(mPatrolBuilding) {
+        setPatrolBuilding(nullptr);
+        return true;
+    }
+    if(mBoard && (!mBoard->selectedSoldiers().empty() ||
+                  !mBoard->selectedTriremes().empty())) {
+        mBoard->clearBannerSelection();
+        mBoard->clearTriremeSelection();
+        return true;
+    }
+    return false;
 }
 
 void eGameWidget::rotateView() {
@@ -2373,7 +2418,16 @@ std::string eGameWidget::debugCameraState() const {
            " info=" + std::to_string(mInfoWidget ? 1 : 0) +
            " paused=" + std::to_string(mPaused ? 1 : 0) +
            " speed=" + std::to_string(mSpeed) +
-           " simtime=" + std::to_string(mTime);
+           " simtime=" + std::to_string(mTime) +
+           " children=" + std::to_string(children().size()) +
+           " tips=" + std::to_string(mTips.size()) +
+           " touchbar=" + std::to_string(mTouchBarButtons) +
+           " msgbox=" + std::to_string(mMsgBox ? 1 : 0) +
+           " locked=" + std::to_string(mLocked ? 1 : 0) +
+           " pressedT=" + std::to_string(mPressedTX) + "," + std::to_string(mPressedTY) +
+           " hoverT=" + std::to_string(mHoverTX) + "," + std::to_string(mHoverTY) +
+           " leftPressed=" + std::to_string(mLeftPressed ? 1 : 0) +
+           " pressedButtons=" + std::to_string(static_cast<int>(mPressedButtons));
 }
 
 void eGameWidget::zoomStepAt(const int dir, const int x, const int y) {

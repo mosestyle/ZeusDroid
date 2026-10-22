@@ -123,6 +123,11 @@ public:
     // Number of touch-bar children; excluded from the "dialog open" child
     // count that pauses the simulation.
     int mTouchBarButtons = 0;
+    // Touch "X": closes an info panel, leaves the build tool, ends patrol
+    // editing, clears army selection. Returns false if nothing was active.
+    bool touchCancel();
+    bool touchCancelAvailable() const;
+    eWidget* mTouchCancelButton = nullptr;
 
     void pixToId(const int pixX, const int pixY,
                  int& idX, int& idY) const;

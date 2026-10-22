@@ -26,14 +26,15 @@ _Branch `main`; see `git log` for the current commit._
 | Android arm64 native build | builds: libmain.so + SDL2 family, AArch64, 16 KB-aligned, static libc++ |
 | APK | `dist/eZeusPort-debug-arm64-v8a.apk` 0.1.2-dev (sha256 `fdc32a06…f58d`); 0.1.0 installed and importer ran on the user's phone; game start on device not yet confirmed |
 | ARM64 audio codec | minimp3 decodes all 26 music tracks + voice (qemu) |
-| Real device | **not tested** – no device available |
+| Real device | **runs on the user's phone** (user screenshot 2026-10-22: city view, touch bar, 60 FPS); device model/Android version not yet reported |
 
 ## Playable features (desktop-verified unless noted)
 
 Main menu, leader roster, adventure selection, mission briefing, city view, simulation,
 events, camera pan/zoom via touch gestures. Android-specific features (importer, soft
-keyboard, touch bar, lifecycle, 60 FPS render split, UI scale) are implemented but
-**unverified on Android**.
+keyboard, touch bar, lifecycle, 60 FPS render split, UI scale): importer, data download,
+game start, large UI, touch bar, 60 FPS confirmed by the user on a phone; the rest is
+desktop-verified only.
 
 ## Highest-priority problems
 
