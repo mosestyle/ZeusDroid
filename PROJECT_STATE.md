@@ -24,7 +24,7 @@ _Branch `main`; see `git log` for the current commit._
 | Touch layer in real engine (desktop, EZEUS_TOUCH=1) | pan exact, zoom-out step, jitter tap ignored, UI-vs-map routing |
 | Unit tests | gesture FSM 50/50 (x86-64 and ARM64-Android-under-qemu), ENG converter (synthetic + real files, Python == C++), importer rules 36/36 |
 | Android arm64 native build | builds: libmain.so + SDL2 family, AArch64, 16 KB-aligned, static libc++ |
-| APK | `dist/eZeusPort-debug-arm64-v8a.apk` (18.9 MB, sha256 `13eba1f0…31c4`), v2/v3 signed, zipalign OK – **not yet installed anywhere** |
+| APK | `dist/eZeusPort-debug-arm64-v8a.apk` 0.1.2-dev (sha256 `fdc32a06…f58d`); 0.1.0 installed and importer ran on the user's phone; game start on device not yet confirmed |
 | ARM64 audio codec | minimp3 decodes all 26 music tracks + voice (qemu) |
 | Real device | **not tested** – no device available |
 

@@ -111,3 +111,9 @@ the original Hydra message box (which pauses the game in vanilla too).
 
 **UX issue noted:** adventure-list rows are ~26 px tall at 2400×1080 – too small for
 reliable finger selection (NEXT_STEPS).
+
+### APK 0.1.2-dev (2026-10-22)
+Rebuilt with the touch-bar simulation fix (31 objects recompiled, `egamewidgetpaint.cpp.o`
+newer than the source change). versionCode 3, 18 900 658 bytes, sha256
+`fdc32a06f0992eef9174144277cac2ca26c57402d04681e11cb0d6408bd8f58d`, v2/v3 signature OK,
+same debug key (installs over 0.1.0/0.1.1). On-device game start: still unverified.
