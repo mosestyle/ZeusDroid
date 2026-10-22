@@ -14,7 +14,9 @@ struct eTouchConfig;
 //   ui_scale          "auto"    auto | tiny | small | medium | large
 //   pan_sensitivity   "1.0"
 //   long_press_ms     "500"
-//   pinch_step        "1.30"
+//   pinch_deadband    "1.04"    finger-distance ratio before a two-finger
+//                                drag starts zooming (below: pan only)
+//   max_zoom          "3.0"     1..4, maximum pinch/wheel zoom (1 = upstream)
 //   tap_slop_px       "24"
 //   build_drag        "hold"    hold | direct  (hold: drag pans in build mode,
 //                                hold still then drag draws roads/rows)
@@ -24,7 +26,8 @@ struct ePortSettings {
     int fUIScale = -1;           // -1 auto, else eUIScale value
     float fPanSensitivity = 1.f;
     int fLongPressMs = 500;
-    float fPinchStep = 1.30f;
+    float fPinchDeadband = 1.04f;
+    double fMaxZoom = 3.0;
     float fTapSlop = 24.f;
     bool fHoldToDraw = true;
     int fBuildHoldMs = 300;

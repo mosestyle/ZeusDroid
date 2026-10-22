@@ -6,10 +6,11 @@ listed in `docs/BUILD_ANDROID.md`. Use `ccache` for rebuilds (installed), and av
 widely-included headers (`ewidget.h`, `eresolution.h`) mid-build: a header change costs a
 full ~45 min rebuild on 2 cores.
 
-## 0. Status after first phone feedback (2026-10-22)
-Game runs on the user's phone. Build mode reworked to hold-to-draw (0.1.3). Ask the user for:
-version shown on the import screen, phone model/Android version, whether date/speed advance
-in 0.1.3, any crash after pause/resume, and a save → kill app → load test.
+## 0. Status after phone feedback (2026-10-22, Samsung Galaxy S25)
+0.1.3 runs; date/speed advance. 0.1.4 adds continuous pinch zoom (world-layer scaling),
+a speed label instead of stacking tips, finger-sized rows and drag-scrolling in lists.
+Ask the user to check: pinch smoothness and sharpness on the S25, list scrolling, a
+save → kill app → load round trip, pause/resume (home button) without black textures.
 
 ## 1. First on-device run  ← partly done (runs on the user's phone)
 * Install `dist/eZeusPort-debug-arm64-v8a.apk` on an arm64 phone (Android 8+).
@@ -42,11 +43,12 @@ in 0.1.3, any crash after pause/resume, and a save → kill app → load test.
 ## 4. Touch UX completion
 * Optional two-step placement for expensive buildings (ghost + confirm/cancel buttons).
 * Offset placement cursor so the finger does not hide the footprint.
-* Larger list rows / drag-scrolling in lists (adventure list, save list).
+* Larger list rows / drag-scrolling: DONE for adventure, leader and save/load lists (0.1.4);
+  other scroll lists (editor, military, text scrollers) still mouse-sized.
 * Settings screen for touch (pan sensitivity, long-press time, pinch step, UI scale, FPS cap):
   store in `settings.txt` (`engine/esettings.cpp`), expose in `widgets/esettingsmenu.cpp`.
-* List widgets (adventure list, file lists) have ~26 px rows at 2400×1080: add touch-sized
-  row height or drag-to-scroll (`widgets/escrollwidget*`, list widgets).
+* Optional start zoom > 1 on phones (e.g. 1.5×) once the user has tried 0.1.4 zoom.
+* Kinetic (fling) scrolling for lists and the map.
 * Box-select of soldiers (left-drag in "none" mode) has no touch equivalent: proposal =
   long-press then drag.
 * Optional offset cursor for precise placement (`eTouchGestures` + `eGameWidget` hover).

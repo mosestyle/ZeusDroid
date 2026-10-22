@@ -16,6 +16,9 @@ public:
     void scrollDown();
     void scrollToTheTop();
     void clampDY();
+    // Touch drag-scrolling (port).
+    bool canScroll() const;
+    void scrollBy(const int dy);
 
     void renderTargetsReset() override;
 protected:

@@ -1,5 +1,6 @@
 #include "etouchgestures.h"
 
+#include <algorithm>
 #include <cmath>
 
 namespace {
@@ -18,6 +19,8 @@ const char* eTouchGestures::sStateName(const eState s) {
     case eState::pan: return "pan";
     case eState::buildDrag: return "buildDrag";
     case eState::pinch: return "pinch";
+    case eState::listCandidate: return "listCandidate";
+    case eState::listScroll: return "listScroll";
     case eState::waitAllUp: return "waitAllUp";
     }
     return "?";
@@ -62,6 +65,10 @@ void eTouchGestures::fingerDown(const int64_t id, const float x, const float y,
             mState = eState::uiPress;
             mSink.pointerMove(ri(x), ri(y));
             mSink.pointerPress(eTouchSink::eButton::left, ri(x), ri(y));
+        } else if(target == eTouchSink::eTarget::scrollList) {
+            mState = eState::listCandidate;
+            mListLastY = y;
+            mListEmitted = 0.f;
         } else {
             mState = eState::mapCandidate;
         }
@@ -80,6 +87,8 @@ void eTouchGestures::fingerDown(const int64_t id, const float x, const float y,
     case eState::longPress:
     case eState::buildDrag:
     case eState::pinch:
+    case eState::listCandidate:
+    case eState::listScroll:
     case eState::waitAllUp:
         // Extra fingers are ignored in these states (pinch uses the first two).
         break;
@@ -91,12 +100,11 @@ void eTouchGestures::enterPinch() {
     float cx, cy;
     centroid(cx, cy);
     mPinchBase = spread();
-    mPanX = cx;
-    mPanY = cy;
-    mPanEmittedX = ri(cx);
-    mPanEmittedY = ri(cy);
-    mSink.pointerMove(mPanEmittedX, mPanEmittedY);
-    mSink.pointerPress(eTouchSink::eButton::middle, mPanEmittedX, mPanEmittedY);
+    mPinchZooming = false;
+    mPinchDirty = false;
+    mPinchStartX = cx;
+    mPinchStartY = cy;
+    mSink.pinchBegin(cx, cy);
 }
 
 void eTouchGestures::endPan(const float x, const float y) {
@@ -108,42 +116,27 @@ void eTouchGestures::endPan(const float x, const float y) {
 void eTouchGestures::pinchMoved() {
     float cx, cy;
     centroid(cx, cy);
-    // Two-finger pan.
-    const float s = mConfig.fPanSensitivity;
-    const float tx = mPanEmittedX + (cx - mPanX) * s;
-    const float ty = mPanEmittedY + (cy - mPanY) * s;
-    const int ix = ri(tx);
-    const int iy = ri(ty);
-    if(ix != mPanEmittedX || iy != mPanEmittedY) {
-        mPanX += (ix - mPanEmittedX) / (s == 0.f ? 1.f : s);
-        mPanY += (iy - mPanEmittedY) / (s == 0.f ? 1.f : s);
-        mPanEmittedX = ix;
-        mPanEmittedY = iy;
-        mSink.pointerMove(ix, iy);
-    }
-    // Zoom steps.
     const float d = spread();
     if(mPinchBase <= 1.f) {
+        // Fingers started on the same spot: begin again from here.
         mPinchBase = d;
+        mPinchStartX = cx;
+        mPinchStartY = cy;
+        mSink.pinchBegin(cx, cy);
         return;
     }
-    const float ratio = d / mPinchBase;
-    const float step = mConfig.fPinchStepRatio;
-    int dir = 0;
-    if(ratio >= step) dir = 1;
-    else if(ratio <= 1.f/step) dir = -1;
-    if(dir != 0) {
-        mPinchBase = d;
-        // End the pan drag around the zoom so the widget re-anchors cleanly.
-        mSink.pointerRelease(eTouchSink::eButton::middle, mPanEmittedX, mPanEmittedY);
-        mSink.zoomStep(dir, ri(cx), ri(cy));
-        mPanX = cx;
-        mPanY = cy;
-        mPanEmittedX = ri(cx);
-        mPanEmittedY = ri(cy);
-        mSink.pointerMove(mPanEmittedX, mPanEmittedY);
-        mSink.pointerPress(eTouchSink::eButton::middle, mPanEmittedX, mPanEmittedY);
+    float scale = d / mPinchBase;
+    if(!mPinchZooming) {
+        // Dead band so a two-finger pan does not drift the zoom.
+        const float t = std::max(mConfig.fPinchStepRatio, 1.0001f);
+        if(scale < t && scale > 1.f/t) scale = 1.f;
+        else mPinchZooming = true;
     }
+    // Pan sensitivity scales the centroid's travel.
+    const float s = mConfig.fPanSensitivity;
+    const float px = mPinchStartX + (cx - mPinchStartX) * s;
+    const float py = mPinchStartY + (cy - mPinchStartY) * s;
+    mSink.pinchUpdate(px, py, scale);
 }
 
 void eTouchGestures::fingerMove(const int64_t id, const float x, const float y,
@@ -159,6 +152,24 @@ void eTouchGestures::fingerMove(const int64_t id, const float x, const float y,
     case eState::uiPress:
         if(id == mPrimary) mSink.pointerMove(ri(x), ri(y));
         break;
+    case eState::listCandidate:
+    case eState::listScroll: {
+        if(id != mPrimary) break;
+        if(mState == eState::listCandidate) {
+            const float d = std::hypot(x - f.fStartX, y - f.fStartY);
+            if(d < mConfig.fTapSlop) break;
+            mState = eState::listScroll;
+            mListLastY = f.fStartY; // first scroll carries the slop distance
+        }
+        // Accumulate in float so slow drags do not lose sub-pixel motion.
+        mListEmitted += mListLastY - y;
+        mListLastY = y;
+        const int dy = static_cast<int>(mListEmitted);
+        if(dy != 0) {
+            mListEmitted -= dy;
+            mSink.listScroll(ri(f.fStartX), ri(f.fStartY), dy);
+        }
+    } break;
     case eState::mapCandidate: {
         if(id != mPrimary) break;
         const float d = std::hypot(x - f.fStartX, y - f.fStartY);
@@ -208,7 +219,10 @@ void eTouchGestures::fingerMove(const int64_t id, const float x, const float y,
         if(id == mPrimary) mSink.pointerMove(ri(x), ri(y));
         break;
     case eState::pinch:
-        pinchMoved();
+        // Applied once per frame in update(): SDL reports the two fingers in
+        // separate events, and their half-applied state would look like a
+        // spread change during a fast two-finger pan.
+        mPinchDirty = true;
         break;
     case eState::longPress:
     case eState::waitAllUp:
@@ -233,6 +247,7 @@ void eTouchGestures::fingerUp(const int64_t id, const float x, const float y,
             mState = eState::waitAllUp;
         }
         break;
+    case eState::listCandidate:
     case eState::mapCandidate:
         if(id == mPrimary) {
             // Tap at the touch-down point (ignores sub-slop jitter).
@@ -258,8 +273,15 @@ void eTouchGestures::fingerUp(const int64_t id, const float x, const float y,
             mState = eState::waitAllUp;
         }
         break;
+    case eState::listScroll:
+        if(id == mPrimary) mState = eState::waitAllUp;
+        break;
     case eState::pinch:
-        mSink.pointerRelease(eTouchSink::eButton::middle, mPanEmittedX, mPanEmittedY);
+        if(mPinchDirty) {
+            mPinchDirty = false;
+            pinchMoved();
+        }
+        mSink.pinchEnd();
         mState = eState::waitAllUp;
         break;
     case eState::longPress:
@@ -276,6 +298,10 @@ void eTouchGestures::fingerUp(const int64_t id, const float x, const float y,
 }
 
 void eTouchGestures::update(const uint32_t tMs) {
+    if(mState == eState::pinch && mPinchDirty) {
+        mPinchDirty = false;
+        pinchMoved();
+    }
     if(mState != eState::mapCandidate) return;
     const auto it = mFingers.find(mPrimary);
     if(it == mFingers.end()) return;
@@ -318,8 +344,10 @@ void eTouchGestures::cancel(const uint32_t tMs) {
         mSink.pointerRelease(eTouchSink::eButton::left, x, y);
     } break;
     case eState::pan:
-    case eState::pinch:
         mSink.pointerRelease(eTouchSink::eButton::middle, mPanEmittedX, mPanEmittedY);
+        break;
+    case eState::pinch:
+        mSink.pinchEnd();
         break;
     default:
         break;

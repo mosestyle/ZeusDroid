@@ -28,10 +28,23 @@ struct RecSink : eTouchSink {
     int camX = 0, camY = 0; // emulates eGameWidget middle-drag panning
     int lastX = 0, lastY = 0;
     bool middle = false;
-    int zoom = 0;
+    int zoom = 0;           // -1/0/+1: zoomed out / unchanged / in
+    float scale = 1.f;      // last pinch scale
+    float pinX = 0, pinY = 0;
+    int camAtPin = 0, camYAtPin = 0;
+    int pinchBegins = 0, pinchEnds = 0;
+    float lastPinchX = 0, lastPinchY = 0;
 
-    eTarget targetAt(int x, int) override {
-        return (uiBelowX >= 0 && x >= uiBelowX) ? eTarget::ui : eTarget::map;
+    int listAboveY = -1;    // y < listAboveY (and not UI) is a scrollable list
+    int listScrolled = 0;
+    eTarget targetAt(int x, int y) override {
+        if(uiBelowX >= 0 && x >= uiBelowX) return eTarget::ui;
+        if(listAboveY >= 0 && y < listAboveY) return eTarget::scrollList;
+        return eTarget::map;
+    }
+    void listScroll(int, int, int dy) override {
+        listScrolled += dy;
+        ev.push_back({"scroll", -1, 0, dy});
     }
     bool buildToolActive() override { return build; }
     void pointerMove(int x, int y) override {
@@ -47,10 +60,21 @@ struct RecSink : eTouchSink {
         if(b == eButton::middle) middle = false;
         ev.push_back({"release", int(b), x, y});
     }
-    void zoomStep(int dir, int x, int y) override {
-        zoom += dir;
-        ev.push_back({"zoom", dir, x, y});
+    // Emulates the widget: pinned point follows the centroid (pan part only).
+    void pinchBegin(float x, float y) override {
+        pinchBegins++;
+        pinX = x; pinY = y; camAtPin = camX; camYAtPin = camY;
+        ev.push_back({"pinchBegin", -1, int(x), int(y)});
     }
+    void pinchUpdate(float x, float y, float sc) override {
+        scale = sc;
+        zoom = sc > 1.001f ? 1 : (sc < 0.999f ? -1 : 0);
+        camX = camAtPin + int(std::lround(x - pinX));
+        camY = camYAtPin + int(std::lround(y - pinY));
+        lastPinchX = x; lastPinchY = y;
+        ev.push_back({"zoom", zoom, int(x), int(y)});
+    }
+    void pinchEnd() override { pinchEnds++; ev.push_back({"pinchEnd", -1, 0, 0}); }
     int count(const std::string& w, int b = -2) const {
         int n = 0;
         for(const auto& e : ev) if(e.what == w && (b == -2 || e.b == b)) n++;
@@ -123,7 +147,7 @@ void testLongPress() {
 }
 
 void testPinchAnchoredAndNoJump() {
-    std::puts("pinch zoom steps at centroid; second finger joining/leaving pan does not jump");
+    std::puts("continuous pinch zoom pinned at centroid; second finger joining/leaving pan does not jump");
     RecSink s; eTouchGestures g(s);
     g.fingerDown(1, 400, 400, 0);
     g.fingerMove(1, 360, 400, 16);   // start pan
@@ -131,18 +155,18 @@ void testPinchAnchoredAndNoJump() {
     g.fingerDown(2, 560, 400, 32);   // second finger -> pinch
     CHECK(g.state() == eTouchGestures::eState::pinch);
     CHECK(s.camX == camBefore);      // no jump on finger entering
-    // spread from 200 -> 280 (ratio 1.4) => one zoom-in step
+    // spread from 200 -> 280 => scale 1.4, pinned point at the centroid
     g.fingerMove(1, 320, 400, 48);
     g.fingerMove(2, 600, 400, 48);
+    g.update(48);
     CHECK(s.zoom == 1);
-    const auto& z = s.ev[std::size_t(0)];
-    (void)z;
-    bool found = false;
-    for(const auto& e : s.ev) if(e.what == "zoom") { found = true; CHECK(e.x == 460 && e.y == 400); }
-    CHECK(found);
+    CHECK(std::fabs(s.scale - 1.4f) < 1e-4f);
+    CHECK(s.pinchBegins == 1);
+    CHECK(std::fabs(s.lastPinchX - 460.f) < 1e-3f && std::fabs(s.lastPinchY - 400.f) < 1e-3f);
     const int camAtLift = s.camX;
     g.fingerUp(2, 600, 400, 64);
     CHECK(g.state() == eTouchGestures::eState::waitAllUp);
+    CHECK(s.pinchEnds == 1);
     g.fingerMove(1, 100, 100, 80);   // remaining finger must not pan or click
     CHECK(s.camX == camAtLift);
     g.fingerUp(1, 100, 100, 96);
@@ -152,21 +176,62 @@ void testPinchAnchoredAndNoJump() {
 }
 
 void testPinchOut() {
-    std::puts("pinch out => zoom out steps, two-finger pan moves camera");
+    std::puts("pinch out => zoom out, two-finger pan moves camera, dead band keeps scale 1");
     RecSink s; eTouchGestures g(s);
     g.fingerDown(1, 300, 300, 0);
     g.fingerDown(2, 700, 300, 5);
     g.fingerMove(1, 400, 300, 20);
-    g.fingerMove(2, 600, 300, 20);   // spread 400 -> 200: ratio .5 => one step (rebased)
-    CHECK(s.zoom <= -1);
+    g.fingerMove(2, 600, 300, 20);   // spread 400 -> 200: scale .5
+    g.update(20);
+    CHECK(s.zoom == -1);
+    CHECK(std::fabs(s.scale - 0.5f) < 1e-4f);
     // both fingers move right by 50: pan
     const int cam0 = s.camX;
     g.fingerMove(1, 450, 300, 40);
     g.fingerMove(2, 650, 300, 40);
+    g.update(40);
     CHECK(s.camX - cam0 == 50);
     g.fingerUp(1, 450, 300, 60);
     g.fingerUp(2, 650, 300, 60);
     CHECK(s.count("press", M) == s.count("release", M));
+}
+
+void testListTapAndScroll() {
+    std::puts("list: tap clicks at touch-down point, drag scrolls without clicking");
+    RecSink s; s.listAboveY = 500; eTouchGestures g(s);
+    g.fingerDown(1, 100, 200, 0);
+    CHECK(s.ev.empty());                 // nothing until we know tap vs scroll
+    g.fingerMove(1, 102, 205, 20);       // jitter within slop
+    g.fingerUp(1, 102, 205, 60);
+    CHECK(s.count("press", L) == 1 && s.count("release", L) == 1);
+    CHECK(s.ev[1].x == 100 && s.ev[1].y == 200);
+    s.ev.clear();
+    g.fingerDown(1, 100, 400, 100);
+    for(int i = 1; i <= 20; i++) g.fingerMove(1, 100, 400 - 7.5f*i, 100 + 8*i); // up 150 px
+    g.fingerUp(1, 100, 250, 300);
+    CHECK(s.listScrolled == 150);        // content follows the finger
+    CHECK(s.count("press") == 0);
+    CHECK(g.state() == eTouchGestures::eState::idle);
+    g.fingerDown(1, 100, 100, 400);
+    g.fingerMove(1, 100, 160, 420);      // down 60 px: scroll back
+    g.fingerUp(1, 100, 160, 440);
+    CHECK(s.listScrolled == 90);
+}
+
+void testTwoFingerPanDeadBand() {
+    std::puts("two-finger pan with slight spread change does not zoom");
+    RecSink s; eTouchGestures g(s);
+    g.fingerDown(1, 300, 300, 0);
+    g.fingerDown(2, 500, 300, 5);
+    g.fingerMove(1, 352, 340, 20);   // fast pan: 52 px per event;
+    g.fingerMove(2, 550, 340, 20);   // spread 200 -> 198 (1%) per frame
+    g.update(20);
+    CHECK(s.zoom == 0);
+    CHECK(s.scale == 1.f);
+    CHECK(s.camX == 51 && s.camY == 40);
+    g.fingerUp(1, 352, 340, 40);
+    g.fingerUp(2, 550, 340, 40);
+    CHECK(s.pinchEnds == 1);
 }
 
 void testUiVsMap() {
@@ -301,6 +366,8 @@ int main() {
     testBuildModeTwoFingerPanBeforeCommit();
     testCancel();
     testThreeFingers();
+    testTwoFingerPanDeadBand();
+    testListTapAndScroll();
     std::printf("%d checks, %d failures\n", gChecks, gFailures);
     return gFailures == 0 ? 0 : 1;
 }

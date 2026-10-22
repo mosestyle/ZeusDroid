@@ -27,7 +27,8 @@ screen-control tools with the user's permission) or Ghidra evidence; see NEXT_ST
 | Military, invasions, rival cities, colonies | NOT_TESTED | – | eZeus has AI opponent work on a separate branch (`ai_opponent`). |
 | Campaign progression / victory / defeat | NOT_TESTED | – | |
 | UI screens, overlays, messages | NOT_TESTED | Menus, roster, adventure list and in-game panel render with original art | Desktop default 1280×720; Android uses native resolution. |
-| Hotkeys | N/A on touch | Back = Escape | `P` (pause) has no touch equivalent yet – **open item**. |
+| Hotkeys | N/A on touch | Back = Escape / cancel; touch bar `||` `-` speed `+` `R` `X` | Pause, speed and rotate have touch buttons (0.1.2+). |
+| Camera zoom | PORT CHANGE (presentation only) | `phone_zoom_speed_lists.txt` | Original/eZeus: fixed texture sizes. Port adds 0.5×–3× world scaling (pinch, mouse wheel); 1× is pixel-identical to upstream. No effect on simulation or saves. |
 | Music / sound | BLOCKED here | Audio files not copied to the test environment; headless test used a dummy audio driver | Needs a device test. |
 | Speed control | NOT_TESTED | – | |
 | Save / load | NOT_TESTED | Leader roster created and persisted (`eZeus/Save/moses`) | Original `.sav` files unsupported (upstream). |

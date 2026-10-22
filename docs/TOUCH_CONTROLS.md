@@ -20,8 +20,10 @@ SDL's synthetic touch→mouse and mouse→touch events are disabled on Android
 | Long press (500 ms, no movement) | map, no build tool | right click (close info, deselect / place army) |
 | **X** button (appears when needed) | touch bar | leaves the build tool, closes an info panel, ends patrol editing, clears army selection |
 | Android Back | in the city | same as **X** when something is active, otherwise opens the game menu |
-| Two-finger pinch | map | one zoom step per 30 % change in finger distance, anchored at the pinch centre |
-| Two-finger drag | map (also in build mode) | pans the camera |
+| Two-finger pinch | map | continuous zoom 0.5×–3× (since 0.1.4); the map points under the fingers stay under them. Ends near 1× snap to the pixel-exact 1× view |
+| Two-finger drag | map (also in build mode) | pans the camera; finger-distance changes under 4 % (`pinch_deadband`) do not zoom |
+| Tap | list (adventures, leaders, saves) | selects the row under the finger; rows are ≥ 1/13 of the screen height on touch screens |
+| One-finger drag | list | scrolls the list (no selection) |
 | Android Back | anywhere | Escape (closes dialogs/menus, cancels) |
 | Soft keyboard | when a text field is focused (leader name, save name) | shown automatically, hidden when the field loses focus |
 
@@ -46,7 +48,8 @@ render_fps "auto"        # 20 = upstream timing of paint; 60 default on Android
 ui_scale "auto"          # auto | tiny | small | medium | large (auto: 1080p+ phones -> large)
 pan_sensitivity "1.0"
 long_press_ms "500"
-pinch_step "1.30"
+pinch_deadband "1.04"     # finger-distance ratio before a two-finger drag zooms
+max_zoom "3.0"           # 1..4; maximum pinch / mouse-wheel zoom
 tap_slop_px "24"
 build_drag "hold"        # hold (default) | direct (0.1.0-0.1.2 behaviour: drag draws immediately)
 build_hold_ms "300"
@@ -56,24 +59,33 @@ An in-game settings screen for these is still open (NEXT_STEPS.md).
 ## On-screen buttons
 
 eZeus has some actions only on the keyboard. On touch screens four framed buttons are
-added at the top-left of the map: `||` pause/resume (P), `-` / `+` game speed ([ / ]; a
-"Speed 2.5x" tip confirms the change), `R` rotate the view (R), and `X` (cancel, shown only
-when a build tool, info panel, patrol edit or army selection is active).
+added at the top-left of the map: `||` pause/resume (P), `-` / `+` game speed ([ / ]),
+between them the current speed (`0.2x`, `1x`, `2.5x`, `5x`, `10x`, `50x`; tap it to return to
+`1x`), `R` rotate the view (R), and `X` (cancel, shown only when a build tool, info panel,
+patrol edit or army selection is active). (0.1.3 showed a "Speed Nx" tip per tap instead; the
+tips stacked up and hid the current value.)
 
-## Zoom: discrete, by design of the renderer
+## Zoom: texture sets plus world scaling (since 0.1.4)
 
-eZeus draws from pre-scaled texture sets (tile width 30/60/90/120 px = `i15/i30/i45/i60.e`).
-Pinch therefore moves between the installed sets instead of scaling continuously; with only
-the default pack (`i15.e`, `i30.e`) there are two zoom levels. Installing `i45.zip`/`i60.zip`
-adds two closer levels. Continuous zoom would need either GPU scaling between levels (blurry
-pixel art, against the fidelity goal) or a renderer change; recorded as an open item.
+eZeus draws from pre-scaled texture sets (tile width 30/60/90/120 px = `i15/i30/i45/i60.e`);
+the default pack has `i15` and `i30`, i.e. only two zoom levels, both small on a phone.
+The port adds a world-layer scale (`eGameWidget::paintEvent` → `paintWorld`): when the zoom is
+not 1×, the map is drawn 1:1 into an off-screen texture of (screen size ÷ scale) and drawn
+stretched with linear filtering; menus, panels and the touch bar are not scaled. Input on the
+map is divided by the same scale (`toWorld`), so taps, hold-to-draw and info clicks land on the
+tile under the finger at every zoom. The texture set is chosen as the largest one that needs at
+most a 0.75× downscale (zoom 0.5–0.75 uses `i15`, above uses `i30`, or `i45`/`i60` if installed).
+At exactly 1× nothing changes compared with upstream (no off-screen pass). Desktop mouse wheel
+steps through 0.5, 0.75, 1, 1.5, 2, 2.5, 3 anchored at the cursor (upstream: texture sets only,
+anchored at the screen centre). Zoom is not stored in saves (save format unchanged).
 
 ## Tests
 
-* Unit tests: `tests/native/test_touch_gestures.cpp` – 11 scenarios, 50 checks (tap jitter,
-  long pan, sub-pixel pan, long-press, pinch in/out anchoring, second finger joining and
-  leaving, UI vs map, build placement and road drag, two-finger pan in build mode,
-  lifecycle cancel, third finger). Run on x86-64 and as a static ARM64 Android binary under
+* Unit tests: `tests/native/test_touch_gestures.cpp` – 14 scenarios, 74 checks (tap jitter,
+  long pan, sub-pixel pan, long-press, continuous pinch in/out and pinning, second finger
+  joining and leaving, UI vs map, build placement and road drag, hold-to-draw, two-finger
+  pan in build mode, two-finger pan dead band, list tap vs drag-scroll, lifecycle cancel,
+  third finger). Run on x86-64 and as a static ARM64 Android binary under
   qemu (`tools/tests/run_unit_tests.sh`).
 * Engine integration: `build/run/touch1.txt` autotest drives SDL finger events through the
   real game (desktop, Xvfb). Logged camera state confirmed pan (-300, -150) px exactly, a

@@ -1,4 +1,5 @@
 #include "echoosegameeditmenu.h"
+#include "platform/eplatform.h"
 
 #include "eframedwidget.h"
 #include "eframedbutton.h"
@@ -400,6 +401,11 @@ void eChooseGameEditMenu::initialize(const bool editor) {
             w->setNoPadding();
             w->setText(g.fTitle);
             w->fitContent();
+            if(ePlatform::touchUi()) {
+                w->setTextAlignment(eAlignment::left | eAlignment::vcenter);
+                w->setHeight(ePlatform::touchRowHeight(w->height()));
+                w->setWidth(std::max(w->width(), scrollCont->areaWidth()));
+            }
             w->setMouseEnterAction([w]() {
                 w->setYellowFontColor();
             });

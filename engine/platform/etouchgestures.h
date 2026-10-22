@@ -24,12 +24,16 @@
 //                              fBuildHoldMs (hold-to-draw, default) or moved
 //                              beyond slop (fHoldToDraw = false): left-drag
 //                              starting at the original touch point
-//   MapCandidate/Pan -> Pinch  second finger: zoom steps + two-finger pan
+//   Idle -> ListCandidate      finger lands on a scrollable list: nothing
+//                              sent yet; lift within slop = tap (left click
+//                              at the touch-down point)
+//   ListCandidate -> ListScroll moved beyond slop: the list follows the finger
+//   MapCandidate/Pan -> Pinch  second finger: continuous zoom + pan
 //   Pinch -> WaitAllUp         a finger lifts: nothing more until all lift
 class eTouchSink {
 public:
     enum class eButton { left, right, middle };
-    enum class eTarget { map, ui };
+    enum class eTarget { map, ui, scrollList };
 
     virtual ~eTouchSink() = default;
 
@@ -39,8 +43,17 @@ public:
     virtual void pointerMove(int x, int y) = 0;
     virtual void pointerPress(eButton b, int x, int y) = 0;
     virtual void pointerRelease(eButton b, int x, int y) = 0;
-    // dir > 0 zoom in, dir < 0 zoom out; anchored at (x, y).
-    virtual void zoomStep(int dir, int x, int y) = 0;
+    // Two-finger gesture (continuous zoom + pan). pinchBegin pins the map
+    // point under (x, y); pinchUpdate moves that point to (x, y) and sets the
+    // zoom to (zoom at begin) * scale; pinchEnd finishes the gesture.
+    virtual void pinchBegin(float x, float y) = 0;
+    virtual void pinchUpdate(float x, float y, float scale) = 0;
+    virtual void pinchEnd() {}
+    // Scroll the list that was under (downX, downY) by dy pixels
+    // (dy > 0 = content moves up, i.e. later rows come into view).
+    virtual void listScroll(int downX, int downY, int dy) {
+        (void)downX; (void)downY; (void)dy;
+    }
 };
 
 struct eTouchConfig {
@@ -48,8 +61,10 @@ struct eTouchConfig {
     float fTapSlop = 24.f;
     // Hold time for long-press (right click / info).
     uint32_t fLongPressMs = 500;
-    // Distance ratio between two fingers that triggers one zoom step.
-    float fPinchStepRatio = 1.30f;
+    // Finger-distance change (ratio) before a two-finger drag starts
+    // zooming; below it the gesture only pans. (Before 0.1.4 this was the
+    // ratio for one discrete zoom step.)
+    float fPinchStepRatio = 1.04f;
     // Pan sensitivity multiplier (1 = finger follows the map exactly).
     float fPanSensitivity = 1.f;
     // Build tools: true = one-finger drag pans, hold (fBuildHoldMs) then drag
@@ -68,6 +83,8 @@ public:
         pan,
         buildDrag,
         pinch,
+        listCandidate,
+        listScroll,
         waitAllUp
     };
 
@@ -115,6 +132,12 @@ private:
     int mPanEmittedX = 0;
     int mPanEmittedY = 0;
     float mPinchBase = 0.f;
+    bool mPinchZooming = false;
+    bool mPinchDirty = false;
+    float mListLastY = 0.f;
+    float mListEmitted = 0.f;
+    float mPinchStartX = 0.f;
+    float mPinchStartY = 0.f;
 };
 
 #endif // ETOUCHGESTURES_H

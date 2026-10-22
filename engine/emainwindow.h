@@ -39,7 +39,8 @@ public:
     void dispatchPointerMove(const int x, const int y);
     void dispatchPointerPress(const eMouseButton b, const int x, const int y);
     void dispatchPointerRelease(const eMouseButton b, const int x, const int y);
-    void dispatchZoomStep(const int dir, const int x, const int y);
+    // The game widget when it is the current screen (touch pinch target).
+    eGameWidget* touchGameWidget() const;
     // Current pointer position (mouse cursor or last touch point).
     void pointerPosition(int& x, int& y) const;
     bool touchEnabled() const { return mTouchEnabled; }

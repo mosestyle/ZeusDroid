@@ -21,12 +21,12 @@ _Branch `main`; see `git log` for the current commit._
 |---|---|
 | Desktop Linux build of eZeus + port layer | builds; runs headless with the user's real data |
 | Real game content on desktop | menus, roster, adventure list (Zeus + Poseidon), briefing, Thebes map, running simulation, Hydra event – screenshots in `build/run/` (local only) |
-| Touch layer in real engine (desktop, EZEUS_TOUCH=1) | pan exact, zoom-out step, jitter tap ignored, UI-vs-map routing |
-| Unit tests | gesture FSM 50/50 (x86-64 and ARM64-Android-under-qemu), ENG converter (synthetic + real files, Python == C++), importer rules 36/36 |
+| Touch layer in real engine (desktop, EZEUS_TOUCH=1) | pan exact, continuous pinch zoom 0.5–3× pinned under the fingers, hold-to-draw at zoom 1 and 2, list drag-scroll, speed label, jitter tap ignored, UI-vs-map routing |
+| Unit tests | gesture FSM 74/74 (x86-64 and ARM64-Android-under-qemu), ENG converter (synthetic + real files, Python == C++), importer rules 46/46 |
 | Android arm64 native build | builds: libmain.so + SDL2 family, AArch64, 16 KB-aligned, static libc++ |
-| APK | `dist/eZeusPort-debug-arm64-v8a.apk` 0.1.2-dev (sha256 `fdc32a06…f58d`); 0.1.0 installed and importer ran on the user's phone; game start on device not yet confirmed |
+| APK | `dist/eZeusPort-debug-arm64-v8a.apk` 0.1.4-dev (versionCode 5, sha256 `e91c10ba…a463d5`) |
 | ARM64 audio codec | minimp3 decodes all 26 music tracks + voice (qemu) |
-| Real device | **runs on the user's phone** (user screenshot 2026-10-22: city view, touch bar, 60 FPS); device model/Android version not yet reported |
+| Real device | **runs on the user's Samsung Galaxy S25** (0.1.3: city simulation, date and speed advance, 60 FPS, user report 2026-10-22); 0.1.4 not yet tried on the device |
 
 ## Playable features (desktop-verified unless noted)
 
@@ -38,9 +38,8 @@ desktop-verified only.
 
 ## Highest-priority problems
 
-1. No on-device test yet (NEXT_STEPS §1).
-2. Desktop re-test needed after the last engine changes (frame clock, touch bar, UI scale,
-   atomic saves, tooltips) – these compiled into the Android build but have not run yet.
+1. On-device checks still open: 0.1.4 zoom/lists, save → kill → load, pause/resume (NEXT_STEPS §0).
+2. Desktop re-test done for all engine changes up to 0.1.4 (TEST_REPORT).
 3. Toolchain provenance (third-party NDK sysroot / android.jar / d8) – rebuild with official
    tools before any distribution.
 4. Possible high GPU memory use on phones (interface + i30 + i15 packs ≈ 1.15 GB RGBA if all

@@ -75,6 +75,7 @@ eGameWidget::eGameWidget(eMainWindow* const window) :
 
 eGameWidget::~eGameWidget() {
     setBoard(nullptr);
+    if(mWorldTarget) SDL_DestroyTexture(mWorldTarget);
 }
 
 void eGameWidget::setBoard(eGameBoard* const board) {
@@ -192,6 +193,7 @@ void eGameWidget::setSettings(const eGameWidgetSettings& s) {
     if(mPaused != s.fPaused) switchPause();
     mSpeedId = s.fSpeedId;
     mSpeed = s.fSpeed;
+    updateSpeedButton();
     setTileSize(s.fTileSize);
     if(mBoard) mBoard->setWorldDirection(s.fDir);
     setDX(s.fDX);
@@ -551,6 +553,9 @@ void eGameWidget::initialize() {
         };
         addTouchButton("||", [this]() { togglePause(); });
         addTouchButton("-", [this]() { changeSpeed(-1); });
+        // Current speed; tap = back to normal speed.
+        mSpeedButton = addTouchButton("50x", [this]() { setSpeedId(1); });
+        updateSpeedButton();
         addTouchButton("+", [this]() { changeSpeed(1); });
         addTouchButton("R", [this]() { rotateView(); });
         y += p;
@@ -621,17 +626,17 @@ void eGameWidget::viewBoxSize(double& fx, double& fy) const {
     int mdx;
     int mdy;
     mapDimensions(mdx, mdy);
-    fx = (width() - mGm->width())/double(mdx);
-    fy = height()/double(mdy);
+    fx = worldViewW()/double(mdx);
+    fy = worldViewH()/double(mdy);
 }
 
 void eGameWidget::viewedFraction(double& fx, double& fy) const {
     int mdx;
     int mdy;
     mapDimensions(mdx, mdy);
-    const int w = width() - mGm->width();
+    const int w = worldViewW();
     fx = (0.5*w - mDX)/mdx;
-    fy = (0.5*height() - mDY)/mdy;
+    fy = (0.5*worldViewH() - mDY)/mdy;
 }
 
 void eGameWidget::tileViewFraction(eTile* const tile,
@@ -650,9 +655,9 @@ void eGameWidget::viewFraction(const double fx, const double fy) {
     int mdy;
     mapDimensions(mdx, mdy);
 
-    const int w = width() - mGm->width();
+    const int w = worldViewW();
     const int dx = -fx*mdx + w/2;
-    const int dy = -fy*mdy + height()/2;
+    const int dy = -fy*mdy + worldViewH()/2;
     setDX(dx);
     setDY(dy);
 }
@@ -755,11 +760,11 @@ void eGameWidget::iterateOverVisibleTiles(const eTileAction& a) {
     const int rh = mBoard->rotatedHeight();
 
     const int minX = std::clamp(-mDX/mTileW, 0, rw);
-    const int visWidth = width() - mGm->width();
+    const int visWidth = worldViewW();
     const int maxX = std::clamp(minX + visWidth/mTileW, 0, rw);
 
     const int minY = std::clamp(-2*mDY/mTileH, 0, rh);
-    const int maxY = std::clamp(minY + 2*height()/mTileH, 0, rh);
+    const int maxY = std::clamp(minY + 2*worldViewH()/mTileH, 0, rh);
 
     const bool play = Mix_Playing(-1) == 0 && (eRand::rand() % 250) == 0;
     if(play) {
@@ -1900,7 +1905,8 @@ bool eGameWidget::keyPressEvent(const eKeyPressEvent& e) {
     return true;
 }
 
-bool eGameWidget::mousePressEvent(const eMouseEvent& e) {
+bool eGameWidget::mousePressEvent(const eMouseEvent& screenE) {
+    const auto e = toWorld(screenE);
     mPressedButtons = mPressedButtons | e.button();
     if(mLocked) return true;
     mGm->closeBuildWidget();
@@ -2033,7 +2039,8 @@ void squareTiles(eGameBoard* const board, const int bSize,
     }
 }
 
-bool eGameWidget::mouseMoveEvent(const eMouseEvent& e) {
+bool eGameWidget::mouseMoveEvent(const eMouseEvent& screenE) {
+    const auto e = toWorld(screenE);
     mHoverTiles.clear();
     if(mTem->visible()) {
         const auto btype = mTem->brushType();
@@ -2078,7 +2085,8 @@ bool eGameWidget::mouseMoveEvent(const eMouseEvent& e) {
     return true;
 }
 
-bool eGameWidget::mouseReleaseEvent(const eMouseEvent& e) {
+bool eGameWidget::mouseReleaseEvent(const eMouseEvent& screenE) {
+    const auto e = toWorld(screenE);
     const auto pressedButtons = mPressedButtons;
     mPressedButtons = e.buttons();
     if(mLocked) return true;
@@ -2170,50 +2178,20 @@ bool eGameWidget::mouseWheelEvent(const eMouseWheelEvent& e) {
         return true;
     }
     mWheel = 0;
-    const auto& sett = window()->settings();
-    std::vector<eTileSize> sizes;
-    int currSize = 0;
-    if(sett.fTinyTextures) {
-        sizes.push_back(eTileSize::s15);
-        if(mTileSize == eTileSize::s15) {
-            currSize = sizes.size() - 1;
-        }
-    }
-    if(sett.fSmallTextures) {
-        sizes.push_back(eTileSize::s30);
-        if(mTileSize == eTileSize::s30) {
-            currSize = sizes.size() - 1;
-        }
-    }
-    if(sett.fMediumTextures) {
-        sizes.push_back(eTileSize::s45);
-        if(mTileSize == eTileSize::s45) {
-            currSize = sizes.size() - 1;
-        }
-    }
-    if(sett.fLargeTextures) {
-        sizes.push_back(eTileSize::s60);
-        if(mTileSize == eTileSize::s60) {
-            currSize = sizes.size() - 1;
-        }
-    }
-    const int sizesC = sizes.size();
-    if(e.dy() > 0) {
-        const int newSize = currSize + 1;
-        if(newSize < sizesC) {
-            setTileSize(sizes[newSize]);
-        }
-    } else {
-        const int newSize = currSize - 1;
-        if(newSize >= 0) {
-            setTileSize(sizes[newSize]);
-        }
-    }
+    // Port: one step on the zoom ladder (texture sizes plus world scaling)
+    // anchored at the cursor; upstream switched texture sizes only.
+    zoomStepAt(e.dy() > 0 ? 1 : -1, e.x(), e.y());
     return true;
 }
 
 void eGameWidget::renderTargetsReset() {
     eWidget::renderTargetsReset();
+    // The world layer is redrawn every frame; drop it in case the renderer
+    // was reset and let paintEvent() recreate it.
+    if(mWorldTarget) SDL_DestroyTexture(mWorldTarget);
+    mWorldTarget = nullptr;
+    mWorldTargetW = 0;
+    mWorldTargetH = 0;
     initializeNumbers();
 }
 
@@ -2261,13 +2239,13 @@ void eGameWidget::clampViewBox() {
     if(mTem->visible()) return;
     const auto dir = mBoard->direction();
     const int w = mBoard->rotatedWidth();
-    const int ww = width() - mGm->width();
+    const int ww = worldViewW();
     mDX = std::min(0, mDX);
     const int winc = dir == eWorldDirection::W ? mTileW/2 : 0;
     mDX = std::max(-w*mTileW + ww + mTileW/2 + winc, mDX);
 
     const int h = mBoard->rotatedHeight();
-    const int hh = height();
+    const int hh = worldViewH();
     const int einc = dir == eWorldDirection::E ? mTileH/2 : 0;
     const int dt = mTopMinAltitude < 0 ? mTopMinAltitude : 0;
     mDY = std::min(-mTileH/2 + 2*einc + dt*mTileH, mDY);
@@ -2355,15 +2333,24 @@ bool eGameWidget::sTouchBarEnabled = false;
 void eGameWidget::changeSpeed(const int delta) {
     mSpeedId = std::clamp(mSpeedId + delta, 0, sMaxSpeedId);
     mSpeed = sSpeeds[mSpeedId];
-    if(sTouchBarEnabled && mBoard) {
-        // Feedback for the touch buttons (keyboard users get none upstream).
-        const bool turbo = mSpeedId == sMaxSpeedId;
-        const double mult = mSpeed/10.;
-        char buf[48];
-        std::snprintf(buf, sizeof(buf), "Speed %gx%s", turbo ? mult*5 : mult,
-                      turbo ? " (max)" : "");
-        showTip(mBoard->personPlayer(), buf);
-    }
+    updateSpeedButton();
+}
+
+void eGameWidget::setSpeedId(const int id) {
+    mSpeedId = std::clamp(id, 0, sMaxSpeedId);
+    mSpeed = sSpeeds[mSpeedId];
+    updateSpeedButton();
+}
+
+void eGameWidget::updateSpeedButton() {
+    if(!mSpeedButton) return;
+    // Multipliers as in upstream's speed list; the last step also runs 5
+    // simulation iterations per tick.
+    const bool turbo = mSpeedId == sMaxSpeedId;
+    const double mult = mSpeed/10.;
+    char buf[16];
+    std::snprintf(buf, sizeof(buf), "%gx", turbo ? mult*5 : mult);
+    mSpeedButton->setText(buf);
 }
 
 bool eGameWidget::touchCancelAvailable() const {
@@ -2414,6 +2401,9 @@ bool eGameWidget::buildToolActive() const {
 std::string eGameWidget::debugCameraState() const {
     return "dx=" + std::to_string(mDX) + " dy=" + std::to_string(mDY) +
            " tile=" + std::to_string(mTileW) + "x" + std::to_string(mTileH) +
+           " zoom=" + std::to_string(zoom()) +
+           " scale=" + std::to_string(mWorldScale) +
+           " speedId=" + std::to_string(mSpeedId) +
            " build=" + std::to_string(buildToolActive() ? 1 : 0) +
            " info=" + std::to_string(mInfoWidget ? 1 : 0) +
            " paused=" + std::to_string(mPaused ? 1 : 0) +
@@ -2432,26 +2422,121 @@ std::string eGameWidget::debugCameraState() const {
 
 void eGameWidget::zoomStepAt(const int dir, const int x, const int y) {
     if(mLocked || dir == 0) return;
+    static const double ladder[] = {0.5, 0.75, 1.0, 1.5, 2.0, 2.5, 3.0};
+    const double z = zoom();
+    double next = z;
+    if(dir > 0) {
+        for(const double l : ladder) {
+            if(l > z + 1e-3) { next = l; break; }
+        }
+    } else {
+        for(int i = int(std::size(ladder)) - 1; i >= 0; i--) {
+            if(ladder[i] < z - 1e-3) { next = ladder[i]; break; }
+        }
+    }
+    setZoomAt(next, x, y);
+}
+
+namespace {
+double tileSizeBase(const eTileSize s) {
+    switch(s) {
+    case eTileSize::s15: return 0.5;
+    case eTileSize::s30: return 1.0;
+    case eTileSize::s45: return 1.5;
+    case eTileSize::s60: return 2.0;
+    }
+    return 1.0;
+}
+}
+
+double eGameWidget::sMaxZoom = 3.0;
+
+double eGameWidget::zoom() const {
+    return tileSizeBase(mTileSize)*mWorldScale;
+}
+
+int eGameWidget::worldViewW() const {
+    const int gmw = mGm ? mGm->width() : 0;
+    return static_cast<int>(std::ceil((width() - gmw)/mWorldScale));
+}
+
+int eGameWidget::worldViewH() const {
+    return static_cast<int>(std::ceil(height()/mWorldScale));
+}
+
+eMouseEvent eGameWidget::toWorld(const eMouseEvent& e) const {
+    if(mWorldScale == 1.0) return e;
+    const int x = static_cast<int>(std::floor(e.x()/mWorldScale));
+    const int y = static_cast<int>(std::floor(e.y()/mWorldScale));
+    return e.withPosition(x, y);
+}
+
+void eGameWidget::setZoomAt(double z, const double x, const double y) {
+    if(!mBoard || !window()) return;
     const auto& setts = window()->settings();
     const auto sizes = setts.availableSizes();
     if(sizes.empty()) return;
-    int curr = 0;
-    for(int i = 0; i < static_cast<int>(sizes.size()); i++) {
-        if(sizes[i] == mTileSize) curr = i;
+    double minBase = 1e9;
+    for(const auto s : sizes) minBase = std::min(minBase, tileSizeBase(s));
+    z = std::clamp(z, minBase, std::max(minBase, sMaxZoom));
+    // The off-screen world layer is (screen size / scale); keep it within
+    // the renderer's texture limit.
+    int maxTex = 4096;
+    {
+        SDL_RendererInfo info;
+        const auto r = window()->renderer();
+        if(r && SDL_GetRendererInfo(r, &info) == 0 &&
+           info.max_texture_width > 0 && info.max_texture_height > 0) {
+            maxTex = std::min(info.max_texture_width, info.max_texture_height);
+        }
     }
-    const int next = std::clamp(curr + (dir > 0 ? 1 : -1), 0,
-                                static_cast<int>(sizes.size()) - 1);
-    if(next == curr) return;
-    const double oldW = mTileW;
-    const double oldH = mTileH;
-    const int oldDX = mDX;
-    const int oldDY = mDY;
-    setTileSize(sizes[next]);
-    // setTileSize() anchors at the widget centre; re-anchor at (x, y).
-    const double sx = mTileW/oldW;
-    const double sy = mTileH/oldH;
-    setDX(static_cast<int>(std::round((oldDX - x)*sx + x)));
-    setDY(static_cast<int>(std::round((oldDY - y)*sy + y)));
+    const double minScale = std::max(0.75, std::max(width(), height())/double(maxTex));
+    // Largest texture size that needs at most a mild downscale.
+    eTileSize pick = sizes.front();
+    double pickBase = tileSizeBase(pick);
+    for(const auto s : sizes) {
+        const double b = tileSizeBase(s);
+        if(z/b >= minScale - 1e-6 && b > pickBase) {
+            pick = s;
+            pickBase = b;
+        }
+    }
+    double scale = std::max(z/pickBase, minScale);
+    if(std::abs(scale - 1.0) < 0.02) scale = 1.0; // snap to pixel-exact
+
+    // Map point under (x, y) in tile units before the change.
+    const double tX = (x/mWorldScale - mDX)/double(mTileW);
+    const double tY = (y/mWorldScale - mDY)/double(mTileH);
+    mWorldScale = scale;
+    if(pick != mTileSize) setTileSize(pick);
+    setDX(static_cast<int>(std::lround(x/mWorldScale - tX*mTileW)));
+    setDY(static_cast<int>(std::lround(y/mWorldScale - tY*mTileH)));
+    updateViewBoxSize();
+}
+
+void eGameWidget::pinchBegin(const float x, const float y) {
+    mPinchZ0 = zoom();
+    mPinchTX = (x/mWorldScale - mDX)/double(mTileW);
+    mPinchTY = (y/mWorldScale - mDY)/double(mTileH);
+}
+
+void eGameWidget::pinchEnd() {
+    // Settle on the pixel-exact default view when the pinch ended close to it.
+    const double z = zoom();
+    if(z != 1.0 && std::abs(z - 1.0) < 0.06) {
+        setZoomAt(1.0, mPinchLastX, mPinchLastY);
+    }
+}
+
+void eGameWidget::pinchUpdate(const float x, const float y, const float scale) {
+    mPinchLastX = x;
+    mPinchLastY = y;
+    if(mLocked) return;
+    const double z = mPinchZ0*scale;
+    if(std::abs(z - zoom()) > 1e-3) setZoomAt(z, x, y);
+    // Keep the pinned map point under the fingers' centroid (also pans).
+    setDX(static_cast<int>(std::lround(x/mWorldScale - mPinchTX*mTileW)));
+    setDY(static_cast<int>(std::lround(y/mWorldScale - mPinchTY*mTileH)));
 }
 
 void eGameWidget::setTileSize(const eTileSize size) {
@@ -2470,8 +2555,10 @@ void eGameWidget::setTileSize(const eTileSize size) {
     const double dnewW = newW;
     const double dnewH = newH;
 
-    const int dx = std::round((mDX - width()/2) * dnewW/mTileW + width()/2);
-    const int dy = std::round((mDY - height()/2) * dnewH/mTileH + height()/2);
+    const int vw = worldViewW();
+    const int vh = worldViewH();
+    const int dx = std::round((mDX - vw/2) * dnewW/mTileW + vw/2);
+    const int dy = std::round((mDY - vh/2) * dnewH/mTileH + vh/2);
 
     mTileW = newW;
     mTileH = newH;

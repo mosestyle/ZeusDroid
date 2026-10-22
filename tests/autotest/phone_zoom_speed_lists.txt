@@ -1,0 +1,101 @@
+# Phone layout (Xvfb 2400x1080, settings 2400x1080, EZEUS_TOUCH=1 EZEUS_UI_SCALE=large EZEUS_RENDER_FPS=60):
+# big list rows + drag-scroll in the adventure list, continuous pinch zoom, speed label.
+8000 finger_down 1 1200 150
+80 finger_up 1 1200 150
+2500 screenshot build/run/zl_01_list.bmp
+# drag the adventure list up by ~250 px: must scroll, must not select
+100 finger_down 1 600 520
+30 finger_move 1 600 480
+30 finger_move 1 600 420
+30 finger_move 1 600 360
+30 finger_move 1 600 300
+30 finger_move 1 600 270
+40 finger_up 1 600 270
+300 screenshot build/run/zl_02_list_scrolled.bmp
+# drag back down
+100 finger_down 1 600 270
+30 finger_move 1 600 400
+30 finger_move 1 600 560
+40 finger_up 1 600 560
+300 screenshot build/run/zl_03_list_back.bmp
+# tap "The Founding of Athens" (second row), then Begin Adventure
+200 finger_down 1 570 346
+80 finger_up 1 570 346
+500 screenshot build/run/zl_04_selected.bmp
+100 finger_down 1 1100 720
+80 finger_up 1 1100 720
+4000 screenshot build/run/zl_05_intro.bmp
+100 finger_down 1 1680 832
+80 finger_up 1 1680 832
+1000 wait_game 120000
+3000 log start
+200 screenshot build/run/zl_06_game_z1.bmp
+# tap the map at P=(1000,600) (no tool): records hover tile under P
+100 finger_down 1 1000 600
+80 finger_up 1 1000 600
+300 log tap_P_zoom1
+# slow pinch out around P: spread 200 -> 400 in 10 steps => zoom 2.0
+100 finger_down 1 900 600
+20 finger_down 2 1100 600
+30 finger_move 1 890 600
+1 finger_move 2 1110 600
+30 finger_move 1 880 600
+1 finger_move 2 1120 600
+30 finger_move 1 870 600
+1 finger_move 2 1130 600
+30 finger_move 1 860 600
+1 finger_move 2 1140 600
+30 finger_move 1 850 600
+1 finger_move 2 1150 600
+30 finger_move 1 840 600
+1 finger_move 2 1160 600
+30 finger_move 1 830 600
+1 finger_move 2 1170 600
+30 finger_move 1 820 600
+1 finger_move 2 1180 600
+30 finger_move 1 810 600
+1 finger_move 2 1190 600
+30 finger_move 1 800 600
+1 finger_move 2 1200 600
+50 finger_up 1 800 600
+20 finger_up 2 1200 600
+300 log after_pinch_out_expect_zoom2
+200 screenshot build/run/zl_07_game_z2.bmp
+100 finger_down 1 1000 600
+80 finger_up 1 1000 600
+300 log tap_P_zoom2_expect_same_hoverT
+# two-finger pan with nearly constant spread: no zoom change, moves the map
+100 finger_down 1 900 600
+20 finger_down 2 1100 600
+30 finger_move 1 880 580
+1 finger_move 2 1081 580
+30 finger_move 1 860 560
+1 finger_move 2 1060 560
+30 finger_move 1 840 540
+1 finger_move 2 1040 540
+50 finger_up 1 840 540
+20 finger_up 2 1040 540
+300 log after_two_finger_pan_expect_zoom2_dx_moved
+# pinch in to the minimum (zoom 0.5)
+100 finger_down 1 600 600
+20 finger_down 2 1400 600
+30 finger_move 1 700 600
+1 finger_move 2 1300 600
+30 finger_move 1 800 600
+1 finger_move 2 1200 600
+30 finger_move 1 900 600
+1 finger_move 2 1100 600
+30 finger_move 1 980 600
+1 finger_move 2 1020 600
+50 finger_up 1 980 600
+20 finger_up 2 1020 600
+300 log after_pinch_in_expect_zoom0.5
+200 screenshot build/run/zl_08_game_z05.bmp
+# speed: + twice, then tap the speed label (back to 1x)
+100 finger_down 1 68 430
+80 finger_up 1 68 430
+100 finger_down 1 68 430
+80 finger_up 1 68 430
+300 log after_plus2
+200 screenshot build/run/zl_09_speed.bmp
+300 quit

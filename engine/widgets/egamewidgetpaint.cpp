@@ -315,6 +315,56 @@ void eGameWidget::updateTerrainTextures() {
 }
 
 void eGameWidget::paintEvent(ePainter& p) {
+    // Port zoom: at scale 1 paint directly (upstream path). Otherwise paint
+    // the world 1:1 into an off-screen texture of (widget size / scale) and
+    // draw it stretched; children (menus, touch bar) stay unscaled.
+    if(mWorldScale == 1.0) {
+        paintWorld(p);
+        return;
+    }
+    const auto r = p.renderer();
+    const int tw = static_cast<int>(std::ceil(width()/mWorldScale));
+    const int th = static_cast<int>(std::ceil(height()/mWorldScale));
+    if(!mWorldTarget || mWorldTargetW < tw || mWorldTargetH < th) {
+        if(mWorldTarget) SDL_DestroyTexture(mWorldTarget);
+        // Grow in steps so a pinch does not reallocate every frame.
+        const int aw = std::max(tw, std::max(mWorldTargetW, (4*width())/3 + 2));
+        const int ah = std::max(th, std::max(mWorldTargetH, (4*height())/3 + 2));
+        mWorldTarget = SDL_CreateTexture(r, SDL_PIXELFORMAT_RGBA8888,
+                                         SDL_TEXTUREACCESS_TARGET, aw, ah);
+        if(!mWorldTarget) {
+            mWorldTargetW = 0;
+            mWorldTargetH = 0;
+            paintWorld(p);
+            return;
+        }
+        SDL_SetTextureBlendMode(mWorldTarget, SDL_BLENDMODE_NONE);
+        mWorldTargetW = aw;
+        mWorldTargetH = ah;
+    }
+    const auto prevTarget = SDL_GetRenderTarget(r);
+    Uint8 cr, cg, cb, ca;
+    SDL_GetRenderDrawColor(r, &cr, &cg, &cb, &ca);
+    SDL_BlendMode bm;
+    SDL_GetRenderDrawBlendMode(r, &bm);
+    SDL_SetRenderTarget(r, mWorldTarget);
+    SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+    SDL_RenderClear(r);
+    {
+        ePainter wp(r);
+        paintWorld(wp);
+    }
+    SDL_SetRenderTarget(r, prevTarget);
+    SDL_SetRenderDrawColor(r, cr, cg, cb, ca);
+    SDL_SetRenderDrawBlendMode(r, bm);
+    const SDL_Rect src{0, 0, tw, th};
+    const SDL_FRect dst{static_cast<float>(p.x()), static_cast<float>(p.y()),
+                        static_cast<float>(tw*mWorldScale),
+                        static_cast<float>(th*mWorldScale)};
+    SDL_RenderCopyF(r, mWorldTarget, &src, &dst);
+}
+
+void eGameWidget::paintWorld(ePainter& p) {
     if(mUpdateViewedTileScheduled) {
         mUpdateViewedTileScheduled = false;
         const auto oldC = mViewedTile ? mViewedTile->cityId() :
@@ -413,14 +463,17 @@ void eGameWidget::paintEvent(ePainter& p) {
         // Mouse edge-scrolling. Disabled for touch, where the "hover" point
         // is just the last touch position, not a resting cursor.
         if(sEdgeScrollEnabled) {
+            // mHoverX/Y are world pixels (screen / mWorldScale).
+            const int edgeX = static_cast<int>((width() - 1)/mWorldScale);
+            const int edgeY = static_cast<int>((height() - 1)/mWorldScale);
             if(mHoverX == 0) {
                 setDX(mDX + 35);
-            } else if(mHoverX == width() - 1) {
+            } else if(mHoverX >= edgeX) {
                 setDX(mDX - 35);
             }
             if(mHoverY == 0) {
                 setDY(mDY + 35);
-            } else if(mHoverY == height() - 1) {
+            } else if(mHoverY >= edgeY) {
                 setDY(mDY - 35);
             }
         }

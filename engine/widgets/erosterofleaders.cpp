@@ -1,4 +1,5 @@
 #include "erosterofleaders.h"
+#include "platform/eplatform.h"
 
 #include "eframedwidget.h"
 #include "eframedbutton.h"
@@ -172,6 +173,7 @@ void eRosterOfLeaders::initialize() {
             b->setNoPadding();
             b->fitContent();
             b->setWidth(swwidth);
+            b->setHeight(ePlatform::touchRowHeight(b->height()));
             filesWidget->addWidget(b);
             b->setY(y);
             y += b->height();

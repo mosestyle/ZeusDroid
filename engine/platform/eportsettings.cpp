@@ -27,7 +27,8 @@ void ePortSettings::load() {
                    "ui_scale \"auto\"\n"
                    "pan_sensitivity \"1.0\"\n"
                    "long_press_ms \"500\"\n"
-                   "pinch_step \"1.30\"\n"
+                   "pinch_deadband \"1.04\"\n"
+                   "max_zoom \"3.0\"\n"
                    "tap_slop_px \"24\"\n"
                    "build_drag \"hold\"\n"
                    "build_hold_ms \"300\"\n";
@@ -50,7 +51,9 @@ void ePortSettings::load() {
     if(num("render_fps", v)) fRenderFps = std::clamp(v, 20., 120.);
     if(num("pan_sensitivity", v)) fPanSensitivity = static_cast<float>(std::clamp(v, 0.25, 4.));
     if(num("long_press_ms", v)) fLongPressMs = static_cast<int>(std::clamp(v, 200., 2000.));
-    if(num("pinch_step", v)) fPinchStep = static_cast<float>(std::clamp(v, 1.05, 3.));
+    // "pinch_step" (discrete zoom steps, <= 0.1.3) is obsolete and ignored.
+    if(num("pinch_deadband", v)) fPinchDeadband = static_cast<float>(std::clamp(v, 1., 1.5));
+    if(num("max_zoom", v)) fMaxZoom = std::clamp(v, 1., 4.);
     if(num("tap_slop_px", v)) fTapSlop = static_cast<float>(std::clamp(v, 4., 200.));
     if(num("build_hold_ms", v)) fBuildHoldMs = static_cast<int>(std::clamp(v, 100., 2000.));
     const auto bd = m.find("build_drag");
@@ -68,7 +71,7 @@ void ePortSettings::load() {
 void ePortSettings::applyTo(eTouchConfig& c) const {
     c.fPanSensitivity = fPanSensitivity;
     c.fLongPressMs = static_cast<uint32_t>(fLongPressMs);
-    c.fPinchStepRatio = fPinchStep;
+    c.fPinchStepRatio = fPinchDeadband;
     c.fTapSlop = fTapSlop;
     c.fHoldToDraw = fHoldToDraw;
     c.fBuildHoldMs = static_cast<uint32_t>(fBuildHoldMs);

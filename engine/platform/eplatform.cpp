@@ -165,3 +165,22 @@ bool ePlatform::isTouchPlatform() {
     return false;
 #endif
 }
+
+namespace {
+bool gTouchUi = false;
+int gTouchScreenH = 0;
+}
+
+void ePlatform::setTouchUi(const bool touch, const int screenHeight) {
+    gTouchUi = touch;
+    gTouchScreenH = screenHeight;
+}
+
+bool ePlatform::touchUi() {
+    return gTouchUi;
+}
+
+int ePlatform::touchRowHeight(const int h) {
+    if(!gTouchUi || gTouchScreenH <= 0) return h;
+    return std::max(h, gTouchScreenH/13);
+}

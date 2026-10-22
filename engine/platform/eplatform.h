@@ -28,6 +28,13 @@ namespace ePlatform {
 
     bool isTouchPlatform();
 
+    // Touch UI mode, set by eMainWindow (touch platform or forced by tests).
+    void setTouchUi(bool touch, int screenHeight);
+    bool touchUi();
+    // List rows: at least ~1/13 of the screen height in touch mode so they
+    // can be hit with a finger; returns h unchanged otherwise.
+    int touchRowHeight(int h);
+
     // Frames per second for painting. 20 = upstream behaviour (every frame
     // is a simulation tick). Override with EZEUS_RENDER_FPS (20..120).
     double renderFps();

@@ -38,6 +38,7 @@
 #include "widgets/elineedit.h"
 #include "platform/eframeclock.h"
 #include "platform/eportsettings.h"
+#include "widgets/escrollwidget.h"
 
 namespace {
 class eWindowTouchSink : public eTouchSink {
@@ -46,10 +47,15 @@ public:
 
     eTarget targetAt(const int x, const int y) override {
         const auto top = mW.currentWidget();
-        const auto gw = mW.gameWidget();
-        if(!top || !gw || top != static_cast<eWidget*>(gw)) return eTarget::ui;
+        if(!top) return eTarget::ui;
         const auto w = top->widgetAt(x, y);
+        if(scrollListAt(x, y)) return eTarget::scrollList;
+        const auto gw = mW.gameWidget();
+        if(!gw || top != static_cast<eWidget*>(gw)) return eTarget::ui;
         return w == top ? eTarget::map : eTarget::ui;
+    }
+    void listScroll(const int downX, const int downY, const int dy) override {
+        if(const auto sw = scrollListAt(downX, downY)) sw->scrollBy(dy);
     }
     bool buildToolActive() override {
         const auto top = mW.currentWidget();
@@ -66,10 +72,23 @@ public:
     void pointerRelease(const eButton b, const int x, const int y) override {
         mW.dispatchPointerRelease(toButton(b), x, y);
     }
-    void zoomStep(const int dir, const int x, const int y) override {
-        mW.dispatchZoomStep(dir, x, y);
+    void pinchBegin(const float x, const float y) override {
+        if(const auto gw = mW.touchGameWidget()) gw->pinchBegin(x, y);
+    }
+    void pinchUpdate(const float x, const float y, const float scale) override {
+        if(const auto gw = mW.touchGameWidget()) gw->pinchUpdate(x, y, scale);
+    }
+    void pinchEnd() override {
+        if(const auto gw = mW.touchGameWidget()) gw->pinchEnd();
     }
 private:
+    // A list that is taller than its view under (x, y), if any.
+    eScrollWidget* scrollListAt(const int x, const int y) const {
+        const auto top = mW.currentWidget();
+        if(!top) return nullptr;
+        const auto sw = dynamic_cast<eScrollWidget*>(top->widgetAt(x, y));
+        return sw && sw->canScroll() ? sw : nullptr;
+    }
     static eMouseButton toButton(const eButton b) {
         switch(b) {
         case eButton::left: return eMouseButton::left;
@@ -122,10 +141,9 @@ void eMainWindow::dispatchPointerRelease(const eMouseButton b, const int x, cons
     if(mWidget) mWidget->mouseRelease(me);
 }
 
-void eMainWindow::dispatchZoomStep(const int dir, const int x, const int y) {
-    if(mGW && mWidget == static_cast<eWidget*>(mGW)) {
-        mGW->zoomStepAt(dir, x, y);
-    }
+eGameWidget* eMainWindow::touchGameWidget() const {
+    if(mGW && mWidget == static_cast<eWidget*>(mGW)) return mGW;
+    return nullptr;
 }
 
 void eMainWindow::handleFingerEvent(const SDL_Event& e) {
@@ -703,6 +721,8 @@ int eMainWindow::exec() {
     showMenuLoading();
 
     mTouchEnabled = ePlatform::isTouchPlatform() || eAutotest::forceTouch();
+    eGameWidget::sMaxZoom = ePortSettings::instance().fMaxZoom;
+    ePlatform::setTouchUi(mTouchEnabled, height());
     if(mTouchEnabled) {
         eGameWidget::sTouchBarEnabled = true;
         mTouchSink = std::make_shared<eWindowTouchSink>(*this);

@@ -39,6 +39,15 @@ void eScrollWidget::scrollDown() {
     clampDY();
 }
 
+bool eScrollWidget::canScroll() const {
+    return mScrollArea && mScrollArea->height() > height();
+}
+
+void eScrollWidget::scrollBy(const int dy) {
+    mDy += dy;
+    clampDY();
+}
+
 void eScrollWidget::scrollToTheTop() {
     mDy = 0;
     clampDY();

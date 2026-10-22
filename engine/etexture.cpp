@@ -168,6 +168,7 @@ bool eTexture::loadText(SDL_Renderer* const r,
                 return false;
             }
             {
+                const auto prevTarget = SDL_GetRenderTarget(r);
                 SDL_SetRenderTarget(r, mTex);
                 const auto bm = SDL_ComposeCustomBlendMode(
                                     SDL_BLENDFACTOR_ONE,
@@ -197,7 +198,7 @@ bool eTexture::loadText(SDL_Renderer* const r,
                     }
                 }
 
-                SDL_SetRenderTarget(r, nullptr);
+                SDL_SetRenderTarget(r, prevTarget);
             }
 
             return true;
@@ -231,6 +232,7 @@ bool eTexture::loadText(SDL_Renderer* const r,
         return false;
     }
     {
+        const auto prevTarget = SDL_GetRenderTarget(r);
         SDL_SetRenderTarget(r, mTex);
         const auto bm = SDL_ComposeCustomBlendMode(
                             SDL_BLENDFACTOR_ONE,
@@ -258,7 +260,7 @@ bool eTexture::loadText(SDL_Renderer* const r,
         SDL_DestroyTexture(tex2);
         SDL_DestroyTexture(tex1);
 
-        SDL_SetRenderTarget(r, nullptr);
+        SDL_SetRenderTarget(r, prevTarget);
     }
     return true;
 }

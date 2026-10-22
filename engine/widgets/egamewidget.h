@@ -109,6 +109,20 @@ public:
     // One discrete zoom step (texture size) keeping the map point under
     // (x, y) fixed, modulo map-edge clamping.
     void zoomStepAt(const int dir, const int x, const int y);
+    // Port zoom: effective zoom z = texture base (s15 = 0.5, s30 = 1) times
+    // a render scale for the world layer (rendered off-screen, then scaled).
+    // z = 1 is upstream's default view and uses no off-screen pass.
+    double zoom() const;
+    // Set zoom keeping the map point under widget pixel (x, y) fixed.
+    void setZoomAt(double z, double x, double y);
+    // Continuous pinch: begin pins the map point under (x, y); update moves
+    // that point to (x, y) and sets zoom = zoom at begin * scale.
+    void pinchBegin(float x, float y);
+    void pinchUpdate(float x, float y, float scale);
+    void pinchEnd();
+    double worldScale() const { return mWorldScale; }
+    static double sMaxZoom;
+    void setSpeedId(const int id);
     // "dx=.. dy=.. tile=WxH mode=.." for automated tests.
     std::string debugCameraState() const;
     // Mouse-at-screen-edge scrolling; disabled on touch screens.
@@ -128,6 +142,8 @@ public:
     bool touchCancel();
     bool touchCancelAvailable() const;
     eWidget* mTouchCancelButton = nullptr;
+    eFramedButton* mSpeedButton = nullptr;
+    void updateSpeedButton();
 
     void pixToId(const int pixX, const int pixY,
                  int& idX, int& idY) const;
@@ -169,6 +185,7 @@ public:
     void openDialog(eWidget* const d) override;
 protected:
     void paintEvent(ePainter& p) override;
+    void paintWorld(ePainter& p);
 
     bool keyPressEvent(const eKeyPressEvent& e) override;
     bool mousePressEvent(const eMouseEvent& e) override;
@@ -188,6 +205,20 @@ private:
 
     void setDX(const int dx);
     void setDY(const int dy);
+
+    // World-layer geometry in world pixels (screen pixels / mWorldScale).
+    int worldViewW() const; // map area left of the game menu
+    int worldViewH() const;
+    eMouseEvent toWorld(const eMouseEvent& e) const;
+    double mWorldScale = 1.0;
+    SDL_Texture* mWorldTarget = nullptr;
+    int mWorldTargetW = 0;
+    int mWorldTargetH = 0;
+    double mPinchZ0 = 1.0;
+    double mPinchTX = 0.0; // map point (in tile widths/heights) under pinch
+    double mPinchTY = 0.0;
+    float mPinchLastX = 0.f;
+    float mPinchLastY = 0.f;
     void clampViewBox();
 
     void setBookmark(const int id);

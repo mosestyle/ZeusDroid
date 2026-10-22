@@ -2,8 +2,8 @@
 # Phone layout: Xvfb 2400x1080, settings width 2400 height 1080, EZEUS_TOUCH=1 EZEUS_UI_SCALE=large EZEUS_RENDER_FPS=60. Taps only.
 8000 finger_down 1 1200 150
 80 finger_up 1 1200 150
-2500 finger_down 1 525 495
-80 finger_up 1 525 495
+2500 finger_down 1 570 346
+80 finger_up 1 570 346
 800 finger_down 1 1100 720
 80 finger_up 1 1100 720
 4000 finger_down 1 1680 832
@@ -34,8 +34,8 @@
 400 screenshot build/run/b03_road.bmp
 100 log after_hold_drag
 # X button cancels the build tool
-100 finger_down 1 68 600
-80 finger_up 1 68 600
+100 finger_down 1 68 670
+80 finger_up 1 68 670
 400 log after_X_expect_build0
 200 screenshot build/run/b04_after_cancel.bmp
 300 quit

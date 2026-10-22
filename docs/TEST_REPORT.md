@@ -137,3 +137,26 @@ road built on release; X → build tool off. (A first attempt started on rocky t
 eZeus cannot build roads and correctly built one tile only.) Unit tests: 60 checks, 0
 failures (x86-64 and ARM64/qemu), incl. new hold-to-draw scenario.
 APK 0.1.3-dev: versionCode 4, sha256 5d978c470cbefc3610f431364868a346b9cfcc1ccc1a329b7c01d8f2619d63b1, v2/v3 OK
+
+### Second on-device report (user, 2026-10-22 22:42) – Samsung Galaxy S25
+0.1.3 on the phone: date advances, speed works. Problems: "Speed Nx" tips stack (up to 5)
+and hide the current speed; pinch zoom asked for. → 0.1.4 below.
+
+### 0.1.4-dev: continuous zoom, speed label, touch lists (desktop, phone layout, finger events)
+Xvfb 2400×1080, `EZEUS_TOUCH=1 EZEUS_UI_SCALE=large EZEUS_RENDER_FPS=60`, real game data.
+* Unit tests: 74 checks, 0 failures (x86-64 and ARM64/qemu); importer rules 46/46.
+* `tests/autotest/phone_zoom_speed_lists.txt`: adventure list rows ≈ 84 px; one-finger drag
+  scrolled the list by the drag distance without selecting; drag back restored; tap selected
+  *The Founding of Athens*. In the city: tap at P=(1000,600) → hover tile 37,3; slow pinch
+  around P (spread 200→400) → zoom 2.0, dx 0→-500, dy -15→-315 (the world point under P is
+  unchanged: 1000/2+500 = 1000, 600/2+315 = 615), tap at P → still tile 37,3; two-finger pan
+  (-60,-60) px → dx/dy -30/-30 world px, zoom stays 2.0 (dead band); pinch in → zoom 0.5
+  (i15, scale 1). `+` twice → speedId 3, label "5x" (screenshot).
+* `tests/autotest/phone_build_zoom2.txt` (hold-to-draw at zoom 2): quick drag of 200 px
+  panned 100 world px (= 200 screen px), hold + drag (1300,600)→(1600,750) drew a 6-tile road
+  from the hold point to the finger (half the 11 tiles at zoom 1), X left build mode.
+* Regressions: `phone_build_hold_to_draw.txt` (zoom 1: pan -200, 11-tile road, X) and
+  `phone_touch_bar_pinch.txt` (pause → simulation runs, `+`, pinch 0.6×/1.2×, simtime
+  advancing) pass with the new button positions; desktop 1280×720 mouse
+  `start_zeus_europa.txt` unchanged (zoom 1, no off-screen pass).
+* Visual check of a zoom-2 screenshot: linear upscaling, no tile seams.

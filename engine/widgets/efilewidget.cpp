@@ -1,4 +1,5 @@
 #include "efilewidget.h"
+#include "platform/eplatform.h"
 
 #include "emainwindow.h"
 
@@ -113,6 +114,7 @@ void eFileWidget::intialize(const std::string& title,
         b->setNoPadding();
         b->fitContent();
         b->setWidth(swwidth);
+        b->setHeight(ePlatform::touchRowHeight(b->height()));
         filesWidget->addWidget(b);
         b->setY(y);
         y += b->height();

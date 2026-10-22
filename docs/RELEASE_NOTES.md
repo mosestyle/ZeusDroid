@@ -1,5 +1,13 @@
 # Release notes
 
+## 0.1.4-dev
+* Continuous pinch zoom from 0.5× to 3× (was: two fixed levels); the map stays under the
+  fingers, and a two-finger drag pans without zooming. Mouse wheel uses the same zoom range.
+* Current game speed shown between `-` and `+` (tap it for 1×); the stacking "Speed" tips
+  are gone.
+* Lists (adventures, leaders, save/load) have finger-sized rows and scroll by dragging.
+* Port settings: `pinch_deadband`, `max_zoom` (`pinch_step` is obsolete).
+
 ## 0.1.3-dev
 * Build tools: one-finger drag pans; tap places; hold 300 ms then drag draws roads/rows.
   Old behaviour available with `build_drag "direct"` in port_settings.txt.
