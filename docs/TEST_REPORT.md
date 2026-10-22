@@ -136,3 +136,4 @@ quick one-finger drag in build mode → camera dx 0→-200, dy -15→-95, nothin
 road built on release; X → build tool off. (A first attempt started on rocky terrain where
 eZeus cannot build roads and correctly built one tile only.) Unit tests: 60 checks, 0
 failures (x86-64 and ARM64/qemu), incl. new hold-to-draw scenario.
+APK 0.1.3-dev: versionCode 4, sha256 5d978c470cbefc3610f431364868a346b9cfcc1ccc1a329b7c01d8f2619d63b1, v2/v3 OK
