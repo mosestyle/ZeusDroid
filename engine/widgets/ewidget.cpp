@@ -167,6 +167,17 @@ bool eWidget::contains(const int x, const int y) const {
     return true;
 }
 
+eWidget* eWidget::widgetAt(const int x, const int y) {
+    if(!visible() || !contains(x, y)) return nullptr;
+    for(auto w = mChildren.rbegin(); w != mChildren.rend(); w++) {
+        const auto& ww = *w;
+        if(!ww->visible()) continue;
+        const auto r = ww->widgetAt(x - ww->x(), y - ww->y());
+        if(r) return r;
+    }
+    return this;
+}
+
 void eWidget::mapToGlobal(int& x, int& y) const {
     int gx = 0;
     int gy = 0;

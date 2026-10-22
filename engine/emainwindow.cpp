@@ -32,6 +32,123 @@
 #include "widgets/eepisodelostwidget.h"
 #include "widgets/erosterofleaders.h"
 
+#include "platform/eplatform.h"
+#include "platform/etouchgestures.h"
+#include "platform/eautotest.h"
+
+namespace {
+class eWindowTouchSink : public eTouchSink {
+public:
+    eWindowTouchSink(eMainWindow& w) : mW(w) {}
+
+    eTarget targetAt(const int x, const int y) override {
+        const auto top = mW.currentWidget();
+        const auto gw = mW.gameWidget();
+        if(!top || !gw || top != reinterpret_cast<eWidget*>(gw)) return eTarget::ui;
+        const auto w = top->widgetAt(x, y);
+        return w == top ? eTarget::map : eTarget::ui;
+    }
+    bool buildToolActive() override {
+        const auto top = mW.currentWidget();
+        const auto gw = mW.gameWidget();
+        if(!gw || top != reinterpret_cast<eWidget*>(gw)) return false;
+        return gw->buildToolActive();
+    }
+    void pointerMove(const int x, const int y) override {
+        mW.dispatchPointerMove(x, y);
+    }
+    void pointerPress(const eButton b, const int x, const int y) override {
+        mW.dispatchPointerPress(toButton(b), x, y);
+    }
+    void pointerRelease(const eButton b, const int x, const int y) override {
+        mW.dispatchPointerRelease(toButton(b), x, y);
+    }
+    void zoomStep(const int dir, const int x, const int y) override {
+        mW.dispatchZoomStep(dir, x, y);
+    }
+private:
+    static eMouseButton toButton(const eButton b) {
+        switch(b) {
+        case eButton::left: return eMouseButton::left;
+        case eButton::right: return eMouseButton::right;
+        case eButton::middle: return eMouseButton::middle;
+        }
+        return eMouseButton::left;
+    }
+    eMainWindow& mW;
+};
+}
+
+void eMainWindow::pointerPosition(int& x, int& y) const {
+    if(mPointerFromTouch) {
+        x = mPointerX;
+        y = mPointerY;
+    } else {
+        SDL_GetMouseState(&x, &y);
+    }
+}
+
+void eMainWindow::dispatchPointerMove(const int x, const int y) {
+    mPointerX = x;
+    mPointerY = y;
+    const bool shift = mShiftPressed > 0;
+    const bool ctrl = mCtrlPressed > 0;
+    const eMouseEvent me(x, y, shift, ctrl, mButtons, mButton);
+    if(mWidget) mWidget->mouseMove(me);
+}
+
+void eMainWindow::dispatchPointerPress(const eMouseButton b, const int x, const int y) {
+    mPointerX = x;
+    mPointerY = y;
+    mButton = b;
+    mButtons = b | mButtons;
+    const bool shift = mShiftPressed > 0;
+    const bool ctrl = mCtrlPressed > 0;
+    const eMouseEvent me(x, y, shift, ctrl, mButtons, mButton);
+    if(mWidget) mWidget->mousePress(me);
+}
+
+void eMainWindow::dispatchPointerRelease(const eMouseButton b, const int x, const int y) {
+    mPointerX = x;
+    mPointerY = y;
+    mButton = b;
+    mButtons = mButtons & ~b;
+    const bool shift = mShiftPressed > 0;
+    const bool ctrl = mCtrlPressed > 0;
+    const eMouseEvent me(x, y, shift, ctrl, mButtons, mButton);
+    if(mWidget) mWidget->mouseRelease(me);
+}
+
+void eMainWindow::dispatchZoomStep(const int dir, const int x, const int y) {
+    if(mGW && mWidget == reinterpret_cast<eWidget*>(mGW)) {
+        mGW->zoomStepAt(dir, x, y);
+    }
+}
+
+void eMainWindow::handleFingerEvent(const SDL_Event& e) {
+    if(!mTouch) return;
+    int ww = width();
+    int wh = height();
+    if(mSdlWindow) SDL_GetWindowSize(mSdlWindow, &ww, &wh);
+    const float x = e.tfinger.x*ww;
+    const float y = e.tfinger.y*wh;
+    const uint32_t t = e.tfinger.timestamp;
+    mPointerFromTouch = true;
+    switch(e.type) {
+    case SDL_FINGERDOWN:
+        mTouch->fingerDown(e.tfinger.fingerId, x, y, t);
+        break;
+    case SDL_FINGERMOTION:
+        mTouch->fingerMove(e.tfinger.fingerId, x, y, t);
+        break;
+    case SDL_FINGERUP:
+        mTouch->fingerUp(e.tfinger.fingerId, x, y, t);
+        break;
+    default:
+        break;
+    }
+}
+
 eMainWindow::eMainWindow() {}
 
 eMainWindow::~eMainWindow() {
@@ -558,8 +675,12 @@ int eMainWindow::exec() {
 
     showMenuLoading();
 
-    eMouseButton button{eMouseButton::none};
-    eMouseButton buttons{eMouseButton::none};
+    mTouchEnabled = ePlatform::isTouchPlatform() || eAutotest::forceTouch();
+    if(mTouchEnabled) {
+        mTouchSink = std::make_shared<eWindowTouchSink>(*this);
+        mTouch = std::make_shared<eTouchGestures>(*mTouchSink);
+    }
+    eAutotest::start(*this);
 
     SDL_Event e;
     eTooltip tooltip(*this);
@@ -575,14 +696,18 @@ int eMainWindow::exec() {
 
         while(SDL_PollEvent(&e)) {
             int x, y;
-            SDL_GetMouseState(&x, &y);
+            pointerPosition(x, y);
             const bool shift = mShiftPressed > 0;
             const bool ctrl = mCtrlPressed > 0;
             if(e.type == SDL_QUIT) {
                 mQuit = true;
             } else if(e.type == SDL_WINDOWEVENT) {
                 const auto we = e.window.event;
+                if(we == SDL_WINDOWEVENT_FOCUS_LOST && mTouch) {
+                    mTouch->cancel(SDL_GetTicks());
+                }
                 if(we == SDL_WINDOWEVENT_MINIMIZED) {
+                    if(mTouch) mTouch->cancel(SDL_GetTicks());
                     resetRenderTargets = true;
                     while(SDL_WaitEvent(&e)) {
                         if(e.window.event == SDL_WINDOWEVENT_RESTORED) {
@@ -595,47 +720,55 @@ int eMainWindow::exec() {
             } else if(e.type == SDL_RENDER_TARGETS_RESET ||
                       e.type == SDL_RENDER_DEVICE_RESET) {
                 resetRenderTargets = true;
+            } else if(e.type == SDL_FINGERDOWN ||
+                      e.type == SDL_FINGERMOTION ||
+                      e.type == SDL_FINGERUP) {
+                if(mTouchEnabled) handleFingerEvent(e);
             } else if(e.type == SDL_MOUSEMOTION) {
-                const eMouseEvent me(x, y, shift, ctrl, buttons, button);
-                if(mWidget) mWidget->mouseMove(me);
+                if(e.motion.which == SDL_TOUCH_MOUSEID && mTouchEnabled) continue;
+                mPointerFromTouch = false;
+                dispatchPointerMove(x, y);
             } else if(e.type == SDL_MOUSEBUTTONDOWN) {
+                if(e.button.which == SDL_TOUCH_MOUSEID && mTouchEnabled) continue;
+                mPointerFromTouch = false;
+                eMouseButton b;
                 switch(e.button.button) {
                 case SDL_BUTTON_LEFT:
-                    button = eMouseButton::left;
+                    b = eMouseButton::left;
                     break;
                 case SDL_BUTTON_RIGHT:
-                    button = eMouseButton::right;
+                    b = eMouseButton::right;
                     break;
                 case SDL_BUTTON_MIDDLE:
-                    button = eMouseButton::middle;
+                    b = eMouseButton::middle;
                     break;
                 default: continue;
                 }
-                buttons = button | buttons;
-
-                const eMouseEvent me(x, y, shift, ctrl, buttons, button);
-                if(mWidget) mWidget->mousePress(me);
+                dispatchPointerPress(b, x, y);
             } else if(e.type == SDL_MOUSEBUTTONUP) {
+                if(e.button.which == SDL_TOUCH_MOUSEID && mTouchEnabled) continue;
+                mPointerFromTouch = false;
+                eMouseButton b;
                 switch(e.button.button) {
                 case SDL_BUTTON_LEFT:
-                    button = eMouseButton::left;
+                    b = eMouseButton::left;
                     break;
                 case SDL_BUTTON_RIGHT:
-                    button = eMouseButton::right;
+                    b = eMouseButton::right;
                     break;
                 case SDL_BUTTON_MIDDLE:
-                    button = eMouseButton::middle;
+                    b = eMouseButton::middle;
                     break;
                 default: continue;
                 }
-                buttons = buttons & ~button;
-                const eMouseEvent me(x, y, shift, ctrl, buttons, button);
-                if(mWidget) mWidget->mouseRelease(me);
+                dispatchPointerRelease(b, x, y);
             } else if(e.type == SDL_MOUSEWHEEL) {
-                const eMouseWheelEvent me(x, y, shift, ctrl, buttons, e.wheel.y);
+                const eMouseWheelEvent me(x, y, shift, ctrl, mButtons, e.wheel.y);
                 if(mWidget) mWidget->mouseWheel(me);
             } else if(e.type == SDL_KEYDOWN) {
-                const auto k = e.key.keysym.scancode;
+                auto k = e.key.keysym.scancode;
+                // Android Back behaves like Escape (close dialog / cancel).
+                if(k == SDL_SCANCODE_AC_BACK) k = SDL_SCANCODE_ESCAPE;
                 if(k == SDL_Scancode::SDL_SCANCODE_LSHIFT ||
                    k == SDL_Scancode::SDL_SCANCODE_RSHIFT) {
                     mShiftPressed++;
@@ -643,7 +776,7 @@ int eMainWindow::exec() {
                           k == SDL_Scancode::SDL_SCANCODE_RCTRL) {
                     mCtrlPressed++;
                 }
-                const eKeyPressEvent ke(x, y, shift, ctrl, buttons, k);
+                const eKeyPressEvent ke(x, y, shift, ctrl, mButtons, k);
                 if(mWidget) mWidget->keyPress(ke);
             } else if(e.type == SDL_KEYUP) {
                 const auto k = e.key.keysym.scancode;
@@ -656,6 +789,9 @@ int eMainWindow::exec() {
                 }
             }
         }
+
+        if(mTouch) mTouch->update(SDL_GetTicks());
+        eAutotest::frame(*this, SDL_GetTicks());
 
         if(resetRenderTargets) {
             resetRenderTargets = false;
@@ -677,7 +813,7 @@ int eMainWindow::exec() {
                 const int wtt = tooltip.width();
                 const int htt = tooltip.height();
                 int mx, my;
-                SDL_GetMouseState(&mx, &my);
+                pointerPosition(mx, my);
                 int xtt;
                 int ytt;
                 if(mx > width()/2) {
@@ -699,6 +835,7 @@ int eMainWindow::exec() {
             p.drawText(0, 0, std::to_string(fpsVal), eFontColor::dark);
         }
 
+        eAutotest::beforePresent(*this);
         SDL_RenderPresent(mSdlRenderer);
 
         for(const auto& s : mSlots) {

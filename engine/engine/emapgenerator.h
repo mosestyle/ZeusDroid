@@ -1,7 +1,7 @@
 #ifndef EMAPGENERATOR_H
 #define EMAPGENERATOR_H
 
-#ifdef __unix__
+#if defined(__unix__) && !defined(__ANDROID__) // libnoise is not available on Android
 
 enum class eTerrain;
 class eGameBoard;

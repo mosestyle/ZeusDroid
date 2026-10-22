@@ -13,6 +13,8 @@ using eSlot = std::function<void()>;
 
 class eGameBoard;
 class eGameWidget;
+class eTouchGestures;
+class eTouchSink;
 class eWorldWidget;
 class eCampaign;
 
@@ -32,6 +34,16 @@ public:
     int exec();
 
     void addSlot(const eSlot& slot);
+
+    // Pointer dispatch shared by the mouse path and the touch gesture layer.
+    void dispatchPointerMove(const int x, const int y);
+    void dispatchPointerPress(const eMouseButton b, const int x, const int y);
+    void dispatchPointerRelease(const eMouseButton b, const int x, const int y);
+    void dispatchZoomStep(const int dir, const int x, const int y);
+    // Current pointer position (mouse cursor or last touch point).
+    void pointerPosition(int& x, int& y) const;
+    bool touchEnabled() const { return mTouchEnabled; }
+    eGameWidget* gameWidget() const { return mGW; }
 
     int width() const { return resolution().width(); }
     int height() const { return resolution().height(); }
@@ -105,6 +117,18 @@ private:
     eWorldWidget* mWW = nullptr;
 
     eWidget* mWidget = nullptr;
+
+    void handleFingerEvent(const SDL_Event& e);
+    void handleAutotest(uint32_t nowMs);
+    eMouseButton mButton{eMouseButton::none};
+    eMouseButton mButtons{eMouseButton::none};
+    int mPointerX = 0;
+    int mPointerY = 0;
+    bool mPointerFromTouch = false;
+    bool mTouchEnabled = false;
+    std::shared_ptr<eTouchSink> mTouchSink;
+    std::shared_ptr<eTouchGestures> mTouch;
+
     SDL_Window* mSdlWindow = nullptr;
     SDL_Renderer* mSdlRenderer = nullptr;
 };

@@ -2324,6 +2324,43 @@ void eGameWidget::updateCitiesOnBoard() {
     mTem->updateCitiesOnBoard(*mBoard);
 }
 
+bool eGameWidget::buildToolActive() const {
+    if(mTem && mTem->visible()) return true; // terrain editor brush
+    if(mPatrolBuilding) return false;
+    return mGm && mGm->mode() != eBuildingMode::none;
+}
+
+std::string eGameWidget::debugCameraState() const {
+    return "dx=" + std::to_string(mDX) + " dy=" + std::to_string(mDY) +
+           " tile=" + std::to_string(mTileW) + "x" + std::to_string(mTileH) +
+           " build=" + std::to_string(buildToolActive() ? 1 : 0) +
+           " info=" + std::to_string(mInfoWidget ? 1 : 0);
+}
+
+void eGameWidget::zoomStepAt(const int dir, const int x, const int y) {
+    if(mLocked || dir == 0) return;
+    const auto& setts = window()->settings();
+    const auto sizes = setts.availableSizes();
+    if(sizes.empty()) return;
+    int curr = 0;
+    for(int i = 0; i < static_cast<int>(sizes.size()); i++) {
+        if(sizes[i] == mTileSize) curr = i;
+    }
+    const int next = std::clamp(curr + (dir > 0 ? 1 : -1), 0,
+                                static_cast<int>(sizes.size()) - 1);
+    if(next == curr) return;
+    const double oldW = mTileW;
+    const double oldH = mTileH;
+    const int oldDX = mDX;
+    const int oldDY = mDY;
+    setTileSize(sizes[next]);
+    // setTileSize() anchors at the widget centre; re-anchor at (x, y).
+    const double sx = mTileW/oldW;
+    const double sy = mTileH/oldH;
+    setDX(static_cast<int>(std::round((oldDX - x)*sx + x)));
+    setDY(static_cast<int>(std::round((oldDY - y)*sy + y)));
+}
+
 void eGameWidget::setTileSize(const eTileSize size) {
     const auto& setts = window()->settings();
     const auto sizes = setts.availableSizes();

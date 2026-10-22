@@ -168,7 +168,7 @@ void eBoardSettingsMenu::initialize(
     addWidget(resizeButt);
     resizeButt->align(eAlignment::hcenter);
 
-#ifdef __unix__
+#if defined(__unix__) && !defined(__ANDROID__) // libnoise is not available on Android
     const auto generateButt = new eFramedButton(window());
     generateButt->setUnderline(false);
     generateButt->setText(eLanguage::text("generate"));

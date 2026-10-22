@@ -11,55 +11,88 @@ else()
     set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 endif()
 
-include(FetchContent)
-
-# Disable unnecessary SDL components (optional but recommended)
-set(SDL_SHARED ON CACHE BOOL "" FORCE)
-set(SDL_STATIC OFF CACHE BOOL "" FORCE)
-set(SDL_TEST OFF CACHE BOOL "" FORCE)
-set(SDLIMAGE_AVIF OFF)
-set(SDLTTF_VENDORED ON CACHE BOOL "" FORCE)
-if(MINGW)
-    add_compile_options(-Wa,-mbig-obj)
+if(ANDROID)
+    # Only codecs/backends that build self-contained for Android.
+    # Zeus audio is WAV + MP3 (minimp3 backend); PNG/JPG via stb_image.
+    set(SDL2MIXER_OPUS OFF CACHE BOOL "" FORCE)
+    set(SDL2MIXER_MOD OFF CACHE BOOL "" FORCE)
+    set(SDL2MIXER_MIDI_FLUIDSYNTH OFF CACHE BOOL "" FORCE)
+    set(SDL2MIXER_WAVPACK OFF CACHE BOOL "" FORCE)
+    set(SDL2MIXER_GME OFF CACHE BOOL "" FORCE)
+    set(SDL2MIXER_SAMPLES OFF CACHE BOOL "" FORCE)
+    set(SDL2MIXER_VENDORED OFF CACHE BOOL "" FORCE)
+    set(SDL2IMAGE_SAMPLES OFF CACHE BOOL "" FORCE)
+    set(SDL2IMAGE_VENDORED OFF CACHE BOOL "" FORCE)
+    set(SDL2IMAGE_BACKEND_STB ON CACHE BOOL "" FORCE)
+    set(SDL2IMAGE_WEBP OFF CACHE BOOL "" FORCE)
+    set(SDL2IMAGE_JXL OFF CACHE BOOL "" FORCE)
+    set(SDL2IMAGE_TIF OFF CACHE BOOL "" FORCE)
+    set(SDL2TTF_SAMPLES OFF CACHE BOOL "" FORCE)
+    set(SDL2TTF_HARFBUZZ OFF CACHE BOOL "" FORCE)
 endif()
 
-FetchContent_Declare(
-    SDL2
-    GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
-    GIT_TAG release-2.32.10
-    GIT_SHALLOW TRUE
-)
+option(EZEUS_SYSTEM_SDL "Use SDL2 libraries installed on the system instead of FetchContent" OFF)
 
-FetchContent_MakeAvailable(SDL2)
+if(EZEUS_SYSTEM_SDL)
+    find_package(SDL2 REQUIRED)
+    find_package(SDL2_ttf REQUIRED)
+    find_package(SDL2_image REQUIRED)
+    find_package(SDL2_mixer REQUIRED)
+else()
+    include(FetchContent)
 
-FetchContent_Declare(
-    SDL2_ttf
-    GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf.git
-    GIT_TAG release-2.24.0
-    GIT_SHALLOW TRUE
-)
+    # Disable unnecessary SDL components (optional but recommended)
+    set(SDL_SHARED ON CACHE BOOL "" FORCE)
+    set(SDL_STATIC OFF CACHE BOOL "" FORCE)
+    set(SDL_TEST OFF CACHE BOOL "" FORCE)
+    set(SDLIMAGE_AVIF OFF)
+    set(SDLTTF_VENDORED ON CACHE BOOL "" FORCE)
+    set(SDL2TTF_VENDORED ON CACHE BOOL "" FORCE)
+    if(MINGW)
+        add_compile_options(-Wa,-mbig-obj)
+    endif()
 
-FetchContent_MakeAvailable(SDL2_ttf)
+    FetchContent_Declare(
+        SDL2
+        GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+        GIT_TAG release-2.32.10
+        GIT_SHALLOW TRUE
+    )
 
-FetchContent_Declare(
-    SDL2_image
-    GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
-    GIT_TAG release-2.8.12
-    GIT_SHALLOW TRUE
-)
+    FetchContent_MakeAvailable(SDL2)
 
-FetchContent_MakeAvailable(SDL2_image)
+    FetchContent_Declare(
+        SDL2_ttf
+        GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf.git
+        GIT_TAG release-2.24.0
+        GIT_SHALLOW TRUE
+        GIT_SUBMODULES external/freetype
+    )
 
-FetchContent_Declare(
-    SDL2_mixer
-    GIT_REPOSITORY https://github.com/libsdl-org/SDL_mixer.git
-    GIT_TAG release-2.8.2
-    GIT_SHALLOW TRUE
-)
+    FetchContent_MakeAvailable(SDL2_ttf)
 
-FetchContent_MakeAvailable(SDL2_mixer)
+    FetchContent_Declare(
+        SDL2_image
+        GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
+        GIT_TAG release-2.8.12
+        GIT_SHALLOW TRUE
+        GIT_SUBMODULES ""
+    )
 
-add_executable(eZeus
+    FetchContent_MakeAvailable(SDL2_image)
+
+    FetchContent_Declare(
+        SDL2_mixer
+        GIT_REPOSITORY https://github.com/libsdl-org/SDL_mixer.git
+        GIT_TAG release-2.8.2
+        GIT_SHALLOW TRUE
+        GIT_SUBMODULES ""
+    )
+
+    FetchContent_MakeAvailable(SDL2_mixer)
+endif()
+
+set(EZEUS_SOURCES
     audio/egodsounds.cpp
     audio/egodsounds.h
     audio/eherosounds.cpp
@@ -709,6 +742,16 @@ add_executable(eZeus
     efontcolor.cpp
     efontcolor.h
     egamedir.cpp
+    platform/eplatformpaths.cpp
+    platform/eplatformpaths.h
+    platform/eplatform.cpp
+    platform/eplatform.h
+    platform/eengconverter.cpp
+    platform/eengconverter.h
+    platform/etouchgestures.cpp
+    platform/etouchgestures.h
+    platform/eautotest.cpp
+    platform/eautotest.h
     egamedir.h
     einvasionhandler.cpp
     einvasionhandler.h
@@ -3344,9 +3387,29 @@ add_executable(eZeus
     textureTemplates/zeusTrees
 )
 
+if(ANDROID)
+    # SDLActivity loads libmain.so; on Android the game is a shared library.
+    add_library(eZeus SHARED ${EZEUS_SOURCES})
+    set_target_properties(eZeus PROPERTIES OUTPUT_NAME main)
+else()
+    add_executable(eZeus ${EZEUS_SOURCES})
+endif()
+
 target_include_directories(eZeus PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
+
+if(NOT EZEUS_SYSTEM_SDL)
+    # The engine includes <SDL2/SDL_mixer.h> etc. (system-package layout);
+    # source builds of the companion libraries install them without the
+    # SDL2/ prefix, so expose a compatibility include directory.
+    set(EZEUS_COMPAT_INC ${CMAKE_BINARY_DIR}/ezeus_compat_include)
+    file(MAKE_DIRECTORY ${EZEUS_COMPAT_INC}/SDL2)
+    configure_file(${sdl2_mixer_SOURCE_DIR}/include/SDL_mixer.h ${EZEUS_COMPAT_INC}/SDL2/SDL_mixer.h COPYONLY)
+    configure_file(${sdl2_image_SOURCE_DIR}/include/SDL_image.h ${EZEUS_COMPAT_INC}/SDL2/SDL_image.h COPYONLY)
+    configure_file(${sdl2_ttf_SOURCE_DIR}/SDL_ttf.h ${EZEUS_COMPAT_INC}/SDL2/SDL_ttf.h COPYONLY)
+    target_include_directories(eZeus PRIVATE ${EZEUS_COMPAT_INC})
+endif()
 
 include(GNUInstallDirs)
 install(TARGETS eZeus
@@ -3354,7 +3417,7 @@ install(TARGETS eZeus
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-if(LINUX)
+if(LINUX AND NOT ANDROID)
     find_path(NOISE_INCLUDE_DIR
         NAMES libnoise/noise.h
               libnoise/module/perlin.h
@@ -3374,3 +3437,9 @@ target_link_libraries(eZeus PRIVATE SDL2::SDL2)
 target_link_libraries(eZeus PRIVATE SDL2_ttf::SDL2_ttf)
 target_link_libraries(eZeus PRIVATE SDL2_image::SDL2_image)
 target_link_libraries(eZeus PRIVATE SDL2_mixer::SDL2_mixer)
+
+if(ANDROID)
+    target_link_libraries(eZeus PRIVATE android log)
+    # Static libc++ keeps the APK self-contained (one C++ runtime per app).
+    target_link_options(eZeus PRIVATE -static-libstdc++ -Wl,--gc-sections)
+endif()

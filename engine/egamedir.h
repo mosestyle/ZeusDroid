@@ -21,6 +21,7 @@ public:
     static std::string texturesDir();
 private:
     static std::string sPath;
+    static std::string sExeDir;
 };
 
 #endif // EGAMEDIR_H

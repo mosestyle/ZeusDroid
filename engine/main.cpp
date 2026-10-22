@@ -1,5 +1,10 @@
+#ifndef __ANDROID__
+// On Android SDLActivity calls SDL_main() from libmain.so, so SDL_main.h must
+// rename main(); desktop builds keep eZeus' own entry point.
 #define SDL_MAIN_HANDLED
+#endif
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_main.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 
@@ -16,7 +21,10 @@
 #include "audio/emusic.h"
 #include "audio/esounds.h"
 
+#include "platform/eplatform.h"
+
 bool init() {
+    ePlatform::preInitHints();
     if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         printf("SDL could not initialize! SDL Error: %s\n",
                SDL_GetError());
@@ -99,14 +107,18 @@ bool getDisplayResolutions(std::vector<SDL_DisplayMode>& resolutions) {
     return true;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+    (void)argc;
+    (void)argv;
     if(!init()) {
-        printf("Failed to initialize!\n");
+        ePlatform::fatal("Failed to initialize SDL subsystems.");
         close();
         return 1;
     }
 
     eGameDir::initialize();
+    ePlatform::log("eZeus data root: " + eGameDir::path(""));
+    ePlatform::prepareLanguageFiles();
 
 //    SDL_DisplayMode mode;
 //    const bool r0 = getDisplayResolution(mode);
@@ -144,8 +156,9 @@ int main() {
     }
 
     if(!std::filesystem::exists(eGameDir::iBinaryPath())) {
-        printf("Could not find interface textures!\n"
-               "Make sure you have interface.e file in eZeus directory.\n");
+        ePlatform::fatal("Could not find interface textures (interface.e).\n"
+                         "Expected at: " + eGameDir::iBinaryPath() + "\n"
+                         "Import your game data again.");
         close();
         return 1;
     }
@@ -153,6 +166,7 @@ int main() {
     eNumbers::sLoad();
     eSettings settings;
     settings.read();
+    ePlatform::adjustSettings(settings);
     bool found = false;
     const auto checkTextureSize = [&found](const std::string& path,
                                            bool& setting) {
@@ -165,8 +179,8 @@ int main() {
     checkTextureSize(eGameDir::i45BinaryPath(), settings.fMediumTextures);
     checkTextureSize(eGameDir::i60BinaryPath(), settings.fLargeTextures);
     if(!found) {
-        printf("Could not find any textures!\n"
-               "Make sure you have i15.e, i30.e, i45.e, or i60.e file in eZeus directory.\n");
+        ePlatform::fatal("Could not find any textures!\n"
+                         "Make sure you have i15.e, i30.e, i45.e, or i60.e file in eZeus directory.");
         close();
         return 1;
     }
@@ -177,7 +191,11 @@ int main() {
         eSounds sounds;
         eMainWindow w;
         const bool i = w.initialize(settings);
-        if(!i) return 1;
+        if(!i) {
+            ePlatform::fatal("Could not create the game window.");
+            close();
+            return 1;
+        }
         const bool e = eGameTextures::initialize(w.renderer());
 
         if(e) r = w.exec();

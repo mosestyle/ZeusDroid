@@ -104,6 +104,14 @@ public:
 
     void initialize();
 
+    // Touch integration (see platform/etouchgestures.h).
+    bool buildToolActive() const;
+    // One discrete zoom step (texture size) keeping the map point under
+    // (x, y) fixed, modulo map-edge clamping.
+    void zoomStepAt(const int dir, const int x, const int y);
+    // "dx=.. dy=.. tile=WxH mode=.." for automated tests.
+    std::string debugCameraState() const;
+
     void pixToId(const int pixX, const int pixY,
                  int& idX, int& idY) const;
 

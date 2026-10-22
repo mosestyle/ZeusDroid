@@ -1,6 +1,6 @@
 #include "emapgenerator.h"
 
-#ifdef __unix__
+#if defined(__unix__) && !defined(__ANDROID__) // libnoise is not available on Android
 
 #include <libnoise/noise.h>
 #include <libnoise/module/perlin.h>

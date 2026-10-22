@@ -59,6 +59,9 @@ public:
     eWidget* parent() const { return mParent; }
 
     bool contains(const int x, const int y) const;
+    // Deepest visible widget containing (x, y) in this widget's coordinates
+    // (same traversal order as mouse dispatch). Used by touch hit-testing.
+    eWidget* widgetAt(const int x, const int y);
 
     void mapToGlobal(int& x, int& y) const;
     void mapFromGlobal(int& x, int& y) const;

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Original, generic icon: a stylised column with a lightning bolt.
+     Deliberately does not reuse any art from the original game. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#E9DFC4" android:pathData="M38,34h32v6h-32z" />
+    <path android:fillColor="#E9DFC4" android:pathData="M42,40h24v30h-24z" />
+    <path android:fillColor="#E9DFC4" android:pathData="M36,70h36v6h-36z" />
+    <path android:fillColor="#1F3B57" android:pathData="M47,42h3v26h-3zM53,42h3v26h-3zM59,42h3v26h-3z" />
+    <path android:fillColor="#F2B233" android:pathData="M58,22l-10,16h7l-6,14l13,-18h-7z" />
+</vector>

@@ -1,11 +1,21 @@
 #include "egamedir.h"
 
 #include <SDL2/SDL_filesystem.h>
+#include <SDL2/SDL_system.h>
 #include <fstream>
+#include <cstdlib>
+
+#include "platform/eplatformpaths.h"
 
 std::string eGameDir::sPath;
+std::string eGameDir::sExeDir;
 
 void eGameDir::initialize() {
+    // The engine keeps the desktop layout <game root>/<eZeus dir>/Bin/ and
+    // resolves everything relative to the "binary" directory. The platform
+    // layer decides where that directory is (SDL base path on desktop,
+    // app-owned external storage on Android, EZEUS_BIN_DIR override for tests).
+    sExeDir = ePlatformPaths::binDir();
     sPath = exeDir() + "../../";
     const auto zp = exeDir() + "../zeus_path.txt";
     std::ifstream file(zp);
@@ -49,9 +59,8 @@ std::string eGameDir::i60BinaryPath() {
 }
 
 std::string eGameDir::exeDir() {
-    const auto d = SDL_GetBasePath();
-    const std::string str(d);
-    return str;
+    if(sExeDir.empty()) sExeDir = ePlatformPaths::binDir();
+    return sExeDir;
 }
 
 std::string eGameDir::adventuresDir() {
