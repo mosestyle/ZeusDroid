@@ -20,11 +20,11 @@
 80 finger_up 1 1200 645
 600 screenshot build/run/ts_02_settings.bmp
 # switch "Placing buildings" to Instant, close with the tick
-100 finger_down 1 1520 228
-80 finger_up 1 1520 228
+100 finger_down 1 1520 182
+80 finger_up 1 1520 182
 300 screenshot build/run/ts_03_instant.bmp
-100 finger_down 1 1730 974
-80 finger_up 1 1730 974
+100 finger_down 1 1730 1020
+80 finger_up 1 1730 1020
 500 log after_settings_closed
 # resume the game menu
 100 finger_down 1 1200 330

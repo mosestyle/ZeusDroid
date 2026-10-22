@@ -1,0 +1,46 @@
+# Touch army control: tap a banner selects it, tap the map moves it, [ ] + drag box-selects, X clears. Banners are spawned by the test-only debug_banner command (no soldiers).
+8000 finger_down 1 1200 150
+80 finger_up 1 1200 150
+2500 finger_down 1 570 346
+80 finger_up 1 570 346
+800 finger_down 1 1100 720
+80 finger_up 1 1100 720
+4000 finger_down 1 1680 832
+80 finger_up 1 1680 832
+1000 wait_game 120000
+3000 log start
+100 debug_banner 37 3
+100 debug_banner 40 3
+700 log banners_expect_boxbtn1
+200 screenshot build/run/a_01.bmp
+100 finger_down 1 1000 600
+80 finger_up 1 1000 600
+400 log tap_banner_expect_sel1
+200 screenshot build/run/a_02.bmp
+# tap on the map with a banner selected: move order, selection stays
+100 finger_down 1 1300 500
+80 finger_up 1 1300 500
+400 log move_expect_banner1_moved_sel1
+# X clears the selection
+100 finger_down 1 68 784
+80 finger_up 1 68 784
+400 log x_expect_sel0
+# [ ] then drag a rectangle around both banners
+100 finger_down 1 68 654
+80 finger_up 1 68 654
+300 log boxbutton_expect_boxsel1
+100 finger_down 1 950 430
+40 finger_move 1 1050 500
+40 finger_move 1 1200 600
+40 finger_move 1 1450 760
+300 screenshot build/run/a_03.bmp
+40 finger_up 1 1450 760
+400 log box_expect_sel2_boxsel0
+200 screenshot build/run/a_04.bmp
+# without [ ] a drag pans again
+100 finger_down 1 1500 300
+40 finger_move 1 1450 300
+40 finger_move 1 1400 300
+40 finger_up 1 1400 300
+300 log drag_expect_pan_dx-100_sel2
+200 quit

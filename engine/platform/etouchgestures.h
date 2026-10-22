@@ -58,6 +58,9 @@ public:
     virtual void listScroll(int downX, int downY, int dy) {
         (void)downX; (void)downY; (void)dy;
     }
+    // Box selection (army): a one-finger drag on the map is a left-drag
+    // (selection rectangle) instead of a pan while this returns true.
+    virtual bool boxSelectActive() { return false; }
     // Two-step placement (see fBuildConfirm).
     virtual bool confirmPlacement() { return false; }
     virtual bool previewAt(int x, int y) { (void)x; (void)y; return false; }

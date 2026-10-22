@@ -134,6 +134,11 @@ void execute(const Cmd& c, eMainWindow& w, const uint32_t now) {
         o << " game=" << (gameShown ? 1 : 0) << " " << rssInfo();
         if(gameShown) o << " " << gw->debugCameraState();
         logLine(o.str());
+    } else if(c.fName == "debug_banner" && c.fArgs.size() >= 2) {
+        // Test-only: a player soldier banner (no soldiers) at tile tx ty.
+        if(const auto gw = w.gameWidget()) {
+            gw->debugSpawnBanner(std::stoi(c.fArgs[0]), std::stoi(c.fArgs[1]));
+        }
     } else if(c.fName == "wait_game") {
         s.fWaiting = true;
         const uint32_t timeout = c.fArgs.empty() ? 60000 : std::stoul(c.fArgs[0]);

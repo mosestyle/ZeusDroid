@@ -13,15 +13,14 @@ Phases from the brief (§17). ✅ done with evidence, 🟡 partly done, ⬜ not 
 * **A – Reconnaissance and baseline ✅** engine audit, data inventory, desktop build.
 * **B – Android-native proof ✅** arm64 APK, SDL glue, logcat, build script; runs on the
   user's Samsung Galaxy S25.
-* **C – Original assets ✅ (audio 🟡)** importer, ENG→XML, eZeus pack download, real menus and
-  maps on the phone. Open: confirm music/sound effects on the phone.
-* **D – Gameplay and persistence 🟡** simulation, menus and building confirmed on the phone.
-  Open: (1) save → kill app → load on the phone, (2) home button / app switch / screen off
-  and back (GL context, audio), (3) a longer session (an hour of play, memory), (4) autosave
-  check, (5) save/load autotest on desktop.
+* **C – Original assets ✅** importer, ENG→XML, eZeus pack download, real menus, maps,
+  music and sound on the phone (user, 2026-10-23).
+* **D – Gameplay and persistence ✅ (long session open)** on the phone: simulation, building,
+  save → kill app → load, home button / screen off and back (user, 2026-10-23). Open: a
+  longer session (an hour, memory), autosave check, save/load autotest on desktop.
 * **E – Touch excellence 🟡** done: gesture FSM, pan, continuous focal pinch zoom, preview
-  placement with ✓/✕ and repeat, lists, touch bar, settings screen, 60 FPS. Open:
-  (1) soldier/army selection by touch (box select), (2) remaining small lists (editor,
+  placement with ✓/✕ and repeat, lists, touch bar, settings screen, 60 FPS, army select /
+  move / box select (0.1.7). Open: (1) army controls with real soldiers on the phone, (2) remaining small lists (editor,
   military, long texts) and info-panel buttons, (3) tablet layout check, (4) FPS/frame-time
   and memory measurements on the phone, (5) optional: fling scrolling, start zoom > 1,
   haptic feedback on ✓.
@@ -37,8 +36,8 @@ Phases from the brief (§17). ✅ done with evidence, 🟡 partly done, ⬜ not 
 
 ## 0. Status after phone feedback (2026-10-23, Samsung Galaxy S25)
 0.1.5 confirmed by the user. 0.1.6 adds "next one ready" repeat placement, price on ✓, red
-preview kept. Next in order: D-1/D-2 (save/resume on the phone, needs the user), E-1
-(army selection), then Phase F parity.
+preview kept. Phase D confirmed on the phone (2026-10-23). 0.1.7 adds touch army control. Next: the rest
+of E (small lists / info panels, tablet check, on-device FPS/memory), then Phase F parity.
 
 ## 1. First on-device run  ← partly done (runs on the user's phone)
 * Install `dist/eZeusPort-debug-arm64-v8a.apk` on an arm64 phone (Android 8+).

@@ -153,6 +153,13 @@ public:
     // After a single building is confirmed, put the next preview right next
     // to it (same spacing as the last two, else one building width along +x).
     static bool sBuildRepeat;
+
+    // Touch army control (port). Box-select mode: the next one-finger drag
+    // on the map draws a selection rectangle (toggled by the touch bar).
+    bool touchBoxSelectActive() const { return mTouchBoxSelect; }
+    void setTouchBoxSelect(const bool b);
+    // Test hook (autotests only): a player banner without soldiers.
+    void debugSpawnBanner(int tx, int ty);
     bool touchPreviewSupported() const;
     bool touchPreviewActive() const { return mPreview.fActive; }
     bool touchPreviewAt(int x, int y);
@@ -247,6 +254,11 @@ private:
     eTouchPreview mPreview;
     eWidget* mPreviewPanel = nullptr;
     eLabel* mPreviewCostLabel = nullptr;
+    bool mTouchBoxSelect = false;
+    eFramedButton* mBoxSelectButton = nullptr;
+    // Tap on the map with soldiers selected / on a banner (touch only).
+    bool touchArmyTap();
+    void updateBoxSelectButton();
     int mPreviewCost = -1;
     bool mRepeatValid = false;
     eBuildingMode mRepeatMode = eBuildingMode::none;

@@ -29,6 +29,9 @@ SDL's synthetic touch→mouse and mouse→touch events are disabled on Android
 | Tap | list (adventures, leaders, saves) | selects the row under the finger; rows are ≥ 1/13 of the screen height on touch screens |
 | One-finger drag | list | scrolls the list (no selection) |
 | Android Back | anywhere | Escape (closes dialogs/menus, cancels) |
+| Tap on a banner (flag) or next to it | map | selects that army unit (replaces the selection) |
+| Tap on the map, army selected | map | move order to that tile (right click on desktop); the selection stays |
+| **[ ]** button, then one-finger drag | touch bar (only when the city has soldiers) | selection rectangle; all banners inside are selected; the mode ends after the drag |
 | Soft keyboard | when a text field is focused (leader name, save name) | shown automatically, hidden when the field loses focus |
 
 Safety rules built into the state machine:

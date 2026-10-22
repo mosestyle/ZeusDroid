@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.1.7-dev
+* Army on touch screens: tap a banner (flag) to select it, tap the map to send it there
+  (the selection stays for more orders), "[ ]" on the touch bar + drag to select several
+  banners with a rectangle, X / Back to deselect. "[ ]" only shows when the city has soldiers.
+
 ## 0.1.6-dev
 * "Next one ready": after ✓ on a single building the next preview appears right beside it;
   move it once and the following ones keep that spacing and direction (rows of farms,

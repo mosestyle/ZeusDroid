@@ -38,6 +38,8 @@ struct RecSink : eTouchSink {
     int listAboveY = -1;    // y < listAboveY (and not UI) is a scrollable list
     int listScrolled = 0;
     bool confirm = false;       // widget supports two-step placement
+    bool box = false;           // army box-select mode
+    bool boxSelectActive() override { return box; }
     int prevX = -1000, prevY = -1000; // pending preview position
     void previewMoveTo(int x, int y) { prevX = x; prevY = y; }
     bool confirmPlacement() override { return confirm; }
@@ -283,6 +285,28 @@ void testConfirmPlacement() {
     CHECK(s.count("press") == 0 && s.count("release") == 0);
 }
 
+void testBoxSelect() {
+    std::puts("box-select mode: one-finger drag is a left-drag from the touch-down point, no pan, no long press");
+    RecSink s; s.box = true; eTouchGestures g(s);
+    g.fingerDown(1, 100, 100, 0);
+    g.update(900);                       // would be a long press otherwise
+    CHECK(s.count("press", R) == 0);
+    g.fingerMove(1, 200, 160, 920);
+    g.fingerMove(1, 300, 220, 940);
+    g.fingerUp(1, 300, 220, 960);
+    CHECK(s.count("press", L) == 1 && s.count("release", L) == 1);
+    CHECK(s.count("press", M) == 0 && s.camX == 0);
+    bool startOk = false;
+    for(const auto& e : s.ev) if(e.what == "press") startOk = e.x == 100 && e.y == 100;
+    CHECK(startOk);
+    CHECK(s.ev.back().what == "release" && s.ev.back().x == 300);
+    // a tap is still a tap
+    s.ev.clear();
+    g.fingerDown(1, 50, 50, 2000);
+    g.fingerUp(1, 50, 50, 2050);
+    CHECK(s.count("press", L) == 1 && s.count("release", L) == 1);
+}
+
 void testTwoFingerPanDeadBand() {
     std::puts("two-finger pan with slight spread change does not zoom");
     RecSink s; eTouchGestures g(s);
@@ -434,6 +458,7 @@ int main() {
     testTwoFingerPanDeadBand();
     testListTapAndScroll();
     testConfirmPlacement();
+    testBoxSelect();
     std::printf("%d checks, %d failures\n", gChecks, gFailures);
     return gFailures == 0 ? 0 : 1;
 }

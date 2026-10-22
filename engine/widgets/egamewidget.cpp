@@ -563,6 +563,11 @@ void eGameWidget::initialize() {
         updateSpeedButton();
         addTouchButton("+", [this]() { changeSpeed(1); });
         addTouchButton("R", [this]() { rotateView(); });
+        // Army box selection; shown only when the city has soldiers.
+        mBoxSelectButton = addTouchButton("[ ]", [this]() {
+            setTouchBoxSelect(!mTouchBoxSelect);
+        });
+        mBoxSelectButton->hide();
         y += p;
         mTouchCancelButton = addTouchButton("X", [this]() { touchCancel(); });
         mTouchCancelButton->hide();
@@ -2139,6 +2144,13 @@ bool eGameWidget::mouseReleaseEvent(const eMouseEvent& screenE) {
     if(mLocked) return true;
     switch(e.button()) {
     case eMouseButton::left: {
+        if(sTouchBarEnabled && !mMovedSincePress && touchArmyTap()) {
+            mLeftPressed = false;
+            mPressedTX = -1;
+            mPressedTY = -1;
+            break;
+        }
+        if(mTouchBoxSelect && mMovedSincePress) setTouchBoxSelect(false);
         mBoard->clearBannerSelection();
         mBoard->clearTriremeSelection();
         mLeftPressed = false;
@@ -2401,6 +2413,7 @@ void eGameWidget::updateSpeedButton() {
 }
 
 bool eGameWidget::touchCancelAvailable() const {
+    if(mTouchBoxSelect) return true;
     if(mPreview.fActive) return true;
     if(mInfoWidget) return true;
     if(mGm && mGm->mode() != eBuildingMode::none) return true;
@@ -2411,6 +2424,10 @@ bool eGameWidget::touchCancelAvailable() const {
 }
 
 bool eGameWidget::touchCancel() {
+    if(mTouchBoxSelect) {
+        setTouchBoxSelect(false);
+        return true;
+    }
     if(mPreview.fActive) {
         touchPreviewClear();
         return true;
@@ -2479,7 +2496,20 @@ std::string eGameWidget::debugCameraState() const {
                         std::to_string(mPreviewPanel->y()) + "," +
                         std::to_string(mPreviewPanel->width()) + "x" +
                         std::to_string(mPreviewPanel->height()) : std::string("hidden")) +
-           " drachmas=" + (mBoard ? std::to_string(mBoard->drachmas(mBoard->personPlayer())) : std::string("-"));
+           " drachmas=" + (mBoard ? std::to_string(mBoard->drachmas(mBoard->personPlayer())) : std::string("-")) +
+           " boxsel=" + std::to_string(mTouchBoxSelect ? 1 : 0) +
+           " boxbtn=" + std::to_string(mBoxSelectButton && mBoxSelectButton->visible() ? 1 : 0) +
+           " sel=" + std::to_string(mBoard ? mBoard->selectedSoldiers().size() : 0) +
+           " banners=" + [this]() {
+               std::string r;
+               if(!mBoard) return r;
+               for(const auto& b : mBoard->banners(mViewedCityId)) {
+                   const auto t = b->tile();
+                   if(!t) continue;
+                   r += std::to_string(t->x()) + "," + std::to_string(t->y()) + ";";
+               }
+               return r;
+           }();
 }
 
 void eGameWidget::zoomStepAt(const int dir, const int x, const int y) {
@@ -2930,4 +2960,71 @@ void eGameWidget::updatePreviewPanel() {
             }
         }
     }
+}
+
+void eGameWidget::setTouchBoxSelect(const bool b) {
+    mTouchBoxSelect = b;
+    if(b && mGm && mGm->mode() != eBuildingMode::none) mGm->clearMode();
+    if(mBoxSelectButton) {
+        if(b) mBoxSelectButton->setYellowFontColor();
+        else mBoxSelectButton->setLightFontColor();
+    }
+}
+
+void eGameWidget::updateBoxSelectButton() {
+    if(!mBoxSelectButton || !mBoard) return;
+    bool any = !mBoard->selectedSoldiers().empty() ||
+               !mBoard->selectedTriremes().empty();
+    if(!any) {
+        for(const auto& b : mBoard->banners(mViewedCityId)) {
+            if(b && !b->isAbroad()) {
+                any = true;
+                break;
+            }
+        }
+    }
+    if(!any && mTouchBoxSelect) setTouchBoxSelect(false);
+    mBoxSelectButton->setVisible(any);
+}
+
+bool eGameWidget::touchArmyTap() {
+    if(!mBoard || !mGm || mGm->mode() != eBuildingMode::none) return false;
+    if(mPatrolBuilding || mInfoWidget || mTem->visible()) return false;
+    const int tx = mHoverTX;
+    const int ty = mHoverTY;
+    // A banner on or right next to the tapped tile (flags are small targets).
+    eSoldierBanner* banner = nullptr;
+    for(int r = 0; r <= 1 && !banner; r++) {
+        for(int dx = -r; dx <= r && !banner; dx++) {
+            for(int dy = -r; dy <= r && !banner; dy++) {
+                const auto t = mBoard->tile(tx + dx, ty + dy);
+                if(t && t->soldierBanner()) banner = t->soldierBanner();
+            }
+        }
+    }
+    if(banner) {
+        mBoard->clearBannerSelection();
+        mBoard->clearTriremeSelection();
+        mBoard->selectBanner(banner);
+        return true;
+    }
+    const auto& solds = mBoard->selectedSoldiers();
+    const auto& trims = mBoard->selectedTriremes();
+    if(solds.empty() && trims.empty()) return false;
+    // Soldiers selected: a tap on the map is the move order (right click
+    // on desktop); the selection stays for further orders.
+    const auto tile = mBoard->tile(tx, ty);
+    if(tile && tile->cityId() == mViewedCityId) {
+        eSoldierBanner::sPlace(solds, tx, ty, *mBoard, 3, 2);
+        eTrireme::sPlace(trims, tx, ty, *mBoard, 3, 2);
+    }
+    return true;
+}
+
+void eGameWidget::debugSpawnBanner(const int tx, const int ty) {
+    if(!mBoard) return;
+    const auto b = e::make_shared<eSoldierBanner>(eBannerType::hoplite, *mBoard);
+    b->setBothCityIds(mViewedCityId);
+    mBoard->registerSoldierBanner(b);
+    b->moveTo(tx, ty);
 }

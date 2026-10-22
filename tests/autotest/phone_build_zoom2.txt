@@ -59,8 +59,8 @@
 400 screenshot build/run/bz03_road.bmp
 100 log after_hold_drag
 # X button cancels the build tool
-100 finger_down 1 68 670
-80 finger_up 1 68 670
+100 finger_down 1 68 784
+80 finger_up 1 68 784
 400 log after_X_expect_build0
 200 screenshot build/run/bz04_after_cancel.bmp
 300 quit

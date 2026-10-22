@@ -55,6 +55,10 @@ public:
         if(!gw || top != static_cast<eWidget*>(gw)) return eTarget::ui;
         return w == top ? eTarget::map : eTarget::ui;
     }
+    bool boxSelectActive() override {
+        const auto gw = mW.touchGameWidget();
+        return gw && gw->touchBoxSelectActive();
+    }
     bool confirmPlacement() override {
         const auto gw = mW.touchGameWidget();
         return gw && gw->touchPreviewSupported();

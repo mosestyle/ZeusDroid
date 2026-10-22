@@ -62,7 +62,7 @@
 400 log after_area_confirm_expect_built
 200 screenshot build/run/c05_area_built.bmp
 # X on the touch bar leaves the road tool
-100 finger_down 1 68 670
-80 finger_up 1 68 670
+100 finger_down 1 68 784
+80 finger_up 1 68 784
 400 log after_X_expect_build0
 200 quit

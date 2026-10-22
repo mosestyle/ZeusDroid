@@ -185,8 +185,9 @@ void eTouchGestures::fingerMove(const int64_t id, const float x, const float y,
         if(mOnPreview && confirmMode()) {
             mState = eState::previewDrag;
             mSink.previewDrag(ri(f.fStartX), ri(f.fStartY), ri(x), ri(y), true);
-        } else if(mSink.buildToolActive() && !mConfig.fHoldToDraw &&
-                  !confirmMode()) {
+        } else if(mSink.boxSelectActive() ||
+                  (mSink.buildToolActive() && !mConfig.fHoldToDraw &&
+                   !confirmMode())) {
             mState = eState::buildDrag;
             mPreviewArea = false;
             const int sx = ri(f.fStartX);
@@ -347,6 +348,7 @@ void eTouchGestures::update(const uint32_t tMs) {
     const auto& f = it->second;
     const int sx = ri(f.fStartX);
     const int sy = ri(f.fStartY);
+    if(mSink.boxSelectActive()) return; // no long-press while box-selecting
     if(confirmMode()) {
         // Hold on the preview does nothing (a drag moves it); elsewhere
         // hold + drag previews a row / area.

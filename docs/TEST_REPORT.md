@@ -202,3 +202,24 @@ APK 0.1.5-dev: versionCode 6, sha256 28391ce090829936e6c26df0dd57e8f9be0342ce320
   preview, ✕, area ✓ (11 tiles, 9940 dr) and X unchanged.
 * Unit tests 88/88 (x86-64, ARM64/qemu); importer 46/46.
 APK 0.1.6-dev: versionCode 7, sha256 4f4afeb087f6e0adc0677b671201483310807eb20534249c825d9cae43563b0f, v2/v3 OK
+
+### Phase D on the device (user report, 2026-10-23 00:15, Samsung Galaxy S25, 0.1.6)
+* Music and sound effects play.
+* Save → swipe the app away → reopen → load: works.
+* Home screen and screen off/on in the middle of a game, then back: everything works
+  (no lost textures, audio resumes).
+
+### 0.1.7-dev: touch army control
+* Unit tests 94/94 (x86-64, ARM64/qemu): new box-select scenario (drag = left-drag from the
+  touch-down point, no pan, no long press; tap still a tap); importer 46/46.
+* `tests/autotest/phone_army.txt` (banners created with the test-only `debug_banner`
+  command, which adds a player banner without soldiers): "[ ]" button appears when the city
+  has banners; tap on a banner → 1 selected; tap on the map → banner moved 37,3 → 38,-5,
+  still selected; X → 0 selected; "[ ]" → box mode, drag (950,430)→(1450,760) → selection
+  rectangle drawn (screenshot), both banners selected, box mode off again; next drag pans
+  (dx -100), selection kept. Real soldiers walking to the banner not covered by this test
+  (eZeus moves soldiers to their banner; unchanged code).
+* Regressions after the touch-bar change (X moved down one slot): phone_build_confirm,
+  phone_build_repeat, phone_back_touch_settings (row positions updated for the new
+  "After building" row), instant-mode phone_build_hold_to_draw / phone_build_zoom2: all pass.
+APK 0.1.7-dev: versionCode 8, sha256 8b225df8967a70a72764bf2f24970f6ef29628ca00bd9cb856dd6d2cd7219aee, v2/v3 OK
