@@ -47,8 +47,8 @@ settings screen, a save → kill app → load round trip, pause/resume (home but
 * Offset placement cursor so the finger does not hide the footprint.
 * Larger list rows / drag-scrolling: DONE for adventure, leader and save/load lists (0.1.4);
   other scroll lists (editor, military, text scrollers) still mouse-sized.
-* Settings screen for touch (pan sensitivity, long-press time, pinch step, UI scale, FPS cap):
-  store in `settings.txt` (`engine/esettings.cpp`), expose in `widgets/esettingsmenu.cpp`.
+* Settings screen for touch: DONE (0.1.5, `widgets/etouchsettingswidget.cpp`, stored in
+  port_settings.txt; Back → Touch controls, or Options → Touch controls).
 * Optional start zoom > 1 on phones (e.g. 1.5×) once the user has tried 0.1.4 zoom.
 * Kinetic (fling) scrolling for lists and the map.
 * Box-select of soldiers (left-drag in "none" mode) has no touch equivalent: proposal =
