@@ -18,7 +18,7 @@ full ~45 min rebuild on 2 cores.
   loaded; i15 adds ~210 MB), GL context loss on resume (render targets are rebuilt on
   `SDL_RENDER_TARGETS_RESET`, untested on device), notch/cutout layout, text input.
 
-## 2. Desktop re-verification after the latest engine changes
+## 2. Desktop re-verification after the latest engine changes (DONE 2026-10-22, see TEST_REPORT; keep as regression)
 * `ninja -C build/desktop` (full rebuild because of header changes), then
   `tools/tests/run_desktop_autotest.sh build/run/touch1.txt build/run/touch1.log EZEUS_TOUCH=1`
   and the same with `EZEUS_RENDER_FPS=60 EZEUS_UI_SCALE=large` in a 2400×1080 Xvfb screen
@@ -32,8 +32,7 @@ full ~45 min rebuild on 2 cores.
   compare `debugCameraState` + population/date. Add a `save`/`load` autotest command if the
   menu-click path is too brittle (files: `engine/platform/eautotest.cpp`, `engine/emainwindow.cpp`
   `saveGame/loadGame`).
-* Write saves atomically (temp + rename) – check `eMainWindow::saveGame` in
-  `engine/emainwindow.cpp`.
+* Atomic saves are implemented (`*.tmp` → rename, `*.bak`); verify with a kill-during-save test.
 
 ## 4. Touch UX completion
 * Settings screen for touch (pan sensitivity, long-press time, pinch step, UI scale, FPS cap):
