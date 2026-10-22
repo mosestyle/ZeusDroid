@@ -65,16 +65,45 @@ public final class ImportRules {
         return seg.toLowerCase(Locale.ROOT).startsWith("ezeus");
     }
 
-    /** Maps an eZeus data-pack relative path (after its top folder). */
+    /**
+     * Official eZeus data pack: the *release asset* (not GitHub's "Source code"
+     * zip, which has no .e texture packs).
+     */
+    public static final String EZEUS_PACK_URL =
+        "https://github.com/MaurycyLiebner/eZeus/releases/download/0.8.2-beta/eZeus-0.8.2-beta.zip";
+    public static final long EZEUS_PACK_SIZE = 338773633L;
+    public static final String EZEUS_PACK_SHA256 =
+        "77e46d79edc3cfb7818b6992cd861cb303a1055b72a1be2b0c04f8a91a47c5a3";
+
+    /**
+     * Maps an eZeus data-pack relative path (after its top folder). Only the
+     * files the engine reads are accepted (whitelist), so importing the wrong
+     * archive (e.g. the source-code zip) cannot fill storage with sources.
+     * Folder names are normalised to the release spelling (Fonts/, Text/).
+     */
     static String mapEZeusInner(String inner) {
         if (inner == null) return null;
         String l = inner.toLowerCase(Locale.ROOT);
-        if (l.startsWith("bin/")) return null;           // Windows binaries
-        if (l.startsWith("save/")) return null;          // never overwrite saves
-        if (l.equals("settings.txt")) return null;
-        if (l.startsWith("vc_redist") || l.startsWith("engconverter")) return null;
-        if (hasSkippedExtension(inner)) return null;
-        return EZEUS + "/" + inner;
+        if (!l.contains("/") && l.endsWith(".e")) return EZEUS + "/" + l;    // interface.e, i15.e ...
+        if (l.equals("fonts/zeus.ttf")) return EZEUS + "/Fonts/Zeus.ttf";
+        if (l.equals("text/language.txt")) return EZEUS + "/Text/language.txt";
+        if (l.startsWith("adventures/") && (l.endsWith(".epak") || l.endsWith(".txt"))) {
+            return EZEUS + "/Adventures/" + inner.substring("adventures/".length());
+        }
+        return null;
+    }
+
+    /** True for entries that only appear in a source-code archive. */
+    public static boolean looksLikeSourceArchiveEntry(String entryName) {
+        String l = entryName == null ? "" : entryName.toLowerCase(Locale.ROOT);
+        return l.endsWith(".cpp") || l.endsWith("cmakelists.txt") || l.endsWith(".pro");
+    }
+
+    /** Files an earlier (pre-whitelist) import may have copied from a source zip. */
+    public static boolean isLeftoverSourceFile(String nameLower) {
+        return nameLower.endsWith(".cpp") || nameLower.endsWith(".h") || nameLower.endsWith(".pro")
+            || nameLower.equals("cmakelists.txt") || nameLower.endsWith(".sh")
+            || nameLower.endsWith(".md") || nameLower.endsWith(".qrc") || nameLower.endsWith(".ui");
     }
 
     /**

@@ -14,6 +14,8 @@
     <!-- No storage permissions: game data is imported through the Storage
          Access Framework into app-owned storage. -->
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- Only used when the user taps "Download eZeus data pack" (GitHub release). -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- Manifest attributes are limited to those in the API 23 resource table
          because the restricted build host links resources against Debian's

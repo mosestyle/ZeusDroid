@@ -5,7 +5,9 @@ inputs are required:
 
 1. **Your own Zeus: Master of Olympus + Poseidon installation** (tested: GOG edition,
    English, `Zeus.exe` "Version 1.11", see BINARY_COMPATIBILITY.md).
-2. **The eZeus 0.8.2-beta data pack** (`eZeus-0.8.2-beta.zip` from
+2. **The eZeus 0.8.2-beta data pack** – the *release asset*, **not** GitHub's "Source code
+   (zip)" (that archive has no `.e` files; reported by the user on 2026-10-22). The app can
+   download and SHA-256-verify it itself (`77e46d79…c5a3`, 338 773 633 bytes): (`eZeus-0.8.2-beta.zip` from
    https://github.com/MaurycyLiebner/eZeus/releases/tag/0.8.2-beta). It holds eZeus' own
    pre-scaled PNG atlases (`interface.e`, `i15.e`, `i30.e`; optional `i45.e`/`i60.e` from
    `i45.zip`/`i60.zip`), `Fonts/Zeus.ttf`, `Text/language.txt` and two eZeus-made adventures.

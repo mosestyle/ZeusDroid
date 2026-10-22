@@ -59,6 +59,19 @@ public class ImportRulesTest {
         eq(null, ImportRules.mapEZeusArchiveEntry("eZeus-0.8.2-beta/../../evil"), "zip slip rejected");
         eq(null, ImportRules.mapEZeusArchiveEntry("other/thing.e"), "foreign top folder skipped");
 
+        System.out.println("source-code zip (user report 2026-10-22)");
+        eq("eZeus/Fonts/Zeus.ttf", ImportRules.mapEZeusArchiveEntry("eZeus-0.8.2-beta.4/fonts/Zeus.ttf"), "lowercase fonts normalised");
+        eq("eZeus/Text/language.txt", ImportRules.mapEZeusArchiveEntry("eZeus-0.8.2-beta.4/text/language.txt"), "lowercase text normalised");
+        eq(null, ImportRules.mapEZeusArchiveEntry("eZeus-0.8.2-beta.4/main.cpp"), "sources not imported");
+        eq(null, ImportRules.mapEZeusArchiveEntry("eZeus-0.8.2-beta.4/CMakeLists.txt"), "cmake not imported");
+        eq(null, ImportRules.mapEZeusArchiveEntry("eZeus-0.8.2-beta.4/widgets/egamewidget.h"), "headers not imported");
+        eq(true, ImportRules.looksLikeSourceArchiveEntry("eZeus-0.8.2-beta.4/main.cpp"), "source archive detected");
+        eq(false, ImportRules.looksLikeSourceArchiveEntry("eZeus-0.8.2-beta/i30.e"), "release pack not flagged");
+        eq("eZeus/Adventures/The Sands of Betrayal/x.epak",
+           ImportRules.mapEZeusArchiveEntry("eZeus-0.8.2-beta/Adventures/The Sands of Betrayal/x.epak"), "ezeus adventure");
+        eq(true, ImportRules.isLeftoverSourceFile("egamewidget.cpp"), "leftover cpp");
+        eq(false, ImportRules.isLeftoverSourceFile("language.txt"), "language kept");
+
         System.out.println("safeResolve");
         File tmp = Files.createTempDirectory("zp").toFile();
         boolean threw = false;

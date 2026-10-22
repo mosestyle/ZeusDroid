@@ -68,3 +68,16 @@ emulator images cannot be downloaded here, and the container has no KVM). Everyt
 about runtime behaviour on Android is therefore unverified.
 
 ## 5. Results appended during the session
+
+### 0.1.1-dev (2026-10-22, after first on-device report)
+
+First real-device report from the user (phone, Android, screenshot): APK **installed and
+the importer ran** – game folder import OK (all game items green, music + voices found).
+Importing GitHub's *source-code* zip (`archive/refs/tags/0.8.2-beta.4.zip`) left
+`interface.e` and `i15/i30.e` missing, because that archive does not contain them.
+Fixes: whitelist of pack files, explicit "this is the source code zip" error, clean-up of
+source files copied by 0.1.0, and an in-app download of the official release pack with
+resume + size + SHA-256 check (redirect chain and HTTP Range verified with curl).
+Importer tests: 46 checks, 0 failures. APK `0.1.1-dev` (versionCode 2), 18 900 658 bytes,
+sha256 `b383481bc733ebbfa97e9db8e8f942bf6117ec78ac231831c080f6f9224dbd33`, same debug key
+(installs over 0.1.0). Game start on device: still unverified.
