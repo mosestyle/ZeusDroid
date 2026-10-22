@@ -543,6 +543,7 @@ void eGameWidget::initialize() {
                       std::max(b->height(), minTouch));
             b->setPressAction(act);
             addWidget(b);
+            mTouchBarButtons++;
             b->move(p, y);
             y += b->height() + p/2;
             return b;

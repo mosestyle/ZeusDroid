@@ -38,6 +38,8 @@ full ~45 min rebuild on 2 cores.
 ## 4. Touch UX completion
 * Settings screen for touch (pan sensitivity, long-press time, pinch step, UI scale, FPS cap):
   store in `settings.txt` (`engine/esettings.cpp`), expose in `widgets/esettingsmenu.cpp`.
+* List widgets (adventure list, file lists) have ~26 px rows at 2400×1080: add touch-sized
+  row height or drag-to-scroll (`widgets/escrollwidget*`, list widgets).
 * Box-select of soldiers (left-drag in "none" mode) has no touch equivalent: proposal =
   long-press then drag.
 * Optional offset cursor for precise placement (`eTouchGestures` + `eGameWidget` hover).

@@ -120,6 +120,9 @@ public:
     bool paused() const { return mPaused; }
     void changeSpeed(const int delta);
     void rotateView();
+    // Number of touch-bar children; excluded from the "dialog open" child
+    // count that pauses the simulation.
+    int mTouchBarButtons = 0;
 
     void pixToId(const int pixX, const int pixY,
                  int& idX, int& idY) const;

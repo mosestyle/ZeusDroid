@@ -1,0 +1,10 @@
+# Phone layout: Xvfb 2400x1080, settings width 2400 height 1080, EZEUS_TOUCH=1 EZEUS_UI_SCALE=large EZEUS_RENDER_FPS=60. Taps only.
+8000 finger_down 1 1200 150
+80 finger_up 1 1200 150
+2500 finger_down 1 525 495
+80 finger_up 1 525 495
+800 finger_down 1 1100 720
+80 finger_up 1 1100 720
+4000 finger_down 1 1680 832
+80 finger_up 1 1680 832
+1000 wait_game 120000

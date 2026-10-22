@@ -81,3 +81,33 @@ resume + size + SHA-256 check (redirect chain and HTTP Range verified with curl)
 Importer tests: 46 checks, 0 failures. APK `0.1.1-dev` (versionCode 2), 18 900 658 bytes,
 sha256 `b383481bc733ebbfa97e9db8e8f942bf6117ec78ac231831c080f6f9224dbd33`, same debug key
 (installs over 0.1.0). Game start on device: still unverified.
+
+### Desktop re-verification of the later engine changes (2026-10-22)
+
+Desktop rebuilt (702/702, exit 0) with the frame clock, touch bar, UI-scale override, atomic
+saves and tooltip changes.
+
+**Simulation rate vs render rate** (`tests/autotest/simrate_long.txt`, 20 s window after
+dismissing the start-of-game messages, game speed 10):
+
+| `EZEUS_RENDER_FPS` | sim units in 20 s | ticks/s |
+|---|---|---|
+| 20 (upstream loop) | 3970 | 19.84 |
+| 60 (Android default) | 4000 | 19.99 |
+
+The Hydra event fired at the same simulation time (360) in both modes.
+
+**Phone layout** (Xvfb 2400×1080, `EZEUS_UI_SCALE=large`, `EZEUS_TOUCH=1`, 60 FPS, finger
+events only): main menu → New adventure → *Zeus and Europa* → briefing → city all reached by
+taps. Touch bar: `||` unpaused (paused 1→0), `+` raised speed 10→25. Pinch-in 60×30→30×15;
+pinch-out back to 60×30 anchored exactly at the centroid (dx 0→-1000, dy -7→-614 for
+centre (1000,600), ×2). Long-press on empty map changed nothing. RSS at game start 504 MB
+(software renderer, textures in system RAM).
+
+**Bug found and fixed:** the four touch-bar buttons counted as "open dialogs" in eZeus'
+`children().size() < 6` check, so the simulation never advanced with the touch bar
+(simtime stayed 0). Excluded via `mTouchBarButtons`; re-test: simtime advanced 0→375 until
+the original Hydra message box (which pauses the game in vanilla too).
+
+**UX issue noted:** adventure-list rows are ~26 px tall at 2400×1080 – too small for
+reliable finger selection (NEXT_STEPS).
