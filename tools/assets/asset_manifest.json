@@ -1,0 +1,7807 @@
+{
+ "format": 1,
+ "description": "Zeus: Master of Olympus + Poseidon (GOG, English) file manifest. Names/sizes/digests only - no game content.",
+ "edition": {
+  "store": "GOG",
+  "gog_game_id": "1207659039",
+  "language": "english",
+  "exe_version_string": "Version 1.11",
+  "exe_pe_timestamp": "2002-01-04T11:03:23Z",
+  "exe_machine": "i386 (PE32)"
+ },
+ "ezeus_pack": {
+  "release": "0.8.2-beta",
+  "required": [
+   "interface.e",
+   "Fonts/Zeus.ttf",
+   "Text/language.txt"
+  ],
+  "one_of": [
+   [
+    "i15.e",
+    "i30.e"
+   ]
+  ],
+  "optional": [
+   "i45.e",
+   "i60.e",
+   "Zeus_Text.xml",
+   "Zeus_MM.xml"
+  ]
+ },
+ "files": {
+  "Adventures/#The Birth of Atlantis.pak": {
+   "size": 1220682,
+   "required": true
+  },
+  "Adventures/#Zeus and Europa.pak": {
+   "size": 1097117,
+   "required": true
+  },
+  "Adventures/&Enlightenment in the West.pak": {
+   "size": 1541729,
+   "required": true
+  },
+  "Adventures/&Perseus and Medusa.pak": {
+   "size": 1222674,
+   "required": true
+  },
+  "Adventures/@Athens through the Ages.pak": {
+   "size": 1204367,
+   "required": true
+  },
+  "Adventures/@Life in the Mediterranean.pak": {
+   "size": 1208399,
+   "required": true
+  },
+  "Adventures/Open Play Economic 2/Open Play Economic 2.pak": {
+   "size": 1208636,
+   "required": true
+  },
+  "Adventures/Open Play Economic 2/Open Play Economic 2.set": {
+   "size": 841863,
+   "required": true
+  },
+  "Adventures/Open Play Economic 2/Open Play Economic 2.txt": {
+   "size": 5295,
+   "required": true
+  },
+  "Adventures/Open Play Economic 2/Open Play Economic 2C1.map": {
+   "size": 109767,
+   "required": true
+  },
+  "Adventures/Open Play Economic 2/Open Play Economic 2C2.map": {
+   "size": 112930,
+   "required": true
+  },
+  "Adventures/Open Play Economic 2/Open Play Economic 2P.map": {
+   "size": 144076,
+   "required": true
+  },
+  "Adventures/Open Play Military 2/Open Play Military 2.pak": {
+   "size": 1090603,
+   "required": true
+  },
+  "Adventures/Open Play Military 2/Open Play Military 2.set": {
+   "size": 841863,
+   "required": true
+  },
+  "Adventures/Open Play Military 2/Open Play Military 2.txt": {
+   "size": 4797,
+   "required": true
+  },
+  "Adventures/Open Play Military 2/Open Play Military 2C1.map": {
+   "size": 109638,
+   "required": true
+  },
+  "Adventures/Open Play Military 2/Open Play Military 2P.map": {
+   "size": 139102,
+   "required": true
+  },
+  "Adventures/Open Play Sandbox 2/Open Play Sandbox 2.pak": {
+   "size": 987272,
+   "required": true
+  },
+  "Adventures/Open Play Sandbox 2/Open Play Sandbox 2.set": {
+   "size": 841863,
+   "required": true
+  },
+  "Adventures/Open Play Sandbox 2/Open Play Sandbox 2.txt": {
+   "size": 2775,
+   "required": true
+  },
+  "Adventures/Open Play Sandbox 2/Open Play Sandbox 2P.map": {
+   "size": 145409,
+   "required": true
+  },
+  "Adventures/Text_Template.txt": {
+   "size": 1950,
+   "required": true
+  },
+  "Adventures/The Founding of Troy/The Founding of Troy.pak": {
+   "size": 1194342,
+   "required": true
+  },
+  "Adventures/The Founding of Troy/The Founding of Troy.set": {
+   "size": 842931,
+   "required": true
+  },
+  "Adventures/The Founding of Troy/The Founding of Troy.txt": {
+   "size": 4582,
+   "required": true
+  },
+  "Adventures/The Founding of Troy/The Founding of TroyC1.map": {
+   "size": 116964,
+   "required": true
+  },
+  "Adventures/The Founding of Troy/The Founding of TroyC2.map": {
+   "size": 115674,
+   "required": true
+  },
+  "Adventures/The Founding of Troy/The Founding of TroyP.map": {
+   "size": 118773,
+   "required": true
+  },
+  "Adventures/The Mayan Revolution/The Mayan Revolution.pak": {
+   "size": 965386,
+   "required": true
+  },
+  "Adventures/The Mayan Revolution/The Mayan Revolution.set": {
+   "size": 842931,
+   "required": true
+  },
+  "Adventures/The Mayan Revolution/The Mayan Revolution.txt": {
+   "size": 4163,
+   "required": true
+  },
+  "Adventures/The Mayan Revolution/The Mayan RevolutionP.map": {
+   "size": 122455,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey.pak": {
+   "size": 1226006,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey.set": {
+   "size": 841863,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey.txt": {
+   "size": 18180,
+   "required": true
+  },
+  "Adventures/The Odyssey/The OdysseyC1.map": {
+   "size": 142505,
+   "required": true
+  },
+  "Adventures/The Odyssey/The OdysseyC2.map": {
+   "size": 104607,
+   "required": true
+  },
+  "Adventures/The Odyssey/The OdysseyP.map": {
+   "size": 137031,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey_A_v.mp3": {
+   "size": 698880,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey_C1_i.mp3": {
+   "size": 354432,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey_C1_v.mp3": {
+   "size": 374192,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey_C2_i.mp3": {
+   "size": 508352,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey_C2_v.mp3": {
+   "size": 336960,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey_P1_i.mp3": {
+   "size": 541632,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey_P1_v.mp3": {
+   "size": 282880,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey_P2_i.mp3": {
+   "size": 562432,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey_P2_v.mp3": {
+   "size": 647088,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey_P3_i.mp3": {
+   "size": 626288,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey_P3_v.mp3": {
+   "size": 444496,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey_P4_i.mp3": {
+   "size": 689520,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey_P4_v.mp3": {
+   "size": 328224,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey_P5_i.mp3": {
+   "size": 653536,
+   "required": true
+  },
+  "Adventures/The Odyssey/The Odyssey_P5_v.mp3": {
+   "size": 323024,
+   "required": true
+  },
+  "Adventures/The Sinking of Atlantis/The Sinking of Atlantis.pak": {
+   "size": 991849,
+   "required": true
+  },
+  "Adventures/The Sinking of Atlantis/The Sinking of Atlantis.set": {
+   "size": 842931,
+   "required": true
+  },
+  "Adventures/The Sinking of Atlantis/The Sinking of Atlantis.txt": {
+   "size": 3922,
+   "required": true
+  },
+  "Adventures/The Sinking of Atlantis/The Sinking of AtlantisP.map": {
+   "size": 148918,
+   "required": true
+  },
+  "Adventures/The Youngest Twins/The Youngest Twins.pak": {
+   "size": 1106722,
+   "required": true
+  },
+  "Adventures/The Youngest Twins/The Youngest Twins.set": {
+   "size": 842931,
+   "required": true
+  },
+  "Adventures/The Youngest Twins/The Youngest Twins.txt": {
+   "size": 4544,
+   "required": true
+  },
+  "Adventures/The Youngest Twins/The Youngest TwinsC1.map": {
+   "size": 114763,
+   "required": true
+  },
+  "Adventures/The Youngest Twins/The Youngest TwinsP.map": {
+   "size": 149028,
+   "required": true
+  },
+  "Adventures/[Atlantis Reborn.pak": {
+   "size": 1202133,
+   "required": true
+  },
+  "Adventures/[The Voyages of Jason.pak": {
+   "size": 1217220,
+   "required": true
+  },
+  "Adventures/]Hercules Labors.pak": {
+   "size": 1300309,
+   "required": true
+  },
+  "Adventures/]Proetus and Bellerophon.pak": {
+   "size": 1111288,
+   "required": true
+  },
+  "Adventures/^The Peloponnesian War.pak": {
+   "size": 1220463,
+   "required": true
+  },
+  "Adventures/^Two Worlds Collide.pak": {
+   "size": 1188151,
+   "required": true
+  },
+  "Adventures/agora.pak": {
+   "size": 948665,
+   "required": true
+  },
+  "Adventures/bigcity.pak": {
+   "size": 952386,
+   "required": true
+  },
+  "Adventures/colony.pak": {
+   "size": 1062062,
+   "required": true
+  },
+  "Adventures/culture.pak": {
+   "size": 948618,
+   "required": true
+  },
+  "Adventures/firstcity.pak": {
+   "size": 948618,
+   "required": true
+  },
+  "Adventures/food.pak": {
+   "size": 948699,
+   "required": true
+  },
+  "Adventures/goods.pak": {
+   "size": 948618,
+   "required": true
+  },
+  "Adventures/housing.pak": {
+   "size": 948618,
+   "required": true
+  },
+  "Adventures/hygiene.pak": {
+   "size": 948618,
+   "required": true
+  },
+  "Adventures/interface.pak": {
+   "size": 952467,
+   "required": true
+  },
+  "Adventures/oliveoil.pak": {
+   "size": 948618,
+   "required": true
+  },
+  "Adventures/palace.pak": {
+   "size": 951958,
+   "required": true
+  },
+  "Adventures/peacewar.pak": {
+   "size": 952007,
+   "required": true
+  },
+  "Adventures/sanctuary.pak": {
+   "size": 951931,
+   "required": true
+  },
+  "Adventures/trade.pak": {
+   "size": 951841,
+   "required": true
+  },
+  "Adventures/tutorial00.sav": {
+   "size": 331787,
+   "required": true
+  },
+  "Adventures/tutorial01.sav": {
+   "size": 333638,
+   "required": true
+  },
+  "Adventures/tutorial02.sav": {
+   "size": 334585,
+   "required": true
+  },
+  "Adventures/tutorial03.sav": {
+   "size": 336265,
+   "required": true
+  },
+  "Adventures/tutorial04.sav": {
+   "size": 343235,
+   "required": true
+  },
+  "Adventures/tutorial05.sav": {
+   "size": 341043,
+   "required": true
+  },
+  "Adventures/tutorial06.sav": {
+   "size": 343657,
+   "required": true
+  },
+  "Adventures/tutorial07.sav": {
+   "size": 330885,
+   "required": true
+  },
+  "Adventures/tutorial08.sav": {
+   "size": 344791,
+   "required": true
+  },
+  "Adventures/tutorial09.sav": {
+   "size": 339036,
+   "required": true
+  },
+  "Adventures/tutorial10.sav": {
+   "size": 342373,
+   "required": true
+  },
+  "Adventures/tutorial11.sav": {
+   "size": 349716,
+   "required": true
+  },
+  "Adventures/tutorial12.sav": {
+   "size": 349330,
+   "required": true
+  },
+  "Adventures/tutorial13.sav": {
+   "size": 348360,
+   "required": true
+  },
+  "Adventures/tutorial14.sav": {
+   "size": 355485,
+   "required": true
+  },
+  "Adventures/tutorial15.sav": {
+   "size": 380056,
+   "required": true
+  },
+  "Adventures/warrior.pak": {
+   "size": 952096,
+   "required": true
+  },
+  "Adventures/{The Trojan War.pak": {
+   "size": 1230521,
+   "required": true
+  },
+  "Adventures/}Open Play Economic.pak": {
+   "size": 1222311,
+   "required": true
+  },
+  "Adventures/}Open Play Military.pak": {
+   "size": 1098708,
+   "required": true
+  },
+  "Adventures/}Open Play Sandbox.pak": {
+   "size": 983969,
+   "required": true
+  },
+  "Audio/Ambient/Layer1/bells.wav": {
+   "size": 234006,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/bird2.wav": {
+   "size": 148766,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/bird5.wav": {
+   "size": 269890,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/chime2.wav": {
+   "size": 267286,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/dark2.wav": {
+   "size": 278546,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/shimmer3.wav": {
+   "size": 222232,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/shimmer6.wav": {
+   "size": 436230,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/shimmer7.wav": {
+   "size": 243734,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/space_bells10.wav": {
+   "size": 271884,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/space_bells12.wav": {
+   "size": 316680,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/space_bells13.wav": {
+   "size": 351222,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/space_bells14.wav": {
+   "size": 513902,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/space_bells4a.wav": {
+   "size": 300050,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/space_bells7.wav": {
+   "size": 304178,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/sparrow1.wav": {
+   "size": 169576,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/voice.wav": {
+   "size": 243718,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/water_space2.wav": {
+   "size": 269120,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/wind1.wav": {
+   "size": 493280,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/wind2.wav": {
+   "size": 880684,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/wind3.wav": {
+   "size": 657392,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/wind4.wav": {
+   "size": 511020,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/wind5.wav": {
+   "size": 501804,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/wind6.wav": {
+   "size": 267896,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/wind7.wav": {
+   "size": 502782,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/wind_02s.wav": {
+   "size": 19500,
+   "required": false
+  },
+  "Audio/Ambient/Layer1/wind_sparkle2.wav": {
+   "size": 339500,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/Aristotle.wav": {
+   "size": 225728,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/Plato.wav": {
+   "size": 254196,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/Socrates.wav": {
+   "size": 338476,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/agora_arms1.wav": {
+   "size": 203768,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/agora_arms2.wav": {
+   "size": 142694,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/agora_chariot1.wav": {
+   "size": 158306,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/agora_chariot2.wav": {
+   "size": 163170,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/agora_fleece1.wav": {
+   "size": 146686,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/agora_fleece2.wav": {
+   "size": 219048,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/agora_food1.wav": {
+   "size": 185962,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/agora_food2.wav": {
+   "size": 160364,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/agora_food3.wav": {
+   "size": 148566,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/agora_food4.wav": {
+   "size": 270376,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/agora_gen1.wav": {
+   "size": 183034,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/agora_gen2.wav": {
+   "size": 239178,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/agora_horse1.wav": {
+   "size": 161630,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/agora_horse2.wav": {
+   "size": 159908,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/agora_oil.wav": {
+   "size": 216140,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/agora_wine1.wav": {
+   "size": 185544,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/agora_wine2.wav": {
+   "size": 152168,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/armory1.wav": {
+   "size": 168040,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/armory2.wav": {
+   "size": 245858,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/armory3.wav": {
+   "size": 221796,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/artisan_guild1.wav": {
+   "size": 154868,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/artisan_guild2.wav": {
+   "size": 207094,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/bird1.wav": {
+   "size": 20984,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/bird2.wav": {
+   "size": 116854,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/bird3.wav": {
+   "size": 19958,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/bird4.wav": {
+   "size": 118894,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/bird5.wav": {
+   "size": 235072,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/bird7.wav": {
+   "size": 98928,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/boar1.wav": {
+   "size": 99948,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/boar2.wav": {
+   "size": 75128,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/boar3.wav": {
+   "size": 33078,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/boar4.wav": {
+   "size": 65394,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/cattle1.wav": {
+   "size": 73460,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/cattle2.wav": {
+   "size": 99188,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/cattle3.wav": {
+   "size": 90860,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/cattle4.wav": {
+   "size": 63886,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/chariot_build1.wav": {
+   "size": 291960,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/chariot_build2.wav": {
+   "size": 357680,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/cheer.wav": {
+   "size": 113818,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/cheer2.wav": {
+   "size": 269450,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/chest1.wav": {
+   "size": 72050,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/chest2.wav": {
+   "size": 36980,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/chest3.wav": {
+   "size": 31928,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/cicada.wav": {
+   "size": 281138,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/city1.wav": {
+   "size": 188968,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/city2.wav": {
+   "size": 254134,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/city3.wav": {
+   "size": 256148,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/city4.wav": {
+   "size": 277578,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/city5.wav": {
+   "size": 221738,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/city7.wav": {
+   "size": 290922,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/city8.wav": {
+   "size": 277124,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/city9.wav": {
+   "size": 290974,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/close_book.wav": {
+   "size": 166266,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/college.wav": {
+   "size": 149164,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/college2.wav": {
+   "size": 162350,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/corral1.wav": {
+   "size": 213618,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/corral2.wav": {
+   "size": 194390,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/corral3.wav": {
+   "size": 196980,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/deer1.wav": {
+   "size": 50386,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/deer2.wav": {
+   "size": 43264,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/deer3.wav": {
+   "size": 49778,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/deer4.wav": {
+   "size": 46470,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/defensive1.wav": {
+   "size": 201868,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/defensive2.wav": {
+   "size": 199746,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/defensive3.wav": {
+   "size": 101876,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/dig3.wav": {
+   "size": 147018,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/dig4.wav": {
+   "size": 79852,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/dig5.wav": {
+   "size": 122732,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/dig6.wav": {
+   "size": 122232,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/dig7.wav": {
+   "size": 114798,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/dig8.wav": {
+   "size": 113016,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/dock1.wav": {
+   "size": 177256,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/dock2.wav": {
+   "size": 132716,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/dock3.wav": {
+   "size": 216164,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/drama1.wav": {
+   "size": 427778,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/drop_wood.wav": {
+   "size": 77170,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/elite1.wav": {
+   "size": 282230,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/elite2.wav": {
+   "size": 422144,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/finch2.wav": {
+   "size": 117340,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/flying.wav": {
+   "size": 288842,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/foundry1.wav": {
+   "size": 133228,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/foundry2.wav": {
+   "size": 118638,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/foundry3.wav": {
+   "size": 206286,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/foundry4.wav": {
+   "size": 194214,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/foundry5.wav": {
+   "size": 184424,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/fountain1.wav": {
+   "size": 282742,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/fountain2.wav": {
+   "size": 217206,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/fruit_lodge1.wav": {
+   "size": 198002,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/fruit_lodge2.wav": {
+   "size": 282738,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/get_book.wav": {
+   "size": 104986,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/goat1.wav": {
+   "size": 75122,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/goat2.wav": {
+   "size": 43252,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/goat3.wav": {
+   "size": 60530,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/goat4.wav": {
+   "size": 35114,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/goatherd1.wav": {
+   "size": 166262,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/goatherd2.wav": {
+   "size": 153718,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/goatherd3.wav": {
+   "size": 131190,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/gym1.wav": {
+   "size": 220282,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/gym2.wav": {
+   "size": 202858,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/gym3.wav": {
+   "size": 228474,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/horse1.wav": {
+   "size": 138092,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/horse2.wav": {
+   "size": 89712,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/horse3.wav": {
+   "size": 142956,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/horse4.wav": {
+   "size": 269918,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/horse5.wav": {
+   "size": 113774,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/hunting1.wav": {
+   "size": 245368,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/hunting2.wav": {
+   "size": 175224,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/infirmary1.wav": {
+   "size": 38134,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/infirmary2.wav": {
+   "size": 37330,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/infirmary3.wav": {
+   "size": 73718,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/infirmary4.wav": {
+   "size": 107728,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/invention1.wav": {
+   "size": 188074,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/invention2.wav": {
+   "size": 195920,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/javelin.wav": {
+   "size": 296640,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/lab1.wav": {
+   "size": 314980,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/lab2.wav": {
+   "size": 302856,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/lava1.wav": {
+   "size": 199800,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/lava2.wav": {
+   "size": 245878,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/lava3.wav": {
+   "size": 237580,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/maintenance1.wav": {
+   "size": 111880,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/maintenance2.wav": {
+   "size": 122496,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/maintenance3.wav": {
+   "size": 224872,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/maintenance4.wav": {
+   "size": 98510,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/mammaldrome1.wav": {
+   "size": 293868,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/mammaldrome2.wav": {
+   "size": 467054,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/mammaldrome3.wav": {
+   "size": 467054,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/marble1.wav": {
+   "size": 102262,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/marble2.wav": {
+   "size": 280144,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/mint1.wav": {
+   "size": 84208,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/mint2.wav": {
+   "size": 31222,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/mint3.wav": {
+   "size": 54388,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/mint4.wav": {
+   "size": 48628,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/museum1.wav": {
+   "size": 307430,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/museum2.wav": {
+   "size": 306230,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/observatory1.wav": {
+   "size": 214926,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/observatory2.wav": {
+   "size": 370322,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/orchard1.wav": {
+   "size": 125292,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/orchard2.wav": {
+   "size": 169066,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/palace1.wav": {
+   "size": 74098,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/palace2.wav": {
+   "size": 173174,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/palace3.wav": {
+   "size": 177414,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/paper4.wav": {
+   "size": 37620,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/podium1.wav": {
+   "size": 339720,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/racetrack1.wav": {
+   "size": 369920,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/racetrack2.wav": {
+   "size": 467054,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/reading1.wav": {
+   "size": 130444,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/reading2.wav": {
+   "size": 155774,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/recreation1.wav": {
+   "size": 218310,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/rockslide1.wav": {
+   "size": 235640,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/rockslide2.wav": {
+   "size": 212088,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/rumble.wav": {
+   "size": 384154,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/rustling1.wav": {
+   "size": 155264,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/rustling2.wav": {
+   "size": 170600,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/sanctuary1.wav": {
+   "size": 280620,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/sanctuary2.wav": {
+   "size": 159018,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/shearing1.wav": {
+   "size": 107552,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/shearing2.wav": {
+   "size": 51318,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/shearing3.wav": {
+   "size": 85496,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/sheep1.wav": {
+   "size": 61554,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/sheep2.wav": {
+   "size": 66674,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/sheep3.wav": {
+   "size": 63346,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/sheep4.wav": {
+   "size": 33910,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/shovel.wav": {
+   "size": 148898,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/sparrow1.wav": {
+   "size": 122998,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/storage_cart1.wav": {
+   "size": 232546,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/tax1.wav": {
+   "size": 16694,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/tax2.wav": {
+   "size": 67058,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/tax3.wav": {
+   "size": 87408,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/thtr_mumbl1.wav": {
+   "size": 206984,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/thtr_mumbl2.wav": {
+   "size": 344156,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/thtr_mumbl3.wav": {
+   "size": 269418,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/thtr_spear1.wav": {
+   "size": 309362,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/thtr_spear2.wav": {
+   "size": 118940,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/thtr_spin1.wav": {
+   "size": 281722,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/thtr_spin2.wav": {
+   "size": 244380,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/thtr_women.wav": {
+   "size": 373856,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/timber_mill1.wav": {
+   "size": 138992,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/timber_mill2.wav": {
+   "size": 267484,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/timber_mill3.wav": {
+   "size": 363092,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/trade1.wav": {
+   "size": 144466,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/trade2.wav": {
+   "size": 100316,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/trade3.wav": {
+   "size": 141684,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/trade4.wav": {
+   "size": 112560,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/trireme1.wav": {
+   "size": 207158,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/trireme2.wav": {
+   "size": 310014,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/trireme3.wav": {
+   "size": 213110,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/trireme4.wav": {
+   "size": 177406,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/university1.wav": {
+   "size": 200506,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/university2.wav": {
+   "size": 172378,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/urchin1.wav": {
+   "size": 133228,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/urchin2.wav": {
+   "size": 133740,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/urchin3.wav": {
+   "size": 174954,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wagon1.wav": {
+   "size": 155242,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wagon2.wav": {
+   "size": 156778,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wagon3.wav": {
+   "size": 135276,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wagon4.wav": {
+   "size": 178280,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wagon5.wav": {
+   "size": 135020,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wagon6.wav": {
+   "size": 119924,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wagon7.wav": {
+   "size": 218108,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/warehouse.wav": {
+   "size": 177272,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/water_space1.wav": {
+   "size": 833508,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/water_space2.wav": {
+   "size": 600128,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wave1.wav": {
+   "size": 188518,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wave2.wav": {
+   "size": 264414,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wave3.wav": {
+   "size": 264392,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wave4.wav": {
+   "size": 176416,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/win_chime1.wav": {
+   "size": 157328,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/win_chime2.wav": {
+   "size": 179796,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wind1.wav": {
+   "size": 267896,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wind2.wav": {
+   "size": 380536,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wolf1.wav": {
+   "size": 190054,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wolf2.wav": {
+   "size": 144612,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wolf3.wav": {
+   "size": 159912,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wolf4.wav": {
+   "size": 140342,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/wrestling.wav": {
+   "size": 243778,
+   "required": false
+  },
+  "Audio/Ambient/Layer2/writing1.wav": {
+   "size": 92290,
+   "required": false
+  },
+  "Audio/Music/Afigisi.mp3": {
+   "size": 4945428,
+   "required": false
+  },
+  "Audio/Music/Amolfi.mp3": {
+   "size": 5211126,
+   "required": false
+  },
+  "Audio/Music/Battle1.mp3": {
+   "size": 1760706,
+   "required": false
+  },
+  "Audio/Music/Battle2.mp3": {
+   "size": 1888074,
+   "required": false
+  },
+  "Audio/Music/Battle3.mp3": {
+   "size": 1343106,
+   "required": false
+  },
+  "Audio/Music/Battle4.mp3": {
+   "size": 1468908,
+   "required": false
+  },
+  "Audio/Music/Battle_long.mp3": {
+   "size": 2623572,
+   "required": false
+  },
+  "Audio/Music/Battle_long2.mp3": {
+   "size": 2017199,
+   "required": false
+  },
+  "Audio/Music/Eilavia.mp3": {
+   "size": 3679578,
+   "required": false
+  },
+  "Audio/Music/Ekplixi.mp3": {
+   "size": 1542510,
+   "required": false
+  },
+  "Audio/Music/Eplitha.mp3": {
+   "size": 4620744,
+   "required": false
+  },
+  "Audio/Music/Fengari.mp3": {
+   "size": 4065336,
+   "required": false
+  },
+  "Audio/Music/Iremos.mp3": {
+   "size": 3564216,
+   "required": false
+  },
+  "Audio/Music/Mnimio.mp3": {
+   "size": 4767948,
+   "required": false
+  },
+  "Audio/Music/Naoss.mp3": {
+   "size": 3088674,
+   "required": false
+  },
+  "Audio/Music/Oyonos.mp3": {
+   "size": 4027752,
+   "required": false
+  },
+  "Audio/Music/Perifanos.mp3": {
+   "size": 4827456,
+   "required": false
+  },
+  "Audio/Music/Pnevma.mp3": {
+   "size": 2924588,
+   "required": false
+  },
+  "Audio/Music/Proi.mp3": {
+   "size": 4362354,
+   "required": false
+  },
+  "Audio/Music/S_dis.mp3": {
+   "size": 95004,
+   "required": false
+  },
+  "Audio/Music/S_games.mp3": {
+   "size": 70992,
+   "required": false
+  },
+  "Audio/Music/S_mon1.mp3": {
+   "size": 95526,
+   "required": false
+  },
+  "Audio/Music/S_mon2.mp3": {
+   "size": 69948,
+   "required": false
+  },
+  "Audio/Music/Setup.mp3": {
+   "size": 1314396,
+   "required": false
+  },
+  "Audio/Music/Tamagia.mp3": {
+   "size": 3230952,
+   "required": false
+  },
+  "Audio/Music/Zoi.mp3": {
+   "size": 6239466,
+   "required": false
+  },
+  "Audio/Music/campaign_victory.wav": {
+   "size": 1002348,
+   "required": false
+  },
+  "Audio/Music/mission_intro.wav": {
+   "size": 2116284,
+   "required": false
+  },
+  "Audio/Music/mission_victory.wav": {
+   "size": 769788,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_A_v.mp3": {
+   "size": 341744,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_C1_i.mp3": {
+   "size": 469248,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_C1_v.mp3": {
+   "size": 221104,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_C2_i.mp3": {
+   "size": 341536,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_C2_v.mp3": {
+   "size": 298272,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_P1_i.mp3": {
+   "size": 391040,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_P1_v.mp3": {
+   "size": 244400,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_P2_i.mp3": {
+   "size": 1150656,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_P2_v.mp3": {
+   "size": 370032,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_P3_i.mp3": {
+   "size": 287040,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_P3_v.mp3": {
+   "size": 626912,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_P4_i.mp3": {
+   "size": 231088,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_P4_v.mp3": {
+   "size": 358384,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_P5_i.mp3": {
+   "size": 1308944,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_P5_v.mp3": {
+   "size": 458432,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_P6_i.mp3": {
+   "size": 515840,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_P6_v.mp3": {
+   "size": 520624,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_P7_i.mp3": {
+   "size": 363584,
+   "required": false
+  },
+  "Audio/Voice/Campaign/#The Birth of Atlantis_P7_v.mp3": {
+   "size": 421408,
+   "required": false
+  },
+  "Audio/Voice/Campaign/&Enlightenment in the West_A_v.mp3": {
+   "size": 239200,
+   "required": false
+  },
+  "Audio/Voice/Campaign/&Enlightenment in the West_C1_i.mp3": {
+   "size": 354016,
+   "required": false
+  },
+  "Audio/Voice/Campaign/&Enlightenment in the West_C1_v.mp3": {
+   "size": 408928,
+   "required": false
+  },
+  "Audio/Voice/Campaign/&Enlightenment in the West_C2_i.mp3": {
+   "size": 299312,
+   "required": false
+  },
+  "Audio/Voice/Campaign/&Enlightenment in the West_C2_v.mp3": {
+   "size": 195520,
+   "required": false
+  },
+  "Audio/Voice/Campaign/&Enlightenment in the West_C3_i.mp3": {
+   "size": 287248,
+   "required": false
+  },
+  "Audio/Voice/Campaign/&Enlightenment in the West_C3_v.mp3": {
+   "size": 225888,
+   "required": false
+  },
+  "Audio/Voice/Campaign/&Enlightenment in the West_C4_i.mp3": {
+   "size": 462176,
+   "required": false
+  },
+  "Audio/Voice/Campaign/&Enlightenment in the West_C4_v.mp3": {
+   "size": 263744,
+   "required": false
+  },
+  "Audio/Voice/Campaign/&Enlightenment in the West_P1_i.mp3": {
+   "size": 835328,
+   "required": false
+  },
+  "Audio/Voice/Campaign/&Enlightenment in the West_P1_v.mp3": {
+   "size": 117728,
+   "required": false
+  },
+  "Audio/Voice/Campaign/&Enlightenment in the West_P2_i.mp3": {
+   "size": 317408,
+   "required": false
+  },
+  "Audio/Voice/Campaign/&Enlightenment in the West_P2_v.mp3": {
+   "size": 349024,
+   "required": false
+  },
+  "Audio/Voice/Campaign/&Enlightenment in the West_P3_i.mp3": {
+   "size": 742352,
+   "required": false
+  },
+  "Audio/Voice/Campaign/&Enlightenment in the West_P3_v.mp3": {
+   "size": 314496,
+   "required": false
+  },
+  "Audio/Voice/Campaign/&Enlightenment in the West_P4_i.mp3": {
+   "size": 306592,
+   "required": false
+  },
+  "Audio/Voice/Campaign/&Enlightenment in the West_P4_v.mp3": {
+   "size": 196768,
+   "required": false
+  },
+  "Audio/Voice/Campaign/@Life in the Mediterranean_A_v.mp3": {
+   "size": 502112,
+   "required": false
+  },
+  "Audio/Voice/Campaign/@Life in the Mediterranean_C1_i.mp3": {
+   "size": 379392,
+   "required": false
+  },
+  "Audio/Voice/Campaign/@Life in the Mediterranean_C1_v.mp3": {
+   "size": 179504,
+   "required": false
+  },
+  "Audio/Voice/Campaign/@Life in the Mediterranean_C2_i.mp3": {
+   "size": 405392,
+   "required": false
+  },
+  "Audio/Voice/Campaign/@Life in the Mediterranean_C2_v.mp3": {
+   "size": 369408,
+   "required": false
+  },
+  "Audio/Voice/Campaign/@Life in the Mediterranean_P1_i.mp3": {
+   "size": 774384,
+   "required": false
+  },
+  "Audio/Voice/Campaign/@Life in the Mediterranean_P1_v.mp3": {
+   "size": 261664,
+   "required": false
+  },
+  "Audio/Voice/Campaign/@Life in the Mediterranean_P2_i.mp3": {
+   "size": 273104,
+   "required": false
+  },
+  "Audio/Voice/Campaign/@Life in the Mediterranean_P2_v.mp3": {
+   "size": 573248,
+   "required": false
+  },
+  "Audio/Voice/Campaign/@Life in the Mediterranean_P3_i.mp3": {
+   "size": 682448,
+   "required": false
+  },
+  "Audio/Voice/Campaign/@Life in the Mediterranean_P3_v.mp3": {
+   "size": 268112,
+   "required": false
+  },
+  "Audio/Voice/Campaign/@Life in the Mediterranean_P4_i.mp3": {
+   "size": 657696,
+   "required": false
+  },
+  "Audio/Voice/Campaign/@Life in the Mediterranean_P4_v.mp3": {
+   "size": 446576,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C1_E11_i.mp3": {
+   "size": 162656,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C1_E11_v.mp3": {
+   "size": 114192,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C1_E12_i.mp3": {
+   "size": 274976,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C1_E12_v.mp3": {
+   "size": 107536,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C1_E13_i.mp3": {
+   "size": 327808,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C1_E13_v.mp3": {
+   "size": 66144,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C1_E1_i.mp3": {
+   "size": 515840,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C1_E1_v.mp3": {
+   "size": 95056,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C1_E2_i.mp3": {
+   "size": 426608,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C1_E2_v.mp3": {
+   "size": 81536,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C1_E3_i.mp3": {
+   "size": 311376,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C1_E3_v.mp3": {
+   "size": 154960,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C1_E4_i.mp3": {
+   "size": 480480,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C1_E4_v.mp3": {
+   "size": 122304,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C1_v.mp3": {
+   "size": 284544,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C2_E11_i.mp3": {
+   "size": 176384,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C2_E11_v.mp3": {
+   "size": 113568,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C2_E12_i.mp3": {
+   "size": 382304,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C2_E12_v.mp3": {
+   "size": 124592,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C2_E1_i.mp3": {
+   "size": 366496,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C2_E1_v.mp3": {
+   "size": 113984,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C2_E2_i.mp3": {
+   "size": 332800,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C2_E2_v.mp3": {
+   "size": 124800,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C2_E3_i.mp3": {
+   "size": 532688,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C2_E3_v.mp3": {
+   "size": 283296,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C2_E4_i.mp3": {
+   "size": 257088,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C2_E4_v.mp3": {
+   "size": 91312,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C2_v.mp3": {
+   "size": 236080,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C3_E11_i.mp3": {
+   "size": 216528,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C3_E11_v.mp3": {
+   "size": 163072,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C3_E12_i.mp3": {
+   "size": 422864,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C3_E12_v.mp3": {
+   "size": 285792,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C3_E1_i.mp3": {
+   "size": 332384,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C3_E1_v.mp3": {
+   "size": 55536,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C3_E2_i.mp3": {
+   "size": 424944,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C3_E2_v.mp3": {
+   "size": 75296,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C3_E3_i.mp3": {
+   "size": 197184,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C3_E3_v.mp3": {
+   "size": 241488,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C3_E4_i.mp3": {
+   "size": 340496,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C3_E4_v.mp3": {
+   "size": 149552,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C3_v.mp3": {
+   "size": 127504,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C4_E11_i.mp3": {
+   "size": 450944,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C4_E11_v.mp3": {
+   "size": 242528,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C4_E12_i.mp3": {
+   "size": 350064,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C4_E12_v.mp3": {
+   "size": 133328,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C4_E1_i.mp3": {
+   "size": 419536,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C4_E1_v.mp3": {
+   "size": 146848,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C4_E2_i.mp3": {
+   "size": 951184,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C4_E2_v.mp3": {
+   "size": 195312,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C4_E3_i.mp3": {
+   "size": 528112,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C4_E3_v.mp3": {
+   "size": 263952,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C4_E4_i.mp3": {
+   "size": 316160,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C4_E4_v.mp3": {
+   "size": 107328,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C4_v.mp3": {
+   "size": 198848,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C5_E11_i.mp3": {
+   "size": 108992,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C5_E11_v.mp3": {
+   "size": 39104,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C5_E12_i.mp3": {
+   "size": 437840,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C5_E12_v.mp3": {
+   "size": 61568,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C5_E1_i.mp3": {
+   "size": 296400,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C5_E1_v.mp3": {
+   "size": 135824,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C5_E2_i.mp3": {
+   "size": 199264,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C5_E2_v.mp3": {
+   "size": 255216,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C5_E3_i.mp3": {
+   "size": 304720,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C5_E3_v.mp3": {
+   "size": 340912,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C5_E4_i.mp3": {
+   "size": 334464,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C5_E4_v.mp3": {
+   "size": 188448,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C5_E5_i.mp3": {
+   "size": 419328,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C5_E5_v.mp3": {
+   "size": 38896,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C5_E6_i.mp3": {
+   "size": 473408,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C5_E6_v.mp3": {
+   "size": 82784,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C5_v.mp3": {
+   "size": 192400,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C6_E11_i.mp3": {
+   "size": 499408,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C6_E11_v.mp3": {
+   "size": 105664,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C6_E1_i.mp3": {
+   "size": 435552,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C6_E1_v.mp3": {
+   "size": 95680,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C6_E2_i.mp3": {
+   "size": 187408,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C6_E2_v.mp3": {
+   "size": 171808,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C6_E3_i.mp3": {
+   "size": 510640,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C6_E3_v.mp3": {
+   "size": 199888,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C6_E4_i.mp3": {
+   "size": 638352,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C6_E4_v.mp3": {
+   "size": 295984,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C6_E5_i.mp3": {
+   "size": 339664,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C6_E5_v.mp3": {
+   "size": 164944,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C6_E6_i.mp3": {
+   "size": 206544,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C6_E6_v.mp3": {
+   "size": 233376,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C6_E7_i.mp3": {
+   "size": 453232,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C6_E7_v.mp3": {
+   "size": 91936,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C6_v.mp3": {
+   "size": 151216,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C7_E11_i.mp3": {
+   "size": 177216,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C7_E11_v.mp3": {
+   "size": 111696,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C7_E12_i.mp3": {
+   "size": 575952,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C7_E12_v.mp3": {
+   "size": 283504,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C7_E1_i.mp3": {
+   "size": 382720,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C7_E1_v.mp3": {
+   "size": 188448,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C7_E2_i.mp3": {
+   "size": 399568,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C7_E2_v.mp3": {
+   "size": 149136,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C7_E3_i.mp3": {
+   "size": 409136,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C7_E3_v.mp3": {
+   "size": 240448,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C7_E4_i.mp3": {
+   "size": 159744,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C7_E4_v.mp3": {
+   "size": 45344,
+   "required": false
+  },
+  "Audio/Voice/Campaign/C7_v.mp3": {
+   "size": 218400,
+   "required": false
+  },
+  "Audio/Voice/Campaign/[Atlantis Reborn_A_v.mp3": {
+   "size": 320528,
+   "required": false
+  },
+  "Audio/Voice/Campaign/[Atlantis Reborn_C1_i.mp3": {
+   "size": 589888,
+   "required": false
+  },
+  "Audio/Voice/Campaign/[Atlantis Reborn_C1_v.mp3": {
+   "size": 232128,
+   "required": false
+  },
+  "Audio/Voice/Campaign/[Atlantis Reborn_C2_i.mp3": {
+   "size": 609024,
+   "required": false
+  },
+  "Audio/Voice/Campaign/[Atlantis Reborn_C2_v.mp3": {
+   "size": 288912,
+   "required": false
+  },
+  "Audio/Voice/Campaign/[Atlantis Reborn_P1_i.mp3": {
+   "size": 538096,
+   "required": false
+  },
+  "Audio/Voice/Campaign/[Atlantis Reborn_P1_v.mp3": {
+   "size": 332384,
+   "required": false
+  },
+  "Audio/Voice/Campaign/[Atlantis Reborn_P2_i.mp3": {
+   "size": 851968,
+   "required": false
+  },
+  "Audio/Voice/Campaign/[Atlantis Reborn_P2_v.mp3": {
+   "size": 276640,
+   "required": false
+  },
+  "Audio/Voice/Campaign/[Atlantis Reborn_P3_i.mp3": {
+   "size": 694512,
+   "required": false
+  },
+  "Audio/Voice/Campaign/[Atlantis Reborn_P3_v.mp3": {
+   "size": 497120,
+   "required": false
+  },
+  "Audio/Voice/Campaign/[Atlantis Reborn_P4_i.mp3": {
+   "size": 378976,
+   "required": false
+  },
+  "Audio/Voice/Campaign/[Atlantis Reborn_P4_v.mp3": {
+   "size": 900224,
+   "required": false
+  },
+  "Audio/Voice/Campaign/[Atlantis Reborn_P5_i.mp3": {
+   "size": 622336,
+   "required": false
+  },
+  "Audio/Voice/Campaign/[Atlantis Reborn_P5_v.mp3": {
+   "size": 286208,
+   "required": false
+  },
+  "Audio/Voice/Campaign/[Atlantis Reborn_P6_i.mp3": {
+   "size": 617552,
+   "required": false
+  },
+  "Audio/Voice/Campaign/[Atlantis Reborn_P6_v.mp3": {
+   "size": 709696,
+   "required": false
+  },
+  "Audio/Voice/Campaign/]Proetus and Bellerophon_A_v.mp3": {
+   "size": 433056,
+   "required": false
+  },
+  "Audio/Voice/Campaign/]Proetus and Bellerophon_C1_i.mp3": {
+   "size": 298896,
+   "required": false
+  },
+  "Audio/Voice/Campaign/]Proetus and Bellerophon_C1_v.mp3": {
+   "size": 518336,
+   "required": false
+  },
+  "Audio/Voice/Campaign/]Proetus and Bellerophon_P1_i.mp3": {
+   "size": 753168,
+   "required": false
+  },
+  "Audio/Voice/Campaign/]Proetus and Bellerophon_P1_v.mp3": {
+   "size": 324896,
+   "required": false
+  },
+  "Audio/Voice/Campaign/]Proetus and Bellerophon_P2_i.mp3": {
+   "size": 362128,
+   "required": false
+  },
+  "Audio/Voice/Campaign/]Proetus and Bellerophon_P2_v.mp3": {
+   "size": 535392,
+   "required": false
+  },
+  "Audio/Voice/Campaign/]Proetus and Bellerophon_P3_i.mp3": {
+   "size": 944944,
+   "required": false
+  },
+  "Audio/Voice/Campaign/]Proetus and Bellerophon_P3_v.mp3": {
+   "size": 365040,
+   "required": false
+  },
+  "Audio/Voice/Campaign/]Proetus and Bellerophon_P4_i.mp3": {
+   "size": 503568,
+   "required": false
+  },
+  "Audio/Voice/Campaign/]Proetus and Bellerophon_P4_v.mp3": {
+   "size": 466128,
+   "required": false
+  },
+  "Audio/Voice/Campaign/]Proetus and Bellerophon_P5_i.mp3": {
+   "size": 657696,
+   "required": false
+  },
+  "Audio/Voice/Campaign/]Proetus and Bellerophon_P5_v.mp3": {
+   "size": 259376,
+   "required": false
+  },
+  "Audio/Voice/Campaign/]Proetus and Bellerophon_P6_i.mp3": {
+   "size": 717392,
+   "required": false
+  },
+  "Audio/Voice/Campaign/]Proetus and Bellerophon_P6_v.mp3": {
+   "size": 646880,
+   "required": false
+  },
+  "Audio/Voice/Campaign/^Two Worlds Collide_A_v.mp3": {
+   "size": 374192,
+   "required": false
+  },
+  "Audio/Voice/Campaign/^Two Worlds Collide_C1_i.mp3": {
+   "size": 396864,
+   "required": false
+  },
+  "Audio/Voice/Campaign/^Two Worlds Collide_C1_v.mp3": {
+   "size": 218608,
+   "required": false
+  },
+  "Audio/Voice/Campaign/^Two Worlds Collide_C2_i.mp3": {
+   "size": 666640,
+   "required": false
+  },
+  "Audio/Voice/Campaign/^Two Worlds Collide_C2_v.mp3": {
+   "size": 258544,
+   "required": false
+  },
+  "Audio/Voice/Campaign/^Two Worlds Collide_P1_i.mp3": {
+   "size": 751712,
+   "required": false
+  },
+  "Audio/Voice/Campaign/^Two Worlds Collide_P1_v.mp3": {
+   "size": 149968,
+   "required": false
+  },
+  "Audio/Voice/Campaign/^Two Worlds Collide_P2_i.mp3": {
+   "size": 391664,
+   "required": false
+  },
+  "Audio/Voice/Campaign/^Two Worlds Collide_P2_v.mp3": {
+   "size": 350272,
+   "required": false
+  },
+  "Audio/Voice/Campaign/^Two Worlds Collide_P3_i.mp3": {
+   "size": 470080,
+   "required": false
+  },
+  "Audio/Voice/Campaign/^Two Worlds Collide_P3_v.mp3": {
+   "size": 280384,
+   "required": false
+  },
+  "Audio/Voice/Campaign/^Two Worlds Collide_P4_i.mp3": {
+   "size": 730080,
+   "required": false
+  },
+  "Audio/Voice/Campaign/^Two Worlds Collide_P4_v.mp3": {
+   "size": 604240,
+   "required": false
+  },
+  "Audio/Voice/Campaign/^Two Worlds Collide_P5_i.mp3": {
+   "size": 893568,
+   "required": false
+  },
+  "Audio/Voice/Campaign/^Two Worlds Collide_P5_v.mp3": {
+   "size": 452400,
+   "required": false
+  },
+  "Audio/Voice/Campaign/^Two Worlds Collide_P6_i.mp3": {
+   "size": 773136,
+   "required": false
+  },
+  "Audio/Voice/Campaign/^Two Worlds Collide_P6_v.mp3": {
+   "size": 566176,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ach_e_1.mp3": {
+   "size": 60736,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ach_ev_1.mp3": {
+   "size": 111708,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ach_g_1.mp3": {
+   "size": 73632,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ach_g_2.mp3": {
+   "size": 65520,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ach_g_3.mp3": {
+   "size": 48048,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ach_g_4.mp3": {
+   "size": 48256,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ach_g_5.mp3": {
+   "size": 34112,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ach_g_6.mp3": {
+   "size": 35984,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ach_g_7.mp3": {
+   "size": 58656,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ach_i_1.mp3": {
+   "size": 25792,
+   "required": false
+  },
+  "Audio/Voice/Walker/Aph_e_1.mp3": {
+   "size": 39520,
+   "required": false
+  },
+  "Audio/Voice/Walker/Aph_e_2.mp3": {
+   "size": 46592,
+   "required": false
+  },
+  "Audio/Voice/Walker/Aph_e_3.mp3": {
+   "size": 42640,
+   "required": false
+  },
+  "Audio/Voice/Walker/Aph_e_4.mp3": {
+   "size": 48464,
+   "required": false
+  },
+  "Audio/Voice/Walker/Aph_ev_1.mp3": {
+   "size": 105966,
+   "required": false
+  },
+  "Audio/Voice/Walker/Aph_ev_2.mp3": {
+   "size": 133110,
+   "required": false
+  },
+  "Audio/Voice/Walker/Aph_ev_3.mp3": {
+   "size": 138852,
+   "required": false
+  },
+  "Audio/Voice/Walker/Aph_ev_4.mp3": {
+   "size": 214542,
+   "required": false
+  },
+  "Audio/Voice/Walker/Aph_ev_5.mp3": {
+   "size": 224460,
+   "required": false
+  },
+  "Audio/Voice/Walker/Aph_ev_6.mp3": {
+   "size": 103356,
+   "required": false
+  },
+  "Audio/Voice/Walker/Aph_ev_7.mp3": {
+   "size": 133110,
+   "required": false
+  },
+  "Audio/Voice/Walker/Aph_ev_8.mp3": {
+   "size": 170694,
+   "required": false
+  },
+  "Audio/Voice/Walker/Apo_e_1.mp3": {
+   "size": 63440,
+   "required": false
+  },
+  "Audio/Voice/Walker/Apo_e_2.mp3": {
+   "size": 51584,
+   "required": false
+  },
+  "Audio/Voice/Walker/Apo_e_3.mp3": {
+   "size": 46592,
+   "required": false
+  },
+  "Audio/Voice/Walker/Apo_e_4.mp3": {
+   "size": 30576,
+   "required": false
+  },
+  "Audio/Voice/Walker/Apo_e_5.mp3": {
+   "size": 44096,
+   "required": false
+  },
+  "Audio/Voice/Walker/Apo_ev_1.mp3": {
+   "size": 115884,
+   "required": false
+  },
+  "Audio/Voice/Walker/Apo_ev_2.mp3": {
+   "size": 119016,
+   "required": false
+  },
+  "Audio/Voice/Walker/Apo_ev_2_at.mp3": {
+   "size": 131022,
+   "required": false
+  },
+  "Audio/Voice/Walker/Apo_ev_3.mp3": {
+   "size": 148770,
+   "required": false
+  },
+  "Audio/Voice/Walker/Apo_ev_4.mp3": {
+   "size": 173826,
+   "required": false
+  },
+  "Audio/Voice/Walker/Apo_ev_5.mp3": {
+   "size": 190008,
+   "required": false
+  },
+  "Audio/Voice/Walker/Apo_ev_6.mp3": {
+   "size": 103356,
+   "required": false
+  },
+  "Audio/Voice/Walker/Apo_ev_7.mp3": {
+   "size": 138330,
+   "required": false
+  },
+  "Audio/Voice/Walker/Apo_ev_8.mp3": {
+   "size": 195750,
+   "required": false
+  },
+  "Audio/Voice/Walker/Are_e_1.mp3": {
+   "size": 49712,
+   "required": false
+  },
+  "Audio/Voice/Walker/Are_e_2.mp3": {
+   "size": 34320,
+   "required": false
+  },
+  "Audio/Voice/Walker/Are_e_3.mp3": {
+   "size": 61984,
+   "required": false
+  },
+  "Audio/Voice/Walker/Are_ev_1.mp3": {
+   "size": 124758,
+   "required": false
+  },
+  "Audio/Voice/Walker/Are_ev_2.mp3": {
+   "size": 101790,
+   "required": false
+  },
+  "Audio/Voice/Walker/Are_ev_3.mp3": {
+   "size": 149814,
+   "required": false
+  },
+  "Audio/Voice/Walker/Are_ev_4.mp3": {
+   "size": 219240,
+   "required": false
+  },
+  "Audio/Voice/Walker/Are_ev_5.mp3": {
+   "size": 221850,
+   "required": false
+  },
+  "Audio/Voice/Walker/Are_ev_6.mp3": {
+   "size": 97092,
+   "required": false
+  },
+  "Audio/Voice/Walker/Are_ev_7.mp3": {
+   "size": 174870,
+   "required": false
+  },
+  "Audio/Voice/Walker/Are_ev_8.mp3": {
+   "size": 143028,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ata_e_1.mp3": {
+   "size": 34944,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ata_ev_1.mp3": {
+   "size": 102312,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ata_g_1.mp3": {
+   "size": 70096,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ata_g_2.mp3": {
+   "size": 43472,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ata_g_3.mp3": {
+   "size": 55120,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ata_g_4.mp3": {
+   "size": 42640,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ata_g_5.mp3": {
+   "size": 47424,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ata_g_6.mp3": {
+   "size": 35568,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ata_g_7.mp3": {
+   "size": 35360,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ata_i_1.mp3": {
+   "size": 18928,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atm_e_1.mp3": {
+   "size": 53040,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atm_e_2.mp3": {
+   "size": 28912,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atm_e_3.mp3": {
+   "size": 60736,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atm_e_4.mp3": {
+   "size": 46384,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atm_ev_1.mp3": {
+   "size": 97092,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atm_ev_2.mp3": {
+   "size": 112752,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atm_ev_3.mp3": {
+   "size": 137286,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atm_ev_4.mp3": {
+   "size": 197838,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atm_ev_5.mp3": {
+   "size": 245340,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atm_ev_6.mp3": {
+   "size": 98136,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atm_ev_7.mp3": {
+   "size": 121104,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atm_ev_8.mp3": {
+   "size": 191574,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atn_e_1.mp3": {
+   "size": 35568,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atn_e_2.mp3": {
+   "size": 36816,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atn_e_3.mp3": {
+   "size": 50544,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atn_e_4.mp3": {
+   "size": 61360,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atn_ev_1.mp3": {
+   "size": 101268,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atn_ev_2.mp3": {
+   "size": 124236,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atn_ev_3.mp3": {
+   "size": 141462,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atn_ev_4.mp3": {
+   "size": 165996,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atn_ev_5.mp3": {
+   "size": 196272,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atn_ev_6.mp3": {
+   "size": 126324,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atn_ev_7.mp3": {
+   "size": 101790,
+   "required": false
+  },
+  "Audio/Voice/Walker/Atn_ev_8.mp3": {
+   "size": 167562,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ats_e_1.mp3": {
+   "size": 55744,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ats_e_2.mp3": {
+   "size": 59488,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ats_e_3.mp3": {
+   "size": 67808,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ats_ev_1.mp3": {
+   "size": 111186,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ats_ev_2.mp3": {
+   "size": 122670,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ats_ev_3.mp3": {
+   "size": 94482,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ats_ev_4.mp3": {
+   "size": 193140,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ats_ev_5.mp3": {
+   "size": 173304,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ats_ev_6.mp3": {
+   "size": 90306,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ats_ev_7.mp3": {
+   "size": 110142,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ats_ev_8.mp3": {
+   "size": 146682,
+   "required": false
+  },
+  "Audio/Voice/Walker/Bel_e_1.mp3": {
+   "size": 48048,
+   "required": false
+  },
+  "Audio/Voice/Walker/Bel_ev_1.mp3": {
+   "size": 96048,
+   "required": false
+  },
+  "Audio/Voice/Walker/Bel_g_1.mp3": {
+   "size": 38896,
+   "required": false
+  },
+  "Audio/Voice/Walker/Bel_g_2.mp3": {
+   "size": 50544,
+   "required": false
+  },
+  "Audio/Voice/Walker/Bel_g_3.mp3": {
+   "size": 55536,
+   "required": false
+  },
+  "Audio/Voice/Walker/Bel_g_4.mp3": {
+   "size": 46384,
+   "required": false
+  },
+  "Audio/Voice/Walker/Bel_g_5.mp3": {
+   "size": 29744,
+   "required": false
+  },
+  "Audio/Voice/Walker/Bel_g_6.mp3": {
+   "size": 35568,
+   "required": false
+  },
+  "Audio/Voice/Walker/Bel_g_7.mp3": {
+   "size": 43680,
+   "required": false
+  },
+  "Audio/Voice/Walker/Bel_i_1.mp3": {
+   "size": 38272,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dem_e_1.mp3": {
+   "size": 44304,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dem_e_2.mp3": {
+   "size": 71760,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dem_e_3.mp3": {
+   "size": 42848,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dem_ev_1.mp3": {
+   "size": 103878,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dem_ev_2.mp3": {
+   "size": 97614,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dem_ev_3.mp3": {
+   "size": 138852,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dem_ev_4.mp3": {
+   "size": 232812,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dem_ev_5.mp3": {
+   "size": 212454,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dem_ev_6.mp3": {
+   "size": 149814,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dem_ev_7.mp3": {
+   "size": 116928,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dem_ev_8.mp3": {
+   "size": 210366,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dio_e_1.mp3": {
+   "size": 53040,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dio_e_2.mp3": {
+   "size": 83616,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dio_e_3.mp3": {
+   "size": 41808,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dio_ev_1.mp3": {
+   "size": 114840,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dio_ev_2.mp3": {
+   "size": 114318,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dio_ev_3.mp3": {
+   "size": 185310,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dio_ev_4.mp3": {
+   "size": 212976,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dio_ev_5.mp3": {
+   "size": 218718,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dio_ev_6.mp3": {
+   "size": 146160,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dio_ev_7.mp3": {
+   "size": 115884,
+   "required": false
+  },
+  "Audio/Voice/Walker/Dio_ev_8.mp3": {
+   "size": 175392,
+   "required": false
+  },
+  "Audio/Voice/Walker/Had_e_1.mp3": {
+   "size": 58032,
+   "required": false
+  },
+  "Audio/Voice/Walker/Had_e_2.mp3": {
+   "size": 36608,
+   "required": false
+  },
+  "Audio/Voice/Walker/Had_ev_1.mp3": {
+   "size": 110142,
+   "required": false
+  },
+  "Audio/Voice/Walker/Had_ev_2.mp3": {
+   "size": 126846,
+   "required": false
+  },
+  "Audio/Voice/Walker/Had_ev_3.mp3": {
+   "size": 128934,
+   "required": false
+  },
+  "Audio/Voice/Walker/Had_ev_4.mp3": {
+   "size": 175914,
+   "required": false
+  },
+  "Audio/Voice/Walker/Had_ev_5.mp3": {
+   "size": 175914,
+   "required": false
+  },
+  "Audio/Voice/Walker/Had_ev_6.mp3": {
+   "size": 115884,
+   "required": false
+  },
+  "Audio/Voice/Walker/Had_ev_7.mp3": {
+   "size": 135720,
+   "required": false
+  },
+  "Audio/Voice/Walker/Had_ev_8.mp3": {
+   "size": 190008,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hec_e_1.mp3": {
+   "size": 42016,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hec_ev_1.mp3": {
+   "size": 117972,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hec_g_1.mp3": {
+   "size": 54912,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hec_g_2.mp3": {
+   "size": 58864,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hec_g_3.mp3": {
+   "size": 68640,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hec_g_4.mp3": {
+   "size": 52000,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hec_g_5.mp3": {
+   "size": 50336,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hec_g_6.mp3": {
+   "size": 55952,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hec_g_7.mp3": {
+   "size": 29952,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hec_i_1.mp3": {
+   "size": 33280,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hep_e_1.mp3": {
+   "size": 39728,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hep_e_2.mp3": {
+   "size": 50128,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hep_e_3.mp3": {
+   "size": 33696,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hep_ev_1.mp3": {
+   "size": 99180,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hep_ev_2.mp3": {
+   "size": 92916,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hep_ev_3.mp3": {
+   "size": 116928,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hep_ev_4.mp3": {
+   "size": 192618,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hep_ev_5.mp3": {
+   "size": 197316,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hep_ev_6.mp3": {
+   "size": 122148,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hep_ev_7.mp3": {
+   "size": 153468,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hep_ev_8.mp3": {
+   "size": 154512,
+   "required": false
+  },
+  "Audio/Voice/Walker/Her_e_1.mp3": {
+   "size": 79866,
+   "required": false
+  },
+  "Audio/Voice/Walker/Her_e_2.mp3": {
+   "size": 41760,
+   "required": false
+  },
+  "Audio/Voice/Walker/Her_e_3.mp3": {
+   "size": 116928,
+   "required": false
+  },
+  "Audio/Voice/Walker/Her_ev_1.mp3": {
+   "size": 86652,
+   "required": false
+  },
+  "Audio/Voice/Walker/Her_ev_2.mp3": {
+   "size": 98658,
+   "required": false
+  },
+  "Audio/Voice/Walker/Her_ev_3.mp3": {
+   "size": 101268,
+   "required": false
+  },
+  "Audio/Voice/Walker/Her_ev_4.mp3": {
+   "size": 189486,
+   "required": false
+  },
+  "Audio/Voice/Walker/Her_ev_5.mp3": {
+   "size": 203058,
+   "required": false
+  },
+  "Audio/Voice/Walker/Her_ev_6.mp3": {
+   "size": 89784,
+   "required": false
+  },
+  "Audio/Voice/Walker/Her_ev_7.mp3": {
+   "size": 111186,
+   "required": false
+  },
+  "Audio/Voice/Walker/Her_ev_8.mp3": {
+   "size": 126324,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hra_e_1.mp3": {
+   "size": 40352,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hra_e_2.mp3": {
+   "size": 50336,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hra_e_3.mp3": {
+   "size": 41184,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hra_e_4.mp3": {
+   "size": 43680,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hra_ev_1.mp3": {
+   "size": 109098,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hra_ev_2.mp3": {
+   "size": 122670,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hra_ev_3.mp3": {
+   "size": 149814,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hra_ev_4.mp3": {
+   "size": 199404,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hra_ev_5.mp3": {
+   "size": 216108,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hra_ev_6.mp3": {
+   "size": 109620,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hra_ev_7.mp3": {
+   "size": 116406,
+   "required": false
+  },
+  "Audio/Voice/Walker/Hra_ev_8.mp3": {
+   "size": 149814,
+   "required": false
+  },
+  "Audio/Voice/Walker/Jas_e_1.mp3": {
+   "size": 43888,
+   "required": false
+  },
+  "Audio/Voice/Walker/Jas_ev_1.mp3": {
+   "size": 146160,
+   "required": false
+  },
+  "Audio/Voice/Walker/Jas_g_1.mp3": {
+   "size": 71136,
+   "required": false
+  },
+  "Audio/Voice/Walker/Jas_g_2.mp3": {
+   "size": 73008,
+   "required": false
+  },
+  "Audio/Voice/Walker/Jas_g_3.mp3": {
+   "size": 74464,
+   "required": false
+  },
+  "Audio/Voice/Walker/Jas_g_4.mp3": {
+   "size": 38896,
+   "required": false
+  },
+  "Audio/Voice/Walker/Jas_g_5.mp3": {
+   "size": 44096,
+   "required": false
+  },
+  "Audio/Voice/Walker/Jas_g_6.mp3": {
+   "size": 33696,
+   "required": false
+  },
+  "Audio/Voice/Walker/Jas_g_7.mp3": {
+   "size": 44512,
+   "required": false
+  },
+  "Audio/Voice/Walker/Jas_i_1.mp3": {
+   "size": 27456,
+   "required": false
+  },
+  "Audio/Voice/Walker/M_cal.mp3": {
+   "size": 30784,
+   "required": false
+  },
+  "Audio/Voice/Walker/M_cer.mp3": {
+   "size": 30576,
+   "required": false
+  },
+  "Audio/Voice/Walker/M_chi.mp3": {
+   "size": 60528,
+   "required": false
+  },
+  "Audio/Voice/Walker/M_cyc.mp3": {
+   "size": 32032,
+   "required": false
+  },
+  "Audio/Voice/Walker/M_dra.mp3": {
+   "size": 13728,
+   "required": false
+  },
+  "Audio/Voice/Walker/M_ech.mp3": {
+   "size": 44928,
+   "required": false
+  },
+  "Audio/Voice/Walker/M_har.mp3": {
+   "size": 46384,
+   "required": false
+  },
+  "Audio/Voice/Walker/M_hec.mp3": {
+   "size": 18096,
+   "required": false
+  },
+  "Audio/Voice/Walker/M_hyd.mp3": {
+   "size": 34112,
+   "required": false
+  },
+  "Audio/Voice/Walker/M_kra.mp3": {
+   "size": 54912,
+   "required": false
+  },
+  "Audio/Voice/Walker/M_mae.mp3": {
+   "size": 57408,
+   "required": false
+  },
+  "Audio/Voice/Walker/M_med.mp3": {
+   "size": 76544,
+   "required": false
+  },
+  "Audio/Voice/Walker/M_min.mp3": {
+   "size": 36608,
+   "required": false
+  },
+  "Audio/Voice/Walker/M_scy.mp3": {
+   "size": 28080,
+   "required": false
+  },
+  "Audio/Voice/Walker/M_sph.mp3": {
+   "size": 85488,
+   "required": false
+  },
+  "Audio/Voice/Walker/M_tal.mp3": {
+   "size": 35360,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ody_e_1.mp3": {
+   "size": 48048,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ody_ev_1.mp3": {
+   "size": 114840,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ody_g_1.mp3": {
+   "size": 43472,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ody_g_2.mp3": {
+   "size": 61360,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ody_g_3.mp3": {
+   "size": 23920,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ody_g_4.mp3": {
+   "size": 48880,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ody_g_5.mp3": {
+   "size": 31824,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ody_g_6.mp3": {
+   "size": 44928,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ody_g_7.mp3": {
+   "size": 61776,
+   "required": false
+  },
+  "Audio/Voice/Walker/Ody_i_1.mp3": {
+   "size": 27248,
+   "required": false
+  },
+  "Audio/Voice/Walker/Per_e_1.mp3": {
+   "size": 43264,
+   "required": false
+  },
+  "Audio/Voice/Walker/Per_ev_1.mp3": {
+   "size": 112752,
+   "required": false
+  },
+  "Audio/Voice/Walker/Per_g_1.mp3": {
+   "size": 38272,
+   "required": false
+  },
+  "Audio/Voice/Walker/Per_g_2.mp3": {
+   "size": 52208,
+   "required": false
+  },
+  "Audio/Voice/Walker/Per_g_3.mp3": {
+   "size": 60320,
+   "required": false
+  },
+  "Audio/Voice/Walker/Per_g_4.mp3": {
+   "size": 34736,
+   "required": false
+  },
+  "Audio/Voice/Walker/Per_g_5.mp3": {
+   "size": 35568,
+   "required": false
+  },
+  "Audio/Voice/Walker/Per_g_6.mp3": {
+   "size": 57616,
+   "required": false
+  },
+  "Audio/Voice/Walker/Per_g_7.mp3": {
+   "size": 33072,
+   "required": false
+  },
+  "Audio/Voice/Walker/Per_i_1.mp3": {
+   "size": 27664,
+   "required": false
+  },
+  "Audio/Voice/Walker/Pos_e_1.mp3": {
+   "size": 55952,
+   "required": false
+  },
+  "Audio/Voice/Walker/Pos_e_2.mp3": {
+   "size": 56576,
+   "required": false
+  },
+  "Audio/Voice/Walker/Pos_ev_1.mp3": {
+   "size": 121104,
+   "required": false
+  },
+  "Audio/Voice/Walker/Pos_ev_2.mp3": {
+   "size": 97614,
+   "required": false
+  },
+  "Audio/Voice/Walker/Pos_ev_3.mp3": {
+   "size": 106488,
+   "required": false
+  },
+  "Audio/Voice/Walker/Pos_ev_4.mp3": {
+   "size": 220284,
+   "required": false
+  },
+  "Audio/Voice/Walker/Pos_ev_5.mp3": {
+   "size": 175914,
+   "required": false
+  },
+  "Audio/Voice/Walker/Pos_ev_6.mp3": {
+   "size": 108054,
+   "required": false
+  },
+  "Audio/Voice/Walker/Pos_ev_7.mp3": {
+   "size": 162342,
+   "required": false
+  },
+  "Audio/Voice/Walker/Pos_ev_8.mp3": {
+   "size": 137808,
+   "required": false
+  },
+  "Audio/Voice/Walker/The_e_1.mp3": {
+   "size": 21424,
+   "required": false
+  },
+  "Audio/Voice/Walker/The_ev_1.mp3": {
+   "size": 95526,
+   "required": false
+  },
+  "Audio/Voice/Walker/The_g_1.mp3": {
+   "size": 47632,
+   "required": false
+  },
+  "Audio/Voice/Walker/The_g_2.mp3": {
+   "size": 30784,
+   "required": false
+  },
+  "Audio/Voice/Walker/acf_e_1.mp3": {
+   "size": 27664,
+   "required": false
+  },
+  "Audio/Voice/Walker/acf_e_2.mp3": {
+   "size": 29536,
+   "required": false
+  },
+  "Audio/Voice/Walker/acf_e_3.mp3": {
+   "size": 39312,
+   "required": false
+  },
+  "Audio/Voice/Walker/acf_e_4.mp3": {
+   "size": 47008,
+   "required": false
+  },
+  "Audio/Voice/Walker/acf_i_1.mp3": {
+   "size": 37648,
+   "required": false
+  },
+  "Audio/Voice/Walker/act_e_1.mp3": {
+   "size": 22672,
+   "required": false
+  },
+  "Audio/Voice/Walker/act_e_2.mp3": {
+   "size": 60736,
+   "required": false
+  },
+  "Audio/Voice/Walker/act_e_3.mp3": {
+   "size": 37232,
+   "required": false
+  },
+  "Audio/Voice/Walker/act_e_4.mp3": {
+   "size": 57616,
+   "required": false
+  },
+  "Audio/Voice/Walker/act_g_1.mp3": {
+   "size": 58448,
+   "required": false
+  },
+  "Audio/Voice/Walker/act_g_2.mp3": {
+   "size": 31200,
+   "required": false
+  },
+  "Audio/Voice/Walker/act_g_3.mp3": {
+   "size": 41600,
+   "required": false
+  },
+  "Audio/Voice/Walker/act_g_4.mp3": {
+   "size": 41808,
+   "required": false
+  },
+  "Audio/Voice/Walker/act_g_5.mp3": {
+   "size": 53456,
+   "required": false
+  },
+  "Audio/Voice/Walker/act_g_6.mp3": {
+   "size": 27664,
+   "required": false
+  },
+  "Audio/Voice/Walker/act_g_7.mp3": {
+   "size": 67808,
+   "required": false
+  },
+  "Audio/Voice/Walker/act_i_1.mp3": {
+   "size": 37648,
+   "required": false
+  },
+  "Audio/Voice/Walker/art_e_1.mp3": {
+   "size": 39520,
+   "required": false
+  },
+  "Audio/Voice/Walker/art_e_2.mp3": {
+   "size": 43888,
+   "required": false
+  },
+  "Audio/Voice/Walker/art_e_3.mp3": {
+   "size": 51376,
+   "required": false
+  },
+  "Audio/Voice/Walker/art_e_4.mp3": {
+   "size": 44512,
+   "required": false
+  },
+  "Audio/Voice/Walker/art_g_1.mp3": {
+   "size": 55536,
+   "required": false
+  },
+  "Audio/Voice/Walker/art_g_2.mp3": {
+   "size": 72384,
+   "required": false
+  },
+  "Audio/Voice/Walker/art_g_3.mp3": {
+   "size": 49088,
+   "required": false
+  },
+  "Audio/Voice/Walker/art_g_4.mp3": {
+   "size": 41392,
+   "required": false
+  },
+  "Audio/Voice/Walker/art_g_5.mp3": {
+   "size": 66976,
+   "required": false
+  },
+  "Audio/Voice/Walker/art_g_6.mp3": {
+   "size": 52208,
+   "required": false
+  },
+  "Audio/Voice/Walker/art_g_7.mp3": {
+   "size": 71968,
+   "required": false
+  },
+  "Audio/Voice/Walker/art_i_1.mp3": {
+   "size": 64272,
+   "required": false
+  },
+  "Audio/Voice/Walker/arv_e_1.mp3": {
+   "size": 44720,
+   "required": false
+  },
+  "Audio/Voice/Walker/arv_e_2.mp3": {
+   "size": 32864,
+   "required": false
+  },
+  "Audio/Voice/Walker/arv_i_1.mp3": {
+   "size": 5616,
+   "required": false
+  },
+  "Audio/Voice/Walker/ast_g_1.mp3": {
+   "size": 55536,
+   "required": false
+  },
+  "Audio/Voice/Walker/ast_g_2.mp3": {
+   "size": 46592,
+   "required": false
+  },
+  "Audio/Voice/Walker/ast_g_3.mp3": {
+   "size": 52416,
+   "required": false
+  },
+  "Audio/Voice/Walker/ast_g_4.mp3": {
+   "size": 49712,
+   "required": false
+  },
+  "Audio/Voice/Walker/ast_g_5.mp3": {
+   "size": 32032,
+   "required": false
+  },
+  "Audio/Voice/Walker/ast_g_6.mp3": {
+   "size": 50960,
+   "required": false
+  },
+  "Audio/Voice/Walker/ast_g_7.mp3": {
+   "size": 45968,
+   "required": false
+  },
+  "Audio/Voice/Walker/ast_i_1.mp3": {
+   "size": 35152,
+   "required": false
+  },
+  "Audio/Voice/Walker/ath_e_1.mp3": {
+   "size": 42640,
+   "required": false
+  },
+  "Audio/Voice/Walker/ath_e_2.mp3": {
+   "size": 56784,
+   "required": false
+  },
+  "Audio/Voice/Walker/ath_e_3.mp3": {
+   "size": 56160,
+   "required": false
+  },
+  "Audio/Voice/Walker/ath_e_4.mp3": {
+   "size": 36608,
+   "required": false
+  },
+  "Audio/Voice/Walker/ath_g_1.mp3": {
+   "size": 49504,
+   "required": false
+  },
+  "Audio/Voice/Walker/ath_g_2.mp3": {
+   "size": 53040,
+   "required": false
+  },
+  "Audio/Voice/Walker/ath_g_3.mp3": {
+   "size": 49088,
+   "required": false
+  },
+  "Audio/Voice/Walker/ath_g_4.mp3": {
+   "size": 42640,
+   "required": false
+  },
+  "Audio/Voice/Walker/ath_g_5.mp3": {
+   "size": 45136,
+   "required": false
+  },
+  "Audio/Voice/Walker/ath_g_6.mp3": {
+   "size": 24544,
+   "required": false
+  },
+  "Audio/Voice/Walker/ath_g_7.mp3": {
+   "size": 30368,
+   "required": false
+  },
+  "Audio/Voice/Walker/ath_i_1.mp3": {
+   "size": 22256,
+   "required": false
+  },
+  "Audio/Voice/Walker/bht_e_1.mp3": {
+   "size": 39104,
+   "required": false
+  },
+  "Audio/Voice/Walker/bht_e_2.mp3": {
+   "size": 52208,
+   "required": false
+  },
+  "Audio/Voice/Walker/bht_g_1.mp3": {
+   "size": 47008,
+   "required": false
+  },
+  "Audio/Voice/Walker/bht_g_2.mp3": {
+   "size": 45760,
+   "required": false
+  },
+  "Audio/Voice/Walker/bht_g_3.mp3": {
+   "size": 60944,
+   "required": false
+  },
+  "Audio/Voice/Walker/bht_g_4.mp3": {
+   "size": 40768,
+   "required": false
+  },
+  "Audio/Voice/Walker/bht_g_5.mp3": {
+   "size": 52832,
+   "required": false
+  },
+  "Audio/Voice/Walker/bht_g_6.mp3": {
+   "size": 42640,
+   "required": false
+  },
+  "Audio/Voice/Walker/bht_g_7.mp3": {
+   "size": 48464,
+   "required": false
+  },
+  "Audio/Voice/Walker/bht_i_1.mp3": {
+   "size": 35776,
+   "required": false
+  },
+  "Audio/Voice/Walker/cht_e_1.mp3": {
+   "size": 64272,
+   "required": false
+  },
+  "Audio/Voice/Walker/cht_e_2.mp3": {
+   "size": 41184,
+   "required": false
+  },
+  "Audio/Voice/Walker/cht_e_3.mp3": {
+   "size": 44096,
+   "required": false
+  },
+  "Audio/Voice/Walker/cht_e_4.mp3": {
+   "size": 39312,
+   "required": false
+  },
+  "Audio/Voice/Walker/cht_i_1.mp3": {
+   "size": 35568,
+   "required": false
+  },
+  "Audio/Voice/Walker/chv_e_1.mp3": {
+   "size": 53040,
+   "required": false
+  },
+  "Audio/Voice/Walker/chv_e_2.mp3": {
+   "size": 59696,
+   "required": false
+  },
+  "Audio/Voice/Walker/chv_i_1.mp3": {
+   "size": 24128,
+   "required": false
+  },
+  "Audio/Voice/Walker/clk_g_1.mp3": {
+   "size": 58032,
+   "required": false
+  },
+  "Audio/Voice/Walker/clk_g_2.mp3": {
+   "size": 42016,
+   "required": false
+  },
+  "Audio/Voice/Walker/clk_g_3.mp3": {
+   "size": 58240,
+   "required": false
+  },
+  "Audio/Voice/Walker/clk_g_4.mp3": {
+   "size": 30784,
+   "required": false
+  },
+  "Audio/Voice/Walker/clk_g_5.mp3": {
+   "size": 57408,
+   "required": false
+  },
+  "Audio/Voice/Walker/clk_g_6.mp3": {
+   "size": 34320,
+   "required": false
+  },
+  "Audio/Voice/Walker/clk_g_7.mp3": {
+   "size": 30576,
+   "required": false
+  },
+  "Audio/Voice/Walker/clk_i_1.mp3": {
+   "size": 16224,
+   "required": false
+  },
+  "Audio/Voice/Walker/cmp_e_1.mp3": {
+   "size": 32448,
+   "required": false
+  },
+  "Audio/Voice/Walker/cmp_e_2.mp3": {
+   "size": 86112,
+   "required": false
+  },
+  "Audio/Voice/Walker/cmp_e_3.mp3": {
+   "size": 53040,
+   "required": false
+  },
+  "Audio/Voice/Walker/cmp_e_4.mp3": {
+   "size": 42848,
+   "required": false
+  },
+  "Audio/Voice/Walker/cmp_g_1.mp3": {
+   "size": 29328,
+   "required": false
+  },
+  "Audio/Voice/Walker/cmp_g_2.mp3": {
+   "size": 32448,
+   "required": false
+  },
+  "Audio/Voice/Walker/cmp_g_3.mp3": {
+   "size": 24128,
+   "required": false
+  },
+  "Audio/Voice/Walker/cmp_g_4.mp3": {
+   "size": 56992,
+   "required": false
+  },
+  "Audio/Voice/Walker/cmp_g_5.mp3": {
+   "size": 29952,
+   "required": false
+  },
+  "Audio/Voice/Walker/cmp_g_6.mp3": {
+   "size": 18304,
+   "required": false
+  },
+  "Audio/Voice/Walker/cmp_g_7.mp3": {
+   "size": 45760,
+   "required": false
+  },
+  "Audio/Voice/Walker/cmp_i_1.mp3": {
+   "size": 18928,
+   "required": false
+  },
+  "Audio/Voice/Walker/cop_e_1.mp3": {
+   "size": 33904,
+   "required": false
+  },
+  "Audio/Voice/Walker/cop_e_2.mp3": {
+   "size": 44096,
+   "required": false
+  },
+  "Audio/Voice/Walker/cop_g_1.mp3": {
+   "size": 36192,
+   "required": false
+  },
+  "Audio/Voice/Walker/cop_g_2.mp3": {
+   "size": 34736,
+   "required": false
+  },
+  "Audio/Voice/Walker/cop_g_3.mp3": {
+   "size": 48256,
+   "required": false
+  },
+  "Audio/Voice/Walker/cop_g_4.mp3": {
+   "size": 31616,
+   "required": false
+  },
+  "Audio/Voice/Walker/cop_g_5.mp3": {
+   "size": 28912,
+   "required": false
+  },
+  "Audio/Voice/Walker/cop_g_6.mp3": {
+   "size": 26208,
+   "required": false
+  },
+  "Audio/Voice/Walker/cop_g_7.mp3": {
+   "size": 18304,
+   "required": false
+  },
+  "Audio/Voice/Walker/cop_i_1.mp3": {
+   "size": 23296,
+   "required": false
+  },
+  "Audio/Voice/Walker/crt_e_1.mp3": {
+   "size": 30368,
+   "required": false
+  },
+  "Audio/Voice/Walker/crt_e_2.mp3": {
+   "size": 28288,
+   "required": false
+  },
+  "Audio/Voice/Walker/crt_e_3.mp3": {
+   "size": 51792,
+   "required": false
+  },
+  "Audio/Voice/Walker/crt_e_4.mp3": {
+   "size": 55536,
+   "required": false
+  },
+  "Audio/Voice/Walker/crt_i_1.mp3": {
+   "size": 24544,
+   "required": false
+  },
+  "Audio/Voice/Walker/cur_g_1.mp3": {
+   "size": 55328,
+   "required": false
+  },
+  "Audio/Voice/Walker/cur_g_2.mp3": {
+   "size": 36192,
+   "required": false
+  },
+  "Audio/Voice/Walker/cur_g_3.mp3": {
+   "size": 57616,
+   "required": false
+  },
+  "Audio/Voice/Walker/cur_g_4.mp3": {
+   "size": 40560,
+   "required": false
+  },
+  "Audio/Voice/Walker/cur_g_5.mp3": {
+   "size": 43680,
+   "required": false
+  },
+  "Audio/Voice/Walker/cur_g_6.mp3": {
+   "size": 32032,
+   "required": false
+  },
+  "Audio/Voice/Walker/cur_g_7.mp3": {
+   "size": 35984,
+   "required": false
+  },
+  "Audio/Voice/Walker/cur_i_1.mp3": {
+   "size": 35360,
+   "required": false
+  },
+  "Audio/Voice/Walker/dht_e_1.mp3": {
+   "size": 31616,
+   "required": false
+  },
+  "Audio/Voice/Walker/dht_e_2.mp3": {
+   "size": 32864,
+   "required": false
+  },
+  "Audio/Voice/Walker/dht_g_1.mp3": {
+   "size": 55536,
+   "required": false
+  },
+  "Audio/Voice/Walker/dht_g_2.mp3": {
+   "size": 59072,
+   "required": false
+  },
+  "Audio/Voice/Walker/dht_g_3.mp3": {
+   "size": 58032,
+   "required": false
+  },
+  "Audio/Voice/Walker/dht_g_4.mp3": {
+   "size": 35984,
+   "required": false
+  },
+  "Audio/Voice/Walker/dht_g_5.mp3": {
+   "size": 39728,
+   "required": false
+  },
+  "Audio/Voice/Walker/dht_g_6.mp3": {
+   "size": 38064,
+   "required": false
+  },
+  "Audio/Voice/Walker/dht_g_7.mp3": {
+   "size": 51376,
+   "required": false
+  },
+  "Audio/Voice/Walker/dht_i_1.mp3": {
+   "size": 33696,
+   "required": false
+  },
+  "Audio/Voice/Walker/emi_e_1.mp3": {
+   "size": 37856,
+   "required": false
+  },
+  "Audio/Voice/Walker/emi_e_2.mp3": {
+   "size": 60528,
+   "required": false
+  },
+  "Audio/Voice/Walker/emi_e_3.mp3": {
+   "size": 36400,
+   "required": false
+  },
+  "Audio/Voice/Walker/emi_e_4.mp3": {
+   "size": 51376,
+   "required": false
+  },
+  "Audio/Voice/Walker/emi_e_5.mp3": {
+   "size": 54912,
+   "required": false
+  },
+  "Audio/Voice/Walker/emi_e_6.mp3": {
+   "size": 51792,
+   "required": false
+  },
+  "Audio/Voice/Walker/emi_e_7.mp3": {
+   "size": 65312,
+   "required": false
+  },
+  "Audio/Voice/Walker/emi_i_1.mp3": {
+   "size": 17888,
+   "required": false
+  },
+  "Audio/Voice/Walker/fdv_e_1.mp3": {
+   "size": 53664,
+   "required": false
+  },
+  "Audio/Voice/Walker/fdv_e_2.mp3": {
+   "size": 44928,
+   "required": false
+  },
+  "Audio/Voice/Walker/fdv_i_1.mp3": {
+   "size": 20592,
+   "required": false
+  },
+  "Audio/Voice/Walker/flv_e_1.mp3": {
+   "size": 23504,
+   "required": false
+  },
+  "Audio/Voice/Walker/flv_e_2.mp3": {
+   "size": 55536,
+   "required": false
+  },
+  "Audio/Voice/Walker/flv_i_1.mp3": {
+   "size": 55536,
+   "required": false
+  },
+  "Audio/Voice/Walker/fsh_e_1.mp3": {
+   "size": 68848,
+   "required": false
+  },
+  "Audio/Voice/Walker/fsh_e_2.mp3": {
+   "size": 47632,
+   "required": false
+  },
+  "Audio/Voice/Walker/fsh_e_3.mp3": {
+   "size": 39520,
+   "required": false
+  },
+  "Audio/Voice/Walker/fsh_e_4.mp3": {
+   "size": 40976,
+   "required": false
+  },
+  "Audio/Voice/Walker/fsh_g_1.mp3": {
+   "size": 61984,
+   "required": false
+  },
+  "Audio/Voice/Walker/fsh_g_2.mp3": {
+   "size": 55328,
+   "required": false
+  },
+  "Audio/Voice/Walker/fsh_g_3.mp3": {
+   "size": 29120,
+   "required": false
+  },
+  "Audio/Voice/Walker/fsh_g_4.mp3": {
+   "size": 37648,
+   "required": false
+  },
+  "Audio/Voice/Walker/fsh_g_5.mp3": {
+   "size": 55328,
+   "required": false
+  },
+  "Audio/Voice/Walker/fsh_g_6.mp3": {
+   "size": 33488,
+   "required": false
+  },
+  "Audio/Voice/Walker/fsh_g_7.mp3": {
+   "size": 17264,
+   "required": false
+  },
+  "Audio/Voice/Walker/fsh_i_1.mp3": {
+   "size": 22672,
+   "required": false
+  },
+  "Audio/Voice/Walker/gro_e_1.mp3": {
+   "size": 48672,
+   "required": false
+  },
+  "Audio/Voice/Walker/gro_e_2.mp3": {
+   "size": 43472,
+   "required": false
+  },
+  "Audio/Voice/Walker/gro_e_3.mp3": {
+   "size": 66976,
+   "required": false
+  },
+  "Audio/Voice/Walker/gro_e_4.mp3": {
+   "size": 35776,
+   "required": false
+  },
+  "Audio/Voice/Walker/gro_g_1.mp3": {
+   "size": 57824,
+   "required": false
+  },
+  "Audio/Voice/Walker/gro_g_2.mp3": {
+   "size": 47008,
+   "required": false
+  },
+  "Audio/Voice/Walker/gro_g_3.mp3": {
+   "size": 34320,
+   "required": false
+  },
+  "Audio/Voice/Walker/gro_g_4.mp3": {
+   "size": 30160,
+   "required": false
+  },
+  "Audio/Voice/Walker/gro_g_5.mp3": {
+   "size": 27872,
+   "required": false
+  },
+  "Audio/Voice/Walker/gro_g_6.mp3": {
+   "size": 25792,
+   "required": false
+  },
+  "Audio/Voice/Walker/gro_g_7.mp3": {
+   "size": 47632,
+   "required": false
+  },
+  "Audio/Voice/Walker/gro_i_1.mp3": {
+   "size": 31408,
+   "required": false
+  },
+  "Audio/Voice/Walker/gth_e_1.mp3": {
+   "size": 40352,
+   "required": false
+  },
+  "Audio/Voice/Walker/gth_e_2.mp3": {
+   "size": 33904,
+   "required": false
+  },
+  "Audio/Voice/Walker/gth_e_3.mp3": {
+   "size": 31200,
+   "required": false
+  },
+  "Audio/Voice/Walker/gth_e_4.mp3": {
+   "size": 33488,
+   "required": false
+  },
+  "Audio/Voice/Walker/gth_g_1.mp3": {
+   "size": 44720,
+   "required": false
+  },
+  "Audio/Voice/Walker/gth_g_2.mp3": {
+   "size": 44720,
+   "required": false
+  },
+  "Audio/Voice/Walker/gth_g_3.mp3": {
+   "size": 33488,
+   "required": false
+  },
+  "Audio/Voice/Walker/gth_g_4.mp3": {
+   "size": 27456,
+   "required": false
+  },
+  "Audio/Voice/Walker/gth_g_5.mp3": {
+   "size": 43264,
+   "required": false
+  },
+  "Audio/Voice/Walker/gth_g_6.mp3": {
+   "size": 29744,
+   "required": false
+  },
+  "Audio/Voice/Walker/gth_g_7.mp3": {
+   "size": 20176,
+   "required": false
+  },
+  "Audio/Voice/Walker/gth_i_1.mp3": {
+   "size": 20384,
+   "required": false
+  },
+  "Audio/Voice/Walker/hlr_e_1.mp3": {
+   "size": 56784,
+   "required": false
+  },
+  "Audio/Voice/Walker/hlr_g_1.mp3": {
+   "size": 40144,
+   "required": false
+  },
+  "Audio/Voice/Walker/hlr_g_2.mp3": {
+   "size": 31200,
+   "required": false
+  },
+  "Audio/Voice/Walker/hlr_g_3.mp3": {
+   "size": 37232,
+   "required": false
+  },
+  "Audio/Voice/Walker/hlr_g_4.mp3": {
+   "size": 33904,
+   "required": false
+  },
+  "Audio/Voice/Walker/hlr_g_5.mp3": {
+   "size": 20384,
+   "required": false
+  },
+  "Audio/Voice/Walker/hlr_g_6.mp3": {
+   "size": 63232,
+   "required": false
+  },
+  "Audio/Voice/Walker/hlr_g_7.mp3": {
+   "size": 31408,
+   "required": false
+  },
+  "Audio/Voice/Walker/hlr_i_1.mp3": {
+   "size": 32656,
+   "required": false
+  },
+  "Audio/Voice/Walker/hpl_e_1.mp3": {
+   "size": 27872,
+   "required": false
+  },
+  "Audio/Voice/Walker/hpl_e_2.mp3": {
+   "size": 31200,
+   "required": false
+  },
+  "Audio/Voice/Walker/hpl_e_3.mp3": {
+   "size": 33696,
+   "required": false
+  },
+  "Audio/Voice/Walker/hpl_e_4.mp3": {
+   "size": 45760,
+   "required": false
+  },
+  "Audio/Voice/Walker/hpl_i_1.mp3": {
+   "size": 19552,
+   "required": false
+  },
+  "Audio/Voice/Walker/hsm_e_1.mp3": {
+   "size": 35360,
+   "required": false
+  },
+  "Audio/Voice/Walker/hsm_e_2.mp3": {
+   "size": 33072,
+   "required": false
+  },
+  "Audio/Voice/Walker/hsm_e_3.mp3": {
+   "size": 51792,
+   "required": false
+  },
+  "Audio/Voice/Walker/hsm_e_4.mp3": {
+   "size": 31824,
+   "required": false
+  },
+  "Audio/Voice/Walker/hsm_i_1.mp3": {
+   "size": 32864,
+   "required": false
+  },
+  "Audio/Voice/Walker/htr_e_1.mp3": {
+   "size": 50960,
+   "required": false
+  },
+  "Audio/Voice/Walker/htr_e_2.mp3": {
+   "size": 54704,
+   "required": false
+  },
+  "Audio/Voice/Walker/htr_i_1.mp3": {
+   "size": 44304,
+   "required": false
+  },
+  "Audio/Voice/Walker/imm_e_1.mp3": {
+   "size": 49920,
+   "required": false
+  },
+  "Audio/Voice/Walker/imm_e_2.mp3": {
+   "size": 39520,
+   "required": false
+  },
+  "Audio/Voice/Walker/imm_e_3.mp3": {
+   "size": 35776,
+   "required": false
+  },
+  "Audio/Voice/Walker/imm_i_1.mp3": {
+   "size": 15392,
+   "required": false
+  },
+  "Audio/Voice/Walker/inv_g_1.mp3": {
+   "size": 54288,
+   "required": false
+  },
+  "Audio/Voice/Walker/inv_g_2.mp3": {
+   "size": 43264,
+   "required": false
+  },
+  "Audio/Voice/Walker/inv_g_3.mp3": {
+   "size": 54496,
+   "required": false
+  },
+  "Audio/Voice/Walker/inv_g_4.mp3": {
+   "size": 32656,
+   "required": false
+  },
+  "Audio/Voice/Walker/inv_g_5.mp3": {
+   "size": 60528,
+   "required": false
+  },
+  "Audio/Voice/Walker/inv_g_6.mp3": {
+   "size": 83824,
+   "required": false
+  },
+  "Audio/Voice/Walker/inv_g_7.mp3": {
+   "size": 39104,
+   "required": false
+  },
+  "Audio/Voice/Walker/inv_i_1.mp3": {
+   "size": 30784,
+   "required": false
+  },
+  "Audio/Voice/Walker/lmb_e_1.mp3": {
+   "size": 66144,
+   "required": false
+  },
+  "Audio/Voice/Walker/lmb_e_2.mp3": {
+   "size": 33072,
+   "required": false
+  },
+  "Audio/Voice/Walker/lmb_g_1.mp3": {
+   "size": 39104,
+   "required": false
+  },
+  "Audio/Voice/Walker/lmb_g_2.mp3": {
+   "size": 39104,
+   "required": false
+  },
+  "Audio/Voice/Walker/lmb_g_3.mp3": {
+   "size": 39728,
+   "required": false
+  },
+  "Audio/Voice/Walker/lmb_g_4.mp3": {
+   "size": 25168,
+   "required": false
+  },
+  "Audio/Voice/Walker/lmb_g_5.mp3": {
+   "size": 32240,
+   "required": false
+  },
+  "Audio/Voice/Walker/lmb_g_6.mp3": {
+   "size": 40144,
+   "required": false
+  },
+  "Audio/Voice/Walker/lmb_g_7.mp3": {
+   "size": 31616,
+   "required": false
+  },
+  "Audio/Voice/Walker/lmb_i_1.mp3": {
+   "size": 23920,
+   "required": false
+  },
+  "Audio/Voice/Walker/mtl_e_1.mp3": {
+   "size": 38896,
+   "required": false
+  },
+  "Audio/Voice/Walker/mtl_e_2.mp3": {
+   "size": 49504,
+   "required": false
+  },
+  "Audio/Voice/Walker/mtl_g_1.mp3": {
+   "size": 43680,
+   "required": false
+  },
+  "Audio/Voice/Walker/mtl_g_2.mp3": {
+   "size": 49504,
+   "required": false
+  },
+  "Audio/Voice/Walker/mtl_g_3.mp3": {
+   "size": 40560,
+   "required": false
+  },
+  "Audio/Voice/Walker/mtl_g_4.mp3": {
+   "size": 42016,
+   "required": false
+  },
+  "Audio/Voice/Walker/mtl_g_5.mp3": {
+   "size": 46800,
+   "required": false
+  },
+  "Audio/Voice/Walker/mtl_g_6.mp3": {
+   "size": 42224,
+   "required": false
+  },
+  "Audio/Voice/Walker/mtl_g_7.mp3": {
+   "size": 49920,
+   "required": false
+  },
+  "Audio/Voice/Walker/mtl_i_1.mp3": {
+   "size": 29328,
+   "required": false
+  },
+  "Audio/Voice/Walker/nob_e_1.mp3": {
+   "size": 49504,
+   "required": false
+  },
+  "Audio/Voice/Walker/nob_g_1.mp3": {
+   "size": 68432,
+   "required": false
+  },
+  "Audio/Voice/Walker/nob_g_2.mp3": {
+   "size": 39520,
+   "required": false
+  },
+  "Audio/Voice/Walker/nob_g_3.mp3": {
+   "size": 77168,
+   "required": false
+  },
+  "Audio/Voice/Walker/nob_g_4.mp3": {
+   "size": 74256,
+   "required": false
+  },
+  "Audio/Voice/Walker/nob_g_5.mp3": {
+   "size": 42224,
+   "required": false
+  },
+  "Audio/Voice/Walker/nob_g_6.mp3": {
+   "size": 61360,
+   "required": false
+  },
+  "Audio/Voice/Walker/nob_g_7.mp3": {
+   "size": 58656,
+   "required": false
+  },
+  "Audio/Voice/Walker/nob_i_1.mp3": {
+   "size": 20384,
+   "required": false
+  },
+  "Audio/Voice/Walker/ods_e_1.mp3": {
+   "size": 29328,
+   "required": false
+  },
+  "Audio/Voice/Walker/ods_e_2.mp3": {
+   "size": 37856,
+   "required": false
+  },
+  "Audio/Voice/Walker/ods_e_3.mp3": {
+   "size": 44928,
+   "required": false
+  },
+  "Audio/Voice/Walker/ods_e_4.mp3": {
+   "size": 59072,
+   "required": false
+  },
+  "Audio/Voice/Walker/ods_e_6.mp3": {
+   "size": 61360,
+   "required": false
+  },
+  "Audio/Voice/Walker/ods_e_7.mp3": {
+   "size": 56368,
+   "required": false
+  },
+  "Audio/Voice/Walker/ods_i_1.mp3": {
+   "size": 40976,
+   "required": false
+  },
+  "Audio/Voice/Walker/oiv_e_1.mp3": {
+   "size": 16016,
+   "required": false
+  },
+  "Audio/Voice/Walker/oiv_e_2.mp3": {
+   "size": 24128,
+   "required": false
+  },
+  "Audio/Voice/Walker/oiv_i_1.mp3": {
+   "size": 13728,
+   "required": false
+  },
+  "Audio/Voice/Walker/omg_e_1.mp3": {
+   "size": 47632,
+   "required": false
+  },
+  "Audio/Voice/Walker/omg_e_2.mp3": {
+   "size": 46176,
+   "required": false
+  },
+  "Audio/Voice/Walker/omg_e_3.mp3": {
+   "size": 62192,
+   "required": false
+  },
+  "Audio/Voice/Walker/omg_e_4.mp3": {
+   "size": 46800,
+   "required": false
+  },
+  "Audio/Voice/Walker/omg_e_6.mp3": {
+   "size": 46384,
+   "required": false
+  },
+  "Audio/Voice/Walker/omg_e_7.mp3": {
+   "size": 56160,
+   "required": false
+  },
+  "Audio/Voice/Walker/omg_i_1.mp3": {
+   "size": 23296,
+   "required": false
+  },
+  "Audio/Voice/Walker/oth_e_1.mp3": {
+   "size": 35152,
+   "required": false
+  },
+  "Audio/Voice/Walker/oth_e_2.mp3": {
+   "size": 73008,
+   "required": false
+  },
+  "Audio/Voice/Walker/oth_e_3.mp3": {
+   "size": 51168,
+   "required": false
+  },
+  "Audio/Voice/Walker/oth_e_4.mp3": {
+   "size": 78000,
+   "required": false
+  },
+  "Audio/Voice/Walker/oth_e_6.mp3": {
+   "size": 68224,
+   "required": false
+  },
+  "Audio/Voice/Walker/oth_e_7.mp3": {
+   "size": 44928,
+   "required": false
+  },
+  "Audio/Voice/Walker/oth_i_1.mp3": {
+   "size": 26000,
+   "required": false
+  },
+  "Audio/Voice/Walker/ovn_e_1.mp3": {
+   "size": 57824,
+   "required": false
+  },
+  "Audio/Voice/Walker/ovn_e_2.mp3": {
+   "size": 50128,
+   "required": false
+  },
+  "Audio/Voice/Walker/ovn_e_3.mp3": {
+   "size": 50544,
+   "required": false
+  },
+  "Audio/Voice/Walker/ovn_e_4.mp3": {
+   "size": 80704,
+   "required": false
+  },
+  "Audio/Voice/Walker/ovn_e_6.mp3": {
+   "size": 66768,
+   "required": false
+  },
+  "Audio/Voice/Walker/ovn_e_7.mp3": {
+   "size": 66976,
+   "required": false
+  },
+  "Audio/Voice/Walker/ovn_i_1.mp3": {
+   "size": 18512,
+   "required": false
+  },
+  "Audio/Voice/Walker/pdl_e_1.mp3": {
+   "size": 30784,
+   "required": false
+  },
+  "Audio/Voice/Walker/pdl_e_2.mp3": {
+   "size": 31616,
+   "required": false
+  },
+  "Audio/Voice/Walker/pdl_e_3.mp3": {
+   "size": 23920,
+   "required": false
+  },
+  "Audio/Voice/Walker/pdl_e_4.mp3": {
+   "size": 53040,
+   "required": false
+  },
+  "Audio/Voice/Walker/pdl_e_5.mp3": {
+   "size": 30992,
+   "required": false
+  },
+  "Audio/Voice/Walker/pdl_e_6.mp3": {
+   "size": 35568,
+   "required": false
+  },
+  "Audio/Voice/Walker/pdl_i_1.mp3": {
+   "size": 27248,
+   "required": false
+  },
+  "Audio/Voice/Walker/phl_e_1.mp3": {
+   "size": 37856,
+   "required": false
+  },
+  "Audio/Voice/Walker/phl_e_2.mp3": {
+   "size": 36608,
+   "required": false
+  },
+  "Audio/Voice/Walker/phl_e_3.mp3": {
+   "size": 54496,
+   "required": false
+  },
+  "Audio/Voice/Walker/phl_e_4.mp3": {
+   "size": 46800,
+   "required": false
+  },
+  "Audio/Voice/Walker/phl_g_1.mp3": {
+   "size": 37856,
+   "required": false
+  },
+  "Audio/Voice/Walker/phl_g_2.mp3": {
+   "size": 46176,
+   "required": false
+  },
+  "Audio/Voice/Walker/phl_g_3.mp3": {
+   "size": 28080,
+   "required": false
+  },
+  "Audio/Voice/Walker/phl_g_4.mp3": {
+   "size": 57824,
+   "required": false
+  },
+  "Audio/Voice/Walker/phl_g_5.mp3": {
+   "size": 39520,
+   "required": false
+  },
+  "Audio/Voice/Walker/phl_g_6.mp3": {
+   "size": 29328,
+   "required": false
+  },
+  "Audio/Voice/Walker/phl_g_7.mp3": {
+   "size": 35360,
+   "required": false
+  },
+  "Audio/Voice/Walker/phl_i_1.mp3": {
+   "size": 42016,
+   "required": false
+  },
+  "Audio/Voice/Walker/pir_i_1.mp3": {
+   "size": 6032,
+   "required": false
+  },
+  "Audio/Voice/Walker/pla_e_1.mp3": {
+   "size": 22880,
+   "required": false
+  },
+  "Audio/Voice/Walker/pla_i_1.mp3": {
+   "size": 44512,
+   "required": false
+  },
+  "Audio/Voice/Walker/pre_e_1.mp3": {
+   "size": 73424,
+   "required": false
+  },
+  "Audio/Voice/Walker/pre_e_2.mp3": {
+   "size": 41184,
+   "required": false
+  },
+  "Audio/Voice/Walker/pre_e_3.mp3": {
+   "size": 32448,
+   "required": false
+  },
+  "Audio/Voice/Walker/pre_e_4.mp3": {
+   "size": 48256,
+   "required": false
+  },
+  "Audio/Voice/Walker/pre_e_5.mp3": {
+   "size": 54704,
+   "required": false
+  },
+  "Audio/Voice/Walker/pre_e_6.mp3": {
+   "size": 49504,
+   "required": false
+  },
+  "Audio/Voice/Walker/pre_i_1.mp3": {
+   "size": 29328,
+   "required": false
+  },
+  "Audio/Voice/Walker/rbl_e_1.mp3": {
+   "size": 33904,
+   "required": false
+  },
+  "Audio/Voice/Walker/rbl_e_2.mp3": {
+   "size": 32240,
+   "required": false
+  },
+  "Audio/Voice/Walker/rbl_e_3.mp3": {
+   "size": 34736,
+   "required": false
+  },
+  "Audio/Voice/Walker/rbl_e_4.mp3": {
+   "size": 43888,
+   "required": false
+  },
+  "Audio/Voice/Walker/rbl_i_1.mp3": {
+   "size": 40976,
+   "required": false
+  },
+  "Audio/Voice/Walker/rch_e_1.mp3": {
+   "size": 35984,
+   "required": false
+  },
+  "Audio/Voice/Walker/rch_e_2.mp3": {
+   "size": 16432,
+   "required": false
+  },
+  "Audio/Voice/Walker/rch_e_3.mp3": {
+   "size": 30368,
+   "required": false
+  },
+  "Audio/Voice/Walker/rch_g_1.mp3": {
+   "size": 59488,
+   "required": false
+  },
+  "Audio/Voice/Walker/rch_g_2.mp3": {
+   "size": 60112,
+   "required": false
+  },
+  "Audio/Voice/Walker/rch_g_3.mp3": {
+   "size": 57824,
+   "required": false
+  },
+  "Audio/Voice/Walker/rch_g_4.mp3": {
+   "size": 35360,
+   "required": false
+  },
+  "Audio/Voice/Walker/rch_g_5.mp3": {
+   "size": 43472,
+   "required": false
+  },
+  "Audio/Voice/Walker/rch_g_6.mp3": {
+   "size": 37232,
+   "required": false
+  },
+  "Audio/Voice/Walker/rch_g_7.mp3": {
+   "size": 42848,
+   "required": false
+  },
+  "Audio/Voice/Walker/rch_i_1.mp3": {
+   "size": 32240,
+   "required": false
+  },
+  "Audio/Voice/Walker/sat_e_1.mp3": {
+   "size": 13936,
+   "required": false
+  },
+  "Audio/Voice/Walker/sch_g_1.mp3": {
+   "size": 67184,
+   "required": false
+  },
+  "Audio/Voice/Walker/sch_g_2.mp3": {
+   "size": 57616,
+   "required": false
+  },
+  "Audio/Voice/Walker/sch_g_3.mp3": {
+   "size": 63024,
+   "required": false
+  },
+  "Audio/Voice/Walker/sch_g_4.mp3": {
+   "size": 56368,
+   "required": false
+  },
+  "Audio/Voice/Walker/sch_g_5.mp3": {
+   "size": 59696,
+   "required": false
+  },
+  "Audio/Voice/Walker/sch_g_6.mp3": {
+   "size": 70304,
+   "required": false
+  },
+  "Audio/Voice/Walker/sch_g_7.mp3": {
+   "size": 70304,
+   "required": false
+  },
+  "Audio/Voice/Walker/sch_i_1.mp3": {
+   "size": 75296,
+   "required": false
+  },
+  "Audio/Voice/Walker/shp_e_1.mp3": {
+   "size": 28080,
+   "required": false
+  },
+  "Audio/Voice/Walker/shp_e_2.mp3": {
+   "size": 31408,
+   "required": false
+  },
+  "Audio/Voice/Walker/shp_e_3.mp3": {
+   "size": 27040,
+   "required": false
+  },
+  "Audio/Voice/Walker/shp_e_4.mp3": {
+   "size": 26208,
+   "required": false
+  },
+  "Audio/Voice/Walker/shp_g_1.mp3": {
+   "size": 48672,
+   "required": false
+  },
+  "Audio/Voice/Walker/shp_g_2.mp3": {
+   "size": 45552,
+   "required": false
+  },
+  "Audio/Voice/Walker/shp_g_3.mp3": {
+   "size": 32656,
+   "required": false
+  },
+  "Audio/Voice/Walker/shp_g_4.mp3": {
+   "size": 48256,
+   "required": false
+  },
+  "Audio/Voice/Walker/shp_g_5.mp3": {
+   "size": 42224,
+   "required": false
+  },
+  "Audio/Voice/Walker/shp_g_6.mp3": {
+   "size": 33280,
+   "required": false
+  },
+  "Audio/Voice/Walker/shp_g_7.mp3": {
+   "size": 39520,
+   "required": false
+  },
+  "Audio/Voice/Walker/shp_i_1.mp3": {
+   "size": 40768,
+   "required": false
+  },
+  "Audio/Voice/Walker/slv_e_1.mp3": {
+   "size": 35360,
+   "required": false
+  },
+  "Audio/Voice/Walker/slv_e_2.mp3": {
+   "size": 32448,
+   "required": false
+  },
+  "Audio/Voice/Walker/slv_g_1.mp3": {
+   "size": 62400,
+   "required": false
+  },
+  "Audio/Voice/Walker/slv_g_2.mp3": {
+   "size": 48464,
+   "required": false
+  },
+  "Audio/Voice/Walker/slv_g_3.mp3": {
+   "size": 60320,
+   "required": false
+  },
+  "Audio/Voice/Walker/slv_g_4.mp3": {
+   "size": 55952,
+   "required": false
+  },
+  "Audio/Voice/Walker/slv_g_5.mp3": {
+   "size": 31616,
+   "required": false
+  },
+  "Audio/Voice/Walker/slv_g_6.mp3": {
+   "size": 18096,
+   "required": false
+  },
+  "Audio/Voice/Walker/slv_g_7.mp3": {
+   "size": 55952,
+   "required": false
+  },
+  "Audio/Voice/Walker/slv_i_1.mp3": {
+   "size": 22464,
+   "required": false
+  },
+  "Audio/Voice/Walker/spr_e_1.mp3": {
+   "size": 62816,
+   "required": false
+  },
+  "Audio/Voice/Walker/spr_e_2.mp3": {
+   "size": 47424,
+   "required": false
+  },
+  "Audio/Voice/Walker/spr_e_3.mp3": {
+   "size": 24960,
+   "required": false
+  },
+  "Audio/Voice/Walker/spr_e_4.mp3": {
+   "size": 45760,
+   "required": false
+  },
+  "Audio/Voice/Walker/spr_i_1.mp3": {
+   "size": 27872,
+   "required": false
+  },
+  "Audio/Voice/Walker/stn_e_1.mp3": {
+   "size": 31616,
+   "required": false
+  },
+  "Audio/Voice/Walker/stn_e_2.mp3": {
+   "size": 26208,
+   "required": false
+  },
+  "Audio/Voice/Walker/stn_e_3.mp3": {
+   "size": 41808,
+   "required": false
+  },
+  "Audio/Voice/Walker/stn_g_1.mp3": {
+   "size": 39520,
+   "required": false
+  },
+  "Audio/Voice/Walker/stn_g_2.mp3": {
+   "size": 39936,
+   "required": false
+  },
+  "Audio/Voice/Walker/stn_g_3.mp3": {
+   "size": 26624,
+   "required": false
+  },
+  "Audio/Voice/Walker/stn_g_4.mp3": {
+   "size": 27248,
+   "required": false
+  },
+  "Audio/Voice/Walker/stn_g_5.mp3": {
+   "size": 52832,
+   "required": false
+  },
+  "Audio/Voice/Walker/stn_g_6.mp3": {
+   "size": 33904,
+   "required": false
+  },
+  "Audio/Voice/Walker/stn_g_7.mp3": {
+   "size": 59072,
+   "required": false
+  },
+  "Audio/Voice/Walker/stn_i_1.mp3": {
+   "size": 21632,
+   "required": false
+  },
+  "Audio/Voice/Walker/sup_e_1.mp3": {
+   "size": 48464,
+   "required": false
+  },
+  "Audio/Voice/Walker/sup_e_2.mp3": {
+   "size": 26624,
+   "required": false
+  },
+  "Audio/Voice/Walker/sup_e_3.mp3": {
+   "size": 29328,
+   "required": false
+  },
+  "Audio/Voice/Walker/sup_e_4.mp3": {
+   "size": 37024,
+   "required": false
+  },
+  "Audio/Voice/Walker/sup_e_5.mp3": {
+   "size": 38480,
+   "required": false
+  },
+  "Audio/Voice/Walker/sup_g_1.mp3": {
+   "size": 41808,
+   "required": false
+  },
+  "Audio/Voice/Walker/sup_g_2.mp3": {
+   "size": 36816,
+   "required": false
+  },
+  "Audio/Voice/Walker/sup_g_3.mp3": {
+   "size": 25792,
+   "required": false
+  },
+  "Audio/Voice/Walker/sup_g_4.mp3": {
+   "size": 32864,
+   "required": false
+  },
+  "Audio/Voice/Walker/sup_g_5.mp3": {
+   "size": 36608,
+   "required": false
+  },
+  "Audio/Voice/Walker/sup_g_6.mp3": {
+   "size": 20592,
+   "required": false
+  },
+  "Audio/Voice/Walker/sup_g_7.mp3": {
+   "size": 42224,
+   "required": false
+  },
+  "Audio/Voice/Walker/sup_i_1.mp3": {
+   "size": 10816,
+   "required": false
+  },
+  "Audio/Voice/Walker/tdr_e_1.mp3": {
+   "size": 36400,
+   "required": false
+  },
+  "Audio/Voice/Walker/tdr_e_2.mp3": {
+   "size": 32656,
+   "required": false
+  },
+  "Audio/Voice/Walker/tdr_g_1.mp3": {
+   "size": 25792,
+   "required": false
+  },
+  "Audio/Voice/Walker/tdr_g_2.mp3": {
+   "size": 37856,
+   "required": false
+  },
+  "Audio/Voice/Walker/tdr_g_3.mp3": {
+   "size": 26624,
+   "required": false
+  },
+  "Audio/Voice/Walker/tdr_g_4.mp3": {
+   "size": 23296,
+   "required": false
+  },
+  "Audio/Voice/Walker/tdr_g_5.mp3": {
+   "size": 28912,
+   "required": false
+  },
+  "Audio/Voice/Walker/tdr_g_6.mp3": {
+   "size": 23504,
+   "required": false
+  },
+  "Audio/Voice/Walker/tdr_g_7.mp3": {
+   "size": 33488,
+   "required": false
+  },
+  "Audio/Voice/Walker/tdr_i_1.mp3": {
+   "size": 15808,
+   "required": false
+  },
+  "Audio/Wavs/Ares_warr_atk1.wav": {
+   "size": 49990,
+   "required": false
+  },
+  "Audio/Wavs/Ares_warr_atk2.wav": {
+   "size": 50246,
+   "required": false
+  },
+  "Audio/Wavs/Ares_warr_atk3.wav": {
+   "size": 32962,
+   "required": false
+  },
+  "Audio/Wavs/Ares_warr_atk4.wav": {
+   "size": 32968,
+   "required": false
+  },
+  "Audio/Wavs/Ares_warr_die.wav": {
+   "size": 35384,
+   "required": false
+  },
+  "Audio/Wavs/Ares_warr_hit.wav": {
+   "size": 38782,
+   "required": false
+  },
+  "Audio/Wavs/At_arch_die.wav": {
+   "size": 28166,
+   "required": false
+  },
+  "Audio/Wavs/At_arch_hit.wav": {
+   "size": 25506,
+   "required": false
+  },
+  "Audio/Wavs/At_char_atk1.wav": {
+   "size": 21914,
+   "required": false
+  },
+  "Audio/Wavs/At_char_atk2.wav": {
+   "size": 22302,
+   "required": false
+  },
+  "Audio/Wavs/At_char_die.wav": {
+   "size": 78818,
+   "required": false
+  },
+  "Audio/Wavs/At_char_hit.wav": {
+   "size": 37364,
+   "required": false
+  },
+  "Audio/Wavs/At_inf_atk1.wav": {
+   "size": 30680,
+   "required": false
+  },
+  "Audio/Wavs/At_inf_atk2.wav": {
+   "size": 28278,
+   "required": false
+  },
+  "Audio/Wavs/At_inf_die.wav": {
+   "size": 42012,
+   "required": false
+  },
+  "Audio/Wavs/At_inf_hit.wav": {
+   "size": 34680,
+   "required": false
+  },
+  "Audio/Wavs/At_marines_atk1.wav": {
+   "size": 31926,
+   "required": false
+  },
+  "Audio/Wavs/At_marines_atk2.wav": {
+   "size": 23420,
+   "required": false
+  },
+  "Audio/Wavs/At_marines_die.wav": {
+   "size": 29776,
+   "required": false
+  },
+  "Audio/Wavs/At_marines_hit.wav": {
+   "size": 48208,
+   "required": false
+  },
+  "Audio/Wavs/At_sentry_die.wav": {
+   "size": 23450,
+   "required": false
+  },
+  "Audio/Wavs/At_sentry_hit.wav": {
+   "size": 25112,
+   "required": false
+  },
+  "Audio/Wavs/D_Earthquake.wav": {
+   "size": 536206,
+   "required": false
+  },
+  "Audio/Wavs/D_Flood.wav": {
+   "size": 886166,
+   "required": false
+  },
+  "Audio/Wavs/D_Landslide.wav": {
+   "size": 221628,
+   "required": false
+  },
+  "Audio/Wavs/D_Lava.wav": {
+   "size": 709906,
+   "required": false
+  },
+  "Audio/Wavs/Eg_arch_die.wav": {
+   "size": 26296,
+   "required": false
+  },
+  "Audio/Wavs/Eg_arch_hit.wav": {
+   "size": 16850,
+   "required": false
+  },
+  "Audio/Wavs/Eg_char_atk1.wav": {
+   "size": 20692,
+   "required": false
+  },
+  "Audio/Wavs/Eg_char_atk2.wav": {
+   "size": 21058,
+   "required": false
+  },
+  "Audio/Wavs/Eg_char_die.wav": {
+   "size": 86262,
+   "required": false
+  },
+  "Audio/Wavs/Eg_char_hit.wav": {
+   "size": 33866,
+   "required": false
+  },
+  "Audio/Wavs/Eg_inf_atk1.wav": {
+   "size": 43576,
+   "required": false
+  },
+  "Audio/Wavs/Eg_inf_atk2.wav": {
+   "size": 38194,
+   "required": false
+  },
+  "Audio/Wavs/Eg_inf_die.wav": {
+   "size": 15288,
+   "required": false
+  },
+  "Audio/Wavs/Eg_inf_hit.wav": {
+   "size": 34166,
+   "required": false
+  },
+  "Audio/Wavs/Fire.wav": {
+   "size": 270442,
+   "required": false
+  },
+  "Audio/Wavs/Fire_volley1.wav": {
+   "size": 65762,
+   "required": false
+  },
+  "Audio/Wavs/Fire_volley1a.wav": {
+   "size": 54598,
+   "required": false
+  },
+  "Audio/Wavs/Fire_volley2.wav": {
+   "size": 57180,
+   "required": false
+  },
+  "Audio/Wavs/Fire_volley2a.wav": {
+   "size": 53716,
+   "required": false
+  },
+  "Audio/Wavs/Fireball_hit.wav": {
+   "size": 63678,
+   "required": false
+  },
+  "Audio/Wavs/Frigate_volley1.wav": {
+   "size": 44464,
+   "required": false
+  },
+  "Audio/Wavs/Frigate_volley2.wav": {
+   "size": 44842,
+   "required": false
+  },
+  "Audio/Wavs/G_Atlas_atk1.wav": {
+   "size": 78394,
+   "required": false
+  },
+  "Audio/Wavs/G_Atlas_atk2.wav": {
+   "size": 83302,
+   "required": false
+  },
+  "Audio/Wavs/G_Atlas_atk3.wav": {
+   "size": 100714,
+   "required": false
+  },
+  "Audio/Wavs/G_Atlas_atk4.wav": {
+   "size": 96290,
+   "required": false
+  },
+  "Audio/Wavs/G_Atlas_curse.wav": {
+   "size": 105072,
+   "required": false
+  },
+  "Audio/Wavs/G_Atlas_demat.wav": {
+   "size": 145692,
+   "required": false
+  },
+  "Audio/Wavs/G_Atlas_hit.wav": {
+   "size": 78154,
+   "required": false
+  },
+  "Audio/Wavs/G_Atlas_mat.wav": {
+   "size": 134162,
+   "required": false
+  },
+  "Audio/Wavs/G_Atlas_sanctify.wav": {
+   "size": 93400,
+   "required": false
+  },
+  "Audio/Wavs/G_Hera_atk1.wav": {
+   "size": 119750,
+   "required": false
+  },
+  "Audio/Wavs/G_Hera_atk2.wav": {
+   "size": 116598,
+   "required": false
+  },
+  "Audio/Wavs/G_Hera_atk3.wav": {
+   "size": 119750,
+   "required": false
+  },
+  "Audio/Wavs/G_Hera_atk4.wav": {
+   "size": 116598,
+   "required": false
+  },
+  "Audio/Wavs/G_Hera_curse.wav": {
+   "size": 128518,
+   "required": false
+  },
+  "Audio/Wavs/G_Hera_demat.wav": {
+   "size": 133454,
+   "required": false
+  },
+  "Audio/Wavs/G_Hera_hit.wav": {
+   "size": 78154,
+   "required": false
+  },
+  "Audio/Wavs/G_Hera_mat.wav": {
+   "size": 142188,
+   "required": false
+  },
+  "Audio/Wavs/G_Hera_sanctify.wav": {
+   "size": 125544,
+   "required": false
+  },
+  "Audio/Wavs/G_aphrodite_atk1.wav": {
+   "size": 98422,
+   "required": false
+  },
+  "Audio/Wavs/G_aphrodite_atk2.wav": {
+   "size": 135608,
+   "required": false
+  },
+  "Audio/Wavs/G_aphrodite_atk3.wav": {
+   "size": 98422,
+   "required": false
+  },
+  "Audio/Wavs/G_aphrodite_atk4.wav": {
+   "size": 135608,
+   "required": false
+  },
+  "Audio/Wavs/G_aphrodite_curse.wav": {
+   "size": 106350,
+   "required": false
+  },
+  "Audio/Wavs/G_aphrodite_demat.wav": {
+   "size": 130166,
+   "required": false
+  },
+  "Audio/Wavs/G_aphrodite_hit.wav": {
+   "size": 78124,
+   "required": false
+  },
+  "Audio/Wavs/G_aphrodite_mat.wav": {
+   "size": 166440,
+   "required": false
+  },
+  "Audio/Wavs/G_aphrodite_sanctify.wav": {
+   "size": 93402,
+   "required": false
+  },
+  "Audio/Wavs/G_apollo_atk1.wav": {
+   "size": 87152,
+   "required": false
+  },
+  "Audio/Wavs/G_apollo_atk2.wav": {
+   "size": 89718,
+   "required": false
+  },
+  "Audio/Wavs/G_apollo_atk3.wav": {
+   "size": 100610,
+   "required": false
+  },
+  "Audio/Wavs/G_apollo_atk4.wav": {
+   "size": 98482,
+   "required": false
+  },
+  "Audio/Wavs/G_apollo_curse.wav": {
+   "size": 172664,
+   "required": false
+  },
+  "Audio/Wavs/G_apollo_demat.wav": {
+   "size": 142076,
+   "required": false
+  },
+  "Audio/Wavs/G_apollo_hit.wav": {
+   "size": 78124,
+   "required": false
+  },
+  "Audio/Wavs/G_apollo_mat.wav": {
+   "size": 176246,
+   "required": false
+  },
+  "Audio/Wavs/G_apollo_sanctify.wav": {
+   "size": 125546,
+   "required": false
+  },
+  "Audio/Wavs/G_ares_atk1.wav": {
+   "size": 75420,
+   "required": false
+  },
+  "Audio/Wavs/G_ares_atk2.wav": {
+   "size": 74140,
+   "required": false
+  },
+  "Audio/Wavs/G_ares_atk3.wav": {
+   "size": 75420,
+   "required": false
+  },
+  "Audio/Wavs/G_ares_atk4.wav": {
+   "size": 74140,
+   "required": false
+  },
+  "Audio/Wavs/G_ares_curse.wav": {
+   "size": 122102,
+   "required": false
+  },
+  "Audio/Wavs/G_ares_demat.wav": {
+   "size": 115062,
+   "required": false
+  },
+  "Audio/Wavs/G_ares_hit.wav": {
+   "size": 78124,
+   "required": false
+  },
+  "Audio/Wavs/G_ares_mat.wav": {
+   "size": 148342,
+   "required": false
+  },
+  "Audio/Wavs/G_ares_sanctify.wav": {
+   "size": 93402,
+   "required": false
+  },
+  "Audio/Wavs/G_artemis_atk1.wav": {
+   "size": 87152,
+   "required": false
+  },
+  "Audio/Wavs/G_artemis_atk2.wav": {
+   "size": 89718,
+   "required": false
+  },
+  "Audio/Wavs/G_artemis_atk3.wav": {
+   "size": 100610,
+   "required": false
+  },
+  "Audio/Wavs/G_artemis_atk4.wav": {
+   "size": 98482,
+   "required": false
+  },
+  "Audio/Wavs/G_artemis_curse.wav": {
+   "size": 113270,
+   "required": false
+  },
+  "Audio/Wavs/G_artemis_demat.wav": {
+   "size": 120694,
+   "required": false
+  },
+  "Audio/Wavs/G_artemis_hit.wav": {
+   "size": 78124,
+   "required": false
+  },
+  "Audio/Wavs/G_artemis_mat.wav": {
+   "size": 149034,
+   "required": false
+  },
+  "Audio/Wavs/G_artemis_sanctify.wav": {
+   "size": 93402,
+   "required": false
+  },
+  "Audio/Wavs/G_athena_atk1.wav": {
+   "size": 95530,
+   "required": false
+  },
+  "Audio/Wavs/G_athena_atk2.wav": {
+   "size": 96460,
+   "required": false
+  },
+  "Audio/Wavs/G_athena_atk3.wav": {
+   "size": 124476,
+   "required": false
+  },
+  "Audio/Wavs/G_athena_atk4.wav": {
+   "size": 122942,
+   "required": false
+  },
+  "Audio/Wavs/G_athena_curse.wav": {
+   "size": 106350,
+   "required": false
+  },
+  "Audio/Wavs/G_athena_demat.wav": {
+   "size": 139382,
+   "required": false
+  },
+  "Audio/Wavs/G_athena_hit.wav": {
+   "size": 78124,
+   "required": false
+  },
+  "Audio/Wavs/G_athena_mat.wav": {
+   "size": 138694,
+   "required": false
+  },
+  "Audio/Wavs/G_athena_sanctify.wav": {
+   "size": 125546,
+   "required": false
+  },
+  "Audio/Wavs/G_demeter_atk1.wav": {
+   "size": 100610,
+   "required": false
+  },
+  "Audio/Wavs/G_demeter_atk2.wav": {
+   "size": 98482,
+   "required": false
+  },
+  "Audio/Wavs/G_demeter_atk3.wav": {
+   "size": 100610,
+   "required": false
+  },
+  "Audio/Wavs/G_demeter_atk4.wav": {
+   "size": 98482,
+   "required": false
+  },
+  "Audio/Wavs/G_demeter_curse.wav": {
+   "size": 117934,
+   "required": false
+  },
+  "Audio/Wavs/G_demeter_demat.wav": {
+   "size": 92662,
+   "required": false
+  },
+  "Audio/Wavs/G_demeter_hit.wav": {
+   "size": 78124,
+   "required": false
+  },
+  "Audio/Wavs/G_demeter_mat.wav": {
+   "size": 147242,
+   "required": false
+  },
+  "Audio/Wavs/G_demeter_sanctify.wav": {
+   "size": 125546,
+   "required": false
+  },
+  "Audio/Wavs/G_dionysus_atk1.wav": {
+   "size": 158874,
+   "required": false
+  },
+  "Audio/Wavs/G_dionysus_atk2.wav": {
+   "size": 158874,
+   "required": false
+  },
+  "Audio/Wavs/G_dionysus_atk3.wav": {
+   "size": 158874,
+   "required": false
+  },
+  "Audio/Wavs/G_dionysus_atk4.wav": {
+   "size": 158874,
+   "required": false
+  },
+  "Audio/Wavs/G_dionysus_curse.wav": {
+   "size": 106350,
+   "required": false
+  },
+  "Audio/Wavs/G_dionysus_demat.wav": {
+   "size": 98166,
+   "required": false
+  },
+  "Audio/Wavs/G_dionysus_hit.wav": {
+   "size": 117368,
+   "required": false
+  },
+  "Audio/Wavs/G_dionysus_mat.wav": {
+   "size": 98166,
+   "required": false
+  },
+  "Audio/Wavs/G_dionysus_sanctify.wav": {
+   "size": 125546,
+   "required": false
+  },
+  "Audio/Wavs/G_hades_atk1.wav": {
+   "size": 100932,
+   "required": false
+  },
+  "Audio/Wavs/G_hades_atk2.wav": {
+   "size": 103576,
+   "required": false
+  },
+  "Audio/Wavs/G_hades_atk3.wav": {
+   "size": 100932,
+   "required": false
+  },
+  "Audio/Wavs/G_hades_atk4.wav": {
+   "size": 103576,
+   "required": false
+  },
+  "Audio/Wavs/G_hades_curse.wav": {
+   "size": 89838,
+   "required": false
+  },
+  "Audio/Wavs/G_hades_demat.wav": {
+   "size": 127412,
+   "required": false
+  },
+  "Audio/Wavs/G_hades_hit.wav": {
+   "size": 78124,
+   "required": false
+  },
+  "Audio/Wavs/G_hades_mat.wav": {
+   "size": 187510,
+   "required": false
+  },
+  "Audio/Wavs/G_hades_sanctify.wav": {
+   "size": 125546,
+   "required": false
+  },
+  "Audio/Wavs/G_hephaestus_atk1.wav": {
+   "size": 80156,
+   "required": false
+  },
+  "Audio/Wavs/G_hephaestus_atk2.wav": {
+   "size": 74874,
+   "required": false
+  },
+  "Audio/Wavs/G_hephaestus_atk3.wav": {
+   "size": 80156,
+   "required": false
+  },
+  "Audio/Wavs/G_hephaestus_atk4.wav": {
+   "size": 74874,
+   "required": false
+  },
+  "Audio/Wavs/G_hephaestus_curse.wav": {
+   "size": 136566,
+   "required": false
+  },
+  "Audio/Wavs/G_hephaestus_demat.wav": {
+   "size": 100584,
+   "required": false
+  },
+  "Audio/Wavs/G_hephaestus_hit.wav": {
+   "size": 78124,
+   "required": false
+  },
+  "Audio/Wavs/G_hephaestus_mat.wav": {
+   "size": 199798,
+   "required": false
+  },
+  "Audio/Wavs/G_hephaestus_sanctify.wav": {
+   "size": 93402,
+   "required": false
+  },
+  "Audio/Wavs/G_hermes_atk1.wav": {
+   "size": 72808,
+   "required": false
+  },
+  "Audio/Wavs/G_hermes_atk2.wav": {
+   "size": 72516,
+   "required": false
+  },
+  "Audio/Wavs/G_hermes_atk3.wav": {
+   "size": 72808,
+   "required": false
+  },
+  "Audio/Wavs/G_hermes_atk4.wav": {
+   "size": 72516,
+   "required": false
+  },
+  "Audio/Wavs/G_hermes_curse.wav": {
+   "size": 113846,
+   "required": false
+  },
+  "Audio/Wavs/G_hermes_demat.wav": {
+   "size": 96120,
+   "required": false
+  },
+  "Audio/Wavs/G_hermes_hit.wav": {
+   "size": 78124,
+   "required": false
+  },
+  "Audio/Wavs/G_hermes_mat.wav": {
+   "size": 120800,
+   "required": false
+  },
+  "Audio/Wavs/G_hermes_sanctify.wav": {
+   "size": 125546,
+   "required": false
+  },
+  "Audio/Wavs/G_miss.wav": {
+   "size": 82176,
+   "required": false
+  },
+  "Audio/Wavs/G_poseidon_atk1.wav": {
+   "size": 81994,
+   "required": false
+  },
+  "Audio/Wavs/G_poseidon_atk2.wav": {
+   "size": 81994,
+   "required": false
+  },
+  "Audio/Wavs/G_poseidon_atk3.wav": {
+   "size": 81994,
+   "required": false
+  },
+  "Audio/Wavs/G_poseidon_atk4.wav": {
+   "size": 81994,
+   "required": false
+  },
+  "Audio/Wavs/G_poseidon_curse.wav": {
+   "size": 106350,
+   "required": false
+  },
+  "Audio/Wavs/G_poseidon_demat.wav": {
+   "size": 110772,
+   "required": false
+  },
+  "Audio/Wavs/G_poseidon_hit.wav": {
+   "size": 78124,
+   "required": false
+  },
+  "Audio/Wavs/G_poseidon_mat.wav": {
+   "size": 148394,
+   "required": false
+  },
+  "Audio/Wavs/G_poseidon_sanctify.wav": {
+   "size": 125546,
+   "required": false
+  },
+  "Audio/Wavs/G_zeus_atk1.wav": {
+   "size": 138290,
+   "required": false
+  },
+  "Audio/Wavs/G_zeus_atk2.wav": {
+   "size": 143990,
+   "required": false
+  },
+  "Audio/Wavs/G_zeus_atk3.wav": {
+   "size": 130774,
+   "required": false
+  },
+  "Audio/Wavs/G_zeus_atk4.wav": {
+   "size": 141392,
+   "required": false
+  },
+  "Audio/Wavs/G_zeus_curse.wav": {
+   "size": 107974,
+   "required": false
+  },
+  "Audio/Wavs/G_zeus_demat.wav": {
+   "size": 126214,
+   "required": false
+  },
+  "Audio/Wavs/G_zeus_hit.wav": {
+   "size": 78454,
+   "required": false
+  },
+  "Audio/Wavs/G_zeus_mat.wav": {
+   "size": 154230,
+   "required": false
+  },
+  "Audio/Wavs/G_zeus_sanctify.wav": {
+   "size": 93402,
+   "required": false
+  },
+  "Audio/Wavs/H_achilles_atk1.wav": {
+   "size": 64296,
+   "required": false
+  },
+  "Audio/Wavs/H_achilles_atk2.wav": {
+   "size": 65448,
+   "required": false
+  },
+  "Audio/Wavs/H_achilles_die.wav": {
+   "size": 186498,
+   "required": false
+  },
+  "Audio/Wavs/H_achilles_hit.wav": {
+   "size": 55354,
+   "required": false
+  },
+  "Audio/Wavs/H_atalanta_atk1.wav": {
+   "size": 79948,
+   "required": false
+  },
+  "Audio/Wavs/H_atalanta_atk2.wav": {
+   "size": 75558,
+   "required": false
+  },
+  "Audio/Wavs/H_atalanta_die.wav": {
+   "size": 128172,
+   "required": false
+  },
+  "Audio/Wavs/H_atalanta_hit.wav": {
+   "size": 53840,
+   "required": false
+  },
+  "Audio/Wavs/H_bellerophon_atk1.wav": {
+   "size": 81026,
+   "required": false
+  },
+  "Audio/Wavs/H_bellerophon_atk2.wav": {
+   "size": 81006,
+   "required": false
+  },
+  "Audio/Wavs/H_bellerophon_die.wav": {
+   "size": 120954,
+   "required": false
+  },
+  "Audio/Wavs/H_bellerophon_hit.wav": {
+   "size": 52608,
+   "required": false
+  },
+  "Audio/Wavs/H_hercules_atk1.wav": {
+   "size": 49948,
+   "required": false
+  },
+  "Audio/Wavs/H_hercules_atk2.wav": {
+   "size": 50942,
+   "required": false
+  },
+  "Audio/Wavs/H_hercules_die.wav": {
+   "size": 114292,
+   "required": false
+  },
+  "Audio/Wavs/H_hercules_hit.wav": {
+   "size": 45992,
+   "required": false
+  },
+  "Audio/Wavs/H_jason_atk1.wav": {
+   "size": 68030,
+   "required": false
+  },
+  "Audio/Wavs/H_jason_atk2.wav": {
+   "size": 85498,
+   "required": false
+  },
+  "Audio/Wavs/H_jason_die.wav": {
+   "size": 109862,
+   "required": false
+  },
+  "Audio/Wavs/H_jason_hit.wav": {
+   "size": 46002,
+   "required": false
+  },
+  "Audio/Wavs/H_odysseus_atk1.wav": {
+   "size": 44002,
+   "required": false
+  },
+  "Audio/Wavs/H_odysseus_atk2.wav": {
+   "size": 43894,
+   "required": false
+  },
+  "Audio/Wavs/H_odysseus_die.wav": {
+   "size": 107672,
+   "required": false
+  },
+  "Audio/Wavs/H_odysseus_hit.wav": {
+   "size": 49466,
+   "required": false
+  },
+  "Audio/Wavs/H_perseus_atk1.wav": {
+   "size": 68870,
+   "required": false
+  },
+  "Audio/Wavs/H_perseus_atk2.wav": {
+   "size": 69692,
+   "required": false
+  },
+  "Audio/Wavs/H_perseus_die.wav": {
+   "size": 126372,
+   "required": false
+  },
+  "Audio/Wavs/H_perseus_hit.wav": {
+   "size": 45996,
+   "required": false
+  },
+  "Audio/Wavs/H_theseus_atk1.wav": {
+   "size": 54972,
+   "required": false
+  },
+  "Audio/Wavs/H_theseus_atk2.wav": {
+   "size": 55084,
+   "required": false
+  },
+  "Audio/Wavs/H_theseus_die.wav": {
+   "size": 121034,
+   "required": false
+  },
+  "Audio/Wavs/H_theseus_hit.wav": {
+   "size": 46712,
+   "required": false
+  },
+  "Audio/Wavs/M_calydonian_atk1.wav": {
+   "size": 42562,
+   "required": false
+  },
+  "Audio/Wavs/M_calydonian_atk2.wav": {
+   "size": 43020,
+   "required": false
+  },
+  "Audio/Wavs/M_calydonian_atk3.wav": {
+   "size": 79694,
+   "required": false
+  },
+  "Audio/Wavs/M_calydonian_atk4.wav": {
+   "size": 82906,
+   "required": false
+  },
+  "Audio/Wavs/M_calydonian_die.wav": {
+   "size": 65224,
+   "required": false
+  },
+  "Audio/Wavs/M_calydonian_hit.wav": {
+   "size": 36456,
+   "required": false
+  },
+  "Audio/Wavs/M_cerberus_atk1.wav": {
+   "size": 45844,
+   "required": false
+  },
+  "Audio/Wavs/M_cerberus_atk2.wav": {
+   "size": 51338,
+   "required": false
+  },
+  "Audio/Wavs/M_cerberus_atk3.wav": {
+   "size": 53940,
+   "required": false
+  },
+  "Audio/Wavs/M_cerberus_atk4.wav": {
+   "size": 54254,
+   "required": false
+  },
+  "Audio/Wavs/M_cerberus_die.wav": {
+   "size": 96998,
+   "required": false
+  },
+  "Audio/Wavs/M_cerberus_hit.wav": {
+   "size": 44444,
+   "required": false
+  },
+  "Audio/Wavs/M_chimera_atk1.wav": {
+   "size": 52510,
+   "required": false
+  },
+  "Audio/Wavs/M_chimera_atk2.wav": {
+   "size": 52444,
+   "required": false
+  },
+  "Audio/Wavs/M_chimera_atk3.wav": {
+   "size": 81386,
+   "required": false
+  },
+  "Audio/Wavs/M_chimera_atk4.wav": {
+   "size": 81214,
+   "required": false
+  },
+  "Audio/Wavs/M_chimera_die.wav": {
+   "size": 120794,
+   "required": false
+  },
+  "Audio/Wavs/M_chimera_hit.wav": {
+   "size": 35402,
+   "required": false
+  },
+  "Audio/Wavs/M_cyclops_atk1.wav": {
+   "size": 62234,
+   "required": false
+  },
+  "Audio/Wavs/M_cyclops_atk2.wav": {
+   "size": 65386,
+   "required": false
+  },
+  "Audio/Wavs/M_cyclops_atk3.wav": {
+   "size": 89740,
+   "required": false
+  },
+  "Audio/Wavs/M_cyclops_atk4.wav": {
+   "size": 86168,
+   "required": false
+  },
+  "Audio/Wavs/M_cyclops_die.wav": {
+   "size": 52062,
+   "required": false
+  },
+  "Audio/Wavs/M_cyclops_hit.wav": {
+   "size": 30712,
+   "required": false
+  },
+  "Audio/Wavs/M_dragon_atk1.wav": {
+   "size": 123530,
+   "required": false
+  },
+  "Audio/Wavs/M_dragon_atk2.wav": {
+   "size": 117360,
+   "required": false
+  },
+  "Audio/Wavs/M_dragon_atk3.wav": {
+   "size": 63146,
+   "required": false
+  },
+  "Audio/Wavs/M_dragon_atk4.wav": {
+   "size": 51870,
+   "required": false
+  },
+  "Audio/Wavs/M_dragon_die.wav": {
+   "size": 130972,
+   "required": false
+  },
+  "Audio/Wavs/M_dragon_hit.wav": {
+   "size": 45958,
+   "required": false
+  },
+  "Audio/Wavs/M_echidna_atk1.wav": {
+   "size": 91696,
+   "required": false
+  },
+  "Audio/Wavs/M_echidna_atk2.wav": {
+   "size": 113998,
+   "required": false
+  },
+  "Audio/Wavs/M_echidna_atk3.wav": {
+   "size": 103758,
+   "required": false
+  },
+  "Audio/Wavs/M_echidna_atk4.wav": {
+   "size": 92106,
+   "required": false
+  },
+  "Audio/Wavs/M_echidna_die.wav": {
+   "size": 100050,
+   "required": false
+  },
+  "Audio/Wavs/M_echidna_hit.wav": {
+   "size": 38420,
+   "required": false
+  },
+  "Audio/Wavs/M_harpies_atk1.wav": {
+   "size": 82202,
+   "required": false
+  },
+  "Audio/Wavs/M_harpies_atk2.wav": {
+   "size": 65866,
+   "required": false
+  },
+  "Audio/Wavs/M_harpies_atk3.wav": {
+   "size": 88388,
+   "required": false
+  },
+  "Audio/Wavs/M_harpies_atk4.wav": {
+   "size": 92148,
+   "required": false
+  },
+  "Audio/Wavs/M_harpies_die.wav": {
+   "size": 170182,
+   "required": false
+  },
+  "Audio/Wavs/M_harpies_hit.wav": {
+   "size": 28496,
+   "required": false
+  },
+  "Audio/Wavs/M_hector_atk1.wav": {
+   "size": 59922,
+   "required": false
+  },
+  "Audio/Wavs/M_hector_atk2.wav": {
+   "size": 57004,
+   "required": false
+  },
+  "Audio/Wavs/M_hector_atk3.wav": {
+   "size": 77508,
+   "required": false
+  },
+  "Audio/Wavs/M_hector_atk4.wav": {
+   "size": 77674,
+   "required": false
+  },
+  "Audio/Wavs/M_hector_die.wav": {
+   "size": 94186,
+   "required": false
+  },
+  "Audio/Wavs/M_hector_hit.wav": {
+   "size": 34932,
+   "required": false
+  },
+  "Audio/Wavs/M_hydra_atk1.wav": {
+   "size": 105846,
+   "required": false
+  },
+  "Audio/Wavs/M_hydra_atk2.wav": {
+   "size": 93480,
+   "required": false
+  },
+  "Audio/Wavs/M_hydra_atk3.wav": {
+   "size": 102338,
+   "required": false
+  },
+  "Audio/Wavs/M_hydra_atk4.wav": {
+   "size": 93728,
+   "required": false
+  },
+  "Audio/Wavs/M_hydra_die.wav": {
+   "size": 180490,
+   "required": false
+  },
+  "Audio/Wavs/M_hydra_hit.wav": {
+   "size": 61496,
+   "required": false
+  },
+  "Audio/Wavs/M_kraken_appear.wav": {
+   "size": 150644,
+   "required": false
+  },
+  "Audio/Wavs/M_kraken_atk1.wav": {
+   "size": 115790,
+   "required": false
+  },
+  "Audio/Wavs/M_kraken_atk2.wav": {
+   "size": 114548,
+   "required": false
+  },
+  "Audio/Wavs/M_kraken_atk3.wav": {
+   "size": 84072,
+   "required": false
+  },
+  "Audio/Wavs/M_kraken_atk4.wav": {
+   "size": 68630,
+   "required": false
+  },
+  "Audio/Wavs/M_kraken_die.wav": {
+   "size": 237168,
+   "required": false
+  },
+  "Audio/Wavs/M_kraken_hit.wav": {
+   "size": 38832,
+   "required": false
+  },
+  "Audio/Wavs/M_maenads_atk1.wav": {
+   "size": 60708,
+   "required": false
+  },
+  "Audio/Wavs/M_maenads_atk2.wav": {
+   "size": 70308,
+   "required": false
+  },
+  "Audio/Wavs/M_maenads_atk3.wav": {
+   "size": 76402,
+   "required": false
+  },
+  "Audio/Wavs/M_maenads_atk4.wav": {
+   "size": 76696,
+   "required": false
+  },
+  "Audio/Wavs/M_maenads_die.wav": {
+   "size": 73332,
+   "required": false
+  },
+  "Audio/Wavs/M_maenads_hit.wav": {
+   "size": 49746,
+   "required": false
+  },
+  "Audio/Wavs/M_medusa_atk1.wav": {
+   "size": 87974,
+   "required": false
+  },
+  "Audio/Wavs/M_medusa_atk2.wav": {
+   "size": 148648,
+   "required": false
+  },
+  "Audio/Wavs/M_medusa_atk3.wav": {
+   "size": 65140,
+   "required": false
+  },
+  "Audio/Wavs/M_medusa_atk4.wav": {
+   "size": 78962,
+   "required": false
+  },
+  "Audio/Wavs/M_medusa_die.wav": {
+   "size": 143104,
+   "required": false
+  },
+  "Audio/Wavs/M_medusa_hit.wav": {
+   "size": 60824,
+   "required": false
+  },
+  "Audio/Wavs/M_minotaur_atk1.wav": {
+   "size": 52858,
+   "required": false
+  },
+  "Audio/Wavs/M_minotaur_atk2.wav": {
+   "size": 54170,
+   "required": false
+  },
+  "Audio/Wavs/M_minotaur_atk3.wav": {
+   "size": 87532,
+   "required": false
+  },
+  "Audio/Wavs/M_minotaur_atk4.wav": {
+   "size": 96440,
+   "required": false
+  },
+  "Audio/Wavs/M_minotaur_die.wav": {
+   "size": 104696,
+   "required": false
+  },
+  "Audio/Wavs/M_minotaur_hit.wav": {
+   "size": 41458,
+   "required": false
+  },
+  "Audio/Wavs/M_scylla_atk1.wav": {
+   "size": 61214,
+   "required": false
+  },
+  "Audio/Wavs/M_scylla_atk2.wav": {
+   "size": 58344,
+   "required": false
+  },
+  "Audio/Wavs/M_scylla_atk3.wav": {
+   "size": 77686,
+   "required": false
+  },
+  "Audio/Wavs/M_scylla_atk4.wav": {
+   "size": 78250,
+   "required": false
+  },
+  "Audio/Wavs/M_scylla_die.wav": {
+   "size": 204376,
+   "required": false
+  },
+  "Audio/Wavs/M_scylla_hit.wav": {
+   "size": 45444,
+   "required": false
+  },
+  "Audio/Wavs/M_sphinx_atk1.wav": {
+   "size": 66804,
+   "required": false
+  },
+  "Audio/Wavs/M_sphinx_atk2.wav": {
+   "size": 87652,
+   "required": false
+  },
+  "Audio/Wavs/M_sphinx_atk3.wav": {
+   "size": 157470,
+   "required": false
+  },
+  "Audio/Wavs/M_sphinx_atk4.wav": {
+   "size": 145188,
+   "required": false
+  },
+  "Audio/Wavs/M_sphinx_die.wav": {
+   "size": 185506,
+   "required": false
+  },
+  "Audio/Wavs/M_sphinx_hit.wav": {
+   "size": 59826,
+   "required": false
+  },
+  "Audio/Wavs/M_talos_atk1.wav": {
+   "size": 52492,
+   "required": false
+  },
+  "Audio/Wavs/M_talos_atk2.wav": {
+   "size": 62606,
+   "required": false
+  },
+  "Audio/Wavs/M_talos_atk3.wav": {
+   "size": 138426,
+   "required": false
+  },
+  "Audio/Wavs/M_talos_atk4.wav": {
+   "size": 140074,
+   "required": false
+  },
+  "Audio/Wavs/M_talos_die.wav": {
+   "size": 80916,
+   "required": false
+  },
+  "Audio/Wavs/M_talos_hit.wav": {
+   "size": 52018,
+   "required": false
+  },
+  "Audio/Wavs/May_arch_die.wav": {
+   "size": 22816,
+   "required": false
+  },
+  "Audio/Wavs/May_arch_hit.wav": {
+   "size": 17136,
+   "required": false
+  },
+  "Audio/Wavs/May_inf_atk1.wav": {
+   "size": 13622,
+   "required": false
+  },
+  "Audio/Wavs/May_inf_atk2.wav": {
+   "size": 15482,
+   "required": false
+  },
+  "Audio/Wavs/May_inf_die.wav": {
+   "size": 33256,
+   "required": false
+  },
+  "Audio/Wavs/May_inf_hit.wav": {
+   "size": 32918,
+   "required": false
+  },
+  "Audio/Wavs/Mer_inf_atk1.wav": {
+   "size": 16936,
+   "required": false
+  },
+  "Audio/Wavs/Mer_inf_atk2.wav": {
+   "size": 19356,
+   "required": false
+  },
+  "Audio/Wavs/Mer_inf_die.wav": {
+   "size": 25836,
+   "required": false
+  },
+  "Audio/Wavs/Mer_inf_hit.wav": {
+   "size": 25872,
+   "required": false
+  },
+  "Audio/Wavs/Mer_spear_atk1.wav": {
+   "size": 27314,
+   "required": false
+  },
+  "Audio/Wavs/Mer_spear_atk2.wav": {
+   "size": 27314,
+   "required": false
+  },
+  "Audio/Wavs/Mer_spear_die.wav": {
+   "size": 33576,
+   "required": false
+  },
+  "Audio/Wavs/Mer_spear_hit.wav": {
+   "size": 24720,
+   "required": false
+  },
+  "Audio/Wavs/Phoe_arch_die.wav": {
+   "size": 24334,
+   "required": false
+  },
+  "Audio/Wavs/Phoe_arch_hit.wav": {
+   "size": 24252,
+   "required": false
+  },
+  "Audio/Wavs/Phoe_cav_atk1.wav": {
+   "size": 19980,
+   "required": false
+  },
+  "Audio/Wavs/Phoe_cav_atk2.wav": {
+   "size": 21312,
+   "required": false
+  },
+  "Audio/Wavs/Phoe_cav_die.wav": {
+   "size": 69396,
+   "required": false
+  },
+  "Audio/Wavs/Phoe_cav_hit.wav": {
+   "size": 42094,
+   "required": false
+  },
+  "Audio/Wavs/Satyr_atk1.wav": {
+   "size": 69316,
+   "required": false
+  },
+  "Audio/Wavs/Satyr_atk2.wav": {
+   "size": 66992,
+   "required": false
+  },
+  "Audio/Wavs/Satyr_atk3.wav": {
+   "size": 84384,
+   "required": false
+  },
+  "Audio/Wavs/Satyr_atk4.wav": {
+   "size": 82110,
+   "required": false
+  },
+  "Audio/Wavs/Satyr_die.wav": {
+   "size": 90502,
+   "required": false
+  },
+  "Audio/Wavs/Satyr_hit.wav": {
+   "size": 26116,
+   "required": false
+  },
+  "Audio/Wavs/Tower_sentry_die.wav": {
+   "size": 34288,
+   "required": false
+  },
+  "Audio/Wavs/Tower_sentry_hit.wav": {
+   "size": 22386,
+   "required": false
+  },
+  "Audio/Wavs/actor_die.wav": {
+   "size": 108638,
+   "required": false
+  },
+  "Audio/Wavs/actor_hit.wav": {
+   "size": 19056,
+   "required": false
+  },
+  "Audio/Wavs/am_arch_die.wav": {
+   "size": 44994,
+   "required": false
+  },
+  "Audio/Wavs/am_arch_hit.wav": {
+   "size": 32302,
+   "required": false
+  },
+  "Audio/Wavs/am_warr_atk1.wav": {
+   "size": 44594,
+   "required": false
+  },
+  "Audio/Wavs/am_warr_atk2.wav": {
+   "size": 42676,
+   "required": false
+  },
+  "Audio/Wavs/am_warr_die.wav": {
+   "size": 47266,
+   "required": false
+  },
+  "Audio/Wavs/am_warr_hit.wav": {
+   "size": 31078,
+   "required": false
+  },
+  "Audio/Wavs/archer_die.wav": {
+   "size": 37200,
+   "required": false
+  },
+  "Audio/Wavs/archer_hit.wav": {
+   "size": 24992,
+   "required": false
+  },
+  "Audio/Wavs/archer_impact.wav": {
+   "size": 88856,
+   "required": false
+  },
+  "Audio/Wavs/archer_special.wav": {
+   "size": 82696,
+   "required": false
+  },
+  "Audio/Wavs/archer_volley1.wav": {
+   "size": 50480,
+   "required": false
+  },
+  "Audio/Wavs/archer_volley2.wav": {
+   "size": 46542,
+   "required": false
+  },
+  "Audio/Wavs/artisan1.wav": {
+   "size": 28380,
+   "required": false
+  },
+  "Audio/Wavs/artisan2.wav": {
+   "size": 28370,
+   "required": false
+  },
+  "Audio/Wavs/boar_attack.wav": {
+   "size": 29278,
+   "required": false
+  },
+  "Audio/Wavs/boar_die.wav": {
+   "size": 76214,
+   "required": false
+  },
+  "Audio/Wavs/boar_hit.wav": {
+   "size": 31770,
+   "required": false
+  },
+  "Audio/Wavs/boar_hunter_attack.wav": {
+   "size": 10168,
+   "required": false
+  },
+  "Audio/Wavs/boar_hunter_die.wav": {
+   "size": 35510,
+   "required": false
+  },
+  "Audio/Wavs/boar_hunter_hit.wav": {
+   "size": 39844,
+   "required": false
+  },
+  "Audio/Wavs/button.wav": {
+   "size": 2542,
+   "required": false
+  },
+  "Audio/Wavs/cattle_attack.wav": {
+   "size": 35784,
+   "required": false
+  },
+  "Audio/Wavs/cattle_die.wav": {
+   "size": 80344,
+   "required": false
+  },
+  "Audio/Wavs/cattle_hit.wav": {
+   "size": 31134,
+   "required": false
+  },
+  "Audio/Wavs/cent_arch_die.wav": {
+   "size": 72914,
+   "required": false
+  },
+  "Audio/Wavs/cent_arch_hit.wav": {
+   "size": 30648,
+   "required": false
+  },
+  "Audio/Wavs/cent_sword_die.wav": {
+   "size": 69194,
+   "required": false
+  },
+  "Audio/Wavs/cent_sword_hit.wav": {
+   "size": 35858,
+   "required": false
+  },
+  "Audio/Wavs/collapse.wav": {
+   "size": 61426,
+   "required": false
+  },
+  "Audio/Wavs/copperminer1.wav": {
+   "size": 28148,
+   "required": false
+  },
+  "Audio/Wavs/copperminer2.wav": {
+   "size": 28272,
+   "required": false
+  },
+  "Audio/Wavs/deer_attack.wav": {
+   "size": 29428,
+   "required": false
+  },
+  "Audio/Wavs/deer_die.wav": {
+   "size": 59998,
+   "required": false
+  },
+  "Audio/Wavs/deer_hit.wav": {
+   "size": 30724,
+   "required": false
+  },
+  "Audio/Wavs/elephant hit.wav": {
+   "size": 43380,
+   "required": false
+  },
+  "Audio/Wavs/elephant_die.wav": {
+   "size": 57612,
+   "required": false
+  },
+  "Audio/Wavs/gen_die1.wav": {
+   "size": 13358,
+   "required": false
+  },
+  "Audio/Wavs/gen_die2.wav": {
+   "size": 25844,
+   "required": false
+  },
+  "Audio/Wavs/gen_die3.wav": {
+   "size": 30730,
+   "required": false
+  },
+  "Audio/Wavs/gen_die4.wav": {
+   "size": 22468,
+   "required": false
+  },
+  "Audio/Wavs/gen_die5.wav": {
+   "size": 31510,
+   "required": false
+  },
+  "Audio/Wavs/gen_die6.wav": {
+   "size": 28302,
+   "required": false
+  },
+  "Audio/Wavs/gen_die7.wav": {
+   "size": 23822,
+   "required": false
+  },
+  "Audio/Wavs/gen_die8.wav": {
+   "size": 25612,
+   "required": false
+  },
+  "Audio/Wavs/gen_hit1.wav": {
+   "size": 17846,
+   "required": false
+  },
+  "Audio/Wavs/gen_hit2.wav": {
+   "size": 39844,
+   "required": false
+  },
+  "Audio/Wavs/gen_hit3.wav": {
+   "size": 30730,
+   "required": false
+  },
+  "Audio/Wavs/gen_hit4.wav": {
+   "size": 28084,
+   "required": false
+  },
+  "Audio/Wavs/gen_hit5.wav": {
+   "size": 31202,
+   "required": false
+  },
+  "Audio/Wavs/gen_hit6.wav": {
+   "size": 28302,
+   "required": false
+  },
+  "Audio/Wavs/gen_hit7.wav": {
+   "size": 22100,
+   "required": false
+  },
+  "Audio/Wavs/gen_hit8.wav": {
+   "size": 39108,
+   "required": false
+  },
+  "Audio/Wavs/goat_attack.wav": {
+   "size": 28870,
+   "required": false
+  },
+  "Audio/Wavs/goat_die.wav": {
+   "size": 30218,
+   "required": false
+  },
+  "Audio/Wavs/goat_hit.wav": {
+   "size": 22884,
+   "required": false
+  },
+  "Audio/Wavs/greek_hand1.wav": {
+   "size": 23900,
+   "required": false
+  },
+  "Audio/Wavs/greek_hand2.wav": {
+   "size": 29802,
+   "required": false
+  },
+  "Audio/Wavs/hop_die.wav": {
+   "size": 24946,
+   "required": false
+  },
+  "Audio/Wavs/hop_spear1.wav": {
+   "size": 32330,
+   "required": false
+  },
+  "Audio/Wavs/hop_spear2.wav": {
+   "size": 32330,
+   "required": false
+  },
+  "Audio/Wavs/hop_spear_hit.wav": {
+   "size": 35804,
+   "required": false
+  },
+  "Audio/Wavs/horse_die.wav": {
+   "size": 54406,
+   "required": false
+  },
+  "Audio/Wavs/horse_hit.wav": {
+   "size": 37080,
+   "required": false
+  },
+  "Audio/Wavs/horse_nay.wav": {
+   "size": 122822,
+   "required": false
+  },
+  "Audio/Wavs/horse_sword1.wav": {
+   "size": 20692,
+   "required": false
+  },
+  "Audio/Wavs/horse_sword2.wav": {
+   "size": 21058,
+   "required": false
+  },
+  "Audio/Wavs/horse_sword_die.wav": {
+   "size": 69588,
+   "required": false
+  },
+  "Audio/Wavs/horse_sword_hit.wav": {
+   "size": 51124,
+   "required": false
+  },
+  "Audio/Wavs/jockey_die.wav": {
+   "size": 49924,
+   "required": false
+  },
+  "Audio/Wavs/jockey_hit.wav": {
+   "size": 37000,
+   "required": false
+  },
+  "Audio/Wavs/nobleman_attack.wav": {
+   "size": 11468,
+   "required": false
+  },
+  "Audio/Wavs/nobleman_die.wav": {
+   "size": 32874,
+   "required": false
+  },
+  "Audio/Wavs/nobleman_hit.wav": {
+   "size": 24862,
+   "required": false
+  },
+  "Audio/Wavs/outlaw_attack.wav": {
+   "size": 29766,
+   "required": false
+  },
+  "Audio/Wavs/outlaw_die.wav": {
+   "size": 47130,
+   "required": false
+  },
+  "Audio/Wavs/outlaw_hit.wav": {
+   "size": 18486,
+   "required": false
+  },
+  "Audio/Wavs/pers_cav_atk1.wav": {
+   "size": 35392,
+   "required": false
+  },
+  "Audio/Wavs/pers_cav_atk2.wav": {
+   "size": 35758,
+   "required": false
+  },
+  "Audio/Wavs/pers_cav_die.wav": {
+   "size": 64374,
+   "required": false
+  },
+  "Audio/Wavs/pers_cav_hit.wav": {
+   "size": 46982,
+   "required": false
+  },
+  "Audio/Wavs/pers_inf_atk1.wav": {
+   "size": 49110,
+   "required": false
+  },
+  "Audio/Wavs/pers_inf_atk2.wav": {
+   "size": 50392,
+   "required": false
+  },
+  "Audio/Wavs/pers_inf_die.wav": {
+   "size": 39154,
+   "required": false
+  },
+  "Audio/Wavs/pers_inf_hit.wav": {
+   "size": 32302,
+   "required": false
+  },
+  "Audio/Wavs/pers_missile_die.wav": {
+   "size": 22180,
+   "required": false
+  },
+  "Audio/Wavs/pers_missile_hit.wav": {
+   "size": 8600,
+   "required": false
+  },
+  "Audio/Wavs/place_building.wav": {
+   "size": 139344,
+   "required": false
+  },
+  "Audio/Wavs/rabble_die.wav": {
+   "size": 41192,
+   "required": false
+  },
+  "Audio/Wavs/rabble_hit.wav": {
+   "size": 20086,
+   "required": false
+  },
+  "Audio/Wavs/rabble_rock1.wav": {
+   "size": 26936,
+   "required": false
+  },
+  "Audio/Wavs/rabble_rock2.wav": {
+   "size": 19082,
+   "required": false
+  },
+  "Audio/Wavs/sheep_die.wav": {
+   "size": 40754,
+   "required": false
+  },
+  "Audio/Wavs/sheep_hit.wav": {
+   "size": 26868,
+   "required": false
+  },
+  "Audio/Wavs/ship_hit.wav": {
+   "size": 81776,
+   "required": false
+  },
+  "Audio/Wavs/ship_sink.wav": {
+   "size": 167272,
+   "required": false
+  },
+  "Audio/Wavs/silverminer1.wav": {
+   "size": 28286,
+   "required": false
+  },
+  "Audio/Wavs/silverminer2.wav": {
+   "size": 30290,
+   "required": false
+  },
+  "Audio/Wavs/stonecutter1.wav": {
+   "size": 28372,
+   "required": false
+  },
+  "Audio/Wavs/stonecutter2.wav": {
+   "size": 28276,
+   "required": false
+  },
+  "Audio/Wavs/trade_donkey_die.wav": {
+   "size": 45038,
+   "required": false
+  },
+  "Audio/Wavs/trade_donkey_hit.wav": {
+   "size": 23082,
+   "required": false
+  },
+  "Audio/Wavs/trans_load.wav": {
+   "size": 68832,
+   "required": false
+  },
+  "Audio/Wavs/trans_unload.wav": {
+   "size": 83372,
+   "required": false
+  },
+  "Audio/Wavs/treecutter1.wav": {
+   "size": 12724,
+   "required": false
+  },
+  "Audio/Wavs/treecutter2.wav": {
+   "size": 11380,
+   "required": false
+  },
+  "Audio/Wavs/tri_hand1.wav": {
+   "size": 22648,
+   "required": false
+  },
+  "Audio/Wavs/tri_hand2.wav": {
+   "size": 17910,
+   "required": false
+  },
+  "Audio/Wavs/tri_hand_hit.wav": {
+   "size": 29258,
+   "required": false
+  },
+  "Audio/Wavs/tri_volley1.wav": {
+   "size": 26488,
+   "required": false
+  },
+  "Audio/Wavs/tri_volley2.wav": {
+   "size": 57504,
+   "required": false
+  },
+  "Audio/Wavs/troj_horse_die.wav": {
+   "size": 91284,
+   "required": false
+  },
+  "Audio/Wavs/troj_horse_hit.wav": {
+   "size": 33958,
+   "required": false
+  },
+  "Audio/Wavs/troj_jav_die.wav": {
+   "size": 25662,
+   "required": false
+  },
+  "Audio/Wavs/troj_jav_hit.wav": {
+   "size": 20234,
+   "required": false
+  },
+  "Audio/Wavs/troj_jav_throw1.wav": {
+   "size": 6620,
+   "required": false
+  },
+  "Audio/Wavs/troj_jav_throw2.wav": {
+   "size": 11684,
+   "required": false
+  },
+  "Audio/Wavs/troj_sword1.wav": {
+   "size": 10458,
+   "required": false
+  },
+  "Audio/Wavs/troj_sword2.wav": {
+   "size": 8702,
+   "required": false
+  },
+  "Audio/Wavs/troj_sword_die.wav": {
+   "size": 24956,
+   "required": false
+  },
+  "Audio/Wavs/troj_sword_hit.wav": {
+   "size": 30360,
+   "required": false
+  },
+  "Audio/Wavs/warship_hit.wav": {
+   "size": 82122,
+   "required": false
+  },
+  "Audio/Wavs/watchman_attack.wav": {
+   "size": 16608,
+   "required": false
+  },
+  "Audio/Wavs/wolf_attack.wav": {
+   "size": 32986,
+   "required": false
+  },
+  "Audio/Wavs/wolf_die.wav": {
+   "size": 56774,
+   "required": false
+  },
+  "Audio/Wavs/wolf_hit.wav": {
+   "size": 25278,
+   "required": false
+  },
+  "Audio/music.txt": {
+   "size": 397,
+   "required": false
+  },
+  "Audio/sound_fxU.txt": {
+   "size": 6238,
+   "required": false
+  },
+  "DATA/CampaignIllustrations.555": {
+   "size": 2160000,
+   "required": true
+  },
+  "DATA/God_Portraits.555": {
+   "size": 278080,
+   "required": true
+  },
+  "DATA/Picture9.555": {
+   "size": 964040,
+   "required": true
+  },
+  "DATA/Portraits.555": {
+   "size": 1051490,
+   "required": true
+  },
+  "DATA/PoseidonImps.555": {
+   "size": 25251109,
+   "required": true
+  },
+  "DATA/PoseidonImps.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/PoseidonImps2.555": {
+   "size": 5845803,
+   "required": true
+  },
+  "DATA/PoseidonImps2.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Poseidon_Atalanta.555": {
+   "size": 2200056,
+   "required": true
+  },
+  "DATA/Poseidon_Atalanta.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Poseidon_Atlantean.555": {
+   "size": 1229999,
+   "required": true
+  },
+  "DATA/Poseidon_Atlantean.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Poseidon_Atlas.555": {
+   "size": 8089871,
+   "required": true
+  },
+  "DATA/Poseidon_Atlas.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Poseidon_AtlasStat.555": {
+   "size": 136293,
+   "required": true
+  },
+  "DATA/Poseidon_AtlasStat.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Poseidon_Bellerophon.555": {
+   "size": 4518763,
+   "required": true
+  },
+  "DATA/Poseidon_Bellerophon.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Poseidon_Chimera.555": {
+   "size": 10049365,
+   "required": true
+  },
+  "DATA/Poseidon_Chimera.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Poseidon_Echidna.555": {
+   "size": 7579780,
+   "required": true
+  },
+  "DATA/Poseidon_Echidna.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Poseidon_Egyptian.555": {
+   "size": 1119386,
+   "required": true
+  },
+  "DATA/Poseidon_Egyptian.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Poseidon_FE_MainMenu.JPG": {
+   "size": 176221,
+   "required": true
+  },
+  "DATA/Poseidon_FE_Registry.jpg": {
+   "size": 217089,
+   "required": true
+  },
+  "DATA/Poseidon_GrandStatue1.555": {
+   "size": 458157,
+   "required": true
+  },
+  "DATA/Poseidon_GrandStatue1.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Poseidon_GrandStatue2.555": {
+   "size": 520078,
+   "required": true
+  },
+  "DATA/Poseidon_GrandStatue2.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Poseidon_GrandStatue3.555": {
+   "size": 517508,
+   "required": true
+  },
+  "DATA/Poseidon_GrandStatue3.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Poseidon_Harpie.555": {
+   "size": 8167597,
+   "required": true
+  },
+  "DATA/Poseidon_Harpie.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Poseidon_Hera.555": {
+   "size": 5931730,
+   "required": true
+  },
+  "DATA/Poseidon_Hera.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Poseidon_HeraStat.555": {
+   "size": 134186,
+   "required": true
+  },
+  "DATA/Poseidon_HeraStat.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Poseidon_Load1.jpg": {
+   "size": 149618,
+   "required": true
+  },
+  "DATA/Poseidon_Load2.jpg": {
+   "size": 205428,
+   "required": true
+  },
+  "DATA/Poseidon_Load3.jpg": {
+   "size": 109507,
+   "required": true
+  },
+  "DATA/Poseidon_Load4.jpg": {
+   "size": 340306,
+   "required": true
+  },
+  "DATA/Poseidon_Load5.jpg": {
+   "size": 199072,
+   "required": true
+  },
+  "DATA/Poseidon_Load6.jpg": {
+   "size": 223208,
+   "required": true
+  },
+  "DATA/Poseidon_Load7.jpg": {
+   "size": 230960,
+   "required": true
+  },
+  "DATA/Poseidon_Load8.jpg": {
+   "size": 210231,
+   "required": true
+  },
+  "DATA/Poseidon_Loaded.555": {
+   "size": 9390226,
+   "required": true
+  },
+  "DATA/Poseidon_Loaded.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Poseidon_Mayan.555": {
+   "size": 489119,
+   "required": true
+  },
+  "DATA/Poseidon_Mayan.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Poseidon_Oceanid.555": {
+   "size": 352558,
+   "required": true
+  },
+  "DATA/Poseidon_Oceanid.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Poseidon_Phoenician.555": {
+   "size": 565558,
+   "required": true
+  },
+  "DATA/Poseidon_Phoenician.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Poseidon_Portraits.555": {
+   "size": 391050,
+   "required": true
+  },
+  "DATA/Poseidon_Sanctuary3.555": {
+   "size": 367257,
+   "required": true
+  },
+  "DATA/Poseidon_Sanctuary3.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Poseidon_Sphinx.555": {
+   "size": 8250702,
+   "required": true
+  },
+  "DATA/Poseidon_Sphinx.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Poseidon_Unloaded.555": {
+   "size": 89898,
+   "required": true
+  },
+  "DATA/Poseidon_Unloaded.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Poseidon_WorldThumbnails.555": {
+   "size": 152040,
+   "required": true
+  },
+  "DATA/Poseidon_map01.jpg": {
+   "size": 482447,
+   "required": true
+  },
+  "DATA/Poseidon_map02.jpg": {
+   "size": 519337,
+   "required": true
+  },
+  "DATA/Poseidon_map03.jpg": {
+   "size": 466302,
+   "required": true
+  },
+  "DATA/Poseidon_map04.jpg": {
+   "size": 588190,
+   "required": true
+  },
+  "DATA/SprAmbient.555": {
+   "size": 5654853,
+   "required": true
+  },
+  "DATA/SprAmbient.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/SprMain.555": {
+   "size": 15270017,
+   "required": true
+  },
+  "DATA/SprMain.sg3": {
+   "size": 991080,
+   "required": true,
+   "sha256": "43ead974ba4b4fd7a868585c61492deaf77d2063f8bc70ad34d55380c7746f7a"
+  },
+  "DATA/Tutorial1.555": {
+   "size": 593220,
+   "required": true
+  },
+  "DATA/Tutorial2.555": {
+   "size": 380110,
+   "required": true
+  },
+  "DATA/Zeus_Aphrodite.555": {
+   "size": 3627738,
+   "required": true
+  },
+  "DATA/Zeus_Aphrodite.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Zeus_Apollo.555": {
+   "size": 5604649,
+   "required": true
+  },
+  "DATA/Zeus_Apollo.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Zeus_Ares.555": {
+   "size": 5374332,
+   "required": true
+  },
+  "DATA/Zeus_Ares.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Zeus_AresWarriors.555": {
+   "size": 488655,
+   "required": true
+  },
+  "DATA/Zeus_AresWarriors.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Zeus_Artemis.555": {
+   "size": 3198753,
+   "required": true
+  },
+  "DATA/Zeus_Artemis.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Zeus_Athena.555": {
+   "size": 3467534,
+   "required": true
+  },
+  "DATA/Zeus_Athena.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Zeus_DEMO1.555": {
+   "size": 614400,
+   "required": true
+  },
+  "DATA/Zeus_DEMO2.555": {
+   "size": 614400,
+   "required": true
+  },
+  "DATA/Zeus_DEMO3.555": {
+   "size": 614400,
+   "required": true
+  },
+  "DATA/Zeus_Defeat.555": {
+   "size": 1572864,
+   "required": true
+  },
+  "DATA/Zeus_Defeat.jpg": {
+   "size": 196124,
+   "required": true
+  },
+  "DATA/Zeus_Demeter.555": {
+   "size": 4801528,
+   "required": true
+  },
+  "DATA/Zeus_Demeter.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Zeus_Dionysus.555": {
+   "size": 6361139,
+   "required": true
+  },
+  "DATA/Zeus_Dionysus.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Zeus_FE_CampaignSelection.JPG": {
+   "size": 190012,
+   "required": true
+  },
+  "DATA/Zeus_FE_ChooseGame.jpg": {
+   "size": 273777,
+   "required": true
+  },
+  "DATA/Zeus_FE_MainMenu.jpg": {
+   "size": 273122,
+   "required": true
+  },
+  "DATA/Zeus_FE_MissionIntroduction.jpg": {
+   "size": 152920,
+   "required": true
+  },
+  "DATA/Zeus_FE_Registry.jpg": {
+   "size": 154974,
+   "required": true
+  },
+  "DATA/Zeus_FE_tutorials.JPG": {
+   "size": 265818,
+   "required": true
+  },
+  "DATA/Zeus_Fonts.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_General.555": {
+   "size": 6195784,
+   "required": true
+  },
+  "DATA/Zeus_General.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_God01.555": {
+   "size": 139549,
+   "required": true
+  },
+  "DATA/Zeus_God01.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_God02.555": {
+   "size": 141890,
+   "required": true
+  },
+  "DATA/Zeus_God02.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_God03.555": {
+   "size": 131516,
+   "required": true
+  },
+  "DATA/Zeus_God03.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_God04.555": {
+   "size": 131644,
+   "required": true
+  },
+  "DATA/Zeus_God04.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_God05.555": {
+   "size": 142461,
+   "required": true
+  },
+  "DATA/Zeus_God05.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_God06.555": {
+   "size": 127529,
+   "required": true
+  },
+  "DATA/Zeus_God06.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_God07.555": {
+   "size": 137345,
+   "required": true
+  },
+  "DATA/Zeus_God07.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_God08.555": {
+   "size": 138697,
+   "required": true
+  },
+  "DATA/Zeus_God08.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_God09.555": {
+   "size": 131916,
+   "required": true
+  },
+  "DATA/Zeus_God09.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_God10.555": {
+   "size": 137678,
+   "required": true
+  },
+  "DATA/Zeus_God10.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_God11.555": {
+   "size": 122320,
+   "required": true
+  },
+  "DATA/Zeus_God11.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_God12.555": {
+   "size": 159323,
+   "required": true
+  },
+  "DATA/Zeus_God12.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_Greek.555": {
+   "size": 1864773,
+   "required": true
+  },
+  "DATA/Zeus_Greek.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Zeus_Hades.555": {
+   "size": 4021368,
+   "required": true
+  },
+  "DATA/Zeus_Hades.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Zeus_Hephaestus.555": {
+   "size": 2375563,
+   "required": true
+  },
+  "DATA/Zeus_Hephaestus.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Zeus_Hermes.555": {
+   "size": 4170959,
+   "required": true
+  },
+  "DATA/Zeus_Hermes.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Zeus_Interface.555": {
+   "size": 4461887,
+   "required": true
+  },
+  "DATA/Zeus_Interface.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_Load1.jpg": {
+   "size": 195191,
+   "required": true
+  },
+  "DATA/Zeus_Load2.jpg": {
+   "size": 168342,
+   "required": true
+  },
+  "DATA/Zeus_Load3.jpg": {
+   "size": 136115,
+   "required": true
+  },
+  "DATA/Zeus_Load4.jpg": {
+   "size": 160304,
+   "required": true
+  },
+  "DATA/Zeus_MapOfGreece01.JPG": {
+   "size": 271431,
+   "required": true
+  },
+  "DATA/Zeus_MapOfGreece01.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_MapOfGreece02.JPG": {
+   "size": 274035,
+   "required": true
+  },
+  "DATA/Zeus_MapOfGreece03.JPG": {
+   "size": 268073,
+   "required": true
+  },
+  "DATA/Zeus_MapOfGreece04.JPG": {
+   "size": 276583,
+   "required": true
+  },
+  "DATA/Zeus_MapOfGreece05.JPG": {
+   "size": 275769,
+   "required": true
+  },
+  "DATA/Zeus_MapOfGreece06.JPG": {
+   "size": 277229,
+   "required": true
+  },
+  "DATA/Zeus_MapOfGreece07.JPG": {
+   "size": 272842,
+   "required": true
+  },
+  "DATA/Zeus_MapOfGreece08.JPG": {
+   "size": 255670,
+   "required": true
+  },
+  "DATA/Zeus_MapOfGreece09.JPG": {
+   "size": 255670,
+   "required": true
+  },
+  "DATA/Zeus_MapOfGreece10.JPG": {
+   "size": 255670,
+   "required": true
+  },
+  "DATA/Zeus_Poseidon.555": {
+   "size": 5330976,
+   "required": true
+  },
+  "DATA/Zeus_Poseidon.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Zeus_Sanctuary1.555": {
+   "size": 189914,
+   "required": true
+  },
+  "DATA/Zeus_Sanctuary1.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_Sanctuary2.555": {
+   "size": 307672,
+   "required": true
+  },
+  "DATA/Zeus_Sanctuary2.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_Sanctuary3.555": {
+   "size": 367257,
+   "required": true
+  },
+  "DATA/Zeus_Sanctuary3.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_Terrain.555": {
+   "size": 4210543,
+   "required": true
+  },
+  "DATA/Zeus_Terrain.sg3": {
+   "size": 695080,
+   "required": true,
+   "sha256": "ee2a930b74f16a723e1b15610cc51c1d277dc84bf0563a5d8e9d49ac3433a914"
+  },
+  "DATA/Zeus_Title.jpg": {
+   "size": 134497,
+   "required": true
+  },
+  "DATA/Zeus_Unloaded.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/Zeus_Victory.jpg": {
+   "size": 254798,
+   "required": true
+  },
+  "DATA/Zeus_WorldThumbnails.555": {
+   "size": 1013600,
+   "required": true
+  },
+  "DATA/Zeus_Zeus.555": {
+   "size": 9436703,
+   "required": true
+  },
+  "DATA/Zeus_Zeus.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Zeus_amazon.555": {
+   "size": 618167,
+   "required": true
+  },
+  "DATA/Zeus_amazon.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Zeus_centaur.555": {
+   "size": 861854,
+   "required": true
+  },
+  "DATA/Zeus_centaur.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Zeus_persian.555": {
+   "size": 1103880,
+   "required": true
+  },
+  "DATA/Zeus_persian.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/Zeus_trojan.555": {
+   "size": 881763,
+   "required": true
+  },
+  "DATA/Zeus_trojan.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/destruction.555": {
+   "size": 5725044,
+   "required": true
+  },
+  "DATA/destruction.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/map_panels.555": {
+   "size": 248832,
+   "required": true
+  },
+  "DATA/scoreb.jpg": {
+   "size": 163708,
+   "required": true
+  },
+  "DATA/zeus_Fonts.555": {
+   "size": 489709,
+   "required": true
+  },
+  "DATA/zeus_Unloaded.555": {
+   "size": 39218,
+   "required": true
+  },
+  "DATA/zeus_achilles.555": {
+   "size": 1824423,
+   "required": true
+  },
+  "DATA/zeus_achilles.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_calydonianboar.555": {
+   "size": 2050608,
+   "required": true
+  },
+  "DATA/zeus_calydonianboar.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_cerberus.555": {
+   "size": 4694886,
+   "required": true
+  },
+  "DATA/zeus_cerberus.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_cyclops.555": {
+   "size": 4779943,
+   "required": true
+  },
+  "DATA/zeus_cyclops.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_dragon.555": {
+   "size": 6630383,
+   "required": true
+  },
+  "DATA/zeus_dragon.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_hector.555": {
+   "size": 2743516,
+   "required": true
+  },
+  "DATA/zeus_hector.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_heracles.555": {
+   "size": 1478018,
+   "required": true
+  },
+  "DATA/zeus_heracles.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_hydra.555": {
+   "size": 6793032,
+   "required": true
+  },
+  "DATA/zeus_hydra.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_jason.555": {
+   "size": 2541355,
+   "required": true
+  },
+  "DATA/zeus_jason.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_kraken.555": {
+   "size": 11185029,
+   "required": true
+  },
+  "DATA/zeus_kraken.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_maenads.555": {
+   "size": 3473119,
+   "required": true
+  },
+  "DATA/zeus_maenads.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_medusa.555": {
+   "size": 3576724,
+   "required": true
+  },
+  "DATA/zeus_medusa.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_minotaur.555": {
+   "size": 4964285,
+   "required": true
+  },
+  "DATA/zeus_minotaur.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_odysseus.555": {
+   "size": 3632645,
+   "required": true
+  },
+  "DATA/zeus_odysseus.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_perseus.555": {
+   "size": 1556654,
+   "required": true
+  },
+  "DATA/zeus_perseus.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_satyr.555": {
+   "size": 2092414,
+   "required": true
+  },
+  "DATA/zeus_satyr.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_scylla.555": {
+   "size": 9469592,
+   "required": true
+  },
+  "DATA/zeus_scylla.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_statcon1.555": {
+   "size": 84839,
+   "required": true
+  },
+  "DATA/zeus_statcon1.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/zeus_statcon2.555": {
+   "size": 65680,
+   "required": true
+  },
+  "DATA/zeus_statcon2.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/zeus_statcon3.555": {
+   "size": 65680,
+   "required": true
+  },
+  "DATA/zeus_statcon3.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/zeus_statcon4.555": {
+   "size": 65680,
+   "required": true
+  },
+  "DATA/zeus_statcon4.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/zeus_statcon5.555": {
+   "size": 65680,
+   "required": true
+  },
+  "DATA/zeus_statcon5.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/zeus_statcon6.555": {
+   "size": 65680,
+   "required": true
+  },
+  "DATA/zeus_statcon6.sg3": {
+   "size": 695080,
+   "required": true
+  },
+  "DATA/zeus_talos.555": {
+   "size": 3693451,
+   "required": true
+  },
+  "DATA/zeus_talos.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "DATA/zeus_theseus.555": {
+   "size": 2034580,
+   "required": true
+  },
+  "DATA/zeus_theseus.sg3": {
+   "size": 991080,
+   "required": true
+  },
+  "Model/Figure_model_easy.txt": {
+   "size": 9668,
+   "required": true
+  },
+  "Model/Figure_model_hard.txt": {
+   "size": 9665,
+   "required": true
+  },
+  "Model/Figure_model_impossible.txt": {
+   "size": 9663,
+   "required": true
+  },
+  "Model/Figure_model_normal.txt": {
+   "size": 9663,
+   "required": true
+  },
+  "Model/Figure_model_veryeasy.txt": {
+   "size": 9665,
+   "required": true
+  },
+  "Model/Poseidon_Pyramid_01.txt": {
+   "size": 1168,
+   "required": true
+  },
+  "Model/Poseidon_Pyramid_02.txt": {
+   "size": 1705,
+   "required": true
+  },
+  "Model/Poseidon_Pyramid_03.txt": {
+   "size": 2442,
+   "required": true
+  },
+  "Model/Poseidon_Pyramid_04.txt": {
+   "size": 3399,
+   "required": true
+  },
+  "Model/Poseidon_Pyramid_05.txt": {
+   "size": 1642,
+   "required": true
+  },
+  "Model/Poseidon_Pyramid_06.txt": {
+   "size": 2125,
+   "required": true
+  },
+  "Model/Poseidon_Pyramid_07.txt": {
+   "size": 3289,
+   "required": true
+  },
+  "Model/Poseidon_Pyramid_08.txt": {
+   "size": 1080,
+   "required": true
+  },
+  "Model/Poseidon_Pyramid_09.txt": {
+   "size": 1920,
+   "required": true
+  },
+  "Model/Poseidon_Pyramid_10.txt": {
+   "size": 2548,
+   "required": true
+  },
+  "Model/Poseidon_Pyramid_11.txt": {
+   "size": 4059,
+   "required": true
+  },
+  "Model/Poseidon_Pyramid_12.txt": {
+   "size": 2981,
+   "required": true
+  },
+  "Model/Poseidon_Pyramid_13.txt": {
+   "size": 2696,
+   "required": true
+  },
+  "Model/Poseidon_Pyramid_14.txt": {
+   "size": 2870,
+   "required": true
+  },
+  "Model/Poseidon_Pyramid_15.txt": {
+   "size": 1795,
+   "required": true
+  },
+  "Model/Sanctuary_APHRODITE.txt": {
+   "size": 4993,
+   "required": true
+  },
+  "Model/Sanctuary_APOLLO.txt": {
+   "size": 6975,
+   "required": true
+  },
+  "Model/Sanctuary_ARES.txt": {
+   "size": 5716,
+   "required": true
+  },
+  "Model/Sanctuary_ARTEMIS.txt": {
+   "size": 6179,
+   "required": true
+  },
+  "Model/Sanctuary_ATHENA.txt": {
+   "size": 7406,
+   "required": true
+  },
+  "Model/Sanctuary_ATLAS.txt": {
+   "size": 7127,
+   "required": true
+  },
+  "Model/Sanctuary_DEMETER.txt": {
+   "size": 7631,
+   "required": true
+  },
+  "Model/Sanctuary_DIONYSUS.txt": {
+   "size": 4339,
+   "required": true
+  },
+  "Model/Sanctuary_HADES.txt": {
+   "size": 9658,
+   "required": true
+  },
+  "Model/Sanctuary_HEPHAISTOS.txt": {
+   "size": 5264,
+   "required": true
+  },
+  "Model/Sanctuary_HERA.txt": {
+   "size": 8509,
+   "required": true
+  },
+  "Model/Sanctuary_HERMES.txt": {
+   "size": 4573,
+   "required": true
+  },
+  "Model/Sanctuary_POSEIDON.txt": {
+   "size": 10372,
+   "required": true
+  },
+  "Model/Sanctuary_POSEIDON_GRAND.txt": {
+   "size": 10540,
+   "required": true
+  },
+  "Model/Sanctuary_ZEUS.txt": {
+   "size": 11337,
+   "required": true
+  },
+  "Model/Sanctuary_ZEUS_Pos.txt": {
+   "size": 11433,
+   "required": true
+  },
+  "Model/Tax_Sentiment_Model.txt": {
+   "size": 475,
+   "required": true
+  },
+  "Model/Zeus attitude advice.txt": {
+   "size": 6158,
+   "required": true
+  },
+  "Model/Zeus event message categories.txt": {
+   "size": 25961,
+   "required": true
+  },
+  "Model/Zeus eventmsg.txt": {
+   "size": 506076,
+   "required": true
+  },
+  "Model/Zeus_Model_Easy.txt": {
+   "size": 27813,
+   "required": true
+  },
+  "Model/Zeus_Model_Hard.txt": {
+   "size": 27845,
+   "required": true
+  },
+  "Model/Zeus_Model_Impossible.txt": {
+   "size": 27870,
+   "required": true
+  },
+  "Model/Zeus_Model_Normal.txt": {
+   "size": 27825,
+   "required": true
+  },
+  "Model/Zeus_Model_VeryEasy.txt": {
+   "size": 27735,
+   "required": true
+  },
+  "Model/monster_behavior_Easy.txt": {
+   "size": 677,
+   "required": true
+  },
+  "Model/monster_behavior_Hard.txt": {
+   "size": 680,
+   "required": true
+  },
+  "Model/monster_behavior_Normal.txt": {
+   "size": 674,
+   "required": true
+  },
+  "Model/monster_behavior_VeryHard.txt": {
+   "size": 683,
+   "required": true
+  },
+  "Model/monster_behavior_Veryeasy.txt": {
+   "size": 675,
+   "required": true
+  },
+  "Model/palace.txt": {
+   "size": 632,
+   "required": true
+  },
+  "Model/sanctuary_conan.txt": {
+   "size": 503,
+   "required": true
+  },
+  "Model/statue_conan.txt": {
+   "size": 487,
+   "required": true
+  },
+  "Zeus.exe": {
+   "size": 2527232,
+   "required": false,
+   "sha256": "382bcd286192a06eb8fdc45f5c37390a19999f5db9c940c3ce2dfcd775e90a57"
+  },
+  "Zeus_MM.eng": {
+   "size": 595160,
+   "required": true,
+   "sha256": "80b5b5471a99943a1c3ef5707f943f91e3fdd2d29b359171a164a43af30e7c3b"
+  },
+  "Zeus_Text.eng": {
+   "size": 262936,
+   "required": true,
+   "sha256": "ef75469a05947c367c46a4d195c849779987f6f0f70bbf70a3a1d2744d3b9339"
+  },
+  "zeus.ico": {
+   "size": 4398,
+   "required": false
+  }
+ }
+}

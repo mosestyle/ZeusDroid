@@ -1,4 +1,5 @@
 #include "eenlistforcesdialog.h"
+#include "platform/eframeclock.h"
 
 #include "eframedbutton.h"
 #include "elanguage.h"
@@ -774,7 +775,7 @@ void eEnlistForcesDialog::initialize(
 }
 
 void eEnlistForcesDialog::paintEvent(ePainter& p) {
-    mFrame++;
+    if(eFrameClock::tick()) mFrame++;
     bool updateTips = false;
     for(int i = 0; i < int(mTips.size()); i++) {
         const auto& tip = mTips[i];

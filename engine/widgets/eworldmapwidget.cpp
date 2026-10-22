@@ -1,4 +1,5 @@
 ﻿#include "eworldmapwidget.h"
+#include "platform/eframeclock.h"
 
 #include "textures/egametextures.h"
 #include "textures/einterfacetextures.h"
@@ -171,7 +172,7 @@ std::vector<eMapArmy> getArmies(eGameBoard& board) {
 }
 
 void eWorldMapWidget::paintEvent(ePainter& p) {
-    mFrame++;
+    if(eFrameClock::tick()) mFrame++;
     eLabel::paintEvent(p);
     if(!mWorldBoard) return;
 

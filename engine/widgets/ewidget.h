@@ -62,6 +62,7 @@ public:
     // Deepest visible widget containing (x, y) in this widget's coordinates
     // (same traversal order as mouse dispatch). Used by touch hit-testing.
     eWidget* widgetAt(const int x, const int y);
+    static eWidget* keyboardGrabber() { return sKeyboardGrabber; }
 
     void mapToGlobal(int& x, int& y) const;
     void mapFromGlobal(int& x, int& y) const;

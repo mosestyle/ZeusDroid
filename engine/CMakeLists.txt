@@ -752,6 +752,8 @@ set(EZEUS_SOURCES
     platform/etouchgestures.h
     platform/eautotest.cpp
     platform/eautotest.h
+    platform/eframeclock.cpp
+    platform/eframeclock.h
     egamedir.h
     einvasionhandler.cpp
     einvasionhandler.h

@@ -38,6 +38,20 @@ State& st() {
     return s;
 }
 
+std::string rssInfo() {
+    std::ifstream f("/proc/self/status");
+    std::string line;
+    while(std::getline(f, line)) {
+        if(line.rfind("VmRSS:", 0) == 0) {
+            std::istringstream is(line.substr(6));
+            long kb = 0;
+            is >> kb;
+            return "rss_mb=" + std::to_string(kb/1024);
+        }
+    }
+    return "rss_mb=?";
+}
+
 void logLine(const std::string& s) {
     SDL_Log("[autotest] %s", s.c_str());
     static FILE* f = nullptr;
@@ -115,7 +129,7 @@ void execute(const Cmd& c, eMainWindow& w, const uint32_t now) {
         o << "t=" << now << " " << c.fRest;
         const auto gw = w.gameWidget();
         const bool gameShown = gw && w.currentWidget() == reinterpret_cast<eWidget*>(gw);
-        o << " game=" << (gameShown ? 1 : 0);
+        o << " game=" << (gameShown ? 1 : 0) << " " << rssInfo();
         if(gameShown) o << " " << gw->debugCameraState();
         logLine(o.str());
     } else if(c.fName == "wait_game") {

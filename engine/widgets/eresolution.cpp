@@ -20,9 +20,13 @@ std::vector<eResolution> eResolution::sResolutions{
     eResolution{3840, 2160},
 };
 
+int eResolution::sUIScaleOverride = -1;
+
 eResolution::eResolution(const int width, const int height) :
     mWidth(width), mHeight(height) {
-    if(height <= 800) {
+    if(sUIScaleOverride >= 0 && sUIScaleOverride <= 3) {
+        mUIScale = static_cast<eUIScale>(sUIScaleOverride);
+    } else if(height <= 800) {
         mUIScale = eUIScale::small;
     } else if(height <= 1200) {
         mUIScale = eUIScale::medium;

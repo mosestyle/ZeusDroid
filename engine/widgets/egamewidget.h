@@ -111,6 +111,15 @@ public:
     void zoomStepAt(const int dir, const int x, const int y);
     // "dx=.. dy=.. tile=WxH mode=.." for automated tests.
     std::string debugCameraState() const;
+    // Mouse-at-screen-edge scrolling; disabled on touch screens.
+    static bool sEdgeScrollEnabled;
+    // On-screen buttons for actions that are keyboard-only upstream
+    // (pause, speed -/+, rotate); enabled on touch screens.
+    static bool sTouchBarEnabled;
+    void togglePause() { switchPause(); }
+    bool paused() const { return mPaused; }
+    void changeSpeed(const int delta);
+    void rotateView();
 
     void pixToId(const int pixX, const int pixY,
                  int& idX, int& idY) const;

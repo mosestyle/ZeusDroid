@@ -1,0 +1,19 @@
+// Android Studio / Gradle build (alternative to tools/build_android.sh).
+// Not exercised in the agent environment (Gradle and Google Maven are blocked
+// there); versions chosen from released AGP/Gradle pairs - see docs/BUILD_ANDROID.md.
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "ZeusPoseidonAndroid"
+include ':app'

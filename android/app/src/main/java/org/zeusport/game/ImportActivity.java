@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -62,9 +63,32 @@ public class ImportActivity extends Activity {
         return new File(ext, ImportRules.ROOT);
     }
 
+    /** Long-press launcher shortcut that reopens this screen (API 25+). */
+    private void registerShortcut() {
+        if (Build.VERSION.SDK_INT < 25) return;
+        try {
+            android.content.pm.ShortcutManager sm = getSystemService(android.content.pm.ShortcutManager.class);
+            if (sm == null) return;
+            Intent i = new Intent(this, ImportActivity.class);
+            i.setAction(Intent.ACTION_VIEW);
+            i.putExtra("forceImportScreen", true);
+            android.content.pm.ShortcutInfo info = new android.content.pm.ShortcutInfo.Builder(this, "manage_data")
+                .setShortLabel(getString(R.string.manage_data))
+                .setIcon(android.graphics.drawable.Icon.createWithResource(this, R.mipmap.ic_launcher))
+                .setIntent(i)
+                .build();
+            java.util.List<android.content.pm.ShortcutInfo> l = new ArrayList<>();
+            l.add(info);
+            sm.setDynamicShortcuts(l);
+        } catch (Exception e) {
+            Log.w(TAG, "shortcut registration failed", e);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle b) {
         super.onCreate(b);
+        registerShortcut();
         if (ImportRules.allRequiredOk(ImportRules.validate(root()))
                 && !getIntent().getBooleanExtra("forceImportScreen", false)) {
             launchGame();
@@ -148,6 +172,7 @@ public class ImportActivity extends Activity {
         mStatusList.setOrientation(LinearLayout.VERTICAL);
         col.addView(mStatusList);
         col.addView(mStart);
+        col.addView(button("Licences and source code", v -> showLicences()));
 
         setContentView(scroll);
     }
@@ -428,6 +453,31 @@ public class ImportActivity extends Activity {
         if (dst.exists() && !dst.delete()) throw new IOException("cannot replace " + dst);
         if (!tmp.renameTo(dst)) throw new IOException("cannot finalize " + dst);
         return n;
+    }
+
+    private void showLicences() {
+        StringBuilder sb = new StringBuilder();
+        try (InputStream in = getAssets().open("licenses/NOTICE.md")) {
+            byte[] buf = new byte[8192];
+            int r;
+            java.io.ByteArrayOutputStream bo = new java.io.ByteArrayOutputStream();
+            while ((r = in.read(buf)) > 0) bo.write(buf, 0, r);
+            sb.append(new String(bo.toByteArray(), "UTF-8"));
+        } catch (IOException e) {
+            sb.append("Licence files missing from this build: ").append(e.getMessage());
+        }
+        sb.append("\n\nFull licence texts are included in the APK under assets/licenses/.");
+        TextView tv = new TextView(this);
+        tv.setText(sb.toString());
+        tv.setTextIsSelectable(true);
+        tv.setPadding(dp(16), dp(16), dp(16), dp(16));
+        ScrollView sv = new ScrollView(this);
+        sv.addView(tv);
+        new android.app.AlertDialog.Builder(this)
+            .setTitle("Licences")
+            .setView(sv)
+            .setPositiveButton(android.R.string.ok, null)
+            .show();
     }
 
     private void launchGame() {

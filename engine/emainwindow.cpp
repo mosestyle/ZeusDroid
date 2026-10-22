@@ -35,6 +35,8 @@
 #include "platform/eplatform.h"
 #include "platform/etouchgestures.h"
 #include "platform/eautotest.h"
+#include "widgets/elineedit.h"
+#include "platform/eframeclock.h"
 
 namespace {
 class eWindowTouchSink : public eTouchSink {
@@ -677,6 +679,7 @@ int eMainWindow::exec() {
 
     mTouchEnabled = ePlatform::isTouchPlatform() || eAutotest::forceTouch();
     if(mTouchEnabled) {
+        eGameWidget::sTouchBarEnabled = true;
         mTouchSink = std::make_shared<eWindowTouchSink>(*this);
         mTouch = std::make_shared<eTouchGestures>(*mTouchSink);
     }
@@ -686,13 +689,34 @@ int eMainWindow::exec() {
     eTooltip tooltip(*this);
 
     const bool showFPS = false;
-    const double fpsClamp = 20;
+    // Render rate: upstream paints (and simulates) at 20 FPS. On touch
+    // devices we render at 60 FPS for smooth panning while eFrameClock keeps
+    // the simulation at exactly 20 ticks/s (see platform/eframeclock.h).
+    const double fpsClamp = ePlatform::renderFps();
+    const double tickMs = 1000./eFrameClock::kTickRate;
+    double simAccum = tickMs;
+    auto lastFrame = high_resolution_clock::now();
+    if(mTouchEnabled) eGameWidget::sEdgeScrollEnabled = false;
 
     int c = 0;
     int fpsVal = 0;
     bool resetRenderTargets = false;
     while(!mQuit) {
         const auto fpsStart = high_resolution_clock::now();
+        {
+            const duration<double, std::milli> sinceLast = fpsStart - lastFrame;
+            lastFrame = fpsStart;
+            simAccum += sinceLast.count();
+            bool tick = true;
+            if(fpsClamp > eFrameClock::kTickRate) {
+                tick = simAccum >= tickMs - 1.0;
+                if(tick) simAccum -= tickMs;
+                // No catch-up bursts: like upstream, a slow device slows the
+                // game down instead of running several ticks in one frame.
+                simAccum = std::min(simAccum, tickMs);
+            }
+            eFrameClock::setTick(tick);
+        }
 
         while(SDL_PollEvent(&e)) {
             int x, y;
@@ -791,6 +815,21 @@ int eMainWindow::exec() {
         }
 
         if(mTouch) mTouch->update(SDL_GetTicks());
+        if(mTouchEnabled) {
+            // Show the on-screen keyboard while a text field owns the keyboard
+            // (Android does not enable SDL text input by default).
+            const auto grabber = eWidget::keyboardGrabber();
+            const bool wantText = grabber && dynamic_cast<eLineEdit*>(grabber);
+            if(wantText && !SDL_IsTextInputActive()) {
+                int gx = 0, gy = 0;
+                grabber->mapToGlobal(gx, gy);
+                SDL_Rect r{gx, gy, grabber->width(), grabber->height()};
+                SDL_SetTextInputRect(&r);
+                SDL_StartTextInput();
+            } else if(!wantText && SDL_IsTextInputActive()) {
+                SDL_StopTextInput();
+            }
+        }
         eAutotest::frame(*this, SDL_GetTicks());
 
         if(resetRenderTargets) {
@@ -803,7 +842,7 @@ int eMainWindow::exec() {
 
         ePainter p(mSdlRenderer);
 
-        eMusic::incTime();
+        if(eFrameClock::tick()) eMusic::incTime();
         if(mWidget) {
             mWidget->paint(p);
             tooltip.update();

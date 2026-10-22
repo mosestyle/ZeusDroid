@@ -27,6 +27,10 @@ namespace ePlatform {
     void log(const std::string& message);
 
     bool isTouchPlatform();
+
+    // Frames per second for painting. 20 = upstream behaviour (every frame
+    // is a simulation tick). Override with EZEUS_RENDER_FPS (20..120).
+    double renderFps();
 }
 
 #endif // EPLATFORM_H

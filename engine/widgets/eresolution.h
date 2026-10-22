@@ -39,6 +39,9 @@ public:
     int centralWidgetSmallHeight() const;
 
     static std::vector<eResolution> sResolutions;
+    // Platform override of the height-based UI scale (Android phones need a
+    // larger UI than a desktop of the same pixel height). -1 = no override.
+    static int sUIScaleOverride;
 
     const std::string& name() const { return mName; }
     eUIScale uiScale() const { return mUIScale; }

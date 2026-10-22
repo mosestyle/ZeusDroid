@@ -528,6 +528,31 @@ void eGameWidget::initialize() {
         buyCityWidget->hide();
     }
 
+    if(sTouchBarEnabled && !mEditorMode) {
+        // Touch replacements for keyboard-only actions. Plain eZeus framed
+        // buttons so they match the game's look; sized for fingers.
+        const int minTouch = std::max(height()/11, 40);
+        int y = mTopBar->height() + p;
+        const auto addTouchButton = [&](const std::string& txt,
+                                        const eAction& act) {
+            const auto b = new eFramedButton(txt, window());
+            b->setUnderline(false);
+            b->setRenderBg(true);
+            b->fitContent();
+            b->resize(std::max(b->width(), minTouch),
+                      std::max(b->height(), minTouch));
+            b->setPressAction(act);
+            addWidget(b);
+            b->move(p, y);
+            y += b->height() + p/2;
+            return b;
+        };
+        addTouchButton("||", [this]() { togglePause(); });
+        addTouchButton("-", [this]() { changeSpeed(-1); });
+        addTouchButton("+", [this]() { changeSpeed(1); });
+        addTouchButton("R", [this]() { rotateView(); });
+    }
+
     const auto& setts = window()->settings();
     const auto sizes = setts.availableSizes();
     setTileSize(sizes.front());
@@ -1777,17 +1802,12 @@ bool eGameWidget::keyPressEvent(const eKeyPressEvent& e) {
     const auto k = e.key();
     if(k == SDL_Scancode::SDL_SCANCODE_KP_PLUS ||
        k == SDL_Scancode::SDL_SCANCODE_RIGHTBRACKET) {
-        mSpeedId = std::clamp(mSpeedId + 1, 0, sMaxSpeedId);
-        mSpeed = sSpeeds[mSpeedId];
+        changeSpeed(1);
     } else if(k == SDL_Scancode::SDL_SCANCODE_KP_MINUS ||
               k == SDL_Scancode::SDL_SCANCODE_LEFTBRACKET) {
-        mSpeedId = std::clamp(mSpeedId - 1, 0, sMaxSpeedId);
-        mSpeed = sSpeeds[mSpeedId];
+        changeSpeed(-1);
     } else if(k == SDL_Scancode::SDL_SCANCODE_R) {
-        mRotate = !mRotate;
-        mRotateFrame = (mRotateFrame/gRotateFrames + 1)*gRotateFrames;
-        mRotateId++;
-        if(mRotateId > 3) mRotateId = 0;
+        rotateView();
     } else if(k == SDL_Scancode::SDL_SCANCODE_P) {
         switchPause();
     } else if(k == SDL_Scancode::SDL_SCANCODE_LEFT) {
@@ -2322,6 +2342,21 @@ void eGameWidget::updateMaps(const std::vector<eTile*>& tiles) {
 
 void eGameWidget::updateCitiesOnBoard() {
     mTem->updateCitiesOnBoard(*mBoard);
+}
+
+bool eGameWidget::sEdgeScrollEnabled = true;
+bool eGameWidget::sTouchBarEnabled = false;
+
+void eGameWidget::changeSpeed(const int delta) {
+    mSpeedId = std::clamp(mSpeedId + delta, 0, sMaxSpeedId);
+    mSpeed = sSpeeds[mSpeedId];
+}
+
+void eGameWidget::rotateView() {
+    mRotate = !mRotate;
+    mRotateFrame = (mRotateFrame/gRotateFrames + 1)*gRotateFrames;
+    mRotateId++;
+    if(mRotateId > 3) mRotateId = 0;
 }
 
 bool eGameWidget::buildToolActive() const {

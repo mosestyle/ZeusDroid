@@ -1,4 +1,5 @@
 ﻿#include "egamewidget.h"
+#include "platform/eframeclock.h"
 
 #include "eterraineditmenu.h"
 
@@ -334,7 +335,8 @@ void eGameWidget::paintEvent(ePainter& p) {
             mGm->viewedCityChanged();
         }
     }
-    if(mBoard->duringEarthquake()) {
+    const bool simTick = eFrameClock::tick();
+    if(simTick && mBoard->duringEarthquake()) {
         mDX += (eRand::rand() % 11) - 5;
         mDY += (eRand::rand() % 11) - 5;
         clampViewBox();
@@ -365,54 +367,60 @@ void eGameWidget::paintEvent(ePainter& p) {
             setPatrolBuilding(nullptr);
         }
     }
-    mFrame++;
-    mRotateFrame++;
-    bool updateTips = false;
-    for(int i = 0; i < int(mTips.size()); i++) {
-        const auto& tip = mTips[i];
-        if(mFrame > tip.fLastFrame) {
-            tip.fWid->deleteLater();
-            mTips.erase(mTips.begin() + i);
-            updateTips = true;
-            i--;
-        }
-    }
-    if(updateTips) updateTipPositions();
-    mBoard->incFrame();
-
-    const bool iterate = mSpeedId == sMaxSpeedId;
-    const int iMax = iterate ? 5 : 1;
-    for(int i = 0; i < iMax; i++) {
-        mBoard->scheduleDataUpdate();
-        mBoard->updateAppealMapIfNeeded();
-        mBoard->handleFinishedTasks();
-        const int nc = children().size() - mTips.size();
-        const bool incTime = !mPaused && !mLocked && !mMsgBox && !mInfoWidget && nc < 6;
-        if(incTime) {
-            const bool lost = mBoard->episodeLost();
-            if(lost) {
-                const auto w = window();
-                w->episodeLost();
-                return;
-            } else {
-                mTime += mSpeed;
-                mBoard->incTime(mSpeed);
+    if(simTick) {
+        mFrame++;
+        mRotateFrame++;
+        bool updateTips = false;
+        for(int i = 0; i < int(mTips.size()); i++) {
+            const auto& tip = mTips[i];
+            if(mFrame > tip.fLastFrame) {
+                tip.fWid->deleteLater();
+                mTips.erase(mTips.begin() + i);
+                updateTips = true;
+                i--;
             }
         }
-        mBoard->emptyRubbish();
-        if(iterate) mBoard->waitUntilFinished();
-        if(!incTime) break;
-    }
+        if(updateTips) updateTipPositions();
+        mBoard->incFrame();
 
-    if(mHoverX == 0) {
-        setDX(mDX + 35);
-    } else if(mHoverX == width() - 1) {
-        setDX(mDX - 35);
-    }
-    if(mHoverY == 0) {
-        setDY(mDY + 35);
-    } else if(mHoverY == height() - 1) {
-        setDY(mDY - 35);
+        const bool iterate = mSpeedId == sMaxSpeedId;
+        const int iMax = iterate ? 5 : 1;
+        for(int i = 0; i < iMax; i++) {
+            mBoard->scheduleDataUpdate();
+            mBoard->updateAppealMapIfNeeded();
+            mBoard->handleFinishedTasks();
+            const int nc = children().size() - mTips.size();
+            const bool incTime = !mPaused && !mLocked && !mMsgBox && !mInfoWidget && nc < 6;
+            if(incTime) {
+                const bool lost = mBoard->episodeLost();
+                if(lost) {
+                    const auto w = window();
+                    w->episodeLost();
+                    return;
+                } else {
+                    mTime += mSpeed;
+                    mBoard->incTime(mSpeed);
+                }
+            }
+            mBoard->emptyRubbish();
+            if(iterate) mBoard->waitUntilFinished();
+            if(!incTime) break;
+        }
+
+        // Mouse edge-scrolling. Disabled for touch, where the "hover" point
+        // is just the last touch position, not a resting cursor.
+        if(sEdgeScrollEnabled) {
+            if(mHoverX == 0) {
+                setDX(mDX + 35);
+            } else if(mHoverX == width() - 1) {
+                setDX(mDX - 35);
+            }
+            if(mHoverY == 0) {
+                setDY(mDY + 35);
+            } else if(mHoverY == height() - 1) {
+                setDY(mDY - 35);
+            }
+        }
     }
     eGameBoardRegisterLock lock(*mBoard);
 
