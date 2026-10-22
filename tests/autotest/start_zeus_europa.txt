@@ -1,0 +1,13 @@
+# Desktop 1280x720 window, leader "moses" must exist (see create_leader.txt). Screenshots go to build/run/ (git-ignored: they contain game art).
+8000 click left 456 262
+500 click left 797 523
+2500 click left 640 164
+2500 click left 320 344
+800 click left 590 448
+5000 click left 970 564
+1000 wait_game 120000
+3000 screenshot build/run/j01.bmp
+100 log ingame
+5000 screenshot build/run/j02.bmp
+100 log ingame2
+300 quit

@@ -37,6 +37,7 @@
 #include "platform/eautotest.h"
 #include "widgets/elineedit.h"
 #include "platform/eframeclock.h"
+#include "platform/eportsettings.h"
 
 namespace {
 class eWindowTouchSink : public eTouchSink {
@@ -46,14 +47,14 @@ public:
     eTarget targetAt(const int x, const int y) override {
         const auto top = mW.currentWidget();
         const auto gw = mW.gameWidget();
-        if(!top || !gw || top != reinterpret_cast<eWidget*>(gw)) return eTarget::ui;
+        if(!top || !gw || top != static_cast<eWidget*>(gw)) return eTarget::ui;
         const auto w = top->widgetAt(x, y);
         return w == top ? eTarget::map : eTarget::ui;
     }
     bool buildToolActive() override {
         const auto top = mW.currentWidget();
         const auto gw = mW.gameWidget();
-        if(!gw || top != reinterpret_cast<eWidget*>(gw)) return false;
+        if(!gw || top != static_cast<eWidget*>(gw)) return false;
         return gw->buildToolActive();
     }
     void pointerMove(const int x, const int y) override {
@@ -122,7 +123,7 @@ void eMainWindow::dispatchPointerRelease(const eMouseButton b, const int x, cons
 }
 
 void eMainWindow::dispatchZoomStep(const int dir, const int x, const int y) {
-    if(mGW && mWidget == reinterpret_cast<eWidget*>(mGW)) {
+    if(mGW && mWidget == static_cast<eWidget*>(mGW)) {
         mGW->zoomStepAt(dir, x, y);
     }
 }
@@ -370,23 +371,47 @@ void eMainWindow::episodeLost() {
 bool eMainWindow::saveGame(const std::string& path) {
     const auto fsp = std::filesystem::path(path);
     const auto fspd = fsp.parent_path();
-    std::filesystem::create_directories(fspd);
-    std::ofstream file(path, std::ios::out | std::ios::binary |
-                       std::ios::trunc);
-    if(!file) return false;
-    eWriteTarget target(&file);
-    eWriteStream dst(target);
-    dst.writeFormat("eZeus.ez");
-    if(mGW) {
-        const auto s = mGW->settings();
-        s.write(dst);
-    } else {
-        eGameWidgetSettings s;
-        s.fPaused = true;
-        s.write(dst);
+    std::error_code ec;
+    std::filesystem::create_directories(fspd, ec);
+    // Crash-safe save: write a temporary file, keep the previous save as
+    // ".bak", then atomically rename. A process kill (common on Android)
+    // can no longer leave a truncated save behind.
+    const std::string tmpPath = path + ".tmp";
+    {
+        std::ofstream file(tmpPath, std::ios::out | std::ios::binary |
+                           std::ios::trunc);
+        if(!file) return false;
+        eWriteTarget target(&file);
+        eWriteStream dst(target);
+        dst.writeFormat("eZeus.ez");
+        if(mGW) {
+            const auto s = mGW->settings();
+            s.write(dst);
+        } else {
+            eGameWidgetSettings s;
+            s.fPaused = true;
+            s.write(dst);
+        }
+        mCampaign->write(dst);
+        file.flush();
+        if(!file.good()) {
+            file.close();
+            std::filesystem::remove(tmpPath, ec);
+            printf("Saving '%s' failed (write error, disk full?)\n", path.c_str());
+            return false;
+        }
+        file.close();
     }
-    mCampaign->write(dst);
-    file.close();
+    if(std::filesystem::exists(path, ec)) {
+        std::filesystem::copy_file(path, path + ".bak",
+                                   std::filesystem::copy_options::overwrite_existing, ec);
+    }
+    std::filesystem::rename(tmpPath, path, ec);
+    if(ec) {
+        printf("Saving '%s' failed: %s\n", path.c_str(), ec.message().c_str());
+        std::filesystem::remove(tmpPath, ec);
+        return false;
+    }
     return true;
 }
 
@@ -681,7 +706,9 @@ int eMainWindow::exec() {
     if(mTouchEnabled) {
         eGameWidget::sTouchBarEnabled = true;
         mTouchSink = std::make_shared<eWindowTouchSink>(*this);
-        mTouch = std::make_shared<eTouchGestures>(*mTouchSink);
+        eTouchConfig tc;
+        ePortSettings::instance().applyTo(tc);
+        mTouch = std::make_shared<eTouchGestures>(*mTouchSink, tc);
     }
     eAutotest::start(*this);
 
@@ -846,7 +873,9 @@ int eMainWindow::exec() {
         if(mWidget) {
             mWidget->paint(p);
             tooltip.update();
-            if(!tooltip.empty()) {
+            // Hover tooltips make no sense for touch (no hover); they would
+            // stick at the last touch point and cover the UI.
+            if(!tooltip.empty() && !mPointerFromTouch) {
                 const auto& res = resolution();
                 const int pp = 25*res.multiplier();
                 const int wtt = tooltip.width();

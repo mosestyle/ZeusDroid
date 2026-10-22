@@ -1,0 +1,57 @@
+# Desktop 1280x720 window, leader "moses" must exist (see create_leader.txt). Screenshots go to build/run/ (git-ignored: they contain game art).
+# Touch gesture integration test on the real engine (EZEUS_TOUCH=1)
+8000 click left 456 262
+500 click left 797 523
+2500 click left 640 164
+2500 click left 320 344
+800 click left 590 448
+5000 click left 970 564
+1000 wait_game 120000
+2000 log start
+100 key P
+100 screenshot build/run/t00_start.bmp
+# one-finger pan: drag map left/up by (-300,-150) in 10 steps
+200 finger_down 1 600 400
+50 finger_move 1 590 395
+50 finger_move 1 560 380
+50 finger_move 1 530 365
+50 finger_move 1 500 350
+50 finger_move 1 470 335
+50 finger_move 1 440 320
+50 finger_move 1 400 300
+50 finger_move 1 360 280
+50 finger_move 1 330 265
+50 finger_move 1 300 250
+50 finger_up 1 300 250
+200 log after_pan_expect_dx-300_dy-165
+100 screenshot build/run/t01_pan.bmp
+# pinch in (fingers move together) at centroid (500,400) => zoom out one step
+200 finger_down 1 400 400
+20 finger_down 2 600 400
+50 finger_move 1 430 400
+50 finger_move 2 570 400
+50 finger_move 1 460 400
+50 finger_move 2 540 400
+50 finger_up 1 460 400
+20 finger_up 2 540 400
+200 log after_pinch_in_expect_tile30x15
+100 screenshot build/run/t02_zoomout.bmp
+# pinch out at (500,400) => zoom in again
+200 finger_down 1 470 400
+20 finger_down 2 530 400
+50 finger_move 1 440 400
+50 finger_move 2 560 400
+50 finger_move 1 400 400
+50 finger_move 2 600 400
+50 finger_up 1 400 400
+20 finger_up 2 600 400
+200 log after_pinch_out_expect_tile60x30
+100 screenshot build/run/t03_zoomin.bmp
+# tap with jitter on the map: must not pan
+200 finger_down 1 500 300
+30 finger_move 1 503 302
+30 finger_up 1 503 302
+200 log after_tap_expect_unchanged
+3000 screenshot build/run/t04_running.bmp
+100 log running
+300 quit

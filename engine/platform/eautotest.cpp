@@ -128,7 +128,7 @@ void execute(const Cmd& c, eMainWindow& w, const uint32_t now) {
         std::ostringstream o;
         o << "t=" << now << " " << c.fRest;
         const auto gw = w.gameWidget();
-        const bool gameShown = gw && w.currentWidget() == reinterpret_cast<eWidget*>(gw);
+        const bool gameShown = gw && w.currentWidget() == static_cast<eWidget*>(gw);
         o << " game=" << (gameShown ? 1 : 0) << " " << rssInfo();
         if(gameShown) o << " " << gw->debugCameraState();
         logLine(o.str());
@@ -188,7 +188,7 @@ void eAutotest::frame(eMainWindow& w, const uint32_t nowMs) {
     if(!s.fActive) return;
     if(s.fWaiting) {
         const auto gw = w.gameWidget();
-        const bool shown = gw && w.currentWidget() == reinterpret_cast<eWidget*>(gw);
+        const bool shown = gw && w.currentWidget() == static_cast<eWidget*>(gw);
         if(shown || nowMs >= s.fWaitUntil) {
             logLine(std::string("wait_game ") + (shown ? "ok" : "TIMEOUT") +
                     " t=" + std::to_string(nowMs));

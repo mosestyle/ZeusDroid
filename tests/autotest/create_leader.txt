@@ -1,0 +1,12 @@
+# Creates leader "Moses" from the empty Roster of Leaders (1280x720).
+8000 click left 490 524
+1500 key M
+100 key o
+100 key s
+100 key e
+100 key s
+500 click left 797 424
+1500 screenshot build/run/f01.bmp
+300 click left 797 523
+3000 screenshot build/run/f02.bmp
+300 quit

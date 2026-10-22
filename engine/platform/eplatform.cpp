@@ -11,6 +11,7 @@
 #include "egamedir.h"
 #include "esettings.h"
 #include "eengconverter.h"
+#include "eportsettings.h"
 
 #ifdef __ANDROID__
 #include <android/log.h>
@@ -82,7 +83,10 @@ int uiScaleFromEnv() {
 }
 
 void ePlatform::adjustSettings(eSettings& settings) {
+    auto& ps = ePortSettings::instance();
+    ps.load();
     eResolution::sUIScaleOverride = uiScaleFromEnv();
+    if(eResolution::sUIScaleOverride < 0) eResolution::sUIScaleOverride = ps.fUIScale;
 #ifdef __ANDROID__
     if(eResolution::sUIScaleOverride < 0) {
         // Phones: eZeus' interface art exists for 4 scales (0.5x .. 2x).
@@ -149,6 +153,8 @@ double ePlatform::renderFps() {
         const double v = std::atof(env);
         if(v >= 20. && v <= 120.) return v;
     }
+    const double ps = ePortSettings::instance().fRenderFps;
+    if(ps >= 20.) return ps;
     return isTouchPlatform() ? 60. : 20.;
 }
 

@@ -34,8 +34,24 @@ Safety rules built into the state machine:
   are cancelled with a right click first so no road/wall is committed.
 * Mouse edge-scrolling is disabled on touch (the last touch point is not a resting cursor).
 
-Tunables (`eTouchConfig`): tap slop 24 px, long-press 500 ms, pinch step ratio 1.30, pan
-sensitivity 1.0. An in-game settings screen for these is still open (NEXT_STEPS.md).
+Tunables live in `<eZeus dir>/port_settings.txt` (created with defaults on first start; on
+Android: `Android/data/org.zeusport.game/files/ZeusPoseidon/eZeus/port_settings.txt`):
+
+```
+render_fps "auto"        # 20 = upstream timing of paint; 60 default on Android
+ui_scale "auto"          # auto | tiny | small | medium | large (auto: 1080p+ phones -> large)
+pan_sensitivity "1.0"
+long_press_ms "500"
+pinch_step "1.30"
+tap_slop_px "24"
+```
+An in-game settings screen for these is still open (NEXT_STEPS.md).
+
+## On-screen buttons
+
+eZeus has some actions only on the keyboard. On touch screens four framed buttons are
+added at the top-left of the map: `||` pause/resume (P), `-` / `+` game speed ([ / ]),
+`R` rotate the view (R). The in-game menu (save/load/options/exit) is on Android Back.
 
 ## Zoom: discrete, by design of the renderer
 

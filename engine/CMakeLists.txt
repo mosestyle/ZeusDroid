@@ -754,6 +754,8 @@ set(EZEUS_SOURCES
     platform/eautotest.h
     platform/eframeclock.cpp
     platform/eframeclock.h
+    platform/eportsettings.cpp
+    platform/eportsettings.h
     egamedir.h
     einvasionhandler.cpp
     einvasionhandler.h
