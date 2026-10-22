@@ -6,7 +6,12 @@ listed in `docs/BUILD_ANDROID.md`. Use `ccache` for rebuilds (installed), and av
 widely-included headers (`ewidget.h`, `eresolution.h`) mid-build: a header change costs a
 full ~45 min rebuild on 2 cores.
 
-## 1. First on-device run (blocked: needs a phone)  ← highest priority
+## 0. Status after first phone feedback (2026-10-22)
+Game runs on the user's phone. Build mode reworked to hold-to-draw (0.1.3). Ask the user for:
+version shown on the import screen, phone model/Android version, whether date/speed advance
+in 0.1.3, any crash after pause/resume, and a save → kill app → load test.
+
+## 1. First on-device run  ← partly done (runs on the user's phone)
 * Install `dist/eZeusPort-debug-arm64-v8a.apk` on an arm64 phone (Android 8+).
 * Import the game folder + `eZeus-0.8.2-beta.zip`; start; capture `adb logcat -s SDL SDL/APP eZeus ZeusImport`.
 * Pass: main menu renders, leader can be created with the soft keyboard, *Zeus and Europa*
@@ -35,6 +40,9 @@ full ~45 min rebuild on 2 cores.
 * Atomic saves are implemented (`*.tmp` → rename, `*.bak`); verify with a kill-during-save test.
 
 ## 4. Touch UX completion
+* Optional two-step placement for expensive buildings (ghost + confirm/cancel buttons).
+* Offset placement cursor so the finger does not hide the footprint.
+* Larger list rows / drag-scrolling in lists (adventure list, save list).
 * Settings screen for touch (pan sensitivity, long-press time, pinch step, UI scale, FPS cap):
   store in `settings.txt` (`engine/esettings.cpp`), expose in `widgets/esettingsmenu.cpp`.
 * List widgets (adventure list, file lists) have ~26 px rows at 2400×1080: add touch-sized
