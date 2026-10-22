@@ -160,3 +160,30 @@ Xvfb 2400×1080, `EZEUS_TOUCH=1 EZEUS_UI_SCALE=large EZEUS_RENDER_FPS=60`, real 
   advancing) pass with the new button positions; desktop 1280×720 mouse
   `start_zeus_europa.txt` unchanged (zoom 1, no off-screen pass).
 * Visual check of a zoom-2 screenshot: linear upscaling, no tile seams.
+
+### Third on-device report (user, 2026-10-22 23:15)
+0.1.4 on the S25: "everything works great so far" (zoom, speed label, lists). Request: placing
+buildings by tap is imprecise; ideas for placing several buildings. → 0.1.5 below.
+
+### 0.1.5-dev: two-step placement, touch settings screen (desktop, phone layout, finger events)
+* Unit tests: 88 checks, 0 failures (x86-64 and ARM64/qemu), incl. new confirm-placement
+  scenario (tap previews, drag on preview moves it, drag elsewhere pans, hold+drag previews
+  an area, no press/release ever sent, lifecycle cancel safe); importer rules 46/46.
+* `tests/autotest/phone_build_confirm.txt` (road tool, zoom 1): tap → preview 42,-2, panel
+  shown, 10000 dr unchanged; drag on preview +115 px → preview 44,-4, camera unchanged;
+  drag elsewhere → dx -100, preview stays on 44,-4, panel follows; ✓ → 9995 dr (one tile),
+  preview gone, tool still active; hold+drag (1100,500)→(1400,650) → area preview
+  37,-3 → 47,-3, nothing built; ✕ → preview gone, 9995 dr; same area + ✓ → 9940 dr
+  (11 tiles); X → tool off. Screenshots checked (green preview, ✓/✕ panel, road built).
+* `tests/autotest/phone_back_touch_settings.txt`: Back after tapping "+" opens the game menu
+  (with "Touch controls"); settings screen renders 8 rows; switching "Placing buildings" to
+  Instant wrote `build_confirm "off"` to port_settings.txt and took effect without restart
+  (tap with the road tool built at once: 10000 → 9995 dr).
+* `tests/autotest/phone_options_touch_settings.txt`: main menu Options shows "Touch controls";
+  resolution / full-screen buttons hidden on touch.
+* Regressions: instant mode (`EZEUS_BUILD_CONFIRM=0`) `phone_build_hold_to_draw` (pan -200,
+  11-tile road, X) and `phone_build_zoom2` (6-tile road at zoom 2); `phone_zoom_speed_lists`,
+  `phone_touch_bar_pinch` unchanged results.
+* Fixed test tooling: autotest `key` joins arguments, so names with spaces ("AC Back") work
+  (an earlier Back check had silently sent no key).
+APK 0.1.5-dev: versionCode 6, sha256 28391ce090829936e6c26df0dd57e8f9be0342ce32016c2e93e89dc250fbe70a, v2/v3 OK

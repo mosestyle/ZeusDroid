@@ -41,6 +41,10 @@ public:
     void dispatchPointerRelease(const eMouseButton b, const int x, const int y);
     // The game widget when it is the current screen (touch pinch target).
     eGameWidget* touchGameWidget() const;
+    // Applies port_settings (touch config, zoom limit, placement mode) live.
+    void applyPortSettings();
+    // Port: touch options dialog on top of `parent` (or the current screen).
+    void showTouchSettings(eWidget* parent = nullptr);
     // Current pointer position (mouse cursor or last touch point).
     void pointerPosition(int& x, int& y) const;
     bool touchEnabled() const { return mTouchEnabled; }

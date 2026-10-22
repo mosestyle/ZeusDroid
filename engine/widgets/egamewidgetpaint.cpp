@@ -315,6 +315,8 @@ void eGameWidget::updateTerrainTextures() {
 }
 
 void eGameWidget::paintEvent(ePainter& p) {
+    applyTouchPreview();
+    updatePreviewPanel();
     // Port zoom: at scale 1 paint directly (upstream path). Otherwise paint
     // the world 1:1 into an off-screen texture of (widget size / scale) and
     // draw it stretched; children (menus, touch bar) stay unscaled.

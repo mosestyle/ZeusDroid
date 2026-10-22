@@ -121,6 +121,7 @@ public:
     void pinchUpdate(float x, float y, float scale);
     void pinchEnd();
     double worldScale() const { return mWorldScale; }
+    int gameMenuWidth() const { return mGm ? mGm->width() : 0; }
     static double sMaxZoom;
     void setSpeedId(const int id);
     // "dx=.. dy=.. tile=WxH mode=.." for automated tests.
@@ -144,6 +145,19 @@ public:
     eWidget* mTouchCancelButton = nullptr;
     eFramedButton* mSpeedButton = nullptr;
     void updateSpeedButton();
+
+    // Two-step touch placement (port, see docs/TOUCH_CONTROLS.md): taps and
+    // drags only move a preview of the building / road / area; the confirm
+    // button next to it builds. Coordinates are widget (screen) pixels.
+    static bool sBuildConfirm;
+    bool touchPreviewSupported() const;
+    bool touchPreviewActive() const { return mPreview.fActive; }
+    bool touchPreviewAt(int x, int y);
+    void touchPreviewTap(int x, int y);
+    void touchPreviewArea(int sx, int sy, int x, int y);
+    void touchPreviewDrag(int sx, int sy, int x, int y, bool begin);
+    void touchPreviewConfirm();
+    void touchPreviewClear();
 
     void pixToId(const int pixX, const int pixY,
                  int& idX, int& idY) const;
@@ -214,6 +228,24 @@ private:
     SDL_Texture* mWorldTarget = nullptr;
     int mWorldTargetW = 0;
     int mWorldTargetH = 0;
+    struct eTouchPreview {
+        bool fActive = false;
+        bool fArea = false;          // row / area (start..end), else single
+        eBuildingMode fMode = eBuildingMode::none;
+        int fSTX = 0, fSTY = 0;      // start tile (area)
+        int fETX = 0, fETY = 0;      // end tile = single building tile
+        double fAX = 0, fAY = 0;     // anchor in world pixels (map coords)
+        // drag bookkeeping
+        bool fDragEnd = false;       // area: drag moves the end only
+        int fDTX = 0, fDTY = 0;      // finger tile at drag start
+        int fBSTX = 0, fBSTY = 0, fBETX = 0, fBETY = 0;
+        double fBAX = 0, fBAY = 0;
+    };
+    eTouchPreview mPreview;
+    eWidget* mPreviewPanel = nullptr;
+    void screenToTile(int x, int y, int& tx, int& ty) const;
+    void applyTouchPreview();
+    void updatePreviewPanel();
     double mPinchZ0 = 1.0;
     double mPinchTX = 0.0; // map point (in tile widths/heights) under pinch
     double mPinchTY = 0.0;

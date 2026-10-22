@@ -1,4 +1,7 @@
 #include "egamewidget.h"
+#include "eacceptbutton.h"
+#include "ecancelbutton.h"
+#include "platform/eplatform.h"
 
 #include "engine/egameboard.h"
 
@@ -561,6 +564,33 @@ void eGameWidget::initialize() {
         y += p;
         mTouchCancelButton = addTouchButton("X", [this]() { touchCancel(); });
         mTouchCancelButton->hide();
+
+        // Confirm / cancel for two-step placement, positioned next to the
+        // preview every frame (updatePreviewPanel()).
+        mPreviewPanel = new eWidget(window());
+        mPreviewPanel->setNoPadding();
+        const int bs = std::max(height()/8, 48);
+        const auto addIconButton = [&](eBasicButton* const icon,
+                                       const eAction& act, const int x) {
+            const auto f = new eFramedButton(window());
+            f->setUnderline(false);
+            f->setRenderBg(true);
+            f->resize(bs, bs);
+            f->setPressAction(act);
+            f->addWidget(icon);
+            icon->align(eAlignment::center);
+            icon->setPressAction(act);
+            mPreviewPanel->addWidget(f);
+            f->move(x, 0);
+        };
+        addIconButton(new eAcceptButton(window()),
+                      [this]() { touchPreviewConfirm(); }, 0);
+        addIconButton(new eCancelButton(window()),
+                      [this]() { touchPreviewClear(); }, bs + p);
+        mPreviewPanel->resize(2*bs + p, bs);
+        addWidget(mPreviewPanel);
+        mTouchBarButtons++;
+        mPreviewPanel->hide();
     }
 
     const auto& setts = window()->settings();
@@ -1896,7 +1926,11 @@ bool eGameWidget::keyPressEvent(const eKeyPressEvent& e) {
             const auto exitAct = [w]() {
                 w->closeGame();
             };
-            menu->initialize(resumeAct, saveAct, loadAct, exitAct);
+            eAction touchAct;
+            if(ePlatform::touchUi()) {
+                touchAct = [this, w]() { w->showTouchSettings(this); };
+            }
+            menu->initialize(resumeAct, saveAct, loadAct, exitAct, touchAct);
             addWidget(menu);
             menu->align(eAlignment::center);
             w->execDialog(menu);
@@ -2354,6 +2388,7 @@ void eGameWidget::updateSpeedButton() {
 }
 
 bool eGameWidget::touchCancelAvailable() const {
+    if(mPreview.fActive) return true;
     if(mInfoWidget) return true;
     if(mGm && mGm->mode() != eBuildingMode::none) return true;
     if(mPatrolBuilding) return true;
@@ -2363,6 +2398,10 @@ bool eGameWidget::touchCancelAvailable() const {
 }
 
 bool eGameWidget::touchCancel() {
+    if(mPreview.fActive) {
+        touchPreviewClear();
+        return true;
+    }
     if(mInfoWidget) {
         mInfoWidget->deleteLater();
         mInfoWidget = nullptr;
@@ -2417,7 +2456,17 @@ std::string eGameWidget::debugCameraState() const {
            " pressedT=" + std::to_string(mPressedTX) + "," + std::to_string(mPressedTY) +
            " hoverT=" + std::to_string(mHoverTX) + "," + std::to_string(mHoverTY) +
            " leftPressed=" + std::to_string(mLeftPressed ? 1 : 0) +
-           " pressedButtons=" + std::to_string(static_cast<int>(mPressedButtons));
+           " pressedButtons=" + std::to_string(static_cast<int>(mPressedButtons)) +
+           " preview=" + std::to_string(mPreview.fActive ? 1 : 0) +
+           (mPreview.fArea ? "a" : "s") +
+           std::to_string(mPreview.fSTX) + "," + std::to_string(mPreview.fSTY) + "-" +
+           std::to_string(mPreview.fETX) + "," + std::to_string(mPreview.fETY) +
+           " panel=" + (mPreviewPanel && mPreviewPanel->visible() ?
+                        std::to_string(mPreviewPanel->x()) + "," +
+                        std::to_string(mPreviewPanel->y()) + "," +
+                        std::to_string(mPreviewPanel->width()) + "x" +
+                        std::to_string(mPreviewPanel->height()) : std::string("hidden")) +
+           " drachmas=" + (mBoard ? std::to_string(mBoard->drachmas(mBoard->personPlayer())) : std::string("-"));
 }
 
 void eGameWidget::zoomStepAt(const int dir, const int x, const int y) {
@@ -2612,4 +2661,171 @@ void eGameWidget::openDialog(eWidget* const d) {
 
 void eGameWidget::updateRequestButtons() {
     mGm->updateRequestButtons();
+}
+
+bool eGameWidget::sBuildConfirm = true;
+
+bool eGameWidget::touchPreviewSupported() const {
+    if(!sBuildConfirm || mLocked) return false;
+    if(!mGm || mGm->mode() == eBuildingMode::none) return false;
+    if(mTem && mTem->visible()) return false;
+    if(mPatrolBuilding) return false;
+    return true;
+}
+
+void eGameWidget::screenToTile(const int x, const int y,
+                               int& tx, int& ty) const {
+    const int wx = static_cast<int>(std::floor(x/mWorldScale));
+    const int wy = static_cast<int>(std::floor(y/mWorldScale));
+    pixToId(wx, wy, tx, ty);
+}
+
+bool eGameWidget::touchPreviewAt(const int x, const int y) {
+    if(!mPreview.fActive) return false;
+    int tx, ty;
+    screenToTile(x, y, tx, ty);
+    // Generous: the preview is under the finger, and buildings span up to
+    // several tiles around their anchor tile.
+    const auto near = [&](const int ax, const int ay, const int r) {
+        return std::abs(tx - ax) <= r && std::abs(ty - ay) <= r;
+    };
+    if(mPreview.fArea) return near(mPreview.fETX, mPreview.fETY, 1);
+    return near(mPreview.fETX, mPreview.fETY, 2);
+}
+
+void eGameWidget::touchPreviewTap(const int x, const int y) {
+    if(!touchPreviewSupported()) return;
+    mGm->closeBuildWidget();
+    int tx, ty;
+    screenToTile(x, y, tx, ty);
+    mPreview.fActive = true;
+    mPreview.fArea = false;
+    mPreview.fMode = mGm->mode();
+    mPreview.fSTX = mPreview.fETX = tx;
+    mPreview.fSTY = mPreview.fETY = ty;
+    mPreview.fAX = x/mWorldScale - mDX;
+    mPreview.fAY = y/mWorldScale - mDY;
+    eSounds::playButtonSound();
+}
+
+void eGameWidget::touchPreviewArea(const int sx, const int sy,
+                                   const int x, const int y) {
+    if(!touchPreviewSupported()) return;
+    mGm->closeBuildWidget();
+    int stx, sty, etx, ety;
+    screenToTile(sx, sy, stx, sty);
+    screenToTile(x, y, etx, ety);
+    mPreview.fActive = true;
+    mPreview.fArea = true;
+    mPreview.fMode = mGm->mode();
+    mPreview.fSTX = stx;
+    mPreview.fSTY = sty;
+    mPreview.fETX = etx;
+    mPreview.fETY = ety;
+    mPreview.fAX = x/mWorldScale - mDX;
+    mPreview.fAY = y/mWorldScale - mDY;
+}
+
+void eGameWidget::touchPreviewDrag(const int sx, const int sy,
+                                   const int x, const int y,
+                                   const bool begin) {
+    if(!mPreview.fActive || !touchPreviewSupported()) return;
+    auto& pv = mPreview;
+    if(begin) {
+        screenToTile(sx, sy, pv.fDTX, pv.fDTY);
+        pv.fDragEnd = pv.fArea;
+        pv.fBSTX = pv.fSTX;
+        pv.fBSTY = pv.fSTY;
+        pv.fBETX = pv.fETX;
+        pv.fBETY = pv.fETY;
+        pv.fBAX = pv.fAX;
+        pv.fBAY = pv.fAY;
+    }
+    int tx, ty;
+    screenToTile(x, y, tx, ty);
+    // Relative move: the preview keeps its offset to the finger, so it is
+    // never hidden under the finger more than when the drag started.
+    const int dtx = tx - pv.fDTX;
+    const int dty = ty - pv.fDTY;
+    pv.fETX = pv.fBETX + dtx;
+    pv.fETY = pv.fBETY + dty;
+    if(!pv.fDragEnd) {
+        pv.fSTX = pv.fBSTX + dtx;
+        pv.fSTY = pv.fBSTY + dty;
+    }
+    pv.fAX = pv.fBAX + (x - sx)/mWorldScale;
+    pv.fAY = pv.fBAY + (y - sy)/mWorldScale;
+}
+
+void eGameWidget::applyTouchPreview() {
+    if(!mPreview.fActive) return;
+    if(!mGm || mGm->mode() != mPreview.fMode || !touchPreviewSupported()) {
+        touchPreviewClear();
+        return;
+    }
+    mHoverTX = mPreview.fETX;
+    mHoverTY = mPreview.fETY;
+    // Labels drawn at the cursor (e.g. "11 x 1" for drags) follow the preview.
+    mHoverX = static_cast<int>(std::lround(mPreview.fAX + mDX));
+    mHoverY = static_cast<int>(std::lround(mPreview.fAY + mDY));
+    if(mPreview.fArea) {
+        mPressedTX = mPreview.fSTX;
+        mPressedTY = mPreview.fSTY;
+        mLeftPressed = true;
+        mMovedSincePress = true;
+    } else {
+        mPressedTX = -1;
+        mPressedTY = -1;
+        mLeftPressed = false;
+    }
+}
+
+void eGameWidget::touchPreviewConfirm() {
+    if(!mPreview.fActive) return;
+    applyTouchPreview();
+    if(!mPreview.fActive) return;
+    if(!mPreview.fArea) {
+        mPressedTX = mPreview.fETX;
+        mPressedTY = mPreview.fETY;
+    }
+    mLeftPressed = false;
+    buildMouseRelease();
+    touchPreviewClear();
+}
+
+void eGameWidget::touchPreviewClear() {
+    if(mPreview.fActive) {
+        mLeftPressed = false;
+        mPressedTX = -1;
+        mPressedTY = -1;
+        // No stray hover ghost after the preview is gone.
+        mHoverTX = -1;
+        mHoverTY = -1;
+    }
+    mPreview.fActive = false;
+    if(mPreviewPanel) mPreviewPanel->hide();
+}
+
+void eGameWidget::updatePreviewPanel() {
+    if(!mPreviewPanel) return;
+    if(!mPreview.fActive) {
+        mPreviewPanel->hide();
+        return;
+    }
+    const double s = mWorldScale;
+    const int ax = static_cast<int>(std::lround((mPreview.fAX + mDX)*s));
+    const int ay = static_cast<int>(std::lround((mPreview.fAY + mDY)*s));
+    const int pw = mPreviewPanel->width();
+    const int ph = mPreviewPanel->height();
+    const int th = static_cast<int>(mTileH*s);
+    const int mapW = width() - (mGm ? mGm->width() : 0);
+    // Below the preview, clear of a 3x3 building; above if no room.
+    int y = ay + 2*th + ph/4;
+    if(y + ph > height()) y = ay - 3*th - ph;
+    const int left = mTouchCancelButton ?
+                         mTouchCancelButton->x() + mTouchCancelButton->width() + padding() : 0;
+    const int x = std::clamp(ax - pw/2, left, std::max(left, mapW - pw));
+    y = std::clamp(y, mTopBar ? mTopBar->height() : 0, std::max(0, height() - ph));
+    mPreviewPanel->move(x, y);
+    mPreviewPanel->show();
 }

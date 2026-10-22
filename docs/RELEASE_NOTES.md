@@ -1,5 +1,15 @@
 # Release notes
 
+## 0.1.5-dev
+* Two-step building placement (default): a tap shows a preview, drag the preview to nudge
+  it, ✓ builds and ✕ discards. Hold + drag previews roads, walls and rows/areas of buildings
+  before they are built; the tool stays selected for the next placement.
+* In-game **Touch controls** screen (Back → Touch controls, or Options → Touch controls):
+  placement mode, hold time, long-press time, drag speed, maximum zoom, frame rate, UI size.
+* Phone Options screen no longer shows resolution / full-screen buttons (no effect on phones).
+* Back is routed to the centre of the screen, so it opens/closes menus regardless of the
+  last tapped button.
+
 ## 0.1.4-dev
 * Continuous pinch zoom from 0.5× to 3× (was: two fixed levels); the map stays under the
   fingers, and a two-finger drag pans without zooming. Mouse wheel uses the same zoom range.

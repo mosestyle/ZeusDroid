@@ -1,0 +1,39 @@
+# Phone layout: road tool via side panel, quick drag must pan, hold+drag draws a road, X cancels.
+# Phone layout: Xvfb 2400x1080, settings width 2400 height 1080, EZEUS_TOUCH=1 EZEUS_UI_SCALE=large EZEUS_RENDER_FPS=60. Taps only.
+8000 finger_down 1 1200 150
+80 finger_up 1 1200 150
+2500 finger_down 1 570 346
+80 finger_up 1 570 346
+800 finger_down 1 1100 720
+80 finger_up 1 1100 720
+4000 finger_down 1 1680 832
+80 finger_up 1 1680 832
+1000 wait_game 120000
+3000 log start
+# Back after tapping a touch-bar button must still open the game menu
+100 finger_down 1 68 430
+80 finger_up 1 68 430
+300 key AC Back
+600 screenshot build/run/ts_01_menu.bmp
+# Touch controls entry in the game menu
+100 finger_down 1 1200 645
+80 finger_up 1 1200 645
+600 screenshot build/run/ts_02_settings.bmp
+# switch "Placing buildings" to Instant, close with the tick
+100 finger_down 1 1520 228
+80 finger_up 1 1520 228
+300 screenshot build/run/ts_03_instant.bmp
+100 finger_down 1 1730 974
+80 finger_up 1 1730 974
+500 log after_settings_closed
+# resume the game menu
+100 finger_down 1 1200 330
+80 finger_up 1 1200 330
+400 log after_resume
+# instant mode: road tool + tap builds at once
+100 finger_down 1 2170 900
+80 finger_up 1 2170 900
+300 finger_down 1 1300 600
+80 finger_up 1 1300 600
+400 log after_instant_tap_expect_drachmas_9995_preview0
+200 quit

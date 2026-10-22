@@ -37,6 +37,22 @@ struct RecSink : eTouchSink {
 
     int listAboveY = -1;    // y < listAboveY (and not UI) is a scrollable list
     int listScrolled = 0;
+    bool confirm = false;       // widget supports two-step placement
+    int prevX = -1000, prevY = -1000; // pending preview position
+    void previewMoveTo(int x, int y) { prevX = x; prevY = y; }
+    bool confirmPlacement() override { return confirm; }
+    bool previewAt(int x, int y) override {
+        return std::abs(x - prevX) < 40 && std::abs(y - prevY) < 40;
+    }
+    void previewTap(int x, int y) override { ev.push_back({"ptap", -1, x, y}); }
+    void previewArea(int sx, int sy, int x, int y) override {
+        ev.push_back({"parea", sx*10000 + sy, x, y});
+    }
+    int pdragBegins = 0;
+    void previewDrag(int sx, int sy, int x, int y, bool begin) override {
+        if(begin) pdragBegins++;
+        ev.push_back({"pdrag", sx*10000 + sy, x, y});
+    }
     eTarget targetAt(int x, int y) override {
         if(uiBelowX >= 0 && x >= uiBelowX) return eTarget::ui;
         if(listAboveY >= 0 && y < listAboveY) return eTarget::scrollList;
@@ -218,6 +234,55 @@ void testListTapAndScroll() {
     CHECK(s.listScrolled == 90);
 }
 
+void testConfirmPlacement() {
+    std::puts("confirm placement: tap previews, drag pans, hold+drag previews area, drag on preview moves it; nothing is built");
+    RecSink s; s.build = true; s.confirm = true; eTouchGestures g(s);
+    g.fingerDown(1, 300, 300, 0);
+    g.fingerUp(1, 303, 298, 50);
+    CHECK(s.count("ptap") == 1 && s.ev.back().x == 300 && s.ev.back().y == 300);
+    CHECK(s.count("press") == 0);
+    s.previewMoveTo(300, 300);
+    s.ev.clear();
+    // drag away from the preview: pans
+    g.fingerDown(1, 600, 600, 100);
+    g.fingerMove(1, 650, 600, 120);
+    g.fingerUp(1, 650, 600, 140);
+    CHECK(s.camX == 50);
+    CHECK(s.count("press", L) == 0 && s.count("pdrag") == 0);
+    // drag starting on the preview: moves it, no pan
+    s.ev.clear();
+    g.fingerDown(1, 310, 290, 200);
+    g.fingerMove(1, 340, 290, 220);
+    g.fingerMove(1, 380, 300, 240);
+    g.fingerUp(1, 380, 300, 260);
+    CHECK(s.count("pdrag") == 3 && s.pdragBegins == 1);
+    CHECK(s.ev.back().what == "pdrag" && s.ev.back().x == 380 && s.ev.back().b == 310*10000 + 290);
+    CHECK(s.camX == 50 && s.count("press") == 0);
+    // hold on the preview: no area preview, no info click
+    s.ev.clear();
+    g.fingerDown(1, 300, 300, 300);
+    g.update(1300);
+    g.fingerUp(1, 300, 300, 1310);
+    CHECK(s.count("parea") == 0 && s.count("press") == 0);
+    CHECK(s.count("ptap") == 1);   // a tap (widget: put the preview here)
+    // hold elsewhere, then drag: area preview, nothing pressed
+    s.ev.clear();
+    g.fingerDown(1, 700, 400, 2000);
+    g.update(2350);
+    CHECK(g.state() == eTouchGestures::eState::buildDrag);
+    g.fingerMove(1, 800, 450, 2400);
+    g.fingerUp(1, 820, 460, 2450);
+    CHECK(s.count("parea") == 3);
+    CHECK(s.ev.back().what == "parea" && s.ev.back().x == 820 && s.ev.back().b == 700*10000 + 400);
+    CHECK(s.count("press") == 0 && s.count("release") == 0);
+    // lifecycle cancel during an area preview sends no clicks
+    s.ev.clear();
+    g.fingerDown(1, 700, 400, 3000);
+    g.update(3400);
+    g.cancel(3410);
+    CHECK(s.count("press") == 0 && s.count("release") == 0);
+}
+
 void testTwoFingerPanDeadBand() {
     std::puts("two-finger pan with slight spread change does not zoom");
     RecSink s; eTouchGestures g(s);
@@ -368,6 +433,7 @@ int main() {
     testThreeFingers();
     testTwoFingerPanDeadBand();
     testListTapAndScroll();
+    testConfirmPlacement();
     std::printf("%d checks, %d failures\n", gChecks, gFailures);
     return gFailures == 0 ? 0 : 1;
 }

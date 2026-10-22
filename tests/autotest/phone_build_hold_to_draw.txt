@@ -1,3 +1,4 @@
+# Instant placement mode: run with EZEUS_BUILD_CONFIRM=0.
 # Phone layout: road tool via side panel, quick drag must pan, hold+drag draws a road, X cancels.
 # Phone layout: Xvfb 2400x1080, settings width 2400 height 1080, EZEUS_TOUCH=1 EZEUS_UI_SCALE=large EZEUS_RENDER_FPS=60. Taps only.
 8000 finger_down 1 1200 150

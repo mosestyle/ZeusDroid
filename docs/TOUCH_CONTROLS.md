@@ -14,12 +14,15 @@ SDL's synthetic touch→mouse and mouse→touch events are disabled on Android
 | Tap | map | hover + left click at the touch-down point (select, open building/walker info, place building) |
 | Tap / drag | any UI panel, dialog, menu, slider, list | immediate left press, drag = left-drag, lift = release (exactly like a mouse) |
 | One-finger drag | map, no build tool | pans the camera (middle-drag in eZeus); the map stays under the finger, sub-pixel motion is accumulated |
-| One-finger drag | map, build tool active | **pans** (default "hold-to-draw" mode, since 0.1.3) |
-| Tap | map, build tool active | places one building / road tile at the tap |
-| Hold still 300 ms, then drag | map, build tool active | draws roads/walls, places rows/areas of buildings from the hold point; lift = build |
+| Tap | map, build tool active (default **preview + confirm**, since 0.1.5) | shows a green/red preview of the building at the tap; nothing is built. Tap elsewhere to move it |
+| Drag starting on the preview | map, preview shown | moves the preview tile by tile (it keeps its offset to the finger) |
+| One-finger drag elsewhere | map, build tool active | pans; the preview stays on its tile |
+| Hold still 300 ms, then drag | map, build tool active | previews a road / wall / row / area from the hold point to the finger; on lift it stays a preview. Drag its end to resize |
+| ✓ / ✕ buttons next to the preview | map | ✓ builds exactly what the preview shows (the tool stays selected for the next one); ✕ discards the preview |
+| (instant mode, `build_confirm "off"`) tap / hold + drag | map, build tool active | 0.1.3 behaviour: tap builds at once; hold then drag draws and builds on lift |
 | Long press (500 ms, no movement) | map, no build tool | right click (close info, deselect / place army) |
-| **X** button (appears when needed) | touch bar | leaves the build tool, closes an info panel, ends patrol editing, clears army selection |
-| Android Back | in the city | same as **X** when something is active, otherwise opens the game menu |
+| **X** button (appears when needed) | touch bar | discards a preview, else leaves the build tool, closes an info panel, ends patrol editing, clears army selection |
+| Android Back | in the city | same as **X** when something is active, otherwise opens the game menu (with **Touch controls**) |
 | Two-finger pinch | map | continuous zoom 0.5×–3× (since 0.1.4); the map points under the fingers stay under them. Ends near 1× snap to the pixel-exact 1× view |
 | Two-finger drag | map (also in build mode) | pans the camera; finger-distance changes under 4 % (`pinch_deadband`) do not zoom |
 | Tap | list (adventures, leaders, saves) | selects the row under the finger; rows are ≥ 1/13 of the screen height on touch screens |
@@ -53,8 +56,12 @@ max_zoom "3.0"           # 1..4; maximum pinch / mouse-wheel zoom
 tap_slop_px "24"
 build_drag "hold"        # hold (default) | direct (0.1.0-0.1.2 behaviour: drag draws immediately)
 build_hold_ms "300"
+build_confirm "on"       # on: preview + confirm button; off: taps build at once
 ```
-An in-game settings screen for these is still open (NEXT_STEPS.md).
+Since 0.1.5 these can be changed in the game: **Back → Touch controls** in a city, or
+**Options → Touch controls** in the main menu (each value is a button that cycles through the
+choices; changes are saved and applied at once, interface size after a restart). On phones the
+Options screen hides the resolution and full-screen buttons, which have no effect there.
 
 ## On-screen buttons
 

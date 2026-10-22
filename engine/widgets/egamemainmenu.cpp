@@ -10,7 +10,8 @@
 void eGameMainMenu::initialize(const eAction& resumeAct,
                                const eAction& saveAct,
                                const eAction& loadAct,
-                               const eAction& exitAct) {
+                               const eAction& exitAct,
+                               const eAction& touchSettingsAct) {
     setType(eFrameType::message);
 
     const auto resButt = new eFramedButton(window());
@@ -36,6 +37,16 @@ void eGameMainMenu::initialize(const eAction& resumeAct,
     loadButt->setPressAction(loadAct);
     addWidget(loadButt);
     loadButt->align(eAlignment::hcenter);
+
+    if(touchSettingsAct) { // port: touch screens only
+        const auto tButt = new eFramedButton(window());
+        tButt->setUnderline(false);
+        tButt->setText("Touch controls");
+        tButt->fitContent();
+        tButt->setPressAction(touchSettingsAct);
+        addWidget(tButt);
+        tButt->align(eAlignment::hcenter);
+    }
 
     const auto exitButt = new eFramedButton(window());
     exitButt->setUnderline(false);

@@ -28,6 +28,10 @@
 //                              sent yet; lift within slop = tap (left click
 //                              at the touch-down point)
 //   ListCandidate -> ListScroll moved beyond slop: the list follows the finger
+//   Confirm placement (fBuildConfirm and sink.confirmPlacement()): nothing is
+//   built by a gesture. Tap = previewTap (put / move the preview there; the
+//   widget's confirm button builds); hold + drag = previewArea (row/area/road preview);
+//   drag that starts on the preview = previewDrag (move it); other drags pan.
 //   MapCandidate/Pan -> Pinch  second finger: continuous zoom + pan
 //   Pinch -> WaitAllUp         a finger lifts: nothing more until all lift
 class eTouchSink {
@@ -54,6 +58,17 @@ public:
     virtual void listScroll(int downX, int downY, int dy) {
         (void)downX; (void)downY; (void)dy;
     }
+    // Two-step placement (see fBuildConfirm).
+    virtual bool confirmPlacement() { return false; }
+    virtual bool previewAt(int x, int y) { (void)x; (void)y; return false; }
+    virtual void previewTap(int x, int y) { (void)x; (void)y; }
+    virtual void previewArea(int sx, int sy, int x, int y) {
+        (void)sx; (void)sy; (void)x; (void)y;
+    }
+    // begin = first call of this drag (the preview's position is captured).
+    virtual void previewDrag(int sx, int sy, int x, int y, bool begin) {
+        (void)sx; (void)sy; (void)x; (void)y; (void)begin;
+    }
 };
 
 struct eTouchConfig {
@@ -71,6 +86,9 @@ struct eTouchConfig {
     // draws roads / places rows of buildings; false = drag draws immediately.
     bool fHoldToDraw = true;
     uint32_t fBuildHoldMs = 300;
+    // Two-step placement: gestures only move a preview; a confirm button (or
+    // a tap on the preview) builds. Applies when sink.confirmPlacement().
+    bool fBuildConfirm = true;
 };
 
 class eTouchGestures {
@@ -85,6 +103,7 @@ public:
         pinch,
         listCandidate,
         listScroll,
+        previewDrag,
         waitAllUp
     };
 
@@ -99,9 +118,9 @@ public:
     void update(uint32_t tMs);
 
     eState state() const { return mState; }
+    void setConfig(const eTouchConfig& c) { mConfig = c; }
     int fingerCount() const { return static_cast<int>(mFingers.size()); }
     const eTouchConfig& config() const { return mConfig; }
-    void setConfig(const eTouchConfig& c) { mConfig = c; }
 
     static const char* sStateName(eState s);
 private:
@@ -136,6 +155,9 @@ private:
     bool mPinchDirty = false;
     float mListLastY = 0.f;
     float mListEmitted = 0.f;
+    bool mOnPreview = false;   // map touch started on the pending preview
+    bool mPreviewArea = false; // buildDrag is a confirm-mode area preview
+    bool confirmMode();
     float mPinchStartX = 0.f;
     float mPinchStartY = 0.f;
 };

@@ -1,0 +1,68 @@
+# Phone layout: road tool via side panel, quick drag must pan, hold+drag draws a road, X cancels.
+# Phone layout: Xvfb 2400x1080, settings width 2400 height 1080, EZEUS_TOUCH=1 EZEUS_UI_SCALE=large EZEUS_RENDER_FPS=60. Taps only.
+8000 finger_down 1 1200 150
+80 finger_up 1 1200 150
+2500 finger_down 1 570 346
+80 finger_up 1 570 346
+800 finger_down 1 1100 720
+80 finger_up 1 1100 720
+4000 finger_down 1 1680 832
+80 finger_up 1 1680 832
+1000 wait_game 120000
+3000 log start
+100 finger_down 1 2170 900
+80 finger_up 1 2170 900
+500 log road_tool
+# tap: preview only, nothing built
+100 finger_down 1 1300 600
+80 finger_up 1 1300 600
+400 log after_tap_expect_preview_s_nothing_built
+200 screenshot build/run/c01_preview.bmp
+# drag on the preview: moves it right by ~2 tiles
+100 finger_down 1 1305 600
+40 finger_move 1 1340 600
+40 finger_move 1 1380 600
+40 finger_move 1 1420 600
+40 finger_up 1 1420 600
+400 log after_drag_preview_expect_moved_no_pan
+200 screenshot build/run/c02_moved.bmp
+# drag elsewhere: pans, preview stays on its tile
+100 finger_down 1 800 300
+40 finger_move 1 760 300
+40 finger_move 1 700 300
+40 finger_up 1 700 300
+400 log after_pan_expect_dx-100_same_preview
+# confirm (left button of the panel at 1170,693): builds one road tile, tool stays
+100 finger_down 1 1237 760
+80 finger_up 1 1237 760
+400 log after_confirm_expect_built_preview0_build1
+200 screenshot build/run/c03_built.bmp
+# hold + drag: road preview from the hold point, not built on lift
+100 finger_down 1 1100 500
+450 finger_move 1 1101 500
+60 finger_move 1 1200 550
+60 finger_move 1 1300 600
+60 finger_move 1 1400 650
+60 finger_up 1 1400 650
+400 log after_area_expect_preview_a_nothing_built
+200 screenshot build/run/c04_area.bmp
+# cancel button: preview gone, nothing built, tool stays
+100 finger_down 1 1477 810
+80 finger_up 1 1477 810
+400 log after_cancel_expect_preview0_build1_same_drachmas
+# same area again, then confirm: 11-tile road
+100 finger_down 1 1100 500
+450 finger_move 1 1101 500
+60 finger_move 1 1200 550
+60 finger_move 1 1300 600
+60 finger_move 1 1400 650
+60 finger_up 1 1400 650
+300 finger_down 1 1322 810
+80 finger_up 1 1322 810
+400 log after_area_confirm_expect_built
+200 screenshot build/run/c05_area_built.bmp
+# X on the touch bar leaves the road tool
+100 finger_down 1 68 670
+80 finger_up 1 68 670
+400 log after_X_expect_build0
+200 quit

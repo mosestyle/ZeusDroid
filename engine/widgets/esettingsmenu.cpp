@@ -8,6 +8,8 @@
 
 #include "elanguage.h"
 #include "egamedir.h"
+#include "emainwindow.h"
+#include "platform/eplatform.h"
 
 #include <filesystem>
 
@@ -214,6 +216,23 @@ void eSettingsMenu::initialize(const eApplyAction& settingsA,
                           texsWid->height() + 2*p);
         texsWid->move(2*p, 2*p);
         col1->addWidget(texsFrame);
+    }
+
+    if(ePlatform::touchUi()) { // port
+        // Phones always run full screen at the native resolution
+        // (ePlatform::adjustSettings), so these choices would do nothing.
+        col2->hide();
+        col3->hide();
+        for(const auto c : col1->children()) {
+            if(dynamic_cast<eFramedButton*>(c)) c->hide();
+        }
+        const auto tb = new eFramedButton(window());
+        tb->setUnderline(false);
+        tb->setText("Touch controls");
+        tb->fitContent();
+        tb->setPressAction([this]() { window()->showTouchSettings(this); });
+        col1->addWidget(tb);
+        tb->align(eAlignment::hcenter);
     }
 
     col1->layoutVertically();

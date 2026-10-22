@@ -1,3 +1,4 @@
+# Instant placement mode: run with EZEUS_BUILD_CONFIRM=0.
 # Same as phone_build_hold_to_draw.txt but at zoom 2 (pinch first): taps/drags must map to the tiles under the finger.
 8000 finger_down 1 1200 150
 80 finger_up 1 1200 150

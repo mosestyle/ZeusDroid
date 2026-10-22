@@ -113,7 +113,9 @@ void execute(const Cmd& c, eMainWindow& w, const uint32_t now) {
         u.button.state = SDL_RELEASED;
         SDL_PushEvent(&u);
     } else if(c.fName == "key" && !c.fArgs.empty()) {
-        const auto sc = SDL_GetScancodeFromName(c.fArgs[0].c_str());
+        std::string name = c.fArgs[0]; // names may contain spaces ("AC Back")
+        for(size_t i = 1; i < c.fArgs.size(); i++) name += " " + c.fArgs[i];
+        const auto sc = SDL_GetScancodeFromName(name.c_str());
         SDL_Event e{};
         e.type = SDL_KEYDOWN;
         e.key.keysym.scancode = sc;

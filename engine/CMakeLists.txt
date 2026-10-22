@@ -2926,6 +2926,8 @@ set(EZEUS_SOURCES
     widgets/eselectcolonywidget.cpp
     widgets/eselectcolonywidget.h
     widgets/esettingsmenu.cpp
+    widgets/etouchsettingswidget.cpp
+    widgets/etouchsettingswidget.h
     widgets/esettingsmenu.h
     widgets/esmalldownbutton.cpp
     widgets/esmalldownbutton.h

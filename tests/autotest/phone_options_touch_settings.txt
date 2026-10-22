@@ -1,0 +1,5 @@
+# Main menu -> Options shows "Touch controls" on touch screens; it opens the touch settings.
+8000 finger_down 1 1200 734
+80 finger_up 1 1200 734
+1500 screenshot build/run/o_01_options.bmp
+200 quit

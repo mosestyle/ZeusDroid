@@ -39,6 +39,7 @@
 #include "platform/eframeclock.h"
 #include "platform/eportsettings.h"
 #include "widgets/escrollwidget.h"
+#include "widgets/etouchsettingswidget.h"
 
 namespace {
 class eWindowTouchSink : public eTouchSink {
@@ -53,6 +54,24 @@ public:
         const auto gw = mW.gameWidget();
         if(!gw || top != static_cast<eWidget*>(gw)) return eTarget::ui;
         return w == top ? eTarget::map : eTarget::ui;
+    }
+    bool confirmPlacement() override {
+        const auto gw = mW.touchGameWidget();
+        return gw && gw->touchPreviewSupported();
+    }
+    bool previewAt(const int x, const int y) override {
+        const auto gw = mW.touchGameWidget();
+        return gw && gw->touchPreviewAt(x, y);
+    }
+    void previewTap(const int x, const int y) override {
+        if(const auto gw = mW.touchGameWidget()) gw->touchPreviewTap(x, y);
+    }
+    void previewArea(const int sx, const int sy, const int x, const int y) override {
+        if(const auto gw = mW.touchGameWidget()) gw->touchPreviewArea(sx, sy, x, y);
+    }
+    void previewDrag(const int sx, const int sy, const int x, const int y,
+                     const bool begin) override {
+        if(const auto gw = mW.touchGameWidget()) gw->touchPreviewDrag(sx, sy, x, y, begin);
     }
     void listScroll(const int downX, const int downY, const int dy) override {
         if(const auto sw = scrollListAt(downX, downY)) sw->scrollBy(dy);
@@ -139,6 +158,27 @@ void eMainWindow::dispatchPointerRelease(const eMouseButton b, const int x, cons
     const bool ctrl = mCtrlPressed > 0;
     const eMouseEvent me(x, y, shift, ctrl, mButtons, mButton);
     if(mWidget) mWidget->mouseRelease(me);
+}
+
+void eMainWindow::applyPortSettings() {
+    const auto& ps = ePortSettings::instance();
+    eGameWidget::sMaxZoom = ps.fMaxZoom;
+    eGameWidget::sBuildConfirm = ps.fBuildConfirm;
+    if(mTouch) {
+        eTouchConfig tc;
+        ps.applyTo(tc);
+        mTouch->setConfig(tc);
+    }
+}
+
+void eMainWindow::showTouchSettings(eWidget* parent) {
+    if(!parent) parent = mWidget;
+    if(!parent) return;
+    const auto tw = new eTouchSettingsWidget(this);
+    tw->initialize([tw]() { tw->deleteLater(); });
+    parent->addWidget(tw);
+    tw->align(eAlignment::center);
+    execDialog(tw, true, nullptr, parent);
 }
 
 eGameWidget* eMainWindow::touchGameWidget() const {
@@ -721,7 +761,6 @@ int eMainWindow::exec() {
     showMenuLoading();
 
     mTouchEnabled = ePlatform::isTouchPlatform() || eAutotest::forceTouch();
-    eGameWidget::sMaxZoom = ePortSettings::instance().fMaxZoom;
     ePlatform::setTouchUi(mTouchEnabled, height());
     if(mTouchEnabled) {
         eGameWidget::sTouchBarEnabled = true;
@@ -730,6 +769,7 @@ int eMainWindow::exec() {
         ePortSettings::instance().applyTo(tc);
         mTouch = std::make_shared<eTouchGestures>(*mTouchSink, tc);
     }
+    applyPortSettings();
     eAutotest::start(*this);
 
     SDL_Event e;
@@ -739,7 +779,7 @@ int eMainWindow::exec() {
     // Render rate: upstream paints (and simulates) at 20 FPS. On touch
     // devices we render at 60 FPS for smooth panning while eFrameClock keeps
     // the simulation at exactly 20 ticks/s (see platform/eframeclock.h).
-    const double fpsClamp = ePlatform::renderFps();
+    double fpsClamp = ePlatform::renderFps();
     const double tickMs = 1000./eFrameClock::kTickRate;
     double simAccum = tickMs;
     auto lastFrame = high_resolution_clock::now();
@@ -750,6 +790,7 @@ int eMainWindow::exec() {
     bool resetRenderTargets = false;
     while(!mQuit) {
         const auto fpsStart = high_resolution_clock::now();
+        fpsClamp = ePlatform::renderFps(); // can change in touch settings
         {
             const duration<double, std::milli> sinceLast = fpsStart - lastFrame;
             lastFrame = fpsStart;
@@ -844,6 +885,16 @@ int eMainWindow::exec() {
                     if(mGW && mWidget == static_cast<eWidget*>(mGW) &&
                        mGW->touchCancel()) continue;
                     k = SDL_SCANCODE_ESCAPE;
+                    // Key events are routed to the widget under the pointer;
+                    // after a touch that is the last tapped button (e.g. the
+                    // speed "+"), which would swallow it. Route Back via the
+                    // centre of the map area, where dialogs are centred.
+                    if(mTouchEnabled) {
+                        const int gmw = mGW && mWidget == static_cast<eWidget*>(mGW) ?
+                                            mGW->gameMenuWidth() : 0;
+                        x = (width() - gmw)/2;
+                        y = height()/2;
+                    }
                 }
                 if(k == SDL_Scancode::SDL_SCANCODE_LSHIFT ||
                    k == SDL_Scancode::SDL_SCANCODE_RSHIFT) {

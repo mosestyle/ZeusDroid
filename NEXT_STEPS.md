@@ -7,10 +7,10 @@ widely-included headers (`ewidget.h`, `eresolution.h`) mid-build: a header chang
 full ~45 min rebuild on 2 cores.
 
 ## 0. Status after phone feedback (2026-10-22, Samsung Galaxy S25)
-0.1.3 runs; date/speed advance. 0.1.4 adds continuous pinch zoom (world-layer scaling),
-a speed label instead of stacking tips, finger-sized rows and drag-scrolling in lists.
-Ask the user to check: pinch smoothness and sharpness on the S25, list scrolling, a
-save → kill app → load round trip, pause/resume (home button) without black textures.
+0.1.4 confirmed by the user (zoom, lists, speed label). 0.1.5 adds two-step placement
+(preview, drag to nudge, ✓/✕; hold+drag area previews) and the Touch controls screen.
+Ask the user to check: placement feel (preview offset, panel position, ✓/✕ size), the
+settings screen, a save → kill app → load round trip, pause/resume (home button).
 
 ## 1. First on-device run  ← partly done (runs on the user's phone)
 * Install `dist/eZeusPort-debug-arm64-v8a.apk` on an arm64 phone (Android 8+).
@@ -41,7 +41,9 @@ save → kill app → load round trip, pause/resume (home button) without black 
 * Atomic saves are implemented (`*.tmp` → rename, `*.bak`); verify with a kill-during-save test.
 
 ## 4. Touch UX completion
-* Optional two-step placement for expensive buildings (ghost + confirm/cancel buttons).
+* Two-step placement: DONE (0.1.5, default for all tools). Possible follow-ups: show the cost
+  on the ✓ button; resize an area preview from either corner; "repeat" (keep a preview next
+  to the last building).
 * Offset placement cursor so the finger does not hide the footprint.
 * Larger list rows / drag-scrolling: DONE for adventure, leader and save/load lists (0.1.4);
   other scroll lists (editor, military, text scrollers) still mouse-sized.

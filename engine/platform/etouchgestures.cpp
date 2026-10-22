@@ -10,6 +10,11 @@ int ri(const float v) { return static_cast<int>(std::lround(v)); }
 eTouchGestures::eTouchGestures(eTouchSink& sink, const eTouchConfig& config) :
     mSink(sink), mConfig(config) {}
 
+bool eTouchGestures::confirmMode() {
+    return mConfig.fBuildConfirm && mSink.buildToolActive() &&
+           mSink.confirmPlacement();
+}
+
 const char* eTouchGestures::sStateName(const eState s) {
     switch(s) {
     case eState::idle: return "idle";
@@ -21,6 +26,7 @@ const char* eTouchGestures::sStateName(const eState s) {
     case eState::pinch: return "pinch";
     case eState::listCandidate: return "listCandidate";
     case eState::listScroll: return "listScroll";
+    case eState::previewDrag: return "previewDrag";
     case eState::waitAllUp: return "waitAllUp";
     }
     return "?";
@@ -71,6 +77,7 @@ void eTouchGestures::fingerDown(const int64_t id, const float x, const float y,
             mListEmitted = 0.f;
         } else {
             mState = eState::mapCandidate;
+            mOnPreview = confirmMode() && mSink.previewAt(ri(x), ri(y));
         }
     } break;
     case eState::mapCandidate:
@@ -89,6 +96,7 @@ void eTouchGestures::fingerDown(const int64_t id, const float x, const float y,
     case eState::pinch:
     case eState::listCandidate:
     case eState::listScroll:
+    case eState::previewDrag:
     case eState::waitAllUp:
         // Extra fingers are ignored in these states (pinch uses the first two).
         break;
@@ -174,8 +182,13 @@ void eTouchGestures::fingerMove(const int64_t id, const float x, const float y,
         if(id != mPrimary) break;
         const float d = std::hypot(x - f.fStartX, y - f.fStartY);
         if(d < mConfig.fTapSlop) break;
-        if(mSink.buildToolActive() && !mConfig.fHoldToDraw) {
+        if(mOnPreview && confirmMode()) {
+            mState = eState::previewDrag;
+            mSink.previewDrag(ri(f.fStartX), ri(f.fStartY), ri(x), ri(y), true);
+        } else if(mSink.buildToolActive() && !mConfig.fHoldToDraw &&
+                  !confirmMode()) {
             mState = eState::buildDrag;
+            mPreviewArea = false;
             const int sx = ri(f.fStartX);
             const int sy = ri(f.fStartY);
             mSink.pointerMove(sx, sy);
@@ -216,7 +229,17 @@ void eTouchGestures::fingerMove(const int64_t id, const float x, const float y,
         }
     } break;
     case eState::buildDrag:
-        if(id == mPrimary) mSink.pointerMove(ri(x), ri(y));
+        if(id != mPrimary) break;
+        if(mPreviewArea) {
+            mSink.previewArea(ri(f.fStartX), ri(f.fStartY), ri(x), ri(y));
+        } else {
+            mSink.pointerMove(ri(x), ri(y));
+        }
+        break;
+    case eState::previewDrag:
+        if(id == mPrimary) {
+            mSink.previewDrag(ri(f.fStartX), ri(f.fStartY), ri(x), ri(y), false);
+        }
         break;
     case eState::pinch:
         // Applied once per frame in update(): SDL reports the two fingers in
@@ -254,6 +277,11 @@ void eTouchGestures::fingerUp(const int64_t id, const float x, const float y,
             const int sx = ri(f.fStartX);
             const int sy = ri(f.fStartY);
             (void)tMs;
+            if(mState == eState::mapCandidate && confirmMode()) {
+                mSink.previewTap(sx, sy);
+                mState = eState::waitAllUp;
+                break;
+            }
             mSink.pointerMove(sx, sy);
             mSink.pointerPress(eTouchSink::eButton::left, sx, sy);
             mSink.pointerRelease(eTouchSink::eButton::left, sx, sy);
@@ -268,8 +296,19 @@ void eTouchGestures::fingerUp(const int64_t id, const float x, const float y,
         break;
     case eState::buildDrag:
         if(id == mPrimary) {
-            mSink.pointerMove(ri(x), ri(y));
-            mSink.pointerRelease(eTouchSink::eButton::left, ri(x), ri(y));
+            if(mPreviewArea) {
+                // Stays a preview until confirmed.
+                mSink.previewArea(ri(f.fStartX), ri(f.fStartY), ri(x), ri(y));
+            } else {
+                mSink.pointerMove(ri(x), ri(y));
+                mSink.pointerRelease(eTouchSink::eButton::left, ri(x), ri(y));
+            }
+            mState = eState::waitAllUp;
+        }
+        break;
+    case eState::previewDrag:
+        if(id == mPrimary) {
+            mSink.previewDrag(ri(f.fStartX), ri(f.fStartY), ri(x), ri(y), false);
             mState = eState::waitAllUp;
         }
         break;
@@ -308,10 +347,21 @@ void eTouchGestures::update(const uint32_t tMs) {
     const auto& f = it->second;
     const int sx = ri(f.fStartX);
     const int sy = ri(f.fStartY);
+    if(confirmMode()) {
+        // Hold on the preview does nothing (a drag moves it); elsewhere
+        // hold + drag previews a row / area.
+        if(mOnPreview) return;
+        if(tMs - f.fDownMs < mConfig.fBuildHoldMs) return;
+        mState = eState::buildDrag;
+        mPreviewArea = true;
+        mSink.previewArea(sx, sy, ri(f.fX), ri(f.fY));
+        return;
+    }
     if(mConfig.fHoldToDraw && mSink.buildToolActive()) {
         // Hold-to-draw: start the build drag where the finger rests.
         if(tMs - f.fDownMs < mConfig.fBuildHoldMs) return;
         mState = eState::buildDrag;
+        mPreviewArea = false;
         mSink.pointerMove(sx, sy);
         mSink.pointerPress(eTouchSink::eButton::left, sx, sy);
         const int cx = ri(f.fX);
@@ -329,8 +379,10 @@ void eTouchGestures::update(const uint32_t tMs) {
 void eTouchGestures::cancel(const uint32_t tMs) {
     (void)tMs;
     switch(mState) {
-    case eState::uiPress:
-    case eState::buildDrag: {
+    case eState::buildDrag:
+        if(mPreviewArea) break; // a preview: nothing is held
+        [[fallthrough]];
+    case eState::uiPress: {
         // Releasing outside of any meaningful target is not possible for a
         // UI press, so release in place; for build drags cancel with a right
         // click first so no road/wall gets committed.

@@ -3,7 +3,10 @@
 #include <algorithm>
 #include <cstdlib>
 #include <fstream>
+#include <cstdio>
+#include <filesystem>
 #include <map>
+#include <sstream>
 
 #include "egamedir.h"
 #include "eloadtexthelper.h"
@@ -31,7 +34,8 @@ void ePortSettings::load() {
                    "max_zoom \"3.0\"\n"
                    "tap_slop_px \"24\"\n"
                    "build_drag \"hold\"\n"
-                   "build_hold_ms \"300\"\n";
+                   "build_hold_ms \"300\"\n"
+                   "build_confirm \"on\"\n";
         }
         return;
     }
@@ -58,6 +62,12 @@ void ePortSettings::load() {
     if(num("build_hold_ms", v)) fBuildHoldMs = static_cast<int>(std::clamp(v, 100., 2000.));
     const auto bd = m.find("build_drag");
     if(bd != m.end()) fHoldToDraw = bd->second != "direct";
+    const auto bc = m.find("build_confirm");
+    if(bc != m.end()) fBuildConfirm = bc->second != "off";
+    // Test override (autotests of the instant placement mode).
+    if(const char* const e = std::getenv("EZEUS_BUILD_CONFIRM")) {
+        if(*e) fBuildConfirm = *e != '0';
+    }
     const auto it = m.find("ui_scale");
     if(it != m.end()) {
         const auto& s = it->second;
@@ -75,4 +85,35 @@ void ePortSettings::applyTo(eTouchConfig& c) const {
     c.fTapSlop = fTapSlop;
     c.fHoldToDraw = fHoldToDraw;
     c.fBuildHoldMs = static_cast<uint32_t>(fBuildHoldMs);
+    c.fBuildConfirm = fBuildConfirm;
+}
+
+void ePortSettings::save() const {
+    std::ostringstream o;
+    const auto q = [](const std::string& v) { return "\"" + v + "\""; };
+    const auto num = [](const double v) {
+        char buf[32];
+        std::snprintf(buf, sizeof(buf), "%g", v);
+        return std::string(buf);
+    };
+    static const char* const scales[] = {"tiny", "small", "medium", "large"};
+    o << "render_fps " << q(fRenderFps < 20 ? "auto" : num(fRenderFps)) << "\n";
+    o << "ui_scale " << q(fUIScale < 0 || fUIScale > 3 ? "auto" : scales[fUIScale]) << "\n";
+    o << "pan_sensitivity " << q(num(fPanSensitivity)) << "\n";
+    o << "long_press_ms " << q(num(fLongPressMs)) << "\n";
+    o << "pinch_deadband " << q(num(fPinchDeadband)) << "\n";
+    o << "max_zoom " << q(num(fMaxZoom)) << "\n";
+    o << "tap_slop_px " << q(num(fTapSlop)) << "\n";
+    o << "build_drag " << q(fHoldToDraw ? "hold" : "direct") << "\n";
+    o << "build_hold_ms " << q(num(fBuildHoldMs)) << "\n";
+    o << "build_confirm " << q(fBuildConfirm ? "on" : "off") << "\n";
+    const auto tmp = path() + ".tmp";
+    {
+        std::ofstream out(tmp, std::ios::trunc);
+        if(!out) return;
+        out << o.str();
+        if(!out) return;
+    }
+    std::error_code ec;
+    std::filesystem::rename(tmp, path(), ec);
 }
