@@ -14,6 +14,10 @@
 100 finger_down 1 2170 900
 80 finger_up 1 2170 900
 500 log after_road_icon_expect_build1
+# roads start in Draw mode (0.1.8); this test covers the non-draw gestures
+100 finger_down 1 68 654
+80 finger_up 1 68 654
+300 log draw_off
 # quick one-finger drag in build mode -> must pan, not build
 100 finger_down 1 1200 600
 40 finger_move 1 1150 580

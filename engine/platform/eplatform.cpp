@@ -6,6 +6,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
+#include <fstream>
+#include <sstream>
 #include <string>
 
 #include "egamedir.h"
@@ -182,5 +184,21 @@ bool ePlatform::touchUi() {
 
 int ePlatform::touchRowHeight(const int h) {
     if(!gTouchUi || gTouchScreenH <= 0) return h;
-    return std::max(h, gTouchScreenH/13);
+    // ~1/13 of a 1080p phone screen (83 px); tall tablet screens keep that
+    // size instead of growing, so lists still show many rows.
+    return std::max(h, std::min(gTouchScreenH/13, std::max(3*h, 84)));
+}
+
+int ePlatform::residentMemoryMB() {
+    std::ifstream f("/proc/self/status");
+    std::string line;
+    while(std::getline(f, line)) {
+        if(line.rfind("VmRSS:", 0) == 0) {
+            std::istringstream is(line.substr(6));
+            long kb = 0;
+            is >> kb;
+            return static_cast<int>(kb/1024);
+        }
+    }
+    return -1;
 }

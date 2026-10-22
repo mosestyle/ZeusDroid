@@ -36,7 +36,8 @@ void ePortSettings::load() {
                    "build_drag \"hold\"\n"
                    "build_hold_ms \"300\"\n"
                    "build_confirm \"on\"\n"
-                   "build_repeat \"on\"\n";
+                   "build_repeat \"on\"\n"
+                   "show_stats \"off\"\n";
         }
         return;
     }
@@ -65,6 +66,8 @@ void ePortSettings::load() {
     if(bd != m.end()) fHoldToDraw = bd->second != "direct";
     const auto bc = m.find("build_confirm");
     if(bc != m.end()) fBuildConfirm = bc->second != "off";
+    const auto ss = m.find("show_stats");
+    if(ss != m.end()) fShowStats = ss->second == "on";
     const auto br = m.find("build_repeat");
     if(br != m.end()) fBuildRepeat = br->second != "off";
     // Test override (autotests of the instant placement mode).
@@ -111,6 +114,7 @@ void ePortSettings::save() const {
     o << "build_hold_ms " << q(num(fBuildHoldMs)) << "\n";
     o << "build_confirm " << q(fBuildConfirm ? "on" : "off") << "\n";
     o << "build_repeat " << q(fBuildRepeat ? "on" : "off") << "\n";
+    o << "show_stats " << q(fShowStats ? "on" : "off") << "\n";
     const auto tmp = path() + ".tmp";
     {
         std::ofstream out(tmp, std::ios::trunc);

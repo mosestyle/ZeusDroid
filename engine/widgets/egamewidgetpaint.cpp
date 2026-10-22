@@ -423,7 +423,7 @@ void eGameWidget::paintWorld(ePainter& p) {
         }
     }
     if(simTick) {
-        if(mFrame % 10 == 0) updateBoxSelectButton();
+        updateBoxSelectButton(); // cheap; keeps "Draw" / "[ ]" in sync
         mFrame++;
         mRotateFrame++;
         bool updateTips = false;

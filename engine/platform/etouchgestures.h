@@ -61,6 +61,10 @@ public:
     // Box selection (army): a one-finger drag on the map is a left-drag
     // (selection rectangle) instead of a pan while this returns true.
     virtual bool boxSelectActive() { return false; }
+    // Draw mode of the active build tool: a one-finger drag draws a road /
+    // wall / row / area from the touch-down point at once (no hold needed);
+    // the map is panned with two fingers.
+    virtual bool drawModeActive() { return false; }
     // Two-step placement (see fBuildConfirm).
     virtual bool confirmPlacement() { return false; }
     virtual bool previewAt(int x, int y) { (void)x; (void)y; return false; }

@@ -182,11 +182,16 @@ void eTouchGestures::fingerMove(const int64_t id, const float x, const float y,
         if(id != mPrimary) break;
         const float d = std::hypot(x - f.fStartX, y - f.fStartY);
         if(d < mConfig.fTapSlop) break;
+        const bool draw = mSink.buildToolActive() && mSink.drawModeActive();
         if(mOnPreview && confirmMode()) {
             mState = eState::previewDrag;
             mSink.previewDrag(ri(f.fStartX), ri(f.fStartY), ri(x), ri(y), true);
+        } else if(draw && confirmMode()) {
+            mState = eState::buildDrag;
+            mPreviewArea = true;
+            mSink.previewArea(ri(f.fStartX), ri(f.fStartY), ri(x), ri(y));
         } else if(mSink.boxSelectActive() ||
-                  (mSink.buildToolActive() && !mConfig.fHoldToDraw &&
+                  (mSink.buildToolActive() && (!mConfig.fHoldToDraw || draw) &&
                    !confirmMode())) {
             mState = eState::buildDrag;
             mPreviewArea = false;

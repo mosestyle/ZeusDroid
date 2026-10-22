@@ -35,6 +35,9 @@ namespace ePlatform {
     // can be hit with a finger; returns h unchanged otherwise.
     int touchRowHeight(int h);
 
+    // Resident memory of this process in MB (Linux/Android), -1 if unknown.
+    int residentMemoryMB();
+
     // Frames per second for painting. 20 = upstream behaviour (every frame
     // is a simulation tick). Override with EZEUS_RENDER_FPS (20..120).
     double renderFps();

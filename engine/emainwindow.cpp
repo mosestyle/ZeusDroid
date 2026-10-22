@@ -55,6 +55,10 @@ public:
         if(!gw || top != static_cast<eWidget*>(gw)) return eTarget::ui;
         return w == top ? eTarget::map : eTarget::ui;
     }
+    bool drawModeActive() override {
+        const auto gw = mW.touchGameWidget();
+        return gw && gw->touchDrawModeActive();
+    }
     bool boxSelectActive() override {
         const auto gw = mW.touchGameWidget();
         return gw && gw->touchBoxSelectActive();
@@ -793,6 +797,13 @@ int eMainWindow::exec() {
     int c = 0;
     int fpsVal = 0;
     bool resetRenderTargets = false;
+    // Port: optional stats overlay (Touch controls -> Show FPS and memory).
+    int statFrames = 0;
+    int statTicks = 0;
+    double statWorkMs = 0;
+    auto statStart = high_resolution_clock::now();
+    std::string statText;
+    stdsptr<eTexture> statTex;
     while(!mQuit) {
         const auto fpsStart = high_resolution_clock::now();
         fpsClamp = ePlatform::renderFps(); // can change in touch settings
@@ -983,6 +994,18 @@ int eMainWindow::exec() {
             p.setFont(eFonts::defaultFont(resolution()));
             p.drawText(0, 0, std::to_string(fpsVal), eFontColor::dark);
         }
+        if(ePortSettings::instance().fShowStats && !statText.empty()) {
+            if(!statTex) {
+                statTex = std::make_shared<eTexture>();
+                statTex->loadText(mSdlRenderer, statText, eFontColor::light,
+                                  *eFonts::defaultFont(resolution()));
+            }
+            const int pad = 6;
+            const SDL_Rect bg{0, height() - statTex->height() - 2*pad,
+                              statTex->width() + 2*pad, statTex->height() + 2*pad};
+            p.fillRect(bg, {0, 0, 0, 170});
+            p.drawTexture(pad, bg.y + pad, statTex);
+        }
 
         eAutotest::beforePresent(*this);
         SDL_RenderPresent(mSdlRenderer);
@@ -994,6 +1017,25 @@ int eMainWindow::exec() {
 
         const auto fpsEnd = high_resolution_clock::now();
         const duration<double, std::milli> fpsElapsed = fpsEnd - fpsStart;
+        {
+            statFrames++;
+            if(eFrameClock::tick()) statTicks++;
+            statWorkMs += fpsElapsed.count();
+            const duration<double> statSpan = fpsEnd - statStart;
+            if(statSpan.count() >= 1.0) {
+                char buf[96];
+                const int mb = ePlatform::residentMemoryMB();
+                std::snprintf(buf, sizeof(buf), "%.0f fps  %.1f ms  %.0f ticks/s  %d MB",
+                              statFrames/statSpan.count(), statWorkMs/std::max(1, statFrames),
+                              statTicks/statSpan.count(), mb);
+                if(statText != buf) statTex.reset();
+                statText = buf;
+                statFrames = 0;
+                statTicks = 0;
+                statWorkMs = 0;
+                statStart = fpsEnd;
+            }
+        }
         const duration<double, std::milli> fpsDuration(1000./fpsClamp);
         const duration<double, std::milli> fpsSleep(fpsDuration - fpsElapsed);
         std::this_thread::sleep_for(fpsSleep);

@@ -1,5 +1,15 @@
 # Release notes
 
+## 0.1.8-dev
+* **Draw** button on the touch bar while a building tool is selected: with Draw on, a
+  one-finger drag draws the road / wall / row / area straight away (no hold), two fingers
+  move the map. On by default for roads, walls, housing, parks, trees, animals, columns and
+  demolish; off for single buildings. Remembered per tool during the game.
+* Optional overlay with FPS, frame time, simulation ticks per second and memory
+  (Touch controls → Show FPS and memory).
+* Tap on the map outside an info window closes it.
+* Lists keep a phone-sized row height on tablets; the Touch controls screen fits the screen.
+
 ## 0.1.7-dev
 * Army on touch screens: tap a banner (flag) to select it, tap the map to send it there
   (the selection stays for more orders), "[ ]" on the touch bar + drag to select several

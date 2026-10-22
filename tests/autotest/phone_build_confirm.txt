@@ -13,6 +13,10 @@
 100 finger_down 1 2170 900
 80 finger_up 1 2170 900
 500 log road_tool
+# roads start in Draw mode (0.1.8); this test covers the non-draw gestures
+100 finger_down 1 68 654
+80 finger_up 1 68 654
+300 log draw_off
 # tap: preview only, nothing built
 100 finger_down 1 1300 600
 80 finger_up 1 1300 600

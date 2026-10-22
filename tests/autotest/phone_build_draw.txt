@@ -1,0 +1,55 @@
+# Draw mode (touch bar "Draw", on by default for roads): one-finger drag previews a road at once; two fingers pan; Draw off -> drag pans; farms default off.
+8000 finger_down 1 1200 150
+80 finger_up 1 1200 150
+2500 finger_down 1 570 346
+80 finger_up 1 570 346
+800 finger_down 1 1100 720
+80 finger_up 1 1100 720
+4000 finger_down 1 1680 832
+80 finger_up 1 1680 832
+1000 wait_game 120000
+3000 log start
+100 finger_down 1 2170 900
+80 finger_up 1 2170 900
+400 log road_tool_expect_draw1_drawbtn1
+# quick one-finger drag, no hold: road preview from the touch-down point
+100 finger_down 1 1100 500
+40 finger_move 1 1150 525
+40 finger_move 1 1250 575
+40 finger_move 1 1400 650
+40 finger_up 1 1400 650
+400 log after_drag_expect_area_preview_nothing_built
+200 screenshot build/run/d_01.bmp
+100 finger_down 1 1322 810
+80 finger_up 1 1322 810
+400 log after_ok_expect_road_built
+# two-finger drag pans in draw mode
+100 finger_down 1 900 300
+20 finger_down 2 1100 300
+30 finger_move 1 880 300
+1 finger_move 2 1080 300
+30 finger_move 1 860 300
+1 finger_move 2 1060 300
+30 finger_move 1 850 300
+1 finger_move 2 1050 300
+50 finger_up 1 850 300
+20 finger_up 2 1050 300
+300 log two_finger_expect_dx-50
+# Draw off: one-finger drag pans again
+100 finger_down 1 68 654
+80 finger_up 1 68 654
+300 log draw_off_expect_draw0
+100 finger_down 1 1500 300
+40 finger_move 1 1450 300
+40 finger_move 1 1400 300
+40 finger_up 1 1400 300
+300 log drag_expect_pan_dx-150_no_preview
+# farm tool: Draw off by default
+100 finger_down 1 2074 140
+80 finger_up 1 2074 140
+300 finger_down 1 2186 690
+80 finger_up 1 2186 690
+300 finger_down 1 1600 900
+80 finger_up 1 1600 900
+400 log farm_expect_draw0_drawbtn1
+200 quit

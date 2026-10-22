@@ -568,6 +568,19 @@ void eGameWidget::initialize() {
             setTouchBoxSelect(!mTouchBoxSelect);
         });
         mBoxSelectButton->hide();
+        // Same slot as "[ ]": only one of them is relevant at a time.
+        mDrawButton = new eFramedButton("Draw", window());
+        mDrawButton->setUnderline(false);
+        mDrawButton->setRenderBg(true);
+        mDrawButton->setSmallFontSize();
+        mDrawButton->fitContent();
+        mDrawButton->resize(std::max(mDrawButton->width(), minTouch),
+                            mBoxSelectButton->height());
+        mDrawButton->setPressAction([this]() { toggleTouchDrawMode(); });
+        addWidget(mDrawButton);
+        mTouchBarButtons++;
+        mDrawButton->move(mBoxSelectButton->x(), mBoxSelectButton->y());
+        mDrawButton->hide();
         y += p;
         mTouchCancelButton = addTouchButton("X", [this]() { touchCancel(); });
         mTouchCancelButton->hide();
@@ -2144,6 +2157,13 @@ bool eGameWidget::mouseReleaseEvent(const eMouseEvent& screenE) {
     if(mLocked) return true;
     switch(e.button()) {
     case eMouseButton::left: {
+        if(sTouchBarEnabled && !mMovedSincePress && mInfoWidget) {
+            // Touch: a tap on the map outside an info window closes it.
+            mInfoWidget->deleteLater();
+            mInfoWidget = nullptr;
+            mLeftPressed = false;
+            break;
+        }
         if(sTouchBarEnabled && !mMovedSincePress && touchArmyTap()) {
             mLeftPressed = false;
             mPressedTX = -1;
@@ -2497,6 +2517,8 @@ std::string eGameWidget::debugCameraState() const {
                         std::to_string(mPreviewPanel->width()) + "x" +
                         std::to_string(mPreviewPanel->height()) : std::string("hidden")) +
            " drachmas=" + (mBoard ? std::to_string(mBoard->drachmas(mBoard->personPlayer())) : std::string("-")) +
+           " draw=" + std::to_string(touchDrawModeActive() ? 1 : 0) +
+           " drawbtn=" + std::to_string(mDrawButton && mDrawButton->visible() ? 1 : 0) +
            " boxsel=" + std::to_string(mTouchBoxSelect ? 1 : 0) +
            " boxbtn=" + std::to_string(mBoxSelectButton && mBoxSelectButton->visible() ? 1 : 0) +
            " sel=" + std::to_string(mBoard ? mBoard->selectedSoldiers().size() : 0) +
@@ -2726,6 +2748,8 @@ void eGameWidget::screenToTile(const int x, const int y,
 
 bool eGameWidget::touchPreviewAt(const int x, const int y) {
     if(!mPreview.fActive) return false;
+    // In draw mode a drag always draws; only an area's end can be dragged.
+    if(touchDrawModeActive() && !mPreview.fArea) return false;
     int tx, ty;
     screenToTile(x, y, tx, ty);
     // Generous: the preview is under the finger, and buildings span up to
@@ -2972,7 +2996,12 @@ void eGameWidget::setTouchBoxSelect(const bool b) {
 }
 
 void eGameWidget::updateBoxSelectButton() {
+    updateDrawButton();
     if(!mBoxSelectButton || !mBoard) return;
+    if(mDrawButton && mDrawButton->visible()) {
+        mBoxSelectButton->hide();
+        return;
+    }
     bool any = !mBoard->selectedSoldiers().empty() ||
                !mBoard->selectedTriremes().empty();
     if(!any) {
@@ -3027,4 +3056,47 @@ void eGameWidget::debugSpawnBanner(const int tx, const int ty) {
     b->setBothCityIds(mViewedCityId);
     mBoard->registerSoldierBanner(b);
     b->moveTo(tx, ty);
+}
+
+bool eGameWidget::touchDrawModeActive() const {
+    if(!mGm || !sTouchBarEnabled) return false;
+    const auto mode = mGm->mode();
+    if(mode == eBuildingMode::none) return false;
+    const auto it = mDrawModes.find(mode);
+    if(it != mDrawModes.end()) return it->second;
+    switch(mode) {
+    case eBuildingMode::erase:
+    case eBuildingMode::road:
+    case eBuildingMode::wall:
+    case eBuildingMode::commonHousing:
+    case eBuildingMode::park:
+    case eBuildingMode::avenue:
+    case eBuildingMode::oliveTree:
+    case eBuildingMode::vine:
+    case eBuildingMode::orangeTree:
+    case eBuildingMode::sheep:
+    case eBuildingMode::goat:
+    case eBuildingMode::cattle:
+    case eBuildingMode::doricColumn:
+    case eBuildingMode::ionicColumn:
+    case eBuildingMode::corinthianColumn:
+        return true;
+    default:
+        return false;
+    }
+}
+
+void eGameWidget::toggleTouchDrawMode() {
+    if(!mGm || mGm->mode() == eBuildingMode::none) return;
+    mDrawModes[mGm->mode()] = !touchDrawModeActive();
+    updateDrawButton();
+}
+
+void eGameWidget::updateDrawButton() {
+    if(!mDrawButton) return;
+    const bool tool = buildToolActive() && !(mTem && mTem->visible());
+    mDrawButton->setVisible(tool);
+    if(!tool) return;
+    if(touchDrawModeActive()) mDrawButton->setYellowFontColor();
+    else mDrawButton->setLightFontColor();
 }

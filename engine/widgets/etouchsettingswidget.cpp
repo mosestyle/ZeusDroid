@@ -31,7 +31,7 @@ void eTouchSettingsWidget::initialize(const eAction& closeAction) {
     setType(eFrameType::message);
     const auto win = window();
     const int p = padding();
-    const int rowH = ePlatform::touchRowHeight(win->height()/14);
+    const int rowWanted = ePlatform::touchRowHeight(win->height()/14);
     const int w = std::min(win->width() - 4*p, std::max(win->width()/2, 900));
     const int valueW = w*2/5;
 
@@ -44,6 +44,14 @@ void eTouchSettingsWidget::initialize(const eAction& closeAction) {
     const auto title = new eLabel("Touch controls", win);
     title->fitContent();
     addWidget(title);
+
+    const auto ok = new eOkButton(win);
+    ok->setPressAction(closeAction);
+    // All rows must fit on the screen together with the title and the tick.
+    const int kRows = 10;
+    const int fixedH = 2*p + title->height() + p + p + ok->height() + 2*p;
+    const int rowFit = (win->height() - fixedH)/kRows - p/2;
+    const int rowH = std::max(32, std::min(rowWanted, rowFit));
 
     std::vector<eWidget*> rows;
     const auto addRow = [&](const std::string& name,
@@ -108,13 +116,14 @@ void eTouchSettingsWidget::initialize(const eAction& closeAction) {
            {{"Auto (60)", -1}, {"30 FPS", 30}, {"60 FPS", 60}, {"90 FPS", 90}, {"120 FPS", 120}},
            [&ps]() { return ps.fRenderFps; },
            [&ps](const double v) { ps.fRenderFps = v; });
+    addRow("Show FPS and memory",
+           {{"Off", 0}, {"On", 1}},
+           [&ps]() { return ps.fShowStats ? 1. : 0.; },
+           [&ps](const double v) { ps.fShowStats = v > 0.5; });
     addRow("Interface size (restart)",
            {{"Auto", -1}, {"Small", 1}, {"Medium", 2}, {"Large", 3}},
            [&ps]() { return double(ps.fUIScale); },
            [&ps](const double v) { ps.fUIScale = static_cast<int>(v); });
-
-    const auto ok = new eOkButton(win);
-    ok->setPressAction(closeAction);
 
     int y = 2*p;
     title->move((w - title->width())/2, y);

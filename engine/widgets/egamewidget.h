@@ -157,6 +157,11 @@ public:
     // Touch army control (port). Box-select mode: the next one-finger drag
     // on the map draws a selection rectangle (toggled by the touch bar).
     bool touchBoxSelectActive() const { return mTouchBoxSelect; }
+    // Draw mode per build tool (touch bar "Draw" button): one-finger drags
+    // draw rows / areas. Remembered per tool; on by default for tools that
+    // build in rows or areas (roads, walls, housing, trees, parks, erase...).
+    bool touchDrawModeActive() const;
+    void toggleTouchDrawMode();
     void setTouchBoxSelect(const bool b);
     // Test hook (autotests only): a player banner without soldiers.
     void debugSpawnBanner(int tx, int ty);
@@ -255,6 +260,9 @@ private:
     eWidget* mPreviewPanel = nullptr;
     eLabel* mPreviewCostLabel = nullptr;
     bool mTouchBoxSelect = false;
+    std::map<eBuildingMode, bool> mDrawModes;
+    eFramedButton* mDrawButton = nullptr;
+    void updateDrawButton();
     eFramedButton* mBoxSelectButton = nullptr;
     // Tap on the map with soldiers selected / on a banner (touch only).
     bool touchArmyTap();

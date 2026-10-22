@@ -1,0 +1,40 @@
+# Long press on a building opens its info window; a tap on the map outside closes it (touch).
+# Two-step placement with "next one ready": wheat farms (3x3) placed in a row with only the tick.
+# Phone layout: Xvfb 2400x1080, settings width 2400 height 1080, EZEUS_TOUCH=1 EZEUS_UI_SCALE=large EZEUS_RENDER_FPS=60. Taps only.
+8000 finger_down 1 1200 150
+80 finger_up 1 1200 150
+2500 finger_down 1 570 346
+80 finger_up 1 570 346
+800 finger_down 1 1100 720
+80 finger_up 1 1100 720
+4000 finger_down 1 1680 832
+80 finger_up 1 1680 832
+1000 wait_game 120000
+3000 log start
+100 finger_down 1 2074 140
+80 finger_up 1 2074 140
+100 finger_down 1 2186 690
+80 finger_up 1 2186 690
+300 finger_down 1 1600 900
+80 finger_up 1 1600 900
+300 log farm_tool_expect_build1
+100 finger_down 1 560 520
+80 finger_up 1 560 520
+400 log preview1
+200 screenshot build/run/r_01.bmp
+100 finger_down 1 482 680
+80 finger_up 1 482 680
+400 log after_ok1_expect_45dr_next_preview_30,8
+100 finger_down 1 68 784
+80 finger_up 1 68 784
+100 finger_down 1 68 784
+80 finger_up 1 68 784
+300 log after_X_twice_expect_build0
+100 finger_down 1 560 520
+700 finger_up 1 560 520
+800 log longpress_farm_expect_info1
+300 screenshot build/run/i_01.bmp
+100 finger_down 1 1600 900
+80 finger_up 1 1600 900
+400 log tap_outside_expect_info0
+200 quit

@@ -22,11 +22,11 @@ _Branch `main`; see `git log` for the current commit._
 | Desktop Linux build of eZeus + port layer | builds; runs headless with the user's real data |
 | Real game content on desktop | menus, roster, adventure list (Zeus + Poseidon), briefing, Thebes map, running simulation, Hydra event – screenshots in `build/run/` (local only) |
 | Touch layer in real engine (desktop, EZEUS_TOUCH=1) | pan exact, continuous pinch zoom 0.5–3× pinned under the fingers, hold-to-draw at zoom 1 and 2, two-step placement (preview, move, ✓/✕), touch settings screen, list drag-scroll, speed label, jitter tap ignored, UI-vs-map routing |
-| Unit tests | gesture FSM 94/94 (x86-64 and ARM64-Android-under-qemu), ENG converter (synthetic + real files, Python == C++), importer rules 46/46 |
+| Unit tests | gesture FSM 100/100 (x86-64 and ARM64-Android-under-qemu), ENG converter (synthetic + real files, Python == C++), importer rules 46/46 |
 | Android arm64 native build | builds: libmain.so + SDL2 family, AArch64, 16 KB-aligned, static libc++ |
-| APK | `dist/eZeusPort-debug-arm64-v8a.apk` 0.1.7-dev (versionCode 8, sha256 `8b225df8967a70a72764bf2f24970f6ef29628ca00bd9cb856dd6d2cd7219aee`) |
+| APK | `dist/eZeusPort-debug-arm64-v8a.apk` 0.1.8-dev (versionCode 9, sha256 `6e86b78d297f31fcddce3cfd3c18eebd94d26abe378a1e78ea798bc628158325`) |
 | ARM64 audio codec | minimp3 decodes all 26 music tracks + voice (qemu) |
-| Real device | **runs on the user's Samsung Galaxy S25** (0.1.3: city simulation, date and speed advance, 60 FPS, user report 2026-10-22); 0.1.4–0.1.6 confirmed by the user (zoom, lists, speed, preview placement, settings, music/sound, save → kill → load, home/screen-off resume); 0.1.7 not yet tried |
+| Real device | **runs on the user's Samsung Galaxy S25** (0.1.3: city simulation, date and speed advance, 60 FPS, user report 2026-10-22); 0.1.4–0.1.6 confirmed by the user (zoom, lists, speed, preview placement, settings, music/sound, save → kill → load, home/screen-off resume); 0.1.7 army controls confirmed; 0.1.8 not yet tried |
 
 ## Playable features (desktop-verified unless noted)
 

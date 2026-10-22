@@ -39,6 +39,8 @@ struct RecSink : eTouchSink {
     int listScrolled = 0;
     bool confirm = false;       // widget supports two-step placement
     bool box = false;           // army box-select mode
+    bool draw = false;          // build tool draw mode
+    bool drawModeActive() override { return draw; }
     bool boxSelectActive() override { return box; }
     int prevX = -1000, prevY = -1000; // pending preview position
     void previewMoveTo(int x, int y) { prevX = x; prevY = y; }
@@ -307,6 +309,42 @@ void testBoxSelect() {
     CHECK(s.count("press", L) == 1 && s.count("release", L) == 1);
 }
 
+void testDrawMode() {
+    std::puts("draw mode: one-finger drag previews an area at once (confirm) / draws (instant); two fingers pan");
+    {
+        RecSink s; s.build = true; s.confirm = true; s.draw = true; eTouchGestures g(s);
+        g.fingerDown(1, 100, 100, 0);
+        g.fingerMove(1, 140, 120, 30);   // beyond slop immediately, no hold
+        g.fingerMove(1, 300, 200, 60);
+        g.fingerUp(1, 300, 200, 90);
+        CHECK(s.count("parea") == 3 && s.camX == 0);
+        CHECK(s.ev.front().what == "parea" && s.ev.front().b == 100*10000 + 100);
+        CHECK(s.count("press") == 0);
+        // two fingers still pan
+        s.ev.clear();
+        g.fingerDown(1, 300, 300, 200);
+        g.fingerDown(2, 500, 300, 205);
+        g.fingerMove(1, 350, 300, 220);
+        g.fingerMove(2, 550, 300, 220);
+        g.update(220);
+        g.fingerUp(1, 350, 300, 240);
+        g.fingerUp(2, 550, 300, 240);
+        CHECK(s.camX == 50 && s.count("parea") == 0);
+        // a tap still places a single preview
+        s.ev.clear();
+        g.fingerDown(1, 400, 400, 300);
+        g.fingerUp(1, 401, 400, 330);
+        CHECK(s.count("ptap") == 1);
+    }
+    {
+        RecSink s; s.build = true; s.draw = true; eTouchGestures g(s); // instant, hold-to-draw on
+        g.fingerDown(1, 100, 100, 0);
+        g.fingerMove(1, 140, 120, 30);
+        g.fingerUp(1, 140, 120, 60);
+        CHECK(s.count("press", L) == 1 && s.count("release", L) == 1 && s.camX == 0);
+    }
+}
+
 void testTwoFingerPanDeadBand() {
     std::puts("two-finger pan with slight spread change does not zoom");
     RecSink s; eTouchGestures g(s);
@@ -459,6 +497,7 @@ int main() {
     testListTapAndScroll();
     testConfirmPlacement();
     testBoxSelect();
+    testDrawMode();
     std::printf("%d checks, %d failures\n", gChecks, gFailures);
     return gFailures == 0 ? 0 : 1;
 }

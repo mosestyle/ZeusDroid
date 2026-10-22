@@ -20,7 +20,9 @@ Phases from the brief (§17). ✅ done with evidence, 🟡 partly done, ⬜ not 
   longer session (an hour, memory), autosave check, save/load autotest on desktop.
 * **E – Touch excellence 🟡** done: gesture FSM, pan, continuous focal pinch zoom, preview
   placement with ✓/✕ and repeat, lists, touch bar, settings screen, 60 FPS, army select /
-  move / box select (0.1.7). Open: (1) army controls with real soldiers on the phone, (2) remaining small lists (editor,
+  move / box select (0.1.7), Draw mode for rows/areas, stats overlay, tap-outside closes
+  info, tablet layout check at 2560×1600 (0.1.8). Open: (1) FPS/memory numbers from the
+  phone (stats overlay), (2) remaining small lists (editor,
   military, long texts) and info-panel buttons, (3) tablet layout check, (4) FPS/frame-time
   and memory measurements on the phone, (5) optional: fling scrolling, start zoom > 1,
   haptic feedback on ✓.
@@ -36,8 +38,8 @@ Phases from the brief (§17). ✅ done with evidence, 🟡 partly done, ⬜ not 
 
 ## 0. Status after phone feedback (2026-10-23, Samsung Galaxy S25)
 0.1.5 confirmed by the user. 0.1.6 adds "next one ready" repeat placement, price on ✓, red
-preview kept. Phase D confirmed on the phone (2026-10-23). 0.1.7 adds touch army control. Next: the rest
-of E (small lists / info panels, tablet check, on-device FPS/memory), then Phase F parity.
+preview kept. Phase D confirmed on the phone (2026-10-23). 0.1.8: Draw mode, stats overlay, tablet check.
+Next: phone FPS/memory numbers from the user, remaining small panels, then Phase F parity.
 
 ## 1. First on-device run  ← partly done (runs on the user's phone)
 * Install `dist/eZeusPort-debug-arm64-v8a.apk` on an arm64 phone (Android 8+).

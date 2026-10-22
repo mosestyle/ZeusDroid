@@ -223,3 +223,32 @@ APK 0.1.6-dev: versionCode 7, sha256 4f4afeb087f6e0adc0677b671201483310807eb2053
   phone_build_repeat, phone_back_touch_settings (row positions updated for the new
   "After building" row), instant-mode phone_build_hold_to_draw / phone_build_zoom2: all pass.
 APK 0.1.7-dev: versionCode 8, sha256 8b225df8967a70a72764bf2f24970f6ef29628ca00bd9cb856dd6d2cd7219aee, v2/v3 OK
+
+### User report 2026-10-23 00:35 (0.1.7)
+Army controls fine. Hold-then-drag for rows/areas works only sometimes. Likely causes: the
+finger moving more than the tap slop (24 px ≈ 1.5 mm on the S25) during the 0.3 s hold turns
+the gesture into a pan, and a hold that starts within 2 tiles of the "next one ready"
+preview is treated as dragging that preview. → 0.1.8 "Draw" mode.
+
+### 0.1.8-dev: Draw mode, stats overlay, tablet check, info windows
+* Unit tests 100/100 (x86-64, ARM64/qemu): new draw-mode scenario (confirm: drag → area
+  preview from the touch-down point without a hold, no pan; two fingers pan; tap = single
+  preview; instant: drag → left-drag).
+* `phone_build_draw.txt`: road tool starts with Draw on (yellow button in the "[ ]" slot);
+  quick drag (1100,500)→(1400,650) → road preview 35,-2→45,-2, nothing built; ✓ → 55 dr
+  (11 tiles); two-finger drag → dx -50, no preview; Draw off → one-finger drag pans (dx
+  -150); wheat farm → Draw off by default, button shown.
+* `phone_stats_overlay.txt`: overlay bottom-left "fps / ms / ticks/s / MB". In this container
+  (software rendering at 2400×1080, 2 vCPU) it read 16 fps, 62.7 ms, 16 ticks/s, 522 MB –
+  container numbers only; the phone measurement is pending (the user enables it under Touch
+  controls → Show FPS and memory).
+* `phone_info_window.txt`: long press on a farm → info window; tap on the map outside it →
+  closed.
+* Tablet layout (desktop, touch mode, UI large) at 2560×1600: menu, adventure list (rows now
+  capped at 84 px so tall screens show more rows), briefing, city view with touch bar and the
+  taller side panel – screenshots checked, no overlap. 1280×800 (UI small): main menu checked.
+* Touch controls screen now sizes its rows to fit the screen (10 rows at 1080 px; it
+  overflowed before the fix).
+* Regressions (old tests turn Draw off for roads first): confirm placement, repeat, army,
+  zoom/lists/speed, touch bar/pinch, instant hold-to-draw at zoom 1 and 2 – all as before.
+APK 0.1.8-dev: versionCode 9, sha256 6e86b78d297f31fcddce3cfd3c18eebd94d26abe378a1e78ea798bc628158325, v2/v3 OK
