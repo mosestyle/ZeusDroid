@@ -1,5 +1,12 @@
 # Release notes
 
+## 0.1.6-dev
+* "Next one ready": after ✓ on a single building the next preview appears right beside it;
+  move it once and the following ones keep that spacing and direction (rows of farms,
+  houses, fountains with one tap each). Setting: Touch controls → After building.
+* The ✓ button shows the price of a single building.
+* ✓ on a red preview (not allowed there) keeps the preview so it can be moved.
+
 ## 0.1.5-dev
 * Two-step building placement (default): a tap shows a preview, drag the preview to nudge
   it, ✓ builds and ✕ discards. Hold + drag previews roads, walls and rows/areas of buildings

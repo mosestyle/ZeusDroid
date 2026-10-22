@@ -23,6 +23,8 @@ struct eTouchConfig;
 //   build_hold_ms     "300"
 //   build_confirm     "on"      on | off  (on: taps/drags only move a preview,
 //                                the confirm button builds)
+//   build_repeat      "on"      on | off  (on: after building, the next
+//                                preview appears next to it)
 struct ePortSettings {
     double fRenderFps = -1;      // <0: platform default
     int fUIScale = -1;           // -1 auto, else eUIScale value
@@ -34,6 +36,7 @@ struct ePortSettings {
     bool fHoldToDraw = true;
     int fBuildHoldMs = 300;
     bool fBuildConfirm = true;
+    bool fBuildRepeat = true;
 
     static std::string path();
     // Loads from path(); writes a commented default file if none exists.

@@ -164,6 +164,7 @@ void eMainWindow::applyPortSettings() {
     const auto& ps = ePortSettings::instance();
     eGameWidget::sMaxZoom = ps.fMaxZoom;
     eGameWidget::sBuildConfirm = ps.fBuildConfirm;
+    eGameWidget::sBuildRepeat = ps.fBuildRepeat;
     if(mTouch) {
         eTouchConfig tc;
         ps.applyTo(tc);

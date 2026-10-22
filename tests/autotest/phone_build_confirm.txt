@@ -35,7 +35,7 @@
 # confirm (left button of the panel at 1170,693): builds one road tile, tool stays
 100 finger_down 1 1237 760
 80 finger_up 1 1237 760
-400 log after_confirm_expect_built_preview0_build1
+400 log after_confirm_expect_built_and_next_preview_beside_it
 200 screenshot build/run/c03_built.bmp
 # hold + drag: road preview from the hold point, not built on lift
 100 finger_down 1 1100 500

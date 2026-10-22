@@ -1,6 +1,8 @@
 #include "egamewidget.h"
 #include "eacceptbutton.h"
 #include "ecancelbutton.h"
+#include "elabel.h"
+#include "engine/edifficulty.h"
 #include "platform/eplatform.h"
 
 #include "engine/egameboard.h"
@@ -585,6 +587,17 @@ void eGameWidget::initialize() {
         };
         addIconButton(new eAcceptButton(window()),
                       [this]() { touchPreviewConfirm(); }, 0);
+        {
+            // Price of a single building under the tick (hidden for areas).
+            const auto okFrame = mPreviewPanel->children().back();
+            mPreviewCostLabel = new eLabel(window());
+            mPreviewCostLabel->setTinyFontSize();
+            mPreviewCostLabel->setNoPadding();
+            mPreviewCostLabel->setText("00000");
+            mPreviewCostLabel->fitContent();
+            okFrame->addWidget(mPreviewCostLabel);
+            mPreviewCostLabel->hide();
+        }
         addIconButton(new eCancelButton(window()),
                       [this]() { touchPreviewClear(); }, bs + p);
         mPreviewPanel->resize(2*bs + p, bs);
@@ -2664,6 +2677,7 @@ void eGameWidget::updateRequestButtons() {
 }
 
 bool eGameWidget::sBuildConfirm = true;
+bool eGameWidget::sBuildRepeat = true;
 
 bool eGameWidget::touchPreviewSupported() const {
     if(!sBuildConfirm || mLocked) return false;
@@ -2696,6 +2710,7 @@ bool eGameWidget::touchPreviewAt(const int x, const int y) {
 void eGameWidget::touchPreviewTap(const int x, const int y) {
     if(!touchPreviewSupported()) return;
     mGm->closeBuildWidget();
+    mRepeatValid = false; // a manual placement starts a new row
     int tx, ty;
     screenToTile(x, y, tx, ty);
     mPreview.fActive = true;
@@ -2789,8 +2804,72 @@ void eGameWidget::touchPreviewConfirm() {
         mPressedTY = mPreview.fETY;
     }
     mLeftPressed = false;
+    const bool single = !mPreview.fArea;
+    const auto mode = mPreview.fMode;
+    const int btx = mPreview.fETX;
+    const int bty = mPreview.fETY;
+    const double ax = mPreview.fAX;
+    const double ay = mPreview.fAY;
+    const auto ppid = mBoard->personPlayer();
+    const int before = mBoard->drachmas(ppid);
+    const auto saved = mPreview;
     buildMouseRelease();
     touchPreviewClear();
+    // Was something built? (Free buildings: check the tile.)
+    const auto tile = mBoard->tile(btx, bty);
+    const auto b = tile ? tile->underBuilding() : nullptr;
+    const auto btype = eBuildingModeHelpers::toBuildingType(mode);
+    const bool built = mBoard->drachmas(ppid) < before ||
+                       (single && b && b->type() == btype);
+    if(!built) {
+        // Red preview / not allowed: keep it so it can be moved.
+        if(mGm && mGm->mode() == mode) mPreview = saved;
+        return;
+    }
+    if(!single || !sBuildRepeat || !mGm || mGm->mode() != mode) {
+        mRepeatValid = false;
+        return;
+    }
+    int w = 1;
+    int h = 1;
+    if(b && b->type() == btype) {
+        const auto& r = b->tileRect();
+        w = std::max(1, r.w);
+        h = std::max(1, r.h);
+    }
+    const auto dir = mBoard->direction();
+    const int bw = mBoard->width();
+    const int bh = mBoard->height();
+    int rx, ry;
+    eTileHelper::tileIdToRotatedTileId(btx, bty, rx, ry, dir, bw, bh);
+    int sdx = std::max(w, h);
+    int sdy = 0;
+    if(mRepeatValid && mRepeatMode == mode) {
+        // Keep the spacing and direction of the last two buildings.
+        const int ddx = rx - mRepeatRX;
+        const int ddy = ry - mRepeatRY;
+        const int dist = std::abs(ddx) + std::abs(ddy);
+        if(dist > 0 && dist <= 2*std::max(w, h) + 4) {
+            sdx = ddx;
+            sdy = ddy;
+        }
+    }
+    mRepeatValid = true;
+    mRepeatMode = mode;
+    mRepeatRX = rx;
+    mRepeatRY = ry;
+    const int nrx = rx + sdx;
+    const int nry = ry + sdy;
+    int ntx, nty;
+    eTileHelper::rotatedTileIdToTileId(nrx, nry, ntx, nty, dir, bw, bh);
+    if(!mBoard->tile(ntx, nty)) return;
+    mPreview.fActive = true;
+    mPreview.fArea = false;
+    mPreview.fMode = mode;
+    mPreview.fSTX = mPreview.fETX = ntx;
+    mPreview.fSTY = mPreview.fETY = nty;
+    mPreview.fAX = ax + 0.5*((nrx - nry) - (rx - ry))*mTileW;
+    mPreview.fAY = ay + 0.5*((nrx + nry) - (rx + ry))*mTileH;
 }
 
 void eGameWidget::touchPreviewClear() {
@@ -2828,4 +2907,27 @@ void eGameWidget::updatePreviewPanel() {
     y = std::clamp(y, mTopBar ? mTopBar->height() : 0, std::max(0, height() - ph));
     mPreviewPanel->move(x, y);
     mPreviewPanel->show();
+    if(mPreviewCostLabel) {
+        int cost = -1;
+        if(!mPreview.fArea && mBoard) {
+            const auto t = eBuildingModeHelpers::toBuildingType(mPreview.fMode);
+            if(t != eBuildingType::none && t != eBuildingType::erase) {
+                const auto diff = mBoard->difficulty(mBoard->personPlayer());
+                cost = eDifficultyHelpers::buildingCost(diff, t);
+            }
+        }
+        if(cost != mPreviewCost) {
+            mPreviewCost = cost;
+            if(cost > 0) {
+                mPreviewCostLabel->setText(std::to_string(cost));
+                mPreviewCostLabel->fitContent();
+                const auto f = mPreviewCostLabel->parent();
+                mPreviewCostLabel->move((f->width() - mPreviewCostLabel->width())/2,
+                                        f->height() - mPreviewCostLabel->height() - f->height()/12);
+                mPreviewCostLabel->show();
+            } else {
+                mPreviewCostLabel->hide();
+            }
+        }
+    }
 }

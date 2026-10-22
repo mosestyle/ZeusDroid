@@ -80,6 +80,10 @@ void eTouchSettingsWidget::initialize(const eAction& closeAction) {
            {{"Preview, then confirm", 1}, {"Instant (tap builds)", 0}},
            [&ps]() { return ps.fBuildConfirm ? 1. : 0.; },
            [&ps](const double v) { ps.fBuildConfirm = v > 0.5; });
+    addRow("After building (preview mode)",
+           {{"Next one ready beside it", 1}, {"Nothing", 0}},
+           [&ps]() { return ps.fBuildRepeat ? 1. : 0.; },
+           [&ps](const double v) { ps.fBuildRepeat = v > 0.5; });
     addRow("Drag with a tool (instant mode)",
            {{"Hold, then drag", 1}, {"Draws at once", 0}},
            [&ps]() { return ps.fHoldToDraw ? 1. : 0.; },

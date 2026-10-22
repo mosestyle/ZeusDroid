@@ -150,6 +150,9 @@ public:
     // drags only move a preview of the building / road / area; the confirm
     // button next to it builds. Coordinates are widget (screen) pixels.
     static bool sBuildConfirm;
+    // After a single building is confirmed, put the next preview right next
+    // to it (same spacing as the last two, else one building width along +x).
+    static bool sBuildRepeat;
     bool touchPreviewSupported() const;
     bool touchPreviewActive() const { return mPreview.fActive; }
     bool touchPreviewAt(int x, int y);
@@ -243,6 +246,11 @@ private:
     };
     eTouchPreview mPreview;
     eWidget* mPreviewPanel = nullptr;
+    eLabel* mPreviewCostLabel = nullptr;
+    int mPreviewCost = -1;
+    bool mRepeatValid = false;
+    eBuildingMode mRepeatMode = eBuildingMode::none;
+    int mRepeatRX = 0, mRepeatRY = 0; // rotated tile of the last confirmed build
     void screenToTile(int x, int y, int& tx, int& ty) const;
     void applyTouchPreview();
     void updatePreviewPanel();

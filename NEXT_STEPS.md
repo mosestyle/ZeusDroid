@@ -6,11 +6,39 @@ listed in `docs/BUILD_ANDROID.md`. Use `ccache` for rebuilds (installed), and av
 widely-included headers (`ewidget.h`, `eresolution.h`) mid-build: a header change costs a
 full ~45 min rebuild on 2 cores.
 
-## 0. Status after phone feedback (2026-10-22, Samsung Galaxy S25)
-0.1.4 confirmed by the user (zoom, lists, speed label). 0.1.5 adds two-step placement
-(preview, drag to nudge, ✓/✕; hold+drag area previews) and the Touch controls screen.
-Ask the user to check: placement feel (preview offset, panel position, ✓/✕ size), the
-settings screen, a save → kill app → load round trip, pause/resume (home button).
+## Roadmap: phases and what is left (2026-10-23)
+
+Phases from the brief (§17). ✅ done with evidence, 🟡 partly done, ⬜ not started.
+
+* **A – Reconnaissance and baseline ✅** engine audit, data inventory, desktop build.
+* **B – Android-native proof ✅** arm64 APK, SDL glue, logcat, build script; runs on the
+  user's Samsung Galaxy S25.
+* **C – Original assets ✅ (audio 🟡)** importer, ENG→XML, eZeus pack download, real menus and
+  maps on the phone. Open: confirm music/sound effects on the phone.
+* **D – Gameplay and persistence 🟡** simulation, menus and building confirmed on the phone.
+  Open: (1) save → kill app → load on the phone, (2) home button / app switch / screen off
+  and back (GL context, audio), (3) a longer session (an hour of play, memory), (4) autosave
+  check, (5) save/load autotest on desktop.
+* **E – Touch excellence 🟡** done: gesture FSM, pan, continuous focal pinch zoom, preview
+  placement with ✓/✕ and repeat, lists, touch bar, settings screen, 60 FPS. Open:
+  (1) soldier/army selection by touch (box select), (2) remaining small lists (editor,
+  military, long texts) and info-panel buttons, (3) tablet layout check, (4) FPS/frame-time
+  and memory measurements on the phone, (5) optional: fling scrolling, start zoom > 1,
+  haptic feedback on ✓.
+* **F – Gameplay parity with the original ⬜** compare eZeus with the original game on the
+  user's PC (screen control, with permission), most visible systems first: immigration and
+  housing, food/storage/distribution, walkers and services, gods/heroes/monsters, military,
+  trade, campaign goals. Log each in PARITY_MATRIX, fix the important differences (Ghidra
+  only for specific questions), add regression saves.
+* **G – Stabilisation and distribution-ready build ⬜** rebuild with the official Google
+  NDK/SDK (current toolchain comes from a third-party mirror), verify the Gradle build,
+  release signing only with the user's approval, data-import guide, final test report,
+  Windows build check, list of remaining limitations. Nothing is published without approval.
+
+## 0. Status after phone feedback (2026-10-23, Samsung Galaxy S25)
+0.1.5 confirmed by the user. 0.1.6 adds "next one ready" repeat placement, price on ✓, red
+preview kept. Next in order: D-1/D-2 (save/resume on the phone, needs the user), E-1
+(army selection), then Phase F parity.
 
 ## 1. First on-device run  ← partly done (runs on the user's phone)
 * Install `dist/eZeusPort-debug-arm64-v8a.apk` on an arm64 phone (Android 8+).

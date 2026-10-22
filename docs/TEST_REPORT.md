@@ -187,3 +187,18 @@ buildings by tap is imprecise; ideas for placing several buildings. → 0.1.5 be
 * Fixed test tooling: autotest `key` joins arguments, so names with spaces ("AC Back") work
   (an earlier Back check had silently sent no key).
 APK 0.1.5-dev: versionCode 6, sha256 28391ce090829936e6c26df0dd57e8f9be0342ce32016c2e93e89dc250fbe70a, v2/v3 OK
+
+### Fourth on-device report (user, 2026-10-22 23:56)
+0.1.5 on the S25: "works great" (preview placement, settings screen).
+
+### 0.1.6-dev: "next one ready" repeat placement, price on ✓, red preview kept
+* `tests/autotest/phone_build_repeat.txt` (wheat farm, 3×3, zoom 1): farm tool via
+  Husbandry → popup "Wheat Farm 45"; tap → green preview 27,8, ✓ shows "45"; ✓ → 9955 dr,
+  next preview appears at 30,8 (one farm along +x); dragged along the coast to 30,5;
+  ✓ → 9910 dr, next preview at 33,2 (same spacing as the last two); ✓ → 9865 dr, next
+  preview 36,-1. Screenshot: three farms in a row plus the green fourth preview.
+  Earlier run: ✓ on a red preview (dry land) built nothing and the preview stayed.
+* `phone_build_confirm.txt`: after ✓ on a road tile the next preview appears beside it; area
+  preview, ✕, area ✓ (11 tiles, 9940 dr) and X unchanged.
+* Unit tests 88/88 (x86-64, ARM64/qemu); importer 46/46.
+APK 0.1.6-dev: versionCode 7, sha256 4f4afeb087f6e0adc0677b671201483310807eb20534249c825d9cae43563b0f, v2/v3 OK
