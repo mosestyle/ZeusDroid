@@ -1,0 +1,24 @@
+# Measures simulation ticks per wall-clock second (compare EZEUS_RENDER_FPS=20 vs 60).
+8000 click left 456 262
+500 click left 797 523
+2500 click left 640 164
+2500 click left 320 344
+800 click left 590 448
+5000 click left 970 564
+1000 wait_game 120000
+3000 key P
+100 log sim_t0
+500 log sim_t500
+500 log sim_t1000
+500 log sim_t1500
+500 log sim_t2000
+500 log sim_t2500
+500 log sim_t3000
+500 log sim_t3500
+500 log sim_t4000
+500 log sim_t4500
+500 log sim_t5000
+500 log sim_t5500
+500 log sim_t6000
+200 screenshot build/run/simrate_end.bmp
+300 quit

@@ -9,7 +9,7 @@ export SDL_AUDIODRIVER="${SDL_AUDIODRIVER:-dummy}"
 export EZEUS_AUTOTEST="$SCRIPT"
 export EZEUS_AUTOTEST_LOG="${LOG%.log}.autotest.txt"
 for kv in "$@"; do export "$kv"; done
-timeout "${TIMEOUT:-300}" xvfb-run -a -s "-screen 0 1920x1080x24" "$ROOT/build/desktop/eZeus" > "$LOG" 2>&1
+timeout "${TIMEOUT:-300}" xvfb-run -a -s "-screen 0 ${XVFB_SCREEN:-1920x1080x24}" "$ROOT/build/desktop/eZeus" > "$LOG" 2>&1
 rc=$?
 cat "${LOG%.log}.autotest.txt" 2>/dev/null
 echo "exit=$rc"

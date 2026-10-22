@@ -2369,7 +2369,10 @@ std::string eGameWidget::debugCameraState() const {
     return "dx=" + std::to_string(mDX) + " dy=" + std::to_string(mDY) +
            " tile=" + std::to_string(mTileW) + "x" + std::to_string(mTileH) +
            " build=" + std::to_string(buildToolActive() ? 1 : 0) +
-           " info=" + std::to_string(mInfoWidget ? 1 : 0);
+           " info=" + std::to_string(mInfoWidget ? 1 : 0) +
+           " paused=" + std::to_string(mPaused ? 1 : 0) +
+           " speed=" + std::to_string(mSpeed) +
+           " simtime=" + std::to_string(mTime);
 }
 
 void eGameWidget::zoomStepAt(const int dir, const int x, const int y) {
