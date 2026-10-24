@@ -130,6 +130,8 @@ void eFileWidget::intialize(const std::string& title,
     mLineEdit->resize(swwidth - 2*p, mLineEdit->height());
     lineW->resize(swwidth, mLineEdit->height());
 
+    // Touch: the keyboard opens when the name field is tapped.
+    mLineEdit->setSoftKeyboardOnTap(true);
     mLineEdit->grabKeyboard();
 }
 

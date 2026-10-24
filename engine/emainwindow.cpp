@@ -953,7 +953,8 @@ int eMainWindow::exec() {
             // Show the on-screen keyboard while a text field owns the keyboard
             // (Android does not enable SDL text input by default).
             const auto grabber = eWidget::keyboardGrabber();
-            const bool wantText = grabber && dynamic_cast<eLineEdit*>(grabber);
+            const auto le = grabber ? dynamic_cast<eLineEdit*>(grabber) : nullptr;
+            const bool wantText = le && le->softKeyboardWanted();
             if(wantText && !SDL_IsTextInputActive()) {
                 int gx = 0, gy = 0;
                 grabber->mapToGlobal(gx, gy);

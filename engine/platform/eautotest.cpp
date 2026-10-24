@@ -131,7 +131,8 @@ void execute(const Cmd& c, eMainWindow& w, const uint32_t now) {
         o << "t=" << now << " " << c.fRest;
         const auto gw = w.gameWidget();
         const bool gameShown = gw && w.currentWidget() == static_cast<eWidget*>(gw);
-        o << " game=" << (gameShown ? 1 : 0) << " " << rssInfo();
+        o << " game=" << (gameShown ? 1 : 0) << " textin=" << (SDL_IsTextInputActive() ? 1 : 0)
+          << " " << rssInfo();
         if(gameShown) o << " " << gw->debugCameraState();
         logLine(o.str());
     } else if(c.fName == "debug_banner" && c.fArgs.size() >= 2) {

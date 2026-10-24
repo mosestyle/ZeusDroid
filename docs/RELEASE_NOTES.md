@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.1.13-dev
+* Save / Load dialogs no longer open the phone keyboard by themselves: it opens when you tap
+  the name field, and Enter closes it. (Other text fields, e.g. a new leader's name, still
+  open it at once because you must type there.)
+
 ## 0.1.12-dev
 * Smart roads: a drawn road is made of straight lines. Wobbles and slow drift of the finger
   are ignored; a corner is made only when you clearly move sideways. Going back along the

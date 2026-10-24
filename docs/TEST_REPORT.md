@@ -335,3 +335,11 @@ Where is the sandbox: it is "Open Play Sandbox" in the New Adventure list.
   becomes a staircase), confirm, repeat, info window – pass.
 * Side-by-side in the original: not possible this round (the PC was locked).
 APK 0.1.12-dev: versionCode 13, sha256 f570d6fa9105dc748da8aa95dc2e8d29d44df0d8821d129e93ca11a0f7fc4929, v2/v3 OK
+
+### User report 2026-10-24 20:51 (0.1.12)
+Smart roads / Save / Load work; the keyboard popping up when opening Save/Load is annoying.
+
+### 0.1.13-dev: keyboard only on tap in save/load
+* `tests/autotest/phone_save_keyboard.txt` (log now includes `textin` = SDL text input
+  active): in game 0 → Load dialog opened 0 → tap on the name field 1 → Enter 0.
+APK 0.1.13-dev: versionCode 14, sha256 fbf8b8667c0cfaf5ca184bc5c820dae5d6b53ea454dc61ecc3bb8e7160a32fe0, v2/v3 OK

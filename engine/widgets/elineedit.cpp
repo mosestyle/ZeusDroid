@@ -33,8 +33,20 @@ bool eLineEdit::mouseLeaveEvent(const eMouseEvent& e) {
     return true;
 }
 
+bool eLineEdit::mousePressEvent(const eMouseEvent& e) {
+    (void)e;
+    grabKeyboard();
+    mKeyboardWanted = true;
+    return true;
+}
+
 bool eLineEdit::keyPressEvent(const eKeyPressEvent& e) {
     const auto k = e.key();
+    if(mKeyboardOnTap && (k == SDL_Scancode::SDL_SCANCODE_RETURN ||
+                          k == SDL_Scancode::SDL_SCANCODE_KP_ENTER)) {
+        mKeyboardWanted = false;
+        return true;
+    }
     auto txt = text();
     if(k == SDL_Scancode::SDL_SCANCODE_BACKSPACE) {
         if(txt.empty()) return true;
