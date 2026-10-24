@@ -202,3 +202,20 @@ int ePlatform::residentMemoryMB() {
     }
     return -1;
 }
+
+void ePlatform::vibrate(const int ms) {
+    if(ms <= 0) return;
+    static SDL_Haptic* haptic = nullptr;
+    static bool tried = false;
+    if(!tried) {
+        tried = true;
+        if(SDL_InitSubSystem(SDL_INIT_HAPTIC) == 0 && SDL_NumHaptics() > 0) {
+            haptic = SDL_HapticOpen(0);
+            if(haptic && SDL_HapticRumbleInit(haptic) != 0) {
+                SDL_HapticClose(haptic);
+                haptic = nullptr;
+            }
+        }
+    }
+    if(haptic) SDL_HapticRumblePlay(haptic, 0.5f, static_cast<Uint32>(ms));
+}

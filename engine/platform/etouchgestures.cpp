@@ -189,7 +189,7 @@ void eTouchGestures::fingerMove(const int64_t id, const float x, const float y,
         } else if(draw && confirmMode()) {
             mState = eState::buildDrag;
             mPreviewArea = true;
-            mSink.previewArea(ri(f.fStartX), ri(f.fStartY), ri(x), ri(y));
+            mSink.previewArea(ri(f.fStartX), ri(f.fStartY), ri(x), ri(y), true);
         } else if(mSink.boxSelectActive() ||
                   (mSink.buildToolActive() && (!mConfig.fHoldToDraw || draw) &&
                    !confirmMode())) {
@@ -237,7 +237,7 @@ void eTouchGestures::fingerMove(const int64_t id, const float x, const float y,
     case eState::buildDrag:
         if(id != mPrimary) break;
         if(mPreviewArea) {
-            mSink.previewArea(ri(f.fStartX), ri(f.fStartY), ri(x), ri(y));
+            mSink.previewArea(ri(f.fStartX), ri(f.fStartY), ri(x), ri(y), false);
         } else {
             mSink.pointerMove(ri(x), ri(y));
         }
@@ -304,7 +304,8 @@ void eTouchGestures::fingerUp(const int64_t id, const float x, const float y,
         if(id == mPrimary) {
             if(mPreviewArea) {
                 // Stays a preview until confirmed.
-                mSink.previewArea(ri(f.fStartX), ri(f.fStartY), ri(x), ri(y));
+                mSink.previewArea(ri(f.fStartX), ri(f.fStartY), ri(x), ri(y), false);
+                mSink.previewEnd();
             } else {
                 mSink.pointerMove(ri(x), ri(y));
                 mSink.pointerRelease(eTouchSink::eButton::left, ri(x), ri(y));
@@ -315,6 +316,7 @@ void eTouchGestures::fingerUp(const int64_t id, const float x, const float y,
     case eState::previewDrag:
         if(id == mPrimary) {
             mSink.previewDrag(ri(f.fStartX), ri(f.fStartY), ri(x), ri(y), false);
+            mSink.previewEnd();
             mState = eState::waitAllUp;
         }
         break;
@@ -361,7 +363,7 @@ void eTouchGestures::update(const uint32_t tMs) {
         if(tMs - f.fDownMs < mConfig.fBuildHoldMs) return;
         mState = eState::buildDrag;
         mPreviewArea = true;
-        mSink.previewArea(sx, sy, ri(f.fX), ri(f.fY));
+        mSink.previewArea(sx, sy, ri(f.fX), ri(f.fY), true);
         return;
     }
     if(mConfig.fHoldToDraw && mSink.buildToolActive()) {
@@ -386,8 +388,14 @@ void eTouchGestures::update(const uint32_t tMs) {
 void eTouchGestures::cancel(const uint32_t tMs) {
     (void)tMs;
     switch(mState) {
+    case eState::previewDrag:
+        mSink.previewEnd();
+        break;
     case eState::buildDrag:
-        if(mPreviewArea) break; // a preview: nothing is held
+        if(mPreviewArea) {     // a preview: nothing is held
+            mSink.previewEnd();
+            break;
+        }
         [[fallthrough]];
     case eState::uiPress: {
         // Releasing outside of any meaningful target is not possible for a

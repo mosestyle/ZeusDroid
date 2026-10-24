@@ -49,7 +49,10 @@ struct RecSink : eTouchSink {
         return std::abs(x - prevX) < 40 && std::abs(y - prevY) < 40;
     }
     void previewTap(int x, int y) override { ev.push_back({"ptap", -1, x, y}); }
-    void previewArea(int sx, int sy, int x, int y) override {
+    int areaBegins = 0, previewEnds = 0;
+    void previewEnd() override { previewEnds++; }
+    void previewArea(int sx, int sy, int x, int y, bool begin) override {
+        if(begin) areaBegins++;
         ev.push_back({"parea", sx*10000 + sy, x, y});
     }
     int pdragBegins = 0;
@@ -283,8 +286,10 @@ void testConfirmPlacement() {
     s.ev.clear();
     g.fingerDown(1, 700, 400, 3000);
     g.update(3400);
+    const int endsBefore = s.previewEnds;
     g.cancel(3410);
     CHECK(s.count("press") == 0 && s.count("release") == 0);
+    CHECK(s.previewEnds == endsBefore + 1);
 }
 
 void testBoxSelect() {
@@ -318,6 +323,7 @@ void testDrawMode() {
         g.fingerMove(1, 300, 200, 60);
         g.fingerUp(1, 300, 200, 90);
         CHECK(s.count("parea") == 3 && s.camX == 0);
+        CHECK(s.areaBegins == 1 && s.previewEnds == 1);
         CHECK(s.ev.front().what == "parea" && s.ev.front().b == 100*10000 + 100);
         CHECK(s.count("press") == 0);
         // two fingers still pan

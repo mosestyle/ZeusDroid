@@ -1,4 +1,5 @@
 #include "edifficulty.h"
+#include "emodeldata.h"
 
 #include "characters/echaracterbase.h"
 
@@ -378,6 +379,9 @@ double costMultiplier(const eDifficulty diff) {
 int eDifficultyHelpers::buildingCost(
         const eDifficulty diff,
         const eBuildingType type) {
+    // Port (parity): the original per-difficulty cost from the user's
+    // Model/Zeus_Model_<difficulty>.txt when available.
+    if(const auto m = eModelData::building(diff, type)) return m->fCost;
     const int base = costBase(type);
     const int min = static_cast<int>(eBuildingType::templeAphrodite);
     const int max = static_cast<int>(eBuildingType::templeZeus);

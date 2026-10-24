@@ -252,3 +252,26 @@ preview is treated as dragging that preview. → 0.1.8 "Draw" mode.
 * Regressions (old tests turn Draw off for roads first): confirm placement, repeat, army,
   zoom/lists/speed, touch bar/pinch, instant hold-to-draw at zoom 1 and 2 – all as before.
 APK 0.1.8-dev: versionCode 9, sha256 6e86b78d297f31fcddce3cfd3c18eebd94d26abe378a1e78ea798bc628158325, v2/v3 OK
+
+### User report 2026-10-24 11:56 (0.1.8)
+Draw for roads and houses works, "could be better". Asked to continue with Phase F.
+
+### 0.1.9-dev: freehand roads, edge auto-scroll, data parity
+* Unit tests 102/102 (x86-64, ARM64/qemu): previewArea begin flag, previewEnd on lift and on
+  cancel.
+* `tests/autotest/phone_build_freehand.txt`: drag right then down → 34-tile road preview
+  following the finger with the turn (screenshot; the tile in the water red); ✓ shows "99"
+  and builds 33 tiles for 99 dr (Hero, 3 dr/tile from the original Model data); drag to the
+  right map edge and hold → dx 0 → -205 → -866 within 1.2 s, the road grows 41 → 69 tiles;
+  after lifting the finger the map stops (dx stays -945).
+* Parity: `tools/parity/compare_model.py` on the user's Model files: cost 341/540, fire
+  158/540, damage 115/540, desirability 10/91, employees 9/54 values differ between eZeus'
+  built-in tables and the original (local report build/parity/model_compare.md). After the
+  change, in-game road cost on Hero = 3 dr/tile (original) instead of 5; farm 45 (unchanged,
+  same in both).
+* Tax rate fix checked by code reading (name/rate/sentiment now consistent with the
+  original's "Very Low 3 %, Low 7 %" and the finance panel order); no autotest.
+* Vibration: SDL haptics on Android (VIBRATE permission present) – not testable here.
+* Regressions (with new road cost): confirm, repeat, army, draw, zoom/lists/speed, touch
+  bar/pinch, info window, settings, instant hold-to-draw at zoom 1 and 2 – all pass.
+APK 0.1.9-dev: versionCode 10, sha256 50a07d2f97c0e71cfaaf6ac012af13794517602d9e2a2d76f3545712828311ce, v2/v3 OK

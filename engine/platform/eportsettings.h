@@ -23,6 +23,7 @@ struct eTouchConfig;
 //   build_hold_ms     "300"
 //   build_confirm     "on"      on | off  (on: taps/drags only move a preview,
 //                                the confirm button builds)
+//   vibrate           "on"      short vibration when something is built
 //   show_stats        "off"     on: FPS / frame time / ticks / memory overlay
 //   build_repeat      "on"      on | off  (on: after building, the next
 //                                preview appears next to it)
@@ -39,6 +40,7 @@ struct ePortSettings {
     bool fBuildConfirm = true;
     bool fBuildRepeat = true;
     bool fShowStats = false;
+    bool fVibrate = true;
 
     static std::string path();
     // Loads from path(); writes a commented default file if none exists.

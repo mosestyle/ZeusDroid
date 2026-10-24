@@ -1,0 +1,43 @@
+# Freehand roads (Draw mode): the road follows the finger incl. turns; dragging to the map edge auto-scrolls and extends the road.
+8000 finger_down 1 1200 150
+80 finger_up 1 1200 150
+2500 finger_down 1 570 346
+80 finger_up 1 570 346
+800 finger_down 1 1100 720
+80 finger_up 1 1100 720
+4000 finger_down 1 1680 832
+80 finger_up 1 1680 832
+1000 wait_game 120000
+3000 log start
+100 finger_down 1 2170 900
+80 finger_up 1 2170 900
+400 log road_tool_expect_draw1
+# freehand road with a turn: right, then down
+100 finger_down 1 900 500
+30 finger_move 1 1000 500
+30 finger_move 1 1100 500
+30 finger_move 1 1200 500
+30 finger_move 1 1300 500
+30 finger_move 1 1300 575
+30 finger_move 1 1300 650
+30 finger_move 1 1300 725
+30 finger_move 1 1300 800
+40 finger_up 1 1300 800
+400 log after_freehand_expect_road_tiles_follow_finger
+200 screenshot build/run/f_01.bmp
+100 finger_down 1 1222 960
+80 finger_up 1 1222 960
+400 log after_ok_expect_built
+200 screenshot build/run/f_02.bmp
+# draw to the right edge of the map area and hold: the map scrolls, the road grows
+100 finger_down 1 1000 350
+30 finger_move 1 1300 350
+30 finger_move 1 1600 350
+30 finger_move 1 1990 350
+400 log at_edge_t0
+1200 log at_edge_t1200_expect_dx_less_road_longer
+40 finger_up 1 1990 350
+300 log after_edge_up_expect_scroll_stopped
+500 log later_expect_same_dx
+200 screenshot build/run/f_03.bmp
+200 quit

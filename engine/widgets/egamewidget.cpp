@@ -2517,6 +2517,7 @@ std::string eGameWidget::debugCameraState() const {
                         std::to_string(mPreviewPanel->width()) + "x" +
                         std::to_string(mPreviewPanel->height()) : std::string("hidden")) +
            " drachmas=" + (mBoard ? std::to_string(mBoard->drachmas(mBoard->personPlayer())) : std::string("-")) +
+           " road=" + std::to_string(mPreview.fRoad.size()) +
            " draw=" + std::to_string(touchDrawModeActive() ? 1 : 0) +
            " drawbtn=" + std::to_string(mDrawButton && mDrawButton->visible() ? 1 : 0) +
            " boxsel=" + std::to_string(mTouchBoxSelect ? 1 : 0) +
@@ -2730,6 +2731,7 @@ void eGameWidget::updateRequestButtons() {
 
 bool eGameWidget::sBuildConfirm = true;
 bool eGameWidget::sBuildRepeat = true;
+bool eGameWidget::sBuildHaptics = true;
 
 bool eGameWidget::touchPreviewSupported() const {
     if(!sBuildConfirm || mLocked) return false;
@@ -2769,6 +2771,7 @@ void eGameWidget::touchPreviewTap(const int x, const int y) {
     screenToTile(x, y, tx, ty);
     mPreview.fActive = true;
     mPreview.fArea = false;
+    mPreview.fRoad.clear();
     mPreview.fMode = mGm->mode();
     mPreview.fSTX = mPreview.fETX = tx;
     mPreview.fSTY = mPreview.fETY = ty;
@@ -2778,21 +2781,142 @@ void eGameWidget::touchPreviewTap(const int x, const int y) {
 }
 
 void eGameWidget::touchPreviewArea(const int sx, const int sy,
-                                   const int x, const int y) {
+                                   const int x, const int y,
+                                   const bool begin) {
     if(!touchPreviewSupported()) return;
-    mGm->closeBuildWidget();
-    int stx, sty, etx, ety;
-    screenToTile(sx, sy, stx, sty);
+    if(begin) {
+        mGm->closeBuildWidget();
+        int stx, sty;
+        screenToTile(sx, sy, stx, sty);
+        mPreview.fActive = true;
+        mPreview.fArea = true;
+        mPreview.fMode = mGm->mode();
+        // The start stays on its tile even if the map scrolls meanwhile.
+        mPreview.fSTX = stx;
+        mPreview.fSTY = sty;
+        mPreview.fRoad.clear();
+        if(mPreview.fMode == eBuildingMode::road) mPreview.fRoad.push_back({stx, sty});
+    } else if(!mPreview.fActive || !mPreview.fArea) {
+        return;
+    }
+    int etx, ety;
     screenToTile(x, y, etx, ety);
-    mPreview.fActive = true;
-    mPreview.fArea = true;
-    mPreview.fMode = mGm->mode();
-    mPreview.fSTX = stx;
-    mPreview.fSTY = sty;
     mPreview.fETX = etx;
     mPreview.fETY = ety;
     mPreview.fAX = x/mWorldScale - mDX;
     mPreview.fAY = y/mWorldScale - mDY;
+    if(!mPreview.fRoad.empty()) extendRoadPreview(etx, ety);
+    mEdgeActive = true;
+    mEdgeIsDrag = false;
+    mEdgeX = x;
+    mEdgeY = y;
+}
+
+void eGameWidget::touchPreviewEnd() {
+    mEdgeActive = false;
+}
+
+void eGameWidget::extendRoadPreview(const int tx, const int ty) {
+    auto& r = mPreview.fRoad;
+    if(r.empty()) {
+        r.push_back({tx, ty});
+        return;
+    }
+    // Going back over the drawn road erases it up to the finger.
+    const auto backTo = [&r](const int x, const int y) {
+        for(size_t i = 0; i < r.size(); i++) {
+            if(r[i].first == x && r[i].second == y) {
+                r.resize(i + 1);
+                return true;
+            }
+        }
+        return false;
+    };
+    if(backTo(tx, ty)) return;
+    // Fill gaps of fast moves with a 4-connected staircase.
+    int x = r.back().first;
+    int y = r.back().second;
+    int guard = 0;
+    while((x != tx || y != ty) && guard++ < 512) {
+        const int dx = tx - x;
+        const int dy = ty - y;
+        if(std::abs(dx) >= std::abs(dy)) x += dx > 0 ? 1 : -1;
+        else y += dy > 0 ? 1 : -1;
+        if(!backTo(x, y)) r.push_back({x, y});
+    }
+    if(r.size() > 400) r.resize(400);
+}
+
+bool eGameWidget::roadTileBuildable(const int tx, const int ty) const {
+    const auto t = mBoard->tile(tx, ty);
+    if(!t) return false;
+    const auto allowed = mEditorMode ? eTerrain::buildableAfterClear :
+                                       eTerrain::buildable;
+    if(!static_cast<bool>(allowed & t->terrain())) return false;
+    const auto bt = t->underBuildingType();
+    if(bt != eBuildingType::road && bt != eBuildingType::none) return false;
+    if(!t->walkableElev() && t->isElevationTile()) return false;
+    return true;
+}
+
+int eGameWidget::roadPreviewCost() const {
+    if(!mBoard) return 0;
+    int n = 0;
+    for(const auto& p : mPreview.fRoad) {
+        const auto t = mBoard->tile(p.first, p.second);
+        if(!t || t->underBuildingType() == eBuildingType::road) continue;
+        if(roadTileBuildable(p.first, p.second)) n++;
+    }
+    const auto diff = mBoard->difficulty(mBoard->personPlayer());
+    return n*eDifficultyHelpers::buildingCost(diff, eBuildingType::road);
+}
+
+void eGameWidget::buildRoadPreview() {
+    const auto cid = mViewedCityId;
+    const auto pid = mBoard->personPlayer();
+    for(const auto& p : mPreview.fRoad) {
+        if(!roadTileBuildable(p.first, p.second)) continue;
+        const auto t = mBoard->tile(p.first, p.second);
+        if(t->underBuildingType() == eBuildingType::road) continue;
+        mBoard->build(p.first, p.second, 1, 1, cid, pid, mEditorMode,
+                      [this]() { return e::make_shared<eRoad>(*mBoard, mViewedCityId); },
+                      false, true);
+    }
+}
+
+void eGameWidget::touchEdgeScroll() {
+    const uint32_t now = SDL_GetTicks();
+    const uint32_t dt = std::min<uint32_t>(now - mEdgeLastMs, 100);
+    mEdgeLastMs = now;
+    if(!mEdgeActive || !mPreview.fActive || mLocked) return;
+    const int margin = std::max(height()/12, 40);
+    const int left = mTouchCancelButton ?
+                         mTouchCancelButton->x() + mTouchCancelButton->width() : 0;
+    const int right = width() - (mGm ? mGm->width() : 0);
+    const int top = mTopBar ? mTopBar->height() : 0;
+    const int bottom = height();
+    // Up to ~900 screen px per second at the very edge.
+    const double maxV = 0.9*dt;
+    const auto ramp = [margin](const int d) {
+        return std::clamp(1.0 - double(d)/margin, 0.0, 1.0);
+    };
+    double vx = 0, vy = 0;
+    if(mEdgeX < left + margin) vx = maxV*ramp(mEdgeX - left);
+    else if(mEdgeX > right - margin) vx = -maxV*ramp(right - mEdgeX);
+    if(mEdgeY < top + margin) vy = maxV*ramp(mEdgeY - top);
+    else if(mEdgeY > bottom - margin) vy = -maxV*ramp(bottom - mEdgeY);
+    if(vx == 0 && vy == 0) return;
+    const int oldDX = mDX;
+    const int oldDY = mDY;
+    setDX(mDX + static_cast<int>(std::lround(vx/mWorldScale)));
+    setDY(mDY + static_cast<int>(std::lround(vy/mWorldScale)));
+    if(mDX == oldDX && mDY == oldDY) return; // at the map border
+    // The finger now points at another tile: update the preview.
+    if(mEdgeIsDrag) {
+        touchPreviewDrag(mPreview.fDragSX, mPreview.fDragSY, mEdgeX, mEdgeY, false);
+    } else {
+        touchPreviewArea(0, 0, mEdgeX, mEdgeY, false);
+    }
 }
 
 void eGameWidget::touchPreviewDrag(const int sx, const int sy,
@@ -2809,6 +2933,10 @@ void eGameWidget::touchPreviewDrag(const int sx, const int sy,
         pv.fBETY = pv.fETY;
         pv.fBAX = pv.fAX;
         pv.fBAY = pv.fAY;
+        pv.fDragSX = sx;
+        pv.fDragSY = sy;
+        pv.fDragOffX = pv.fAX - (sx/mWorldScale - mDX);
+        pv.fDragOffY = pv.fAY - (sy/mWorldScale - mDY);
     }
     int tx, ty;
     screenToTile(x, y, tx, ty);
@@ -2822,8 +2950,13 @@ void eGameWidget::touchPreviewDrag(const int sx, const int sy,
         pv.fSTX = pv.fBSTX + dtx;
         pv.fSTY = pv.fBSTY + dty;
     }
-    pv.fAX = pv.fBAX + (x - sx)/mWorldScale;
-    pv.fAY = pv.fBAY + (y - sy)/mWorldScale;
+    pv.fAX = (x/mWorldScale - mDX) + pv.fDragOffX;
+    pv.fAY = (y/mWorldScale - mDY) + pv.fDragOffY;
+    if(!pv.fRoad.empty() && pv.fDragEnd) extendRoadPreview(pv.fETX, pv.fETY);
+    mEdgeActive = true;
+    mEdgeIsDrag = true;
+    mEdgeX = x;
+    mEdgeY = y;
 }
 
 void eGameWidget::applyTouchPreview() {
@@ -2867,8 +3000,10 @@ void eGameWidget::touchPreviewConfirm() {
     const auto ppid = mBoard->personPlayer();
     const int before = mBoard->drachmas(ppid);
     const auto saved = mPreview;
-    buildMouseRelease();
+    if(mPreview.fArea && !mPreview.fRoad.empty()) buildRoadPreview();
+    else buildMouseRelease();
     touchPreviewClear();
+    if(mBoard->drachmas(ppid) < before) ePlatform::vibrate(sBuildHaptics ? 25 : 0);
     // Was something built? (Free buildings: check the tile.)
     const auto tile = mBoard->tile(btx, bty);
     const auto b = tile ? tile->underBuilding() : nullptr;
@@ -2936,6 +3071,8 @@ void eGameWidget::touchPreviewClear() {
         mHoverTY = -1;
     }
     mPreview.fActive = false;
+    mPreview.fRoad.clear();
+    mEdgeActive = false;
     if(mPreviewPanel) mPreviewPanel->hide();
 }
 
@@ -2963,7 +3100,9 @@ void eGameWidget::updatePreviewPanel() {
     mPreviewPanel->show();
     if(mPreviewCostLabel) {
         int cost = -1;
-        if(!mPreview.fArea && mBoard) {
+        if(mPreview.fArea && !mPreview.fRoad.empty()) {
+            cost = roadPreviewCost();
+        } else if(!mPreview.fArea && mBoard) {
             const auto t = eBuildingModeHelpers::toBuildingType(mPreview.fMode);
             if(t != eBuildingType::none && t != eBuildingType::erase) {
                 const auto diff = mBoard->difficulty(mBoard->personPlayer());

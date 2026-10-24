@@ -69,9 +69,13 @@ public:
     virtual bool confirmPlacement() { return false; }
     virtual bool previewAt(int x, int y) { (void)x; (void)y; return false; }
     virtual void previewTap(int x, int y) { (void)x; (void)y; }
-    virtual void previewArea(int sx, int sy, int x, int y) {
-        (void)sx; (void)sy; (void)x; (void)y;
+    // begin = first call of this drag. (sx, sy) is the touch-down point.
+    virtual void previewArea(int sx, int sy, int x, int y, bool begin) {
+        (void)sx; (void)sy; (void)x; (void)y; (void)begin;
     }
+    // The finger that drives previewArea / previewDrag was lifted (or the
+    // gesture was cancelled); e.g. stops edge auto-scrolling.
+    virtual void previewEnd() {}
     // begin = first call of this drag (the preview's position is captured).
     virtual void previewDrag(int sx, int sy, int x, int y, bool begin) {
         (void)sx; (void)sy; (void)x; (void)y; (void)begin;

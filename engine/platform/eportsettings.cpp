@@ -37,7 +37,8 @@ void ePortSettings::load() {
                    "build_hold_ms \"300\"\n"
                    "build_confirm \"on\"\n"
                    "build_repeat \"on\"\n"
-                   "show_stats \"off\"\n";
+                   "show_stats \"off\"\n"
+                   "vibrate \"on\"\n";
         }
         return;
     }
@@ -66,6 +67,8 @@ void ePortSettings::load() {
     if(bd != m.end()) fHoldToDraw = bd->second != "direct";
     const auto bc = m.find("build_confirm");
     if(bc != m.end()) fBuildConfirm = bc->second != "off";
+    const auto vb = m.find("vibrate");
+    if(vb != m.end()) fVibrate = vb->second != "off";
     const auto ss = m.find("show_stats");
     if(ss != m.end()) fShowStats = ss->second == "on";
     const auto br = m.find("build_repeat");
@@ -115,6 +118,7 @@ void ePortSettings::save() const {
     o << "build_confirm " << q(fBuildConfirm ? "on" : "off") << "\n";
     o << "build_repeat " << q(fBuildRepeat ? "on" : "off") << "\n";
     o << "show_stats " << q(fShowStats ? "on" : "off") << "\n";
+    o << "vibrate " << q(fVibrate ? "on" : "off") << "\n";
     const auto tmp = path() + ".tmp";
     {
         std::ofstream out(tmp, std::ios::trunc);

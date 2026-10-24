@@ -26,7 +26,12 @@ Phases from the brief (§17). ✅ done with evidence, 🟡 partly done, ⬜ not 
   military, long texts) and info-panel buttons, (3) tablet layout check, (4) FPS/frame-time
   and memory measurements on the phone, (5) optional: fling scrolling, start zoom > 1,
   haptic feedback on ✓.
-* **F – Gameplay parity with the original ⬜** compare eZeus with the original game on the
+* **F – Gameplay parity with the original 🟡 (started 2026-10-24)** done: data parity against
+  the original Model files (costs, employees, desirability, tax table; tax low/very-low fix),
+  Olympus blessing claim checked and rejected. Next: fire/damage risk model, desirability
+  spread + house evolution thresholds, immigration group size – each needs a side-by-side
+  behaviour test (original on the user's PC via screen control, with permission). Original
+  plan: compare eZeus with the original game on the
   user's PC (screen control, with permission), most visible systems first: immigration and
   housing, food/storage/distribution, walkers and services, gods/heroes/monsters, military,
   trade, campaign goals. Log each in PARITY_MATRIX, fix the important differences (Ghidra

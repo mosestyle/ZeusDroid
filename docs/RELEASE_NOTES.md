@@ -1,5 +1,15 @@
 # Release notes
 
+## 0.1.9-dev
+* Freehand roads: with Draw on, the road follows your finger, including turns; going back
+  over it erases it; red tiles cannot be built; the price of the whole road is shown on ✓.
+* Edge auto-scroll: drawing (or dragging a preview) near the edge of the map scrolls the map,
+  so long roads and big areas no longer need several drags.
+* Short vibration when something is built (Touch controls → Vibrate when building).
+* Gameplay parity with the original (Phase F): building costs per difficulty, worker counts
+  and desirability values are now read from your original game's Model files; fixed "Very
+  Low"/"Low" tax rates being swapped. Details: docs/PARITY_MATRIX.md.
+
 ## 0.1.8-dev
 * **Draw** button on the touch bar while a building tool is selected: with Draw on, a
   one-finger drag draws the road / wall / row / area straight away (no hold), two fingers

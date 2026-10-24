@@ -315,6 +315,7 @@ void eGameWidget::updateTerrainTextures() {
 }
 
 void eGameWidget::paintEvent(ePainter& p) {
+    touchEdgeScroll();
     applyTouchPreview();
     updatePreviewPanel();
     // Port zoom: at scale 1 paint directly (upstream path). Otherwise paint
@@ -2156,6 +2157,27 @@ void eGameWidget::paintWorld(ePainter& p) {
     const auto drawBuildCount = [&](const int buildCount) {
         drawBuildText(std::to_string(buildCount));
     };
+
+    if(mode == eBuildingMode::road && mPreview.fActive &&
+       mPreview.fArea && !mPreview.fRoad.empty()) {
+        // Port: freehand road preview (touch), red where it cannot be built.
+        const auto& tex = trrTexs.fBuildingBase;
+        int n = 0;
+        for(const auto& rp : mPreview.fRoad) {
+            const auto t = mBoard->tile(rp.first, rp.second);
+            if(!t) continue;
+            const bool ok = roadTileBuildable(rp.first, rp.second);
+            if(ok) n++;
+            else tex->setColorMod(255, 60, 60);
+            double rx;
+            double ry;
+            drawXY(t->x(), t->y(), rx, ry, 1, 1, t->altitude());
+            tp.drawTexture(rx, ry, tex, eAlignment::top);
+            if(!ok) tex->clearColorMod();
+        }
+        drawBuildCount(n);
+        return;
+    }
 
     if((mode == eBuildingMode::road ||
         mode == eBuildingMode::doricColumn ||

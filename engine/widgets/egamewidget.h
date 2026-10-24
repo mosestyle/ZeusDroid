@@ -169,7 +169,9 @@ public:
     bool touchPreviewActive() const { return mPreview.fActive; }
     bool touchPreviewAt(int x, int y);
     void touchPreviewTap(int x, int y);
-    void touchPreviewArea(int sx, int sy, int x, int y);
+    void touchPreviewArea(int sx, int sy, int x, int y, bool begin = true);
+    void touchPreviewEnd();
+    static bool sBuildHaptics;
     void touchPreviewDrag(int sx, int sy, int x, int y, bool begin);
     void touchPreviewConfirm();
     void touchPreviewClear();
@@ -255,7 +257,21 @@ private:
         int fDTX = 0, fDTY = 0;      // finger tile at drag start
         int fBSTX = 0, fBSTY = 0, fBETX = 0, fBETY = 0;
         double fBAX = 0, fBAY = 0;
+        double fDragOffX = 0, fDragOffY = 0; // anchor - finger (world px)
+        int fDragSX = 0, fDragSY = 0;        // drag start (screen)
+        // Roads: the tiles under the finger's path, in order (freehand).
+        std::vector<std::pair<int, int>> fRoad;
     };
+    // Edge auto-scroll while a preview is drawn / dragged near the edge.
+    bool mEdgeActive = false;
+    bool mEdgeIsDrag = false;
+    int mEdgeX = 0, mEdgeY = 0;
+    uint32_t mEdgeLastMs = 0;
+    void touchEdgeScroll();
+    void extendRoadPreview(int tx, int ty);
+    bool roadTileBuildable(int tx, int ty) const;
+    int roadPreviewCost() const;
+    void buildRoadPreview();
     eTouchPreview mPreview;
     eWidget* mPreviewPanel = nullptr;
     eLabel* mPreviewCostLabel = nullptr;

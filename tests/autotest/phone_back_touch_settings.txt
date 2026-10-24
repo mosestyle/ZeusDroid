@@ -35,5 +35,5 @@
 80 finger_up 1 2170 900
 300 finger_down 1 1300 600
 80 finger_up 1 1300 600
-400 log after_instant_tap_expect_drachmas_9995_preview0
+400 log after_instant_tap_expect_one_road_tile_3dr_preview0
 200 quit

@@ -74,8 +74,12 @@ public:
     void previewTap(const int x, const int y) override {
         if(const auto gw = mW.touchGameWidget()) gw->touchPreviewTap(x, y);
     }
-    void previewArea(const int sx, const int sy, const int x, const int y) override {
-        if(const auto gw = mW.touchGameWidget()) gw->touchPreviewArea(sx, sy, x, y);
+    void previewArea(const int sx, const int sy, const int x, const int y,
+                     const bool begin) override {
+        if(const auto gw = mW.touchGameWidget()) gw->touchPreviewArea(sx, sy, x, y, begin);
+    }
+    void previewEnd() override {
+        if(const auto gw = mW.touchGameWidget()) gw->touchPreviewEnd();
     }
     void previewDrag(const int sx, const int sy, const int x, const int y,
                      const bool begin) override {
@@ -173,6 +177,7 @@ void eMainWindow::applyPortSettings() {
     eGameWidget::sMaxZoom = ps.fMaxZoom;
     eGameWidget::sBuildConfirm = ps.fBuildConfirm;
     eGameWidget::sBuildRepeat = ps.fBuildRepeat;
+    eGameWidget::sBuildHaptics = ps.fVibrate;
     if(mTouch) {
         eTouchConfig tc;
         ps.applyTo(tc);

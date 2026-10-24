@@ -1,6 +1,7 @@
 #include "eemployingbuilding.h"
 
 #include "engine/egameboard.h"
+#include "engine/emodeldata.h"
 
 eEmployingBuilding::eEmployingBuilding(
         eGameBoard& board,
@@ -9,7 +10,8 @@ eEmployingBuilding::eEmployingBuilding(
         const int maxEmployees,
         const eCityId cid) :
     eBuildingWithResource(board, type, sw, sh, cid),
-    mMaxEmployees(maxEmployees) {
+    // Port: worker count from the original Model data when it differs.
+    mMaxEmployees(eModelData::adjustEmployees(type, maxEmployees)) {
     board.registerEmplBuilding(this);
 }
 
@@ -49,6 +51,7 @@ void eEmployingBuilding::read(eReadStream& src) {
     eBuildingWithResource::read(src);
     src >> mShutDown;
     src >> mMaxEmployees;
+    mMaxEmployees = eModelData::adjustEmployees(type(), mMaxEmployees);
     src >> mEmployed;
     setEnabled(mEmployed > 0);
 }

@@ -38,6 +38,10 @@ namespace ePlatform {
     // Resident memory of this process in MB (Linux/Android), -1 if unknown.
     int residentMemoryMB();
 
+    // Short vibration (phone vibrator via SDL haptics); no-op if ms <= 0 or
+    // no vibrator is available.
+    void vibrate(int ms);
+
     // Frames per second for painting. 20 = upstream behaviour (every frame
     // is a simulation tick). Override with EZEUS_RENDER_FPS (20..120).
     double renderFps();

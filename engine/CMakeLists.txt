@@ -810,6 +810,8 @@ set(EZEUS_SOURCES
     engine/edate.cpp
     engine/edate.h
     engine/edifficulty.cpp
+    engine/emodeldata.cpp
+    engine/emodeldata.h
     engine/edifficulty.h
     engine/eemploymentdistributor.cpp
     engine/eemploymentdistributor.h

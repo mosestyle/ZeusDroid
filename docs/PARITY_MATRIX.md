@@ -8,9 +8,33 @@ Reference original: GOG Zeus + Poseidon, `Zeus.exe` "Version 1.11" (BINARY_COMPA
 Engine: eZeus `ec765199` + this repo's platform changes (which do not touch game rules;
 the only gameplay-visible change so far is the `q` key fix in text fields).
 
-No side-by-side comparison with the original game has been run yet, so nothing is `MATCHED`.
-Comparison requires running the original on the PC (possible via the linked computer's
-screen-control tools with the user's permission) or Ghidra evidence; see NEXT_STEPS.md.
+Phase F started 2026-10-24 with the cheapest strong evidence: the original game's own
+balancing files in the user's install (`Model/Zeus_Model_<Difficulty>.txt`,
+`Model/Tax_Sentiment_Model.txt`) and its text strings (`Zeus_Text.eng`). Tool:
+`tools/parity/compare_model.py <game root>` writes a local report (`build/parity/`, not
+committed because it contains original values). Behaviour comparisons that need the
+original running (screen control on the user's PC, with permission) are still to do.
+
+### Data parity against the original Model files (2026-10-24)
+
+| Data | eZeus upstream vs original | Port action | Status |
+|---|---|---|---|
+| Building cost per difficulty | 341 of 540 building×difficulty values differ (eZeus uses base × one factor per difficulty, e.g. Hero ×2.25 where the original has individual values: road 3 vs 5, palace 250 vs 281, mint 200 vs 225; temples match) | Cost is read at run time from the user's `Zeus_Model_<difficulty>.txt` (`engine/engine/emodeldata.cpp`, hooked in `eDifficultyHelpers::buildingCost`) | `MATCHED` (by construction; road verified in-game: Hero 3 dr/tile) |
+| Employees | 9 of 54 comparable differ: Sculpture Studio 12 vs 18; sanctuaries all 60 in eZeus vs 45–75 (Aphrodite, Ares, Atlas, Dionysus, Hades, Hera, Hermes, Poseidon) | Original value used when both give the building workers (`eEmployingBuilding`, also applied to loaded saves) | `MATCHED` (by construction) |
+| Desirability value / range | 81 of 91 match; carrot and onion farm swapped; refinery range 6 vs 5; dock had none | Original values used, except agora and vendors (eZeus spreads the agora's desirability over its vendors) | `MATCHED` except agora model `PARTIAL` |
+| Desirability spread (step, step size) | eZeus uses a smooth linear fall-off; the original uses steps | none yet (changes every house's evolution; needs side-by-side test) | `MISMATCH` (known) |
+| House evolution desirability thresholds | eZeus uses its own scale (e.g. > 2, > 5, > 8) vs original 10/20/30/100 | none yet (tied to the spread model above) | `MISMATCH` (known) |
+| House population capacity | common 8–60, elite 6–20 | – | `MATCHED` |
+| Fire / damage risk increments | 158 / 115 of 540 differ (e.g. onion/carrot farms, agora vs vendors, piers) | none yet: eZeus applies risk differently for agora/vendors and docks; needs behaviour test | `MISMATCH` (known) |
+| Tax sentiment table | identical for all 7 rates × 5 difficulties | – | `MATCHED` |
+| Tax rates | "Very Low" and "Low" were swapped (wrong rate/sentiment pairing; panel cycled None, Low, Very Low, Normal) | fixed in `engine/engine/etaxrate.cpp` | `MATCHED` after fix |
+
+### Claims from the Olympus fork
+
+| Claim | Check | Result |
+|---|---|---|
+| f0c67c1 "god blessings match original zeus" (shorter lists of sanctifiable buildings per god) | Original `Zeus_Text.eng` has "is sanctified!" messages for University, Museum, Inventor's Workshop, Agora, Artisans' Guild – all removed or not listed by the Olympus change | Not ported: contradicts the original's own texts |
+| Settlers arrive in groups of 4; house devolution differs | not yet checked | open |
 
 | Area | Status | Evidence so far | Known differences / notes |
 |---|---|---|---|

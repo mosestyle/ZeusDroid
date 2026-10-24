@@ -21,6 +21,8 @@ SDL's synthetic touch→mouse and mouse→touch events are disabled on Android
 | ✓ / ✕ buttons next to the preview | map | ✓ builds exactly what the preview shows (price shown under ✓ for single buildings); ✕ discards the preview. On a red preview ✓ builds nothing and the preview stays |
 | (after ✓, single building) | map | "Next one ready" (0.1.6, `build_repeat`): a new preview appears beside the building — one building width along the map's x axis, or with the same spacing/direction as the last two confirmed buildings. A manual tap starts a new row |
 | **Draw** button (touch bar, while a tool is selected; on by default for roads, walls, housing, parks, trees, animals, columns, demolish) | map | one-finger drag draws the row / area preview at once from the touch-down point (no hold); two fingers pan / zoom. Tap still places a single preview. Remembered per tool for the session |
+| Draw a road (Draw on) | map | freehand: the road follows the finger's path with turns (tiles in order, gaps filled 4-connected); moving back over it erases; red = cannot build; ✓ shows the total price. Dragging the end of the preview continues the road |
+| Finger near the map edge while drawing / dragging a preview | map | the map scrolls (up to ~900 px/s, faster closer to the edge) and the preview follows the finger |
 | Tap outside an info window | map | closes it |
 | (instant mode, `build_confirm "off"`) tap / hold + drag | map, build tool active | 0.1.3 behaviour: tap builds at once; hold then drag draws and builds on lift |
 | Long press (500 ms, no movement) | map, no build tool | right click (close info, deselect / place army) |

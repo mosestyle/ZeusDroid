@@ -9,10 +9,14 @@ std::string eTaxRateHelpers::name(const eTaxRate tr) {
     case eTaxRate::none:
         string = 0;
         break;
-    case eTaxRate::low:
+    // Port (parity fix): upstream had "low" and "very low" swapped here and
+    // in getRate(), so the sentiment table (indexed by enum order, which
+    // matches the original Tax_Sentiment_Model.txt) belonged to the other
+    // setting and the finance panel cycled None, Low, Very Low, Normal.
+    case eTaxRate::veryLow:
         string = 1;
         break;
-    case eTaxRate::veryLow:
+    case eTaxRate::low:
         string = 2;
         break;
     case eTaxRate::normal:
@@ -35,9 +39,9 @@ double eTaxRateHelpers::getRate(const eTaxRate tr) {
     switch(tr) {
     case eTaxRate::none:
         return 0.00;
-    case eTaxRate::low:
-        return 0.03;
     case eTaxRate::veryLow:
+        return 0.03;
+    case eTaxRate::low:
         return 0.07;
     case eTaxRate::normal:
         return 0.09;

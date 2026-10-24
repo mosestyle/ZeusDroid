@@ -1,8 +1,39 @@
 #include "eheatgetters.h"
+#include "engine/emodeldata.h"
 
 #include "characters/gods/egodtype.h"
 
+namespace {
+eHeat eZeusAppeal(const eBuildingType type);
+}
+
 eHeat eHeatGetters::appeal(const eBuildingType type) {
+    // Port (parity): desirability value and range from the user's original
+    // Model data (same in every difficulty). eZeus models agora vendors as
+    // buildings of their own; the original gives the agora the desirability
+    // and vendors none, so agoras and vendors keep eZeus' values.
+    switch(type) {
+    case eBuildingType::foodVendor:
+    case eBuildingType::fleeceVendor:
+    case eBuildingType::oilVendor:
+    case eBuildingType::wineVendor:
+    case eBuildingType::armsVendor:
+    case eBuildingType::horseTrainer:
+    case eBuildingType::chariotVendor:
+    case eBuildingType::commonAgora:
+    case eBuildingType::grandAgora:
+        break;
+    default:
+        if(const auto m = eModelData::building(eDifficulty::hero, type)) {
+            return {m->fDesirability, m->fDesRange};
+        }
+        break;
+    }
+    return eZeusAppeal(type);
+}
+
+namespace {
+eHeat eZeusAppeal(const eBuildingType type) {
     switch(type) {
     case eBuildingType::wheatFarm: return {-3, 3};
     case eBuildingType::carrotsFarm: return {-4, 3};
@@ -186,6 +217,7 @@ eHeat eHeatGetters::appeal(const eBuildingType type) {
 
     default: return {0, 0};
     }
+}
 }
 
 eHeat eHeatGetters::housing(const eBuildingType type) {
