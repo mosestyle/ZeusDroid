@@ -81,6 +81,40 @@ void eHeatMap::addHeat(const eHeat& a,
 void eHeatMap::addHeat(const eHeat& a,
                        const int ax, const int ay,
                        const int sw, const int sh) {
+    if(a.fSteps) {
+        for(int x = ax; x < ax + sw; x++) {
+            for(int y = ay; y < ay + sh; y++) {
+                int dtx;
+                int dty;
+                eTileHelper::tileIdToDTileId(x, y, dtx, dty);
+                enable(dtx, dty);
+            }
+        }
+        const bool rect = a.fRectQuirk || sw != sh;
+        const int range = std::min(a.fRange, 6);
+        int v = a.fValue;
+        int cnt = rect ? 1 : 0;
+        for(int d = 1; d <= range; d++) {
+            const int x0 = ax - d;
+            const int x1 = ax + sw - 1 + d;
+            const int y0 = ay - d;
+            const int y1 = ay + sh - 1 + d;
+            for(int x = x0; x <= x1; x++) {
+                for(int y = y0; y <= y1; y++) {
+                    if(x != x0 && x != x1 && y != y0 && y != y1) continue;
+                    int dtx;
+                    int dty;
+                    eTileHelper::tileIdToDTileId(x, y, dtx, dty);
+                    addRaw(dtx, dty, v);
+                }
+            }
+            if(++cnt >= a.fStep) {
+                v += a.fStepSize;
+                cnt = 0;
+            }
+        }
+        return;
+    }
     const int r = a.fRange;
     if(r <= 0) return;
     const double v = a.fValue;
@@ -108,6 +142,20 @@ void eHeatMap::addHeat(const int x, const int y,
     auto& tile = mMap[x - mDX][y - mDY];
     tile.fEnabled = true;
     tile.fAppeal += a/2;
+}
+
+void eHeatMap::addRaw(const int x, const int y, const int a) {
+    if(x < mDX || y < mDY ||
+       x >= mWidth + mDX || y >= mHeight + mDY) return;
+    auto& tile = mMap[x - mDX][y - mDY];
+    tile.fEnabled = true;
+    tile.fAppeal = std::clamp(tile.fAppeal + a, -100., 100.);
+}
+
+void eHeatMap::enable(const int x, const int y) {
+    if(x < mDX || y < mDY ||
+       x >= mWidth + mDX || y >= mHeight + mDY) return;
+    mMap[x - mDX][y - mDY].fEnabled = true;
 }
 
 void eHeatMap::setOutsideRange(const int x, const int y) {

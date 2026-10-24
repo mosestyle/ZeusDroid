@@ -28,7 +28,33 @@ struct eModelBuilding {
     int fDamageRisk = 0;
 };
 
+// House rows ("ALL HOUSES" section): a = DES at or below which the house
+// devolves, b = DES at or above which it evolves (when the next level's needs
+// are met). Common levels 0..6 = Hut..Townhouse, elite levels 0..4 =
+// Devolved..Estate.
+struct eModelHouse {
+    int fDevolve = 0;
+    int fEvolve = 0;
+};
+
+struct eModelFile {
+    std::vector<std::pair<eBuildingType, eModelBuilding>> fBuildings;
+    std::vector<std::pair<std::string, eModelBuilding>> fByName;
+    eModelHouse fCommon[7];
+    bool fHasCommon[7] = {};
+    eModelHouse fElite[5];
+    bool fHasElite[5] = {};
+};
+
 namespace eModelData {
+    // True when the original model data is enabled and was found (the
+    // original desirability rules are used only then).
+    bool available();
+    // Raw entry by its BUILD_* name (e.g. BUILD_ELITE_HOUSE2_MANSION).
+    const eModelBuilding* byName(const eDifficulty diff,
+                                 const std::string& name);
+    const eModelHouse* house(const eDifficulty diff,
+                             const bool elite, const int level);
     // nullptr when the file is missing, the building has no entry, or the
     // feature is disabled (EZEUS_MODEL_DATA=0).
     const eModelBuilding* building(const eDifficulty diff,
@@ -42,6 +68,7 @@ namespace eModelData {
     // Parses one model file; returns entries keyed by building type.
     bool parseFile(const std::string& path,
                    std::vector<std::pair<eBuildingType, eModelBuilding>>& out);
+    bool parseFile(const std::string& path, eModelFile& out);
 }
 
 #endif // EMODELDATA_H

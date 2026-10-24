@@ -3,6 +3,8 @@
 
 #include "ehousebase.h"
 
+struct eModelHouse;
+
 class eEliteHousing : public eHouseBase {
 public:
     eEliteHousing(eGameBoard& board, const eCityId cid);
@@ -60,6 +62,10 @@ private:
             const eTileSize size) const;
 
     void updateLevel();
+    void updateLevelLegacy();
+    eHouseMissing missingLegacy() const;
+    int metLevel(eHouseMissing& m) const;
+    const eModelHouse* modelHouse(const int level) const;
 
     int mUpdateLevel = 0;
 

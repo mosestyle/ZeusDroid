@@ -1,4 +1,5 @@
 #include "eheroshall.h"
+#include "buildings/eheatgetters.h"
 
 #include "textures/egametextures.h"
 
@@ -662,7 +663,7 @@ void eHerosHall::updateRequirementStatus(eHeroRequirement& hr) {
         }
     } break;
     case eHeroRequirementType::appeal: {
-        const double a = eBuilding::appeal();
+        const double a = eHeatGetters::legacyScale(eBuilding::appeal());
         if(a < 12.) {
             sc = 0;
         } else if(a < 14.5) {

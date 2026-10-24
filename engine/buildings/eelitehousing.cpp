@@ -5,6 +5,8 @@
 #include "textures/egametextures.h"
 #include "elanguage.h"
 #include "enumbers.h"
+#include "engine/emodeldata.h"
+#include "buildings/eheatgetters.h"
 #include "buildings/epalace.h"
 
 #include <algorithm>
@@ -251,7 +253,7 @@ void eEliteHousing::removeHorse() {
     updateLevel();
 }
 
-eHouseMissing eEliteHousing::missing() const {
+eHouseMissing eEliteHousing::missingLegacy() const {
     const double appeal = eHouseBase::appeal();
     int nVenues = 0;
     if(mPhilosophers > 0) nVenues++;
@@ -332,7 +334,7 @@ const eTextureCollection& eEliteHousing::getTextureCollection(
     }
 }
 
-void eEliteHousing::updateLevel() {
+void eEliteHousing::updateLevelLegacy() {
     const double appeal = eHouseBase::appeal();
     int nVenues = 0;
     if(mPhilosophers > 0) nVenues++;
@@ -352,4 +354,57 @@ void eEliteHousing::updateLevel() {
         return setLevel(1);
     }
     setLevel(0);
+}
+
+// Port (gameplay parity, Zeus.exe research R6): the original's evolution
+// rule. A house devolves one level when its desirability is at or below the
+// current level's "devolve" value or a need of the current level is no longer
+// met; it evolves one level when the desirability is at or above the current
+// level's "evolve" value and the next level's needs are met. Both values come
+// from the user's Model file for the city's difficulty.
+int eEliteHousing::metLevel(eHouseMissing& m) const {
+    int nVenues = 0;
+    if(mPhilosophers > 0) nVenues++;
+    if(mActors > 0) nVenues++;
+    if(mAthletes > 0) nVenues++;
+    if(mCompetitors > 0) nVenues++;
+    if(mFood <= 0) { m = eHouseMissing::food; return 0; }
+    if(mFleece <= 0) { m = eHouseMissing::fleece; return 0; }
+    if(mOil <= 0) { m = eHouseMissing::oil; return 0; }
+    if(nVenues < 3) { m = eHouseMissing::venues; return 0; }
+    if(mArms <= 0) { m = eHouseMissing::arms; return 1; }
+    if(mWine <= 0) { m = eHouseMissing::wine; return 2; }
+    if(mHorses <= 0) { m = eHouseMissing::horse; return 3; }
+    if(nVenues < 4) { m = eHouseMissing::venues; return 3; }
+    m = eHouseMissing::nothing;
+    return 4;
+}
+
+const eModelHouse* eEliteHousing::modelHouse(const int level) const {
+    if(!eHeatGetters::originalDesirability()) return nullptr;
+    auto& b = getBoard();
+    const auto diff = b.difficulty(playerId());
+    return eModelData::house(diff, true, level);
+}
+
+void eEliteHousing::updateLevel() {
+    const auto h = modelHouse(mLevel);
+    if(!h) return updateLevelLegacy();
+    eHouseMissing m;
+    const int met = metLevel(m);
+    const double des = eHouseBase::appeal();
+    int l = mLevel;
+    if(des <= h->fDevolve || l > met) l--;
+    else if(des >= h->fEvolve && met > l) l++;
+    setLevel(std::clamp(l, 0, 4));
+}
+
+eHouseMissing eEliteHousing::missing() const {
+    const auto h = modelHouse(mLevel);
+    if(!h) return missingLegacy();
+    eHouseMissing m;
+    const int met = metLevel(m);
+    if(met <= mLevel) return m;
+    if(eHouseBase::appeal() < h->fEvolve) return eHouseMissing::appeal;
+    return eHouseMissing::nothing;
 }

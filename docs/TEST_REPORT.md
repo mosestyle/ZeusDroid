@@ -275,3 +275,22 @@ Draw for roads and houses works, "could be better". Asked to continue with Phase
 * Regressions (with new road cost): confirm, repeat, army, draw, zoom/lists/speed, touch
   bar/pinch, info window, settings, instant hold-to-draw at zoom 1 and 2 – all pass.
 APK 0.1.9-dev: versionCode 10, sha256 50a07d2f97c0e71cfaaf6ac012af13794517602d9e2a2d76f3545712828311ce, v2/v3 OK
+
+### 0.1.10-dev: original desirability and house evolution (Phase F)
+* New unit test `tests/native/test_desirability.cpp`: 18/18 (rings 1..range around the
+  footprint, step every n rings, range cap 6, rectangle variant, clamp ±100, overlap sums,
+  step 0). Gesture tests 102/102 (x86-64 and ARM64/qemu), importer 46/46.
+* In-game (desktop, test-only autotest commands `debug_build` / `debug_des`): gazebo
+  (model 6, step 1, -1, range 6) gives 6,5,4,3,2,1 on rings 1–6 and 0 on its own tiles;
+  garden 3 tiles away adds its ring value (7 = 5 + 2 and 6 + 1); a new house reports DES 0,
+  level 0, missing food.
+* House evolution with the original devolve/evolve values: logic implemented from the
+  Zeus.exe routine (R6); a long-running city test (houses actually climbing/falling levels)
+  has not been done yet – needs a full supply chain or a device session.
+* Regressions: build confirm, repeat, draw, freehand roads, info window, instant
+  hold-to-draw (EZEUS_BUILD_CONFIRM=0) – all pass (run one at a time; six in parallel on one
+  machine made two gesture timings flaky).
+* Original game on the user's PC: not reachable at the end of this session (screen locked),
+  so no side-by-side of the new spread yet; the original's game speed is still at 100 %
+  (was 90 %).
+APK 0.1.10-dev: versionCode 11, sha256 449480458a6ca0513e56d8953224a8453ade77b74b826170e7bfcbeb6ead8427, v2/v3 OK

@@ -3,6 +3,8 @@
 
 #include "ehousebase.h"
 
+struct eModelHouse;
+
 class eSick;
 class eDisgruntled;
 
@@ -46,6 +48,10 @@ public:
     static std::string sName(const int level);
 private:
     void updateLevel();
+    void updateLevelLegacy();
+    eHouseMissing missingLegacy() const;
+    int metLevel(eHouseMissing& m) const;
+    const eModelHouse* modelHouse(const int level) const;
     void updateSatisfaction();
 
     void spawnCharacter(const stdsptr<eCharacter>& c);

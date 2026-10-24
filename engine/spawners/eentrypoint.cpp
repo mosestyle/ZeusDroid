@@ -41,7 +41,9 @@ void eEntryPoint::spawn(eTile* const tile) {
     b->setVisible(false);
     b->changeTile(tile);
     const auto a = e::make_shared<eSettlerAction>(b.get());
-    a->setNumberPeople(std::min(8, v - s));
+    // Port (parity): the original sends settlers in groups of 4 (observed in
+    // Zeus 1.11: a new hut fills 0 -> 4 -> 8; three new huts +12 at once).
+    a->setNumberPeople(std::min(4, v - s));
     b->setAction(a);
 }
 

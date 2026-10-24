@@ -1,5 +1,16 @@
 # Release notes
 
+## 0.1.10-dev
+* Desirability now works like the original game: every building spreads its value in
+  square rings with the original steps (from your Model files), and houses take the best
+  value under them. Houses evolve and devolve with the original thresholds for your
+  difficulty (with the original "buffer" between devolving and evolving). This changes how
+  attractive areas must be, so existing cities may settle at different house levels.
+* Houses must touch a road, as in the original: plots that don't are removed and the tip
+  "Some plots are too far from a road" is shown.
+* Settlers arrive in groups of up to 4 (as observed in the original).
+* Roads look paved above the original desirability limit.
+
 ## 0.1.9-dev
 * Freehand roads: with Draw on, the road follows your finger, including turns; going back
   over it erases it; red tiles cannot be built; the price of the whole road is shown on ✓.

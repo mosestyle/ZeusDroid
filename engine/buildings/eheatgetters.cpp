@@ -7,7 +7,56 @@ namespace {
 eHeat eZeusAppeal(const eBuildingType type);
 }
 
+namespace {
+eHeat stepHeat(const eModelBuilding& m) {
+    eHeat h{m.fDesirability, m.fDesRange};
+    h.fStep = m.fDesStep;
+    h.fStepSize = m.fDesStepSize;
+    h.fSteps = true;
+    return h;
+}
+}
+
+bool eHeatGetters::originalDesirability() {
+    static const bool r = eModelData::available();
+    return r;
+}
+
+double eHeatGetters::legacyScale(const double des) {
+    return originalDesirability() ? des/4 : des;
+}
+
+eHeat eHeatGetters::eliteAppeal(const int level) {
+    if(!originalDesirability()) return appeal(eBuildingType::eliteHousing);
+    static const char* const names[] = {
+        "BUILD_ELITE_DEVOLVED", "BUILD_ELITE_HOUSE1_RESIDENCE",
+        "BUILD_ELITE_HOUSE2_MANSION", "BUILD_ELITE_HOUSE3_MANOR",
+        "BUILD_ELITE_HOUSE4_ESTATE"
+    };
+    if(level >= 0 && level <= 4) {
+        if(const auto m = eModelData::byName(eDifficulty::hero, names[level])) {
+            return stepHeat(*m);
+        }
+    }
+    return appeal(eBuildingType::eliteHousing);
+}
+
 eHeat eHeatGetters::appeal(const eBuildingType type) {
+    if(originalDesirability()) {
+        // Port (parity, Zeus.exe research R6): every structure spreads its
+        // model desirability in square rings with steps; agora vendors have
+        // none of their own (the agora carries it), as in the original.
+        if(const auto m = eModelData::building(eDifficulty::hero, type)) {
+            return stepHeat(*m);
+        }
+        // No original entry: eZeus' value converted to the same scale.
+        const auto z = eZeusAppeal(type);
+        eHeat h{4*z.fValue, z.fRange};
+        h.fStep = 1;
+        h.fStepSize = z.fRange > 0 ? -(4*z.fValue)/z.fRange : 0;
+        h.fSteps = true;
+        return h;
+    }
     // Port (parity): desirability value and range from the user's original
     // Model data (same in every difficulty). eZeus models agora vendors as
     // buildings of their own; the original gives the agora the desirability

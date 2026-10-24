@@ -1,4 +1,5 @@
 #include "eroad.h"
+#include "buildings/eheatgetters.h"
 
 #include "textures/egametextures.h"
 
@@ -321,7 +322,10 @@ std::shared_ptr<eTexture> eRoad::getTexture(const eTileSize size) const {
         const double a = b.appeal(dx, dy);
 
         const eTextureCollection* coll;
-        if(a > 3) {
+        // Port (parity): the original paves a road when the desirability of
+        // its tile is above 4 (Zeus.exe research R6).
+        const bool pretty = eHeatGetters::originalDesirability() ? a > 4 : a > 3;
+        if(pretty) {
             coll = &pcoll;
         } else {
             coll = &rcoll;

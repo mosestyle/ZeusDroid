@@ -1,6 +1,7 @@
 #include "eheatmaptask.h"
 
 #include "../thread/ethreadboard.h"
+#include "buildings/eheatgetters.h"
 
 eHeatMapTask::eHeatMapTask(const eCityId cid,
                            const SDL_Rect& bRect,
@@ -108,7 +109,11 @@ void eHeatMapTask::sRun(eThreadBoard& board,
             const int ttx = t->x();
             const int tty = t->y();
             if(ttx != rect.x || tty != rect.y) continue;
-            const auto a = heatGetter(ubt);
+            auto a = heatGetter(ubt);
+            if(a.fSteps && ubt == eBuildingType::eliteHousing) {
+                // Port (parity): elite houses spread a value per level.
+                a = eHeatGetters::eliteAppeal(ub.houseLevel());
+            }
             map.addHeat(a, rect);
         }
     }
@@ -117,7 +122,8 @@ void eHeatMapTask::sRun(eThreadBoard& board,
     for(const auto& m : fms) {
         const auto ubt = m.type();
         const auto& rect = m.tileRect();
-        const auto a = heatGetter(ubt);
+        auto a = heatGetter(ubt);
+        a.fRectQuirk = true;
         map.addHeat(a, rect);
     }
 }

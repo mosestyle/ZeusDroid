@@ -12,6 +12,8 @@
 
 #include "elanguage.h"
 #include "enumbers.h"
+#include "engine/emodeldata.h"
+#include "buildings/eheatgetters.h"
 
 #include <algorithm>
 
@@ -300,7 +302,7 @@ bool eSmallHouse::lowFood() const {
     return mFood < cfood;
 }
 
-eHouseMissing eSmallHouse::missing() const {
+eHouseMissing eSmallHouse::missingLegacy() const {
     const double appeal = eHouseBase::appeal();
     int nVenues = 0;
     if(mPhilosophers > 0) nVenues++;
@@ -400,7 +402,7 @@ std::string eSmallHouse::sName(const int level) {
     return eLanguage::zeusText(28, 2 + level);
 }
 
-void eSmallHouse::updateLevel() {
+void eSmallHouse::updateLevelLegacy() {
     const double appeal = eHouseBase::appeal();
     int nVenues = 0;
     if(mPhilosophers > 0) nVenues++;
@@ -494,4 +496,56 @@ void eSmallHouse::spawnDisgruntled() {
     mDisg->setOnCityId(cid);
     mDisg->setCityId(eCityId::neutralAggresive);
     spawnCharacter(c);
+}
+
+// Port (gameplay parity, Zeus.exe research R6): the original's evolution
+// rule. A house devolves one level when its desirability is at or below the
+// current level's "devolve" value or a need of the current level is no longer
+// met; it evolves one level when the desirability is at or above the current
+// level's "evolve" value and the next level's needs are met. Both values come
+// from the user's Model file for the city's difficulty.
+int eSmallHouse::metLevel(eHouseMissing& m) const {
+    int nVenues = 0;
+    if(mPhilosophers > 0) nVenues++;
+    if(mActors > 0) nVenues++;
+    if(mAthletes > 0) nVenues++;
+    if(mCompetitors > 0) nVenues++;
+    if(mFood <= 0) { m = eHouseMissing::food; return 0; }
+    if(mWater <= 0) { m = eHouseMissing::water; return 1; }
+    if(nVenues < 1) { m = eHouseMissing::venues; return 1; }
+    if(mFleece <= 0) { m = eHouseMissing::fleece; return 2; }
+    if(nVenues < 2) { m = eHouseMissing::venues; return 3; }
+    if(mOil <= 0) { m = eHouseMissing::oil; return 4; }
+    if(nVenues < 3) { m = eHouseMissing::venues; return 5; }
+    m = eHouseMissing::nothing;
+    return 6;
+}
+
+const eModelHouse* eSmallHouse::modelHouse(const int level) const {
+    if(!eHeatGetters::originalDesirability()) return nullptr;
+    auto& b = getBoard();
+    const auto diff = b.difficulty(playerId());
+    return eModelData::house(diff, false, level);
+}
+
+void eSmallHouse::updateLevel() {
+    const auto h = modelHouse(mLevel);
+    if(!h) return updateLevelLegacy();
+    eHouseMissing m;
+    const int met = metLevel(m);
+    const double des = eHouseBase::appeal();
+    int l = mLevel;
+    if(des <= h->fDevolve || l > met) l--;
+    else if(des >= h->fEvolve && met > l) l++;
+    setLevel(std::clamp(l, 0, 6));
+}
+
+eHouseMissing eSmallHouse::missing() const {
+    const auto h = modelHouse(mLevel);
+    if(!h) return missingLegacy();
+    eHouseMissing m;
+    const int met = metLevel(m);
+    if(met <= mLevel) return m;
+    if(eHouseBase::appeal() < h->fEvolve) return eHouseMissing::appeal;
+    return eHouseMissing::nothing;
 }

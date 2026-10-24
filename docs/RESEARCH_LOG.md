@@ -18,3 +18,35 @@ Ghidra provider is documented as experimental for 32-bit PE; when a parity quest
 binary evidence the plan is native Ghidra `analyzeHeadless` with project-owned scripts in
 `tools/ghidra/` (Ghidra and its JDK come from GitHub releases, which are reachable from this
 environment).
+
+## R6 – Desirability spread and house evolution in Zeus.exe (2026-10-24)
+
+Targeted Ghidra work on the user's own GOG Zeus.exe 1.11 (scripts in `tools/ghidra/`,
+decompiled output only in `build/ghidra-out/`, git-ignored, never committed). Findings are
+described as rules; no decompiled code was copied.
+
+* Model accessors: building getter (type, field) reads a 10-int-per-building table filled by
+  the model loader; the house getter (level, field) reads a 21-int-per-level table.
+* Desirability map: one signed byte per tile, cleared and rebuilt from zero. Every structure
+  spreads its desirability in square rings around its footprint, distance 1..min(range, 6),
+  never on the footprint itself. The value starts at "initial desirability" and the step size
+  is added after every `step` rings. Each addition is clamped to -100..100. Large or
+  non-square structures (sanctuaries, docks, horse ranch, agora...) go through a rectangle
+  variant whose step counter starts at 1 (the first change comes one ring earlier).
+  Avenues and boulevards spread per tile; other chained structures (roads, walls) nothing.
+* House desirability = the highest map value under the footprint (+10 under one flag not
+  identified yet).
+* Evolution check (returns devolve / stay / evolve): devolve when DES ≤ the level's
+  "devolve" value, or a need of the current level is missing; otherwise evolve when DES ≥ the
+  level's "evolve" value and every need of the next level is met. House row columns: 0
+  devolve, 1 evolve, 2 culture, 3 water, 4 stadium/museum, 5 soldier %, 6 max horses,
+  7 horses, 8 food types, 9 fleece, 10 oil, 11 wine, 12 arms, 13 max arms, 14/15 crime,
+  17 capacity, 18 tax multiplier, 20 disease (the file's own header numbers are off by one
+  after column 4).
+* A tile-category helper (likely the paved-road look) is "DES > 4"; the desirability overlay
+  uses four bands (< 0, < 16, < 30, ≥ 30).
+
+Port: implemented in `eHeatMap` (step mode), `eHeatGetters::appeal/eliteAppeal`,
+`eBuilding::appeal` (max) and `eSmallHouse/eEliteHousing::updateLevel/missing`, all reading
+the user's Model files at run time; disabled together with the rest of the model data by
+`EZEUS_MODEL_DATA=0` (then eZeus' original behaviour is used).

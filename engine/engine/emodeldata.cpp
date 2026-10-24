@@ -142,6 +142,8 @@ std::string trim(std::string s) {
 struct eCache {
     std::once_flag fOnce[5];
     std::map<eBuildingType, eModelBuilding> fData[5];
+    std::map<std::string, eModelBuilding> fByName[5];
+    eModelFile fFile[5];
 };
 
 eCache& cache() {
@@ -161,30 +163,67 @@ const std::vector<std::pair<std::string, eBuildingType>>& eModelData::nameMap() 
 
 bool eModelData::parseFile(const std::string& path,
                            std::vector<std::pair<eBuildingType, eModelBuilding>>& out) {
+    eModelFile f;
+    const bool r = parseFile(path, f);
+    out = f.fBuildings;
+    return r && !out.empty();
+}
+
+namespace {
+std::vector<int> braceValues(const std::string& line, const size_t brace) {
+    std::vector<int> v;
+    const auto end = line.find(",}", brace);
+    if(end == std::string::npos) return v;
+    std::stringstream ss(line.substr(brace + 3, end - brace - 3));
+    std::string tok;
+    while(std::getline(ss, tok, ',')) v.push_back(std::atoi(tok.c_str()));
+    return v;
+}
+}
+
+bool eModelData::parseFile(const std::string& path, eModelFile& out) {
     std::ifstream f(path);
     if(!f) return false;
     std::map<std::string, eBuildingType> byName(gNames.begin(), gNames.end());
     std::string line;
-    bool inBuildings = false;
+    int section = 0; // 1 buildings, 2 houses
     while(std::getline(f, line)) {
-        if(line.rfind("ALL BUILDINGS", 0) == 0) { inBuildings = true; continue; }
-        if(line.rfind("ALL HOUSES", 0) == 0) break;
-        if(!inBuildings) continue;
+        if(line.rfind("ALL BUILDINGS", 0) == 0) { section = 1; continue; }
+        if(line.rfind("ALL HOUSES", 0) == 0) { section = 2; continue; }
+        if(line.rfind("End of model data", 0) == 0) break;
+        if(section == 0) continue;
         const auto brace = line.find(",{,");
         if(brace == std::string::npos) continue;
+        if(section == 2) {
+            const auto colon = line.find(':');
+            if(colon == std::string::npos || colon > brace) continue;
+            const auto v = braceValues(line, brace);
+            if(v.size() < 2) continue;
+            const std::string key = trim(line.substr(0, colon));
+            eModelHouse h;
+            h.fDevolve = v[0];
+            h.fEvolve = v[1];
+            if(key.rfind("Elite", 0) == 0) {
+                const std::string n = trim(key.substr(5));
+                if(n.empty()) continue; // vacant lot
+                const int l = std::atoi(n.c_str());
+                if(l < 0 || l > 4) continue;
+                out.fElite[l] = h;
+                out.fHasElite[l] = true;
+            } else {
+                const int l = std::atoi(key.c_str()) - 1;
+                if(l < 0 || l > 6) continue;
+                out.fCommon[l] = h;
+                out.fHasCommon[l] = true;
+            }
+            continue;
+        }
         const auto comma = line.find(',');
         if(comma == std::string::npos || comma >= brace) continue;
         std::string name = trim(line.substr(comma + 1, brace - comma - 1));
         const auto sub = name.find_first_of(" ,(");
         if(sub != std::string::npos) name = trim(name.substr(0, sub));
-        const auto it = byName.find(name);
-        if(it == byName.end()) continue;
-        const auto end = line.find(",}", brace);
-        if(end == std::string::npos) continue;
-        std::stringstream ss(line.substr(brace + 3, end - brace - 3));
-        std::vector<int> v;
-        std::string tok;
-        while(std::getline(ss, tok, ',')) v.push_back(std::atoi(tok.c_str()));
+        const auto v = braceValues(line, brace);
         if(v.size() < 8) continue;
         eModelBuilding b;
         b.fCost = v[0];
@@ -195,29 +234,73 @@ bool eModelData::parseFile(const std::string& path,
         b.fEmployees = v[5];
         b.fFireRisk = v[6];
         b.fDamageRisk = v[7];
-        out.emplace_back(it->second, b);
+        out.fByName.emplace_back(name, b);
+        const auto it = byName.find(name);
+        if(it == byName.end()) continue;
+        out.fBuildings.emplace_back(it->second, b);
     }
-    return !out.empty();
+    return !out.fBuildings.empty();
+}
+
+namespace {
+const eCache* loaded(const eDifficulty diff, int& d) {
+    static const bool enabled = enabledByEnv();
+    if(!enabled) return nullptr;
+    d = static_cast<int>(diff);
+    if(d < 0 || d > 4) return nullptr;
+    auto& c = cache();
+    std::call_once(c.fOnce[d], [&c, d]() {
+        const auto path = eGameDir::path(std::string("Model/") + gFileNames[d]);
+        auto& file = c.fFile[d];
+        if(eModelData::parseFile(path, file)) {
+            for(const auto& e : file.fBuildings) c.fData[d].emplace(e.first, e.second);
+            for(const auto& e : file.fByName) c.fByName[d].emplace(e.first, e.second);
+        }
+    });
+    return &c;
+}
+}
+
+bool eModelData::available() {
+    int d = 0;
+    const auto c = loaded(eDifficulty::hero, d);
+    return c && !c->fData[d].empty();
 }
 
 const eModelBuilding* eModelData::building(const eDifficulty diff,
                                            const eBuildingType type) {
-    static const bool enabled = enabledByEnv();
-    if(!enabled) return nullptr;
-    const int d = static_cast<int>(diff);
-    if(d < 0 || d > 4) return nullptr;
-    auto& c = cache();
-    std::call_once(c.fOnce[d], [&c, d]() {
-        std::vector<std::pair<eBuildingType, eModelBuilding>> v;
-        const auto path = eGameDir::path(std::string("Model/") + gFileNames[d]);
-        if(parseFile(path, v)) {
-            for(const auto& e : v) c.fData[d].emplace(e.first, e.second);
-        }
-    });
-    const auto& m = c.fData[d];
+    int d = 0;
+    const auto c = loaded(diff, d);
+    if(!c) return nullptr;
+    const auto& m = c->fData[d];
     const auto it = m.find(type);
     if(it == m.end()) return nullptr;
     return &it->second;
+}
+
+const eModelBuilding* eModelData::byName(const eDifficulty diff,
+                                         const std::string& name) {
+    int d = 0;
+    const auto c = loaded(diff, d);
+    if(!c) return nullptr;
+    const auto& m = c->fByName[d];
+    const auto it = m.find(name);
+    if(it == m.end()) return nullptr;
+    return &it->second;
+}
+
+const eModelHouse* eModelData::house(const eDifficulty diff,
+                                     const bool elite, const int level) {
+    int d = 0;
+    const auto c = loaded(diff, d);
+    if(!c) return nullptr;
+    const auto& f = c->fFile[d];
+    if(elite) {
+        if(level < 0 || level > 4 || !f.fHasElite[level]) return nullptr;
+        return &f.fElite[level];
+    }
+    if(level < 0 || level > 6 || !f.fHasCommon[level]) return nullptr;
+    return &f.fCommon[level];
 }
 
 int eModelData::adjustEmployees(const eBuildingType type, const int eZeusValue) {

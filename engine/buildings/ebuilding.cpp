@@ -1,4 +1,5 @@
 #include "ebuilding.h"
+#include "eheatgetters.h"
 
 #include "engine/egameboard.h"
 #include "engine/eevent.h"
@@ -2691,6 +2692,15 @@ double eBuilding::appeal() const {
     const auto& b = getBoard();
     const auto& tiles = tilesUnder();
     if(tiles.empty()) return 0;
+    if(eHeatGetters::originalDesirability()) {
+        // Port (parity, Zeus.exe research R6): the original takes the highest
+        // desirability under the building's footprint.
+        double m = -1000;
+        for(const auto t : tiles) {
+            m = std::max(m, b.appeal(t->dx(), t->dy()));
+        }
+        return m;
+    }
     double sum = 0;
     for(const auto t : tiles) {
         const int dx = t->dx();

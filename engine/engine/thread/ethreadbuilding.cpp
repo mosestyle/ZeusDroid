@@ -16,6 +16,7 @@
 void eThreadBuilding::load(eBuilding* const src) {
     if(!mCleared) {
         mVacancies = 0;
+        mHouseLevel = -1;
 
         mResourcesAvailable = false;
         mWorkedOn = false;
@@ -74,6 +75,7 @@ void eThreadBuilding::load(eBuilding* const src) {
         case eBuildingType::eliteHousing: {
             const auto h = static_cast<eEliteHousing*>(src);
             mVacancies = h->vacancies();
+            mHouseLevel = h->people() > 0 ? h->level() : -1;
         } break;
         case eBuildingType::granary:
         case eBuildingType::warehouse:

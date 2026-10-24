@@ -139,6 +139,19 @@ void execute(const Cmd& c, eMainWindow& w, const uint32_t now) {
         if(const auto gw = w.gameWidget()) {
             gw->debugSpawnBanner(std::stoi(c.fArgs[0]), std::stoi(c.fArgs[1]));
         }
+    } else if(c.fName == "debug_build" && c.fArgs.size() >= 3) {
+        // Test-only: place "house" | "park" | "gazebo" | "hedgemaze" at tx ty.
+        if(const auto gw = w.gameWidget()) {
+            const bool ok = gw->debugBuild(c.fArgs[0], std::stoi(c.fArgs[1]),
+                                           std::stoi(c.fArgs[2]));
+            logLine("debug_build " + c.fRest + (ok ? " ok" : " failed"));
+        }
+    } else if(c.fName == "debug_des" && c.fArgs.size() >= 2) {
+        // Test-only: desirability at tile tx ty (+ building, level, missing).
+        if(const auto gw = w.gameWidget()) {
+            logLine("t=" + std::to_string(now) + " " + gw->debugDesirability(
+                        std::stoi(c.fArgs[0]), std::stoi(c.fArgs[1])));
+        }
     } else if(c.fName == "wait_game") {
         s.fWaiting = true;
         const uint32_t timeout = c.fArgs.empty() ? 60000 : std::stoul(c.fArgs[0]);

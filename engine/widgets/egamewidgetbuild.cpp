@@ -1,3 +1,4 @@
+#include <sstream>
 #include "egamewidget.h"
 
 #include "eiteratesquare.h"
@@ -813,6 +814,7 @@ bool eGameWidget::buildMouseRelease() {
             }
         } break;
         case eBuildingMode::commonHousing: {
+            bool farPlots = false;
             const int sMinX = std::min(mPressedTX, mHoverTX);
             const int sMinY = std::min(mPressedTY, mHoverTY);
             const int sMaxX = std::max(mPressedTX, mHoverTX);
@@ -824,10 +826,20 @@ bool eGameWidget::buildMouseRelease() {
                     if(!cb) continue;
                     const auto t = mBoard->tile(x, y);
                     if(!t) continue;
-                    r = mBoard->build(t->x(), t->y() + 1, 2, 2, cid, pid, mEditorMode,
-                          [this]() { return e::make_shared<eSmallHouse>(*mBoard, mViewedCityId); }) || r;
+                    const bool built = mBoard->build(t->x(), t->y() + 1, 2, 2, cid, pid, mEditorMode,
+                          [this]() { return e::make_shared<eSmallHouse>(*mBoard, mViewedCityId); });
+                    r = built || r;
+                    // Port (parity): like the original, a plot that does not
+                    // touch a road is paid for but vanishes at once, with
+                    // "Some plots are too far from a road".
+                    if(built && !mEditorMode && !housePlotTouchesRoad(t->x(), t->y() + 1)) {
+                        const auto pt = mBoard->tile(t->x(), t->y() + 1);
+                        if(const auto b = pt ? pt->underBuilding() : nullptr) b->erase();
+                        farPlots = true;
+                    }
                 }
             }
+            if(farPlots) showTip(cid, eLanguage::zeusText(19, 26));
         } break;
         case eBuildingMode::gymnasium: {
             r = mBoard->build(mHoverTX, mHoverTY, 3, 3, cid, pid, mEditorMode,
@@ -2182,4 +2194,52 @@ bool eGameWidget::buildMouseRelease() {
         // eSounds::playSoundForBuilding(type);
     }
     return true;
+}
+
+bool eGameWidget::housePlotTouchesRoad(const int x, const int y) const {
+    // Tiles around the 2x2 plot (x..x+1, y..y+1), corners included.
+    for(int dx = -1; dx <= 2; dx++) {
+        for(int dy = -1; dy <= 2; dy++) {
+            if(dx >= 0 && dx <= 1 && dy >= 0 && dy <= 1) continue;
+            const auto t = mBoard->tile(x + dx, y + dy);
+            if(t && t->hasRoad()) return true;
+        }
+    }
+    return false;
+}
+
+bool eGameWidget::debugBuild(const std::string& what, const int tx, const int ty) {
+    if(!mBoard) return false;
+    const auto cid = mViewedCityId;
+    const auto pid = mBoard->cityIdToPlayerId(cid);
+    if(what == "house") {
+        return mBoard->build(tx, ty, 2, 2, cid, pid, false, [this]() {
+            return e::make_shared<eSmallHouse>(*mBoard, mViewedCityId); });
+    } else if(what == "park") {
+        return mBoard->build(tx, ty, 1, 1, cid, pid, false, [this]() {
+            return e::make_shared<ePark>(*mBoard, mViewedCityId); }, false, true);
+    } else if(what == "gazebo") {
+        return mBoard->build(tx, ty, 2, 2, cid, pid, false, [this]() {
+            return e::make_shared<eGazebo>(*mBoard, mViewedCityId); });
+    } else if(what == "hedgemaze") {
+        return mBoard->build(tx, ty, 3, 3, cid, pid, false, [this]() {
+            return e::make_shared<eHedgeMaze>(*mBoard, mViewedCityId); });
+    }
+    return false;
+}
+
+std::string eGameWidget::debugDesirability(const int tx, const int ty) const {
+    std::ostringstream o;
+    if(!mBoard) return "noboard";
+    const auto t = mBoard->tile(tx, ty);
+    if(!t) return "notile";
+    o << "des(" << tx << "," << ty << ")=" << mBoard->appeal(t->dx(), t->dy());
+    if(const auto ub = t->underBuilding()) {
+        o << " type=" << static_cast<int>(ub->type()) << " bdes=" << ub->appeal();
+        if(const auto h = dynamic_cast<eHouseBase*>(ub)) {
+            o << " level=" << h->level() << " people=" << h->people()
+              << " missing=" << static_cast<int>(h->missing());
+        }
+    }
+    return o.str();
 }

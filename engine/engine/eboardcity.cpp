@@ -1,4 +1,5 @@
 #include "eboardcity.h"
+#include "buildings/eheatgetters.h"
 
 #include "buildings/ebuilding.h"
 #include "buildings/eemployingbuilding.h"
@@ -395,7 +396,7 @@ bool eBoardCity::replace3By3AestheticByCommemorative() {
                         const double goodAppeal =
                                 type == eBuildingType::eliteHousing ?
                                     10.1 : 8.1;
-                        const double a = h->appeal();
+                        const double a = eHeatGetters::legacyScale(h->appeal());
                         const double missing = goodAppeal - a;
                         if(missing > mostMissingAppeal) {
                             mostMissingAppeal = missing;

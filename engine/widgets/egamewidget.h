@@ -165,6 +165,9 @@ public:
     void setTouchBoxSelect(const bool b);
     // Test hook (autotests only): a player banner without soldiers.
     void debugSpawnBanner(int tx, int ty);
+    // Test-only (autotest): place a structure / report desirability.
+    bool debugBuild(const std::string& what, const int tx, const int ty);
+    std::string debugDesirability(const int tx, const int ty) const;
     bool touchPreviewSupported() const;
     bool touchPreviewActive() const { return mPreview.fActive; }
     bool touchPreviewAt(int x, int y);
@@ -303,6 +306,7 @@ private:
     using eApply = std::function<void(eTile* const)>;
     eApply editFunc();
     bool buildMouseRelease();
+    bool housePlotTouchesRoad(int x, int y) const;
 
     using eTileAction = std::function<void(eTile* const)>;
     void iterateOverVisibleTiles(const eTileAction& a);

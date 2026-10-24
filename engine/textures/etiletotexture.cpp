@@ -1,4 +1,5 @@
 #include "etiletotexture.h"
+#include "buildings/eheatgetters.h"
 
 #include <algorithm>
 
@@ -395,7 +396,8 @@ std::shared_ptr<eTexture> eTileToTexture::get(eTile* const tile,
                     const int dx = tile->dx();
                     const int dy = tile->dy();
                     const double appeal = board.appeal(dx, dy);
-                    const bool highAppeal = appeal > 3;
+                    const bool highAppeal = eHeatGetters::originalDesirability() ?
+                                                appeal > 4 : appeal > 3;
                     if(highAppeal) {
                         id = 93 + relId;
                     } else {

@@ -22,8 +22,9 @@ original running (screen control on the user's PC, with permission) are still to
 | Building cost per difficulty | 341 of 540 building×difficulty values differ (eZeus uses base × one factor per difficulty, e.g. Hero ×2.25 where the original has individual values: road 3 vs 5, palace 250 vs 281, mint 200 vs 225; temples match) | Cost is read at run time from the user's `Zeus_Model_<difficulty>.txt` (`engine/engine/emodeldata.cpp`, hooked in `eDifficultyHelpers::buildingCost`) | `MATCHED` (by construction; road verified in-game: Hero 3 dr/tile) |
 | Employees | 9 of 54 comparable differ: Sculpture Studio 12 vs 18; sanctuaries all 60 in eZeus vs 45–75 (Aphrodite, Ares, Atlas, Dionysus, Hades, Hera, Hermes, Poseidon) | Original value used when both give the building workers (`eEmployingBuilding`, also applied to loaded saves) | `MATCHED` (by construction) |
 | Desirability value / range | 81 of 91 match; carrot and onion farm swapped; refinery range 6 vs 5; dock had none | Original values used, except agora and vendors (eZeus spreads the agora's desirability over its vendors) | `MATCHED` except agora model `PARTIAL` |
-| Desirability spread (step, step size) | eZeus uses a smooth linear fall-off; the original uses steps | none yet (changes every house's evolution; needs side-by-side test) | `MISMATCH` (known) |
-| House evolution desirability thresholds | eZeus uses its own scale (e.g. > 2, > 5, > 8) vs original 10/20/30/100 | none yet (tied to the spread model above) | `MISMATCH` (known) |
+| Desirability spread (step, step size) | eZeus used a smooth linear fall-off (halved, footprint included, footprint average for houses); the original (Zeus.exe, research R6) spreads in square rings 1..min(range, 6) around the footprint, changing the value by the step size after every `step` rings, clamps each tile to -100..100 and takes the highest value under a house | Implemented as in the original (`eHeatMap::addHeat` step mode, `eBuilding::appeal` = max); elite houses spread their per-level value; agora carries the desirability, vendors none. Unit test `tests/native/test_desirability.cpp`; in-game check: gazebo rings 6,5,4,3,2,1, gazebo+garden overlap adds up | `MATCHED` (by construction + unit/in-game test) |
+| House evolution desirability thresholds | eZeus: one fixed scale (> 2, > 5, > 8; elite > 5..10), no hysteresis | Original rule (Zeus.exe R6): devolve one level when DES ≤ current level's "devolve" value or a current need is missing; evolve one level when DES ≥ current level's "evolve" value and the next level's needs are met; values per difficulty from the user's Model file. Needs (food, water, venues, fleece, oil, arms, wine, horses) stay eZeus' | `MATCHED` for the DES rule; culture/venue scoring `PARTIAL` (eZeus counts venues, the original uses a culture score) |
+| Things keyed to eZeus' old desirability scale (paved road look, overlay colours, hero-hall appeal requirement, house replacement choice) | – | Road looks paved above DES 4 (original routine found in R6); the others use DES/4 as an approximation | `PARTIAL` |
 | House population capacity | common 8–60, elite 6–20 | – | `MATCHED` |
 | Fire / damage risk increments | 158 / 115 of 540 differ (e.g. onion/carrot farms, agora vs vendors, piers) | none yet: eZeus applies risk differently for agora/vendors and docks; needs behaviour test | `MISMATCH` (known) |
 | Tax sentiment table | identical for all 7 rates × 5 difficulties | – | `MATCHED` |
@@ -34,7 +35,20 @@ original running (screen control on the user's PC, with permission) are still to
 | Claim | Check | Result |
 |---|---|---|
 | f0c67c1 "god blessings match original zeus" (shorter lists of sanctifiable buildings per god) | Original `Zeus_Text.eng` has "is sanctified!" messages for University, Museum, Inventor's Workshop, Agora, Artisans' Guild – all removed or not listed by the Olympus change | Not ported: contradicts the original's own texts |
-| Settlers arrive in groups of 4; house devolution differs | not yet checked | open |
+| Settlers arrive in groups of 4 | Original (Open Play Sandbox, Mortal): first hut filled 0 → 4 → 8; three new huts +12 at once (4 each). eZeus sent up to 8 | Ported as an observed fact (`spawners/eentrypoint.cpp`: groups of up to 4) – `MATCHED` for group size; settler timing not compared |
+| House devolution differs | not yet checked | open |
+
+### Side-by-side observations in the original (2026-10-24, user's PC, GOG Zeus.exe 1.11)
+
+Set-up: *Open Play Sandbox*, difficulty Mortal, game speed 100 %, no saves made by us (the
+game's own autosave ran once).
+
+| Observation | Original | eZeus (this port) | Status |
+|---|---|---|---|
+| Build costs shown in the menus (Mortal): road 2/tile, hut 15, bench 10, flower garden 32, gazebo 36, hedge maze 70, fish pond 100 | as listed | same values now come from `Zeus_Model_Easy.txt` | `MATCHED` |
+| A hut with 8 occupants and no food stays a hut (10 months) and says "need food from an Agora before the house can improve" | stays a hut | level 1 needs food | `MATCHED` |
+| House plots must be next to a road ("Some plots are too far from a road"); plots 2 tiles away vanished after placement | yes | plots not touching a road (ring around the 2×2 incl. corners) are charged, removed and the same tip is shown | `MATCHED` (behaviour); exact timing of removal not compared |
+| Settler group size | 4 | 8 → changed to 4 | `MATCHED` after fix |
 
 | Area | Status | Evidence so far | Known differences / notes |
 |---|---|---|---|

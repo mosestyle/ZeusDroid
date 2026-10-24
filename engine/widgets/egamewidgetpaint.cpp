@@ -1,4 +1,5 @@
 ﻿#include "egamewidget.h"
+#include "buildings/eheatgetters.h"
 #include "platform/eframeclock.h"
 
 #include "eterraineditmenu.h"
@@ -1246,7 +1247,7 @@ void eGameWidget::paintWorld(ePainter& p) {
                     } else {
                         coll = &trrTexs.fAppeal;
                     }
-                    const double app = am.heat(dtx, dty);
+                    const double app = eHeatGetters::legacyScale(am.heat(dtx, dty));
                     const double mult = app > 0 ? 1 : -1;
                     const double appS = mult*pow(abs(app), 0.75);
                     int appId = (int)std::round(appS + 2.);
