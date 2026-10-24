@@ -160,6 +160,15 @@ void execute(const Cmd& c, eMainWindow& w, const uint32_t now) {
     } else if(c.fName == "debug_start_adventure" && !c.fArgs.empty()) {
         const bool ok = w.debugStartAdventure(std::stoi(c.fArgs[0]));
         logLine("debug_start_adventure " + c.fArgs[0] + (ok ? " ok" : " failed"));
+    } else if(c.fName == "app_background") {
+        // Test-only: the app goes to the background and comes back
+        // (Android sends MINIMIZED ... RESTORED around a pause).
+        SDL_Event e{};
+        e.type = SDL_WINDOWEVENT;
+        e.window.event = SDL_WINDOWEVENT_MINIMIZED;
+        SDL_PushEvent(&e);
+        e.window.event = SDL_WINDOWEVENT_RESTORED;
+        SDL_PushEvent(&e);
     } else if(c.fName == "wait_game") {
         s.fWaiting = true;
         const uint32_t timeout = c.fArgs.empty() ? 60000 : std::stoul(c.fArgs[0]);

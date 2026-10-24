@@ -1,0 +1,34 @@
+# Quick save: first Save asks for a name, the next Save writes the same file at once; Load opens the file list.
+8000 finger_down 1 1200 150
+80 finger_up 1 1200 150
+2500 finger_down 1 570 346
+80 finger_up 1 570 346
+800 finger_down 1 1100 720
+80 finger_up 1 1100 720
+4000 finger_down 1 1680 832
+80 finger_up 1 1680 832
+1000 wait_game 120000
+1000 wait_game 120000
+3000 log start_expect_quick_empty
+100 finger_down 1 1934 105
+80 finger_up 1 1934 105
+800 log after_save_tap_expect_dialog
+200 screenshot build/run/qs_01.bmp
+100 key Q
+100 key T
+100 key E
+100 key S
+100 key T
+300 finger_down 1 1584 869
+80 finger_up 1 1584 869
+800 log after_name_expect_quick_qtest
+200 screenshot build/run/qs_02.bmp
+2000 finger_down 1 1934 105
+80 finger_up 1 1934 105
+600 log after_second_save_expect_tip_saved
+200 screenshot build/run/qs_03.bmp
+100 finger_down 1 1934 190
+80 finger_up 1 1934 190
+800 log after_load_tap_expect_dialog
+200 screenshot build/run/qs_04.bmp
+200 quit

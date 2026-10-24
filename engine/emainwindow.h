@@ -70,6 +70,10 @@ public:
 
     bool saveGame(const std::string& path);
     bool loadGame(const std::string& path);
+    // Port: file the in-game Save button writes to (set by a named save or
+    // by loading a save; empty for a new adventure).
+    const std::string& quickSavePath() const { return mQuickSavePath; }
+    void setQuickSavePath(const std::string& p) { mQuickSavePath = p; }
     void closeGame();
 
     void showRosterOfLeaders();
@@ -122,6 +126,7 @@ private:
     stdsptr<eCampaign> mCampaign;
     eGameBoard* mBoard = nullptr;
     eGameWidget* mGW = nullptr;
+    std::string mQuickSavePath;
     eWorldWidget* mWW = nullptr;
 
     eWidget* mWidget = nullptr;

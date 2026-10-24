@@ -132,6 +132,11 @@ public:
     // (pause, speed -/+, rotate); enabled on touch screens.
     static bool sTouchBarEnabled;
     void togglePause() { switchPause(); }
+    // Port: quick save (first time asks for a name), load dialog, autosave.
+    void quickSave();
+    void showSaveDialog();
+    void showLoadDialog();
+    bool autosaveNow(const std::string& name);
     bool paused() const { return mPaused; }
     void changeSpeed(const int delta);
     void rotateView();
@@ -262,8 +267,13 @@ private:
         double fBAX = 0, fBAY = 0;
         double fDragOffX = 0, fDragOffY = 0; // anchor - finger (world px)
         int fDragSX = 0, fDragSY = 0;        // drag start (screen)
-        // Roads: the tiles under the finger's path, in order (freehand).
+        // Roads: the tiles of the drawn road, in order.
         std::vector<std::pair<int, int>> fRoad;
+        // Smart road: corners of the straight segments (first = start) and
+        // the axis of the segment being drawn (0 none yet, 1 x, 2 y).
+        std::vector<std::pair<int, int>> fCorners;
+        int fRoadDir = 0;
+        std::vector<std::pair<int, int>> fHist; // recent finger tiles
     };
     // Edge auto-scroll while a preview is drawn / dragged near the edge.
     bool mEdgeActive = false;
@@ -281,6 +291,8 @@ private:
     bool mTouchBoxSelect = false;
     std::map<eBuildingMode, bool> mDrawModes;
     eFramedButton* mDrawButton = nullptr;
+    eFramedButton* mSaveButton = nullptr;
+    eFramedButton* mLoadButton = nullptr;
     void updateDrawButton();
     eFramedButton* mBoxSelectButton = nullptr;
     // Tap on the map with soldiers selected / on a banner (touch only).

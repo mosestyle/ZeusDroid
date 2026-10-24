@@ -338,6 +338,7 @@ void eMainWindow::showEpisodeIntroduction(
     if(c) mCampaign = c;
     const auto e = new eEpisodeIntroductionWidget(this);
     const auto proceedA = [this]() {
+        mQuickSavePath.clear();
         mCampaign->startEpisode();
         const auto dir = leaderSaveDir();
         saveGame(dir + "autosave replay.ez");
@@ -513,6 +514,10 @@ bool eMainWindow::loadGame(const std::string& path) {
     src.handlePostFuncs();
     file.close();
 
+    {
+        const auto name = std::filesystem::path(path).filename().string();
+        mQuickSavePath = name.rfind("autosave", 0) == 0 ? std::string() : path;
+    }
     startGameAction(c, s);
     return true;
 }
@@ -841,6 +846,11 @@ int eMainWindow::exec() {
                 }
                 if(we == SDL_WINDOWEVENT_MINIMIZED) {
                     if(mTouch) mTouch->cancel(SDL_GetTicks());
+                    // Port: Android may end a backgrounded app at any time,
+                    // so the running game is saved before the pause.
+                    if(mGW && currentWidget() == static_cast<eWidget*>(mGW)) {
+                        mGW->autosaveNow("autosave");
+                    }
                     resetRenderTargets = true;
                     while(SDL_WaitEvent(&e)) {
                         if(e.window.event == SDL_WINDOWEVENT_RESTORED) {
@@ -1077,6 +1087,7 @@ bool eMainWindow::debugStartAdventure(const int index) {
     if(g.fIsPak) c->readPak(g.fTitle, g.fPakPath);
     else c->load(g.fFolderName);
     mCampaign = c;
+    mQuickSavePath.clear();
     mCampaign->startEpisode();
     startGameAction([this]() {
         eGameWidgetSettings settings;

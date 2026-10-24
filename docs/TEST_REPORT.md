@@ -314,3 +314,24 @@ and Poseidon (all adventures, custom adventures) are included.
   tested.
 * Unit tests 102/102 + 18/18 + 46/46; regressions build confirm and draw pass.
 APK 0.1.11-dev: versionCode 12, sha256 82f26ca251be0949a45041c355657b21fb8ffd3ae3e12f10446c6fd33c3ff566, v2/v3 OK
+
+### User report 2026-10-24 20:14 (0.1.11)
+Road drawing follows the finger and gives zig-zag roads; asked for straight "smart" roads, a
+quick Save/Load button on the right, autosave. Phone stats overlay: 56 FPS / 11.3 ms in game
+(Athens, ~650 people), 60 FPS / 0.8 ms in the menu, 20–21 ticks/s, 352 MB in game.
+Where is the sandbox: it is "Open Play Sandbox" in the New Adventure list.
+
+### 0.1.12-dev: smart roads, quick save, background autosave
+* `tests/autotest/phone_build_smart_road.txt`: wobbly drag (±14 px) along a tile axis →
+  26 tiles, 0 corners (straight, screenshot); L-shaped drag → 1 corner; out, turn, back and
+  on → 0 corners (corner undone).
+* `tests/autotest/phone_quick_save.txt`: first Save tap opens the save dialog; name "qtest" +
+  ✓ → qtest.ez written, quick target = qtest.ez; second Save tap writes it again at once
+  (qtest.ez.bak created by the atomic save) and shows the tip "Saved: qtest"; Load opens the
+  file list.
+* `tests/autotest/phone_background_autosave.txt` (test-only `app_background` command:
+  MINIMIZED + RESTORED): autosave.ez written, game continues (game=1).
+* Regressions: freehand (now smart; a screen-horizontal drag is diagonal in tile space and
+  becomes a staircase), confirm, repeat, info window – pass.
+* Side-by-side in the original: not possible this round (the PC was locked).
+APK 0.1.12-dev: versionCode 13, sha256 f570d6fa9105dc748da8aa95dc2e8d29d44df0d8821d129e93ca11a0f7fc4929, v2/v3 OK

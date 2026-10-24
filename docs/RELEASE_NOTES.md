@@ -1,5 +1,16 @@
 # Release notes
 
+## 0.1.12-dev
+* Smart roads: a drawn road is made of straight lines. Wobbles and slow drift of the finger
+  are ignored; a corner is made only when you clearly move sideways. Going back along the
+  previous line removes that corner.
+* **Save** and **Load** buttons at the right edge of the map. The first Save asks for a name;
+  after that Save writes the same save at once ("Saved: name"). Loading a save makes it the
+  quick-save target; a new adventure starts without one. Back → Save still saves under a new
+  name.
+* Autosave: the game is saved as "autosave" whenever the app goes to the background (home
+  button, screen off, another app), in addition to eZeus' yearly "autosave history".
+
 ## 0.1.11-dev
 * Removed the house road check added in 0.1.10: it wrongly refused houses right beside a
   road. Houses can be placed anywhere again, as before.

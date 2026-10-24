@@ -1,3 +1,4 @@
+#include <filesystem>
 #include "egamewidget.h"
 #include "eacceptbutton.h"
 #include "ecancelbutton.h"
@@ -584,6 +585,34 @@ void eGameWidget::initialize() {
         y += p;
         mTouchCancelButton = addTouchButton("X", [this]() { touchCancel(); });
         mTouchCancelButton->hide();
+
+        // Save / Load at the right edge of the map, next to the side panel.
+        {
+            int sy = mTopBar->height() + p;
+            const auto addSideButton = [&](const std::string& txt,
+                                           const eAction& act) {
+                const auto b = new eFramedButton(txt, window());
+                b->setUnderline(false);
+                b->setRenderBg(true);
+                b->setSmallFontSize();
+                b->fitContent();
+                b->resize(std::max(b->width(), minTouch*3/2),
+                          std::max(b->height(), minTouch*3/4));
+                b->setPressAction(act);
+                addWidget(b);
+                mTouchBarButtons++;
+                b->move(width() - mGm->width() - b->width() - p, sy);
+                sy += b->height() + p/2;
+                return b;
+            };
+            mSaveButton = addSideButton("Save", [this]() { quickSave(); });
+            mLoadButton = addSideButton("Load", [this]() { showLoadDialog(); });
+            const int bw = std::max(mSaveButton->width(), mLoadButton->width());
+            for(const auto b : {mSaveButton, mLoadButton}) {
+                b->setWidth(bw);
+                b->setX(width() - mGm->width() - bw - p);
+            }
+        }
 
         // Confirm / cancel for two-step placement, positioned next to the
         // preview every frame (updatePreviewPanel()).
@@ -1925,7 +1954,9 @@ bool eGameWidget::keyPressEvent(const eKeyPressEvent& e) {
             const auto saveAct = [this, w]() {
                 const auto fw = new eFileWidget(w);
                 const auto func = [w](const std::string& path) {
-                    return w->saveGame(path);
+                    const bool r = w->saveGame(path);
+                    if(r) w->setQuickSavePath(path);
+                    return r;
                 };
                 const auto closeAct = [this, fw]() {
                     removeWidget(fw);
@@ -2518,6 +2549,12 @@ std::string eGameWidget::debugCameraState() const {
                         std::to_string(mPreviewPanel->height()) : std::string("hidden")) +
            " drachmas=" + (mBoard ? std::to_string(mBoard->drachmas(mBoard->personPlayer())) : std::string("-")) +
            " road=" + std::to_string(mPreview.fRoad.size()) +
+           " savebtn=" + (mSaveButton ? std::to_string(mSaveButton->x() + mSaveButton->width()/2) + "," +
+                          std::to_string(mSaveButton->y() + mSaveButton->height()/2) : std::string("-")) +
+           " loadbtn=" + (mLoadButton ? std::to_string(mLoadButton->x() + mLoadButton->width()/2) + "," +
+                          std::to_string(mLoadButton->y() + mLoadButton->height()/2) : std::string("-")) +
+           " quick=" + window()->quickSavePath().substr(window()->quickSavePath().find_last_of('/') + 1) +
+           " corners=" + std::to_string(mPreview.fCorners.empty() ? 0 : mPreview.fCorners.size() - 1) +
            " draw=" + std::to_string(touchDrawModeActive() ? 1 : 0) +
            " drawbtn=" + std::to_string(mDrawButton && mDrawButton->visible() ? 1 : 0) +
            " boxsel=" + std::to_string(mTouchBoxSelect ? 1 : 0) +
@@ -2772,6 +2809,9 @@ void eGameWidget::touchPreviewTap(const int x, const int y) {
     mPreview.fActive = true;
     mPreview.fArea = false;
     mPreview.fRoad.clear();
+    mPreview.fCorners.clear();
+    mPreview.fHist.clear();
+    mPreview.fRoadDir = 0;
     mPreview.fMode = mGm->mode();
     mPreview.fSTX = mPreview.fETX = tx;
     mPreview.fSTY = mPreview.fETY = ty;
@@ -2795,6 +2835,9 @@ void eGameWidget::touchPreviewArea(const int sx, const int sy,
         mPreview.fSTX = stx;
         mPreview.fSTY = sty;
         mPreview.fRoad.clear();
+        mPreview.fCorners.clear();
+    mPreview.fHist.clear();
+        mPreview.fRoadDir = 0;
         if(mPreview.fMode == eBuildingMode::road) mPreview.fRoad.push_back({stx, sty});
     } else if(!mPreview.fActive || !mPreview.fArea) {
         return;
@@ -2817,33 +2860,85 @@ void eGameWidget::touchPreviewEnd() {
 }
 
 void eGameWidget::extendRoadPreview(const int tx, const int ty) {
-    auto& r = mPreview.fRoad;
-    if(r.empty()) {
-        r.push_back({tx, ty});
-        return;
+    // Smart road (0.1.12): the road is made of straight segments along the
+    // tile axes. The finger may wobble or drift sideways while drawing; a
+    // corner is made only when the finger's recent movement is clearly
+    // sideways (at least kTurn tiles, and twice as much sideways as along).
+    // Turning back along the previous segment removes the last corner.
+    constexpr int kTurn = 2;
+    constexpr size_t kHist = 8;
+    auto& pv = mPreview;
+    auto& c = pv.fCorners;
+    auto& h = pv.fHist;
+    if(c.empty()) {
+        if(pv.fRoad.empty()) pv.fRoad.push_back({tx, ty});
+        c.push_back(pv.fRoad.front());
+        pv.fRoadDir = 0;
+        h.clear();
+        h.push_back(c.front());
     }
-    // Going back over the drawn road erases it up to the finger.
-    const auto backTo = [&r](const int x, const int y) {
-        for(size_t i = 0; i < r.size(); i++) {
-            if(r[i].first == x && r[i].second == y) {
-                r.resize(i + 1);
-                return true;
+    if(h.empty() || h.back() != std::make_pair(tx, ty)) {
+        h.push_back({tx, ty});
+        if(h.size() > kHist) h.erase(h.begin());
+    }
+    {
+        const auto a = c.back();
+        const int dx = tx - a.first;
+        const int dy = ty - a.second;
+        if(pv.fRoadDir == 0 && std::max(std::abs(dx), std::abs(dy)) >= kTurn) {
+            pv.fRoadDir = std::abs(dx) >= std::abs(dy) ? 1 : 2;
+        }
+    }
+    if(pv.fRoadDir != 0 && h.size() >= 2) {
+        const bool xAxis = pv.fRoadDir == 1;
+        // Most recent history point from which the move is mostly sideways.
+        int from = -1;
+        for(int i = (int)h.size() - 2; i >= 0; i--) {
+            const int dAlong = xAxis ? tx - h[i].first : ty - h[i].second;
+            const int dSide = xAxis ? ty - h[i].second : tx - h[i].first;
+            if(std::abs(dSide) >= kTurn && std::abs(dSide) >= 2*std::abs(dAlong)) {
+                from = i;
+                break;
             }
         }
-        return false;
-    };
-    if(backTo(tx, ty)) return;
-    // Fill gaps of fast moves with a 4-connected staircase.
-    int x = r.back().first;
-    int y = r.back().second;
-    int guard = 0;
-    while((x != tx || y != ty) && guard++ < 512) {
-        const int dx = tx - x;
-        const int dy = ty - y;
-        if(std::abs(dx) >= std::abs(dy)) x += dx > 0 ? 1 : -1;
-        else y += dy > 0 ? 1 : -1;
-        if(!backTo(x, y)) r.push_back({x, y});
+        if(from >= 0) {
+            const auto a = c.back();
+            const int cornerAlong = xAxis ? h[from].first : h[from].second;
+            const int aAlong = xAxis ? a.first : a.second;
+            if(cornerAlong == aAlong) {
+                // Turning at the last corner: back along the previous
+                // segment undoes that corner; at the start just change axis.
+                if(c.size() >= 2) c.pop_back();
+            } else {
+                c.push_back(xAxis ? std::make_pair(cornerAlong, a.second) :
+                                    std::make_pair(a.first, cornerAlong));
+            }
+            pv.fRoadDir = xAxis ? 2 : 1;
+            h.clear();
+            h.push_back({tx, ty});
+        }
     }
+    // End of the current segment: the finger projected on its axis.
+    const auto a = c.back();
+    int dir = pv.fRoadDir;
+    if(dir == 0) dir = std::abs(tx - a.first) >= std::abs(ty - a.second) ? 1 : 2;
+    const std::pair<int, int> end = dir == 1 ? std::make_pair(tx, a.second) :
+                                               std::make_pair(a.first, ty);
+    auto& r = pv.fRoad;
+    r.clear();
+    r.push_back(c.front());
+    const auto lineTo = [&r](const std::pair<int, int>& to) {
+        int x = r.back().first;
+        int y = r.back().second;
+        int guard = 0;
+        while((x != to.first || y != to.second) && guard++ < 512) {
+            if(x != to.first) x += to.first > x ? 1 : -1;
+            else y += to.second > y ? 1 : -1;
+            r.push_back({x, y});
+        }
+    };
+    for(size_t i = 1; i < c.size(); i++) lineTo(c[i]);
+    lineTo(end);
     if(r.size() > 400) r.resize(400);
 }
 
@@ -3071,6 +3166,9 @@ void eGameWidget::touchPreviewClear() {
         mHoverTY = -1;
     }
     mPreview.fActive = false;
+    mPreview.fCorners.clear();
+    mPreview.fHist.clear();
+    mPreview.fRoadDir = 0;
     mPreview.fRoad.clear();
     mEdgeActive = false;
     if(mPreviewPanel) mPreviewPanel->hide();
@@ -3238,4 +3336,59 @@ void eGameWidget::updateDrawButton() {
     if(!tool) return;
     if(touchDrawModeActive()) mDrawButton->setYellowFontColor();
     else mDrawButton->setLightFontColor();
+}
+
+void eGameWidget::showSaveDialog() {
+    const auto w = window();
+    mBoard->waitUntilFinished();
+    const auto fw = new eFileWidget(w);
+    const auto func = [w](const std::string& path) {
+        const bool r = w->saveGame(path);
+        if(r) w->setQuickSavePath(path);
+        return r;
+    };
+    const auto closeAct = [this, fw]() {
+        removeWidget(fw);
+        fw->deleteLater();
+    };
+    const auto dir = w->leaderSaveDir();
+    fw->intialize(eLanguage::zeusText(1, 4), dir, func, closeAct);
+    addWidget(fw);
+    fw->align(eAlignment::center);
+    w->execDialog(fw);
+}
+
+void eGameWidget::showLoadDialog() {
+    const auto w = window();
+    mBoard->waitUntilFinished();
+    const auto fw = new eFileWidget(w);
+    const auto func = [w](const std::string& path) {
+        return w->loadGame(path);
+    };
+    const auto closeAct = [this, fw]() {
+        removeWidget(fw);
+        fw->deleteLater();
+    };
+    const auto dir = w->leaderSaveDir();
+    fw->intialize(eLanguage::zeusText(1, 3), dir, func, closeAct);
+    addWidget(fw);
+    fw->align(eAlignment::center);
+    w->execDialog(fw);
+}
+
+void eGameWidget::quickSave() {
+    const auto w = window();
+    const auto path = w->quickSavePath();
+    if(path.empty()) return showSaveDialog();
+    mBoard->waitUntilFinished();
+    const bool r = w->saveGame(path);
+    const auto name = std::filesystem::path(path).stem().string();
+    showTip(mViewedCityId, (r ? "Saved: " : "Save failed: ") + name);
+}
+
+bool eGameWidget::autosaveNow(const std::string& name) {
+    if(!mBoard || mEditorMode) return false;
+    mBoard->waitUntilFinished();
+    const auto w = window();
+    return w->saveGame(w->leaderSaveDir() + name + ".ez");
 }

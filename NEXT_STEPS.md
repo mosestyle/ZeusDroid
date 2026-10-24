@@ -25,7 +25,9 @@ Phases from the brief (§17). ✅ done with evidence, 🟡 partly done, ⬜ not 
   phone (stats overlay), (2) remaining small lists (editor,
   military, long texts) and info-panel buttons, (3) tablet layout check, (4) FPS/frame-time
   and memory measurements on the phone, (5) optional: fling scrolling, start zoom > 1,
-  haptic feedback on ✓.
+  haptic feedback on ✓. Done in 0.1.12: smart straight roads, Save/Load buttons
+  with quick save, autosave on going to the background. Open: in-game FPS 56 (11 ms) on the
+  S25 – profile the map draw if it drops further.
 * **F – Gameplay parity with the original 🟡 (started 2026-10-24)** done: data parity against
   the original Model files (costs, employees, desirability, tax table; tax low/very-low fix),
   Olympus blessing claim checked and rejected; side-by-side in the original: hut without food,
