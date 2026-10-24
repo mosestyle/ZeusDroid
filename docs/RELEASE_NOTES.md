@@ -1,5 +1,14 @@
 # Release notes
 
+## 0.1.16-dev
+* New default way to draw rows, areas and roads: a one-finger drag always moves the map, also
+  with a building tool selected. Tap to place a preview, then tap **Draw** next to ✓ / ✕:
+  the next drag (anywhere on the map) draws the row / area / road from the preview; drag
+  again to change it, ✓ builds. Holding still before dragging still draws too.
+* The old "Draw" switch on the left bar is still available: Touch control options →
+  "Drawing rows, areas, roads" → "Draw switch on the bar".
+* "Touch controls" renamed to "Touch control options".
+
 ## 0.1.15-dev
 * Rotate moved next to ✓ / ✕: a rotate icon (the original's rotate arrow) appears beside ✕
   while placing a building that can be rotated (stadium, palace, gatehouse, horse ranch,

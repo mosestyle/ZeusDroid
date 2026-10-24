@@ -181,6 +181,10 @@ public:
     void touchPreviewArea(int sx, int sy, int x, int y, bool begin = true);
     void touchPreviewEnd();
     static bool sBuildHaptics;
+    // Port: how rows/areas/roads are drawn. false (default): a "Draw" button
+    // beside the preview's tick/cross starts drawing from the preview; true:
+    // the older "Draw" switch on the touch bar (one-finger drag draws).
+    static bool sDrawSwitch;
     void touchPreviewDrag(int sx, int sy, int x, int y, bool begin);
     void touchPreviewConfirm();
     void touchPreviewClear();
@@ -297,6 +301,10 @@ private:
     eFramedButton* mDrawButton = nullptr;
     eFramedButton* mSaveButton = nullptr;
     eWidget* mRotateButton = nullptr;     // in the preview panel, next to X
+    eFramedButton* mPanelDrawButton = nullptr; // preview panel: draw from here
+    bool mPreviewDrawing = false;
+    void togglePreviewDrawing();
+    void layoutPreviewPanel();
     eWidget* mUndoButton = nullptr;       // touch bar
     eWidget* mPanelBs = nullptr;
     int mPreviewBs = 0;

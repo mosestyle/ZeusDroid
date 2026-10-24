@@ -228,7 +228,7 @@ void eSettingsMenu::initialize(const eApplyAction& settingsA,
         }
         const auto tb = new eFramedButton(window());
         tb->setUnderline(false);
-        tb->setText("Touch controls");
+        tb->setText("Touch control options");
         tb->fitContent();
         tb->setPressAction([this]() { window()->showTouchSettings(this); });
         col1->addWidget(tb);

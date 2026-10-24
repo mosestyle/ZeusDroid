@@ -1,0 +1,49 @@
+# Default drawing (0.1.16): one-finger drag pans even with a tool; tap = preview; the Draw button beside tick/cross starts drawing from the preview; a drag anywhere then draws the road; tick builds it.
+8000 finger_down 1 1200 150
+80 finger_up 1 1200 150
+2500 finger_down 1 570 346
+80 finger_up 1 570 346
+800 finger_down 1 1100 720
+80 finger_up 1 1100 720
+4000 finger_down 1 1680 832
+80 finger_up 1 1680 832
+1000 wait_game 120000
+3000 log start
+100 finger_down 1 2170 900
+100 finger_down 1 2170 900
+80 finger_up 1 2170 900
+400 log road_tool_expect_build1_drawbtn0
+100 finger_down 1 1200 600
+40 finger_move 1 1150 580
+40 finger_move 1 1050 540
+40 finger_move 1 1000 520
+40 finger_up 1 1000 520
+400 log quick_drag_expect_pan_no_preview
+100 finger_down 1 900 450
+80 finger_up 1 900 450
+500 log tap_expect_single_preview_panel3
+200 screenshot build/run/db_01.bmp
+100 finger_down 1 1056 610
+80 finger_up 1 1056 610
+400 log after_draw_button_expect_area_preview
+100 finger_down 1 1300 300
+30 finger_move 1 1330 315
+30 finger_move 1 1360 330
+30 finger_move 1 1390 345
+30 finger_move 1 1420 360
+30 finger_move 1 1450 375
+30 finger_move 1 1480 390
+30 finger_move 1 1510 405
+30 finger_move 1 1540 420
+30 finger_move 1 1570 435
+30 finger_move 1 1600 450
+30 finger_move 1 1630 465
+30 finger_move 1 1660 480
+40 finger_up 1 1660 480
+400 log after_drag_elsewhere_expect_road_from_preview_12tiles
+200 screenshot build/run/db_02.bmp
+100 finger_down 1 1105 790
+80 finger_up 1 1105 790
+500 log after_tick_expect_road_built_9958dr_preview0
+200 screenshot build/run/db_03.bmp
+200 quit

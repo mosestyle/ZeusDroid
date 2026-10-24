@@ -21,8 +21,8 @@
 80 finger_up 1 560 520
 400 log preview1
 200 screenshot build/run/r_01.bmp
-100 finger_down 1 482 680
-80 finger_up 1 482 680
+100 finger_down 1 405 680
+80 finger_up 1 405 680
 400 log after_ok1_expect_45dr_next_preview_30,8
 200 screenshot build/run/r_02.bmp
 # drag the second preview along the coast (meadow): 30,8 -> 30,5
@@ -32,12 +32,12 @@
 40 finger_move 1 740 520
 40 finger_up 1 740 520
 400 log after_drag2_expect_30,5
-100 finger_down 1 662 680
-80 finger_up 1 662 680
+100 finger_down 1 585 680
+80 finger_up 1 585 680
 400 log after_ok2_expect_9910dr_next_preview_33,2_same_spacing
 200 screenshot build/run/r_03.bmp
-100 finger_down 1 842 680
-80 finger_up 1 842 680
+100 finger_down 1 765 680
+80 finger_up 1 765 680
 400 log after_ok3_expect_9865dr_next_preview_36,-1
 200 screenshot build/run/r_04.bmp
 200 quit

@@ -108,6 +108,15 @@ anchored at the screen centre). Zoom is not stored in saves (save format unchang
   and that a pinch starting on a message box is treated as a UI touch.
 * Not yet done: tests on a physical phone (no device is attached to this environment).
 
+## Drawing rows, areas and roads (0.1.16)
+* Default: a one-finger drag pans the map, even with a tool selected. Tap → preview; **Draw**
+  beside ✓ / ✕ → the next one-finger drag anywhere draws from the preview (smart straight
+  roads); ✓ builds, ✕ cancels. Hold-then-drag also still draws.
+* Option "Drawing rows, areas, roads" → "Draw switch on the bar": the older behaviour (a
+  "Draw" toggle on the touch bar; with it on, a one-finger drag draws at once).
+* Port setting `draw_style` = `button` (default) | `switch`; test override
+  `EZEUS_DRAW_STYLE`.
+
 ## Save / Load / full screen (0.1.12–0.1.14)
 * Right edge of the map: **Save** (first time asks for a name, then quick-saves to the same
   file), **Load**, **>>** full-screen city view (side panel slides away; **<<** brings it

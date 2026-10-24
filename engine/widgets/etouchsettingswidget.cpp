@@ -41,14 +41,14 @@ void eTouchSettingsWidget::initialize(const eAction& closeAction) {
         win->applyPortSettings();
     };
 
-    const auto title = new eLabel("Touch controls", win);
+    const auto title = new eLabel("Touch control options", win);
     title->fitContent();
     addWidget(title);
 
     const auto ok = new eOkButton(win);
     ok->setPressAction(closeAction);
     // All rows must fit on the screen together with the title and the tick.
-    const int kRows = 11;
+    const int kRows = 12;
     const int fixedH = 2*p + title->height() + p + p + ok->height() + 2*p;
     const int rowFit = (win->height() - fixedH)/kRows - p/2;
     const int rowH = std::max(32, std::min(rowWanted, rowFit));
@@ -92,6 +92,10 @@ void eTouchSettingsWidget::initialize(const eAction& closeAction) {
            {{"Next one ready beside it", 1}, {"Nothing", 0}},
            [&ps]() { return ps.fBuildRepeat ? 1. : 0.; },
            [&ps](const double v) { ps.fBuildRepeat = v > 0.5; });
+    addRow("Drawing rows, areas, roads",
+           {{"Draw button by the tick", 0}, {"Draw switch on the bar", 1}},
+           [&ps]() { return ps.fDrawSwitch ? 1. : 0.; },
+           [&ps](const double v) { ps.fDrawSwitch = v > 0.5; });
     addRow("Vibrate when building",
            {{"On", 1}, {"Off", 0}},
            [&ps]() { return ps.fVibrate ? 1. : 0.; },

@@ -371,3 +371,21 @@ Houses do level up in play – no side-by-side check wanted.
   covers 11 tiles.
 * Regressions: confirm, repeat, army, draw, view restore – pass.
 APK 0.1.15-dev: versionCode 16, sha256 f59be84993db981a8485288865eaac2a7971ef1b25414b79fbd8ca8c28a9aa50, v2/v3 OK
+
+### User report 2026-10-24 22:10 (0.1.15)
+With Draw on, every drag draws, so Draw must be switched off to move the map; asked for a
+Draw button beside ✓ / ✕ as the default with the old switch as an option; rename "Touch
+controls" to something like "touch controls options".
+
+### 0.1.16-dev: Draw button by the tick (default), old switch as option
+* `tests/autotest/phone_build_draw_button.txt`: road tool → quick drag pans (dx 0 → -200, no
+  preview); tap → single preview, panel ✓ ✕ Draw (445 px); Draw → area preview; drag 12
+  steps elsewhere on the map → 14-tile straight road from the preview (screenshot); ✓ →
+  9958 dr (14 × 3), undo=14.
+* Old switch: phone_build_draw / smart_road / freehand run with EZEUS_DRAW_STYLE=switch – pass.
+* Repeat, undo, info window: ✓ tap coordinates moved 77 px left (the panel is wider with
+  Draw) – pass. Confirm – pass. Settings screen: 12 rows fit, titles "Touch control options"
+  (screenshots).
+* Note: phone_back_touch_settings switches "Placing buildings" to instant and saves it; reset
+  `build_confirm "on"` in the local port_settings.txt before later tests.
+APK 0.1.16-dev: versionCode 17, sha256 2d70fd172217be77b86ee1644d8914726e9acc57983024ed7ecbcfd84bf81e72, v2/v3 OK

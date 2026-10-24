@@ -22,8 +22,8 @@
 80 finger_up 1 560 520
 400 log preview1
 200 screenshot build/run/r_01.bmp
-100 finger_down 1 482 680
-80 finger_up 1 482 680
+100 finger_down 1 405 680
+80 finger_up 1 405 680
 400 log after_ok1_expect_45dr_next_preview_30,8
 100 finger_down 1 68 784
 80 finger_up 1 68 784

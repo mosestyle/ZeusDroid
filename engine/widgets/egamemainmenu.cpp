@@ -41,7 +41,7 @@ void eGameMainMenu::initialize(const eAction& resumeAct,
     if(touchSettingsAct) { // port: touch screens only
         const auto tButt = new eFramedButton(window());
         tButt->setUnderline(false);
-        tButt->setText("Touch controls");
+        tButt->setText("Touch control options");
         tButt->fitContent();
         tButt->setPressAction(touchSettingsAct);
         addWidget(tButt);

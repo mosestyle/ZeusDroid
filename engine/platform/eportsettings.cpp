@@ -71,6 +71,11 @@ void ePortSettings::load() {
     if(vb != m.end()) fVibrate = vb->second != "off";
     const auto ss = m.find("show_stats");
     if(ss != m.end()) fShowStats = ss->second == "on";
+    const auto ds = m.find("draw_style");
+    if(ds != m.end()) fDrawSwitch = ds->second == "switch";
+    if(const char* const e = std::getenv("EZEUS_DRAW_STYLE")) {
+        if(*e) fDrawSwitch = std::string(e) == "switch";
+    }
     const auto br = m.find("build_repeat");
     if(br != m.end()) fBuildRepeat = br->second != "off";
     // Test override (autotests of the instant placement mode).
@@ -119,6 +124,7 @@ void ePortSettings::save() const {
     o << "build_repeat " << q(fBuildRepeat ? "on" : "off") << "\n";
     o << "show_stats " << q(fShowStats ? "on" : "off") << "\n";
     o << "vibrate " << q(fVibrate ? "on" : "off") << "\n";
+    o << "draw_style " << q(fDrawSwitch ? "switch" : "button") << "\n";
     const auto tmp = path() + ".tmp";
     {
         std::ofstream out(tmp, std::ios::trunc);

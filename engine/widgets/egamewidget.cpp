@@ -679,6 +679,17 @@ void eGameWidget::initialize() {
             f->hide();
             mRotateButton = f;
         }
+        {
+            const auto f = new eFramedButton("Draw", window());
+            f->setUnderline(false);
+            f->setRenderBg(true);
+            f->setSmallFontSize();
+            f->resize(bs, bs);
+            f->setPressAction([this]() { togglePreviewDrawing(); });
+            mPreviewPanel->addWidget(f);
+            f->hide();
+            mPanelDrawButton = f;
+        }
         mPreviewBs = bs;
         mPreviewPanel->resize(2*bs + p, bs);
         addWidget(mPreviewPanel);
@@ -2807,6 +2818,7 @@ void eGameWidget::updateRequestButtons() {
 bool eGameWidget::sBuildConfirm = true;
 bool eGameWidget::sBuildRepeat = true;
 bool eGameWidget::sBuildHaptics = true;
+bool eGameWidget::sDrawSwitch = false;
 
 bool eGameWidget::touchPreviewSupported() const {
     if(!sBuildConfirm || mLocked) return false;
@@ -2825,6 +2837,9 @@ void eGameWidget::screenToTile(const int x, const int y,
 
 bool eGameWidget::touchPreviewAt(const int x, const int y) {
     if(!mPreview.fActive) return false;
+    // "Draw" pressed on the preview panel: any one-finger drag on the map
+    // draws from the preview (moves the end of the row/area/road).
+    if(mPreviewDrawing) return true;
     // In draw mode a drag always draws; only an area's end can be dragged.
     if(touchDrawModeActive() && !mPreview.fArea) return false;
     int tx, ty;
@@ -3206,6 +3221,7 @@ void eGameWidget::touchPreviewClear() {
         mHoverTY = -1;
     }
     mPreview.fActive = false;
+    mPreviewDrawing = false;
     mPreview.fCorners.clear();
     mPreview.fHist.clear();
     mPreview.fRoadDir = 0;
@@ -3336,7 +3352,7 @@ void eGameWidget::debugSpawnBanner(const int tx, const int ty) {
 }
 
 bool eGameWidget::touchDrawModeActive() const {
-    if(!mGm || !sTouchBarEnabled) return false;
+    if(!mGm || !sTouchBarEnabled || !sDrawSwitch) return false;
     const auto mode = mGm->mode();
     if(mode == eBuildingMode::none) return false;
     const auto it = mDrawModes.find(mode);
@@ -3370,19 +3386,10 @@ void eGameWidget::toggleTouchDrawMode() {
 }
 
 void eGameWidget::updateDrawButton() {
-    if(mRotateButton && mPreviewPanel) {
-        const bool rot = mGm && !(mTem && mTem->visible()) &&
-                         sRotatableMode(mGm->mode());
-        if(rot != mRotateButton->visible()) {
-            mRotateButton->setVisible(rot);
-            const int bs = mPreviewBs;
-            const int p = padding();
-            mPreviewPanel->setWidth(rot ? 3*bs + 2*p : 2*bs + p);
-        }
-    }
+    layoutPreviewPanel();
     if(mUndoButton) mUndoButton->setVisible(undoAvailable());
     if(!mDrawButton) return;
-    const bool tool = buildToolActive() && !(mTem && mTem->visible());
+    const bool tool = sDrawSwitch && buildToolActive() && !(mTem && mTem->visible());
     mDrawButton->setVisible(tool);
     if(!tool) return;
     if(touchDrawModeActive()) mDrawButton->setYellowFontColor();
@@ -3583,5 +3590,51 @@ void eGameWidget::undoLastBuild() {
     }
     mUndo = eUndoRecord();
     mBoard->scheduleTerrainUpdate();
+    eSounds::playButtonSound();
+}
+
+void eGameWidget::layoutPreviewPanel() {
+    if(!mPreviewPanel || !mRotateButton || !mPanelDrawButton) return;
+    const bool tool = mGm && !(mTem && mTem->visible());
+    const auto mode = mGm ? mGm->mode() : eBuildingMode::none;
+    const bool rot = tool && sRotatableMode(mode);
+    // Drawing rows/areas makes no sense for buildings that can be rotated
+    // (palace, stadium, sanctuaries, monuments ...).
+    const bool draw = tool && !sDrawSwitch && !rot &&
+                      mode != eBuildingMode::none && mPreview.fActive &&
+                      (!mPreview.fArea || mPreviewDrawing);
+    const int bs = mPreviewBs;
+    const int p = padding();
+    int x = 2*(bs + p);
+    mRotateButton->setVisible(rot);
+    if(rot) { mRotateButton->setX(x); x += bs + p; }
+    mPanelDrawButton->setVisible(draw);
+    if(draw) {
+        mPanelDrawButton->setX(x); x += bs + p;
+        if(mPreviewDrawing) mPanelDrawButton->setYellowFontColor();
+        else mPanelDrawButton->setLightFontColor();
+    }
+    const int w = x - p;
+    if(mPreviewPanel->width() != w) mPreviewPanel->setWidth(w);
+}
+
+void eGameWidget::togglePreviewDrawing() {
+    auto& pv = mPreview;
+    if(!pv.fActive) return;
+    if(mPreviewDrawing) {
+        mPreviewDrawing = false;
+        return;
+    }
+    // The single preview becomes the start of a row / area / road; the
+    // next one-finger drag anywhere on the map moves its end.
+    pv.fArea = true;
+    pv.fSTX = pv.fETX;
+    pv.fSTY = pv.fETY;
+    pv.fRoad.clear();
+    pv.fCorners.clear();
+    pv.fHist.clear();
+    pv.fRoadDir = 0;
+    if(pv.fMode == eBuildingMode::road) pv.fRoad.push_back({pv.fSTX, pv.fSTY});
+    mPreviewDrawing = true;
     eSounds::playButtonSound();
 }
