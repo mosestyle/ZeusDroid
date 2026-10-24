@@ -565,25 +565,8 @@ void eGameWidget::initialize() {
         mSpeedButton = addTouchButton("50x", [this]() { setSpeedId(1); });
         updateSpeedButton();
         addTouchButton("+", [this]() { changeSpeed(1); });
-        // Undo the last build (the original's Undo); shown while possible.
-        {
-            const auto& intrfc = eGameTextures::interface();
-            const int ir = static_cast<int>(resolution().uiScale());
-            const auto f = new eFramedButton(window());
-            f->setUnderline(false);
-            f->setRenderBg(true);
-            f->resize(minTouch, minTouch);
-            const auto icon = eButton::sCreate(intrfc[ir].fUndo, window(), f);
-            icon->align(eAlignment::center);
-            icon->setPressAction([this]() { undoLastBuild(); });
-            f->setPressAction([this]() { undoLastBuild(); });
-            addWidget(f);
-            mTouchBarButtons++;
-            f->move(p, y);
-            y += f->height() + p/2;
-            f->hide();
-            mUndoButton = f;
-        }
+        // Free slot (was R / Undo); keeps the positions of the buttons below.
+        y += minTouch + p/2;
         // Army box selection; shown only when the city has soldiers.
         mBoxSelectButton = addTouchButton("[ ]", [this]() {
             setTouchBoxSelect(!mTouchBoxSelect);
@@ -626,6 +609,11 @@ void eGameWidget::initialize() {
             mLoadButton = addSideButton("Load", [this]() { showLoadDialog(); });
             mMenuButton = addSideButton("Menu", [this]() { openGameMenu(); });
             mPanelButton = addSideButton(">>", [this]() { setPanelHidden(!mPanelHidden); });
+            // Undo the last build (the original's Undo); shown for a while
+            // after building (Touch control options: 10 s / 30 s / 1 min).
+            const auto ub = addSideButton("Undo", [this]() { undoLastBuild(); });
+            ub->hide();
+            mUndoButton = ub;
             layoutSideButtons();
         }
 
@@ -3465,11 +3453,13 @@ void eGameWidget::layoutSideButtons() {
     if(!mSaveButton) return;
     const int p = padding();
     int bw = 0;
-    for(const auto b : {mSaveButton, mLoadButton, mMenuButton, mPanelButton}) {
-        bw = std::max(bw, b->width());
+    const auto undo = static_cast<eFramedButton*>(mUndoButton);
+    for(const auto b : {mSaveButton, mLoadButton, mMenuButton, mPanelButton, undo}) {
+        if(b) bw = std::max(bw, b->width());
     }
     int sy = mTopBar->height() + p;
-    for(const auto b : {mSaveButton, mLoadButton, mMenuButton, mPanelButton}) {
+    for(const auto b : {mSaveButton, mLoadButton, mMenuButton, mPanelButton, undo}) {
+        if(!b) continue;
         b->setWidth(bw);
         b->move(width() - panelW() - bw - p, sy);
         sy += b->height() + p/2;
@@ -3524,9 +3514,7 @@ bool eGameWidget::sRotatableMode(const eBuildingMode m) {
 // Port: Undo. The buildings placed by the last build action are removed
 // again and their price is refunded, for a short time after building (as
 // long as nothing else was built). Demolition is not undone.
-namespace {
-const uint32_t kUndoMs = 30000;
-}
+int eGameWidget::sUndoMs = 10000;
 
 void eGameWidget::beginUndoRecord() {
     mUndoSnapshot.clear();
@@ -3574,7 +3562,7 @@ void eGameWidget::endUndoRecord() {
 
 bool eGameWidget::undoAvailable() const {
     if(mUndo.fBuildings.empty() || mEditorMode) return false;
-    return SDL_GetTicks() - mUndo.fTime < kUndoMs;
+    return SDL_GetTicks() - mUndo.fTime < static_cast<uint32_t>(sUndoMs);
 }
 
 void eGameWidget::undoLastBuild() {

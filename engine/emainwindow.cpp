@@ -179,6 +179,7 @@ void eMainWindow::applyPortSettings() {
     eGameWidget::sBuildRepeat = ps.fBuildRepeat;
     eGameWidget::sBuildHaptics = ps.fVibrate;
     eGameWidget::sDrawSwitch = ps.fDrawSwitch;
+    eGameWidget::sUndoMs = ps.fUndoSeconds*1000;
     if(mTouch) {
         eTouchConfig tc;
         ps.applyTo(tc);

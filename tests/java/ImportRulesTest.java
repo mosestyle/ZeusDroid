@@ -53,6 +53,11 @@ public class ImportRulesTest {
         eq("eZeus/i30.e", ImportRules.mapEZeusArchiveEntry("eZeus-0.8.2-beta/i30.e"), "i30");
         eq("eZeus/Text/language.txt", ImportRules.mapEZeusArchiveEntry("eZeus-0.8.2-beta/Text/language.txt"), "language");
         eq("eZeus/i45.e", ImportRules.mapEZeusArchiveEntry("i45.e"), "loose i45");
+        // ZeusDroid's own texture-pack backup (0.1.18) imports with the same rules.
+        eq("eZeus/i30.e", ImportRules.mapEZeusArchiveEntry("eZeus-texture-pack/i30.e"), "backup i30");
+        eq("eZeus/interface.e", ImportRules.mapEZeusArchiveEntry("eZeus-texture-pack/interface.e"), "backup interface");
+        eq("eZeus/Fonts/Zeus.ttf", ImportRules.mapEZeusArchiveEntry("eZeus-texture-pack/Fonts/Zeus.ttf"), "backup font");
+        eq("eZeus/Text/language.txt", ImportRules.mapEZeusArchiveEntry("eZeus-texture-pack/Text/language.txt"), "backup language");
         eq(null, ImportRules.mapEZeusArchiveEntry("readme.txt"), "loose other skipped");
         eq(null, ImportRules.mapEZeusArchiveEntry("eZeus-0.8.2-beta/VC_redist.x64.exe"), "vc redist skipped");
         eq(null, ImportRules.mapEZeusArchiveEntry("eZeus-0.8.2-beta/engconverter-0.5.exe"), "engconverter skipped");

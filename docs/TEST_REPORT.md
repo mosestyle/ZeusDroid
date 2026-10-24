@@ -414,3 +414,21 @@ lists), and to rename the app (chosen: ZeusDroid). Then: remove the "based on eZ
 * APK label "ZeusDroid" (resources.arsc); same package id and debug key, installs over the
   previous version and keeps imported data and saves.
 APK 0.1.17-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 18, sha256 51cf091fe6c2e009187510a8b51042490a72aa8c816d1f1386f638a89d2f9deb, v2/v3 OK
+
+### User report 2026-10-24 23:09 (0.1.17)
+Undo icon sits under the camera notch; wants it to vanish after 10 s (option 10 s / 30 s /
+1 min) and a plain "Undo" label. Mini map drag in the Overview panel jumps around. Worried
+that the GitHub texture download could disappear one day.
+
+### 0.1.18-dev: Undo button, mini map drag, texture pack backup
+* `tests/autotest/phone_undo.txt`: farm ✓ → Undo (right column, 1934,445) → 10000 dr; build
+  again → undo=1 and the "Undo" button visible (screenshot); 10.5 s later undo=0 (gone).
+* `tests/autotest/phone_minimap_drag.txt`: finger down on the mini map, 8 moves of 10 px:
+  before the fix dx went -1566, -1866 … -3066, then back to -1566, then -3666 and -1866 after
+  lifting (feedback with the mini map recentering + mouse warp); after: -1266, -1566 …
+  -3666 in equal 300 px steps, unchanged after lifting.
+* Touch control options with 13 rows fits the screen (screenshot).
+* Backup zip layout checked with the importer rules: 4 new Java checks (50/50 pass). Writing
+  the backup through the Android file picker is not tested here (needs the phone).
+* Regressions: undo, draw (switch), army – pass; unit tests pass.
+APK 0.1.18-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 19, sha256 9f0a1c5334bc5386f2f5fba03633b335257e9ccf2862606657b89b42ddee878f, v2/v3 OK

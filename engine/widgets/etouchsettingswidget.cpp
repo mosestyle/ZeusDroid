@@ -48,7 +48,7 @@ void eTouchSettingsWidget::initialize(const eAction& closeAction) {
     const auto ok = new eOkButton(win);
     ok->setPressAction(closeAction);
     // All rows must fit on the screen together with the title and the tick.
-    const int kRows = 12;
+    const int kRows = 13;
     const int fixedH = 2*p + title->height() + p + p + ok->height() + 2*p;
     const int rowFit = (win->height() - fixedH)/kRows - p/2;
     const int rowH = std::max(32, std::min(rowWanted, rowFit));
@@ -96,6 +96,10 @@ void eTouchSettingsWidget::initialize(const eAction& closeAction) {
            {{"Draw button by the tick", 0}, {"Draw switch on the bar", 1}},
            [&ps]() { return ps.fDrawSwitch ? 1. : 0.; },
            [&ps](const double v) { ps.fDrawSwitch = v > 0.5; });
+    addRow("Undo button stays for",
+           {{"10 seconds", 10}, {"30 seconds", 30}, {"1 minute", 60}},
+           [&ps]() { return double(ps.fUndoSeconds); },
+           [&ps](const double v) { ps.fUndoSeconds = static_cast<int>(v); });
     addRow("Vibrate when building",
            {{"On", 1}, {"Off", 0}},
            [&ps]() { return ps.fVibrate ? 1. : 0.; },

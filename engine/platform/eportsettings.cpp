@@ -62,6 +62,7 @@ void ePortSettings::load() {
     if(num("pinch_deadband", v)) fPinchDeadband = static_cast<float>(std::clamp(v, 1., 1.5));
     if(num("max_zoom", v)) fMaxZoom = std::clamp(v, 1., 4.);
     if(num("tap_slop_px", v)) fTapSlop = static_cast<float>(std::clamp(v, 4., 200.));
+    if(num("undo_seconds", v)) fUndoSeconds = static_cast<int>(std::clamp(v, 5., 300.));
     if(num("build_hold_ms", v)) fBuildHoldMs = static_cast<int>(std::clamp(v, 100., 2000.));
     const auto bd = m.find("build_drag");
     if(bd != m.end()) fHoldToDraw = bd->second != "direct";
@@ -125,6 +126,7 @@ void ePortSettings::save() const {
     o << "show_stats " << q(fShowStats ? "on" : "off") << "\n";
     o << "vibrate " << q(fVibrate ? "on" : "off") << "\n";
     o << "draw_style " << q(fDrawSwitch ? "switch" : "button") << "\n";
+    o << "undo_seconds " << q(num(fUndoSeconds)) << "\n";
     const auto tmp = path() + ".tmp";
     {
         std::ofstream out(tmp, std::ios::trunc);

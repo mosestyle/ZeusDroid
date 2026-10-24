@@ -28,6 +28,7 @@ struct eTouchConfig;
 //   draw_style        "button"  button | switch (button: "Draw" beside the
 //                                preview's tick starts drawing from it;
 //                                switch: "Draw" toggle on the touch bar)
+//   undo_seconds      "10"      how long Undo stays after building
 //   build_repeat      "on"      on | off  (on: after building, the next
 //                                preview appears next to it)
 struct ePortSettings {
@@ -44,7 +45,8 @@ struct ePortSettings {
     bool fBuildRepeat = true;
     bool fShowStats = false;
     bool fVibrate = true;
-    bool fDrawSwitch = false;    // draw_style: button (default) | switch
+    bool fDrawSwitch = false;
+    int fUndoSeconds = 10;       // undo_seconds: 10 | 30 | 60    // draw_style: button (default) | switch
 
     static std::string path();
     // Loads from path(); writes a commented default file if none exists.

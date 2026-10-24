@@ -25,8 +25,15 @@
 80 finger_up 1 405 680
 400 log after_ok1_expect_45dr_next_preview_30,8
 200 screenshot build/run/u_01.bmp
-100 finger_down 1 68 524
-80 finger_up 1 68 524
+100 finger_down 1 1934 445
+80 finger_up 1 1934 445
 600 log after_undo_expect_10000dr_undo0
 200 screenshot build/run/u_02.bmp
+100 finger_down 1 560 520
+80 finger_up 1 560 520
+400 finger_down 1 405 680
+80 finger_up 1 405 680
+400 log rebuilt_expect_undo1
+200 screenshot build/run/u_03.bmp
+10500 log after_10s_expect_undo0_button_gone
 200 quit

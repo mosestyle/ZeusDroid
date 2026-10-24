@@ -187,6 +187,8 @@ public:
     // beside the preview's tick/cross starts drawing from the preview; true:
     // the older "Draw" switch on the touch bar (one-finger drag draws).
     static bool sDrawSwitch;
+    // Port: how long the Undo button stays after building (ms).
+    static int sUndoMs;
     void touchPreviewDrag(int sx, int sy, int x, int y, bool begin);
     void touchPreviewConfirm();
     void touchPreviewClear();

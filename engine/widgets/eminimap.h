@@ -50,6 +50,10 @@ private:
     int mCityCounter = 0;
 
     int mMouseX = 0;
+
+    int mPressCenterX = 0; // port: touch drag
+
+    int mPressCenterY = 0;
     int mMouseY = 0;
 
     int mCenterX = 0;

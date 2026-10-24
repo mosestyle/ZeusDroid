@@ -40,6 +40,13 @@ Phases from the brief (§17). ✅ done with evidence, 🟡 partly done, ⬜ not 
   housing, food/storage/distribution, walkers and services, gods/heroes/monsters, military,
   trade, campaign goals. Log each in PARITY_MATRIX, fix the important differences (Ghidra
   only for specific questions), add regression saves.
+* **Texture builder (proposed, 2026-10-24)**: build the texture packs (interface.e, i15.e,
+  i30.e) on the phone from the original game's own sprite files (DATA/*.sg3, *.555) so the
+  eZeus download is not needed at all. Needs: own SG3/555 decoder (format is public; no
+  AGPL code), the frame → atlas mapping already in engine/spriteData + the texture loaders,
+  downscaling for i15, interface atlases; validate pixel-by-pixel against the eZeus pack
+  locally. Font and language file are in the eZeus source (GPL) and can ship in the APK.
+  Interim: "Save a backup of the texture pack" (0.1.18).
 * **G – Stabilisation and distribution-ready build ⬜** rebuild with the official Google
   NDK/SDK (current toolchain comes from a third-party mirror), verify the Gradle build,
   release signing only with the user's approval, data-import guide, final test report,

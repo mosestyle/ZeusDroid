@@ -36,6 +36,7 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 /**
  * First-run screen: explains that user-owned game files are required, imports
@@ -46,6 +47,7 @@ public class ImportActivity extends Activity {
     private static final String TAG = "ZeusImport";
     private static final int REQ_GAME_FOLDER = 1;
     private static final int REQ_EZEUS_ARCHIVE = 2;
+    private static final int REQ_BACKUP = 3;
     private static final long SPACE_MARGIN = 64L * 1024 * 1024;
 
     private final Handler mUi = new Handler(Looper.getMainLooper());
@@ -55,7 +57,8 @@ public class ImportActivity extends Activity {
     private LinearLayout mStatusList;
     private TextView mProgressText;
     private ProgressBar mProgress;
-    private Button mStart, mPickFolder, mPickZip, mCancelButton, mDownload;
+    private Button mStart, mPickFolder, mPickZip, mCancelButton, mDownload, mBackup;
+    private String mDoneMessage = null;
 
     private File root() {
         File ext = getExternalFilesDir(null);
@@ -158,6 +161,10 @@ public class ImportActivity extends Activity {
         col.addView(mPickFolder);
         col.addView(mPickZip);
         col.addView(mDownload);
+        // Keep your own copy of the texture pack (e.g. on the PC or a memory card), so the
+        // game can always be set up again without downloading it.
+        mBackup = button("Save a backup of the texture pack (.zip)…", v -> pickBackupTarget());
+        col.addView(mBackup);
 
         mProgress = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
         mProgress.setMax(1000);
@@ -202,6 +209,7 @@ public class ImportActivity extends Activity {
         mPickFolder.setEnabled(!mBusy);
         mPickZip.setEnabled(!mBusy);
         mDownload.setEnabled(!mBusy);
+        mBackup.setEnabled(!mBusy && new File(root(), ImportRules.EZEUS + "/interface.e").isFile());
         mCancelButton.setVisibility(mBusy ? View.VISIBLE : View.GONE);
         mProgress.setVisibility(mBusy ? View.VISIBLE : View.GONE);
     }
@@ -223,10 +231,61 @@ public class ImportActivity extends Activity {
         startActivityForResult(i, REQ_EZEUS_ARCHIVE);
     }
 
+    private void pickBackupTarget() {
+        Intent i = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.setType("application/zip");
+        i.putExtra(Intent.EXTRA_TITLE, "ZeusDroid-texture-pack.zip");
+        startActivityForResult(i, REQ_BACKUP);
+    }
+
+    /** Writes the imported texture pack as a zip that "Import texture pack" accepts. */
+    private void writeBackup(Uri target) throws IOException {
+        final String[] names = {"interface.e", "i15.e", "i30.e", "i45.e", "i60.e",
+                                "Fonts/Zeus.ttf", "Text/language.txt"};
+        File base = new File(root(), ImportRules.EZEUS);
+        long total = 0;
+        for (String n : names) {
+            File f = new File(base, n);
+            if (f.isFile()) total += f.length();
+        }
+        long done = 0;
+        byte[] buf = new byte[1 << 20];
+        try (OutputStream os = getContentResolver().openOutputStream(target, "w")) {
+            if (os == null) throw new IOException("cannot write to the chosen file");
+            try (ZipOutputStream zos = new ZipOutputStream(new java.io.BufferedOutputStream(os, 1 << 20))) {
+                zos.setLevel(java.util.zip.Deflater.NO_COMPRESSION);
+                for (String n : names) {
+                    File f = new File(base, n);
+                    if (!f.isFile()) continue;
+                    // Top folder name is what the importer recognises as the pack.
+                    zos.putNextEntry(new ZipEntry("eZeus-texture-pack/" + n));
+                    try (InputStream in = new java.io.FileInputStream(f)) {
+                        int r;
+                        while ((r = in.read(buf)) > 0) {
+                            if (mCancel.get()) throw new IOException("cancelled");
+                            zos.write(buf, 0, r);
+                            done += r;
+                            progress(done, total, "Saving texture pack backup");
+                        }
+                    }
+                    zos.closeEntry();
+                }
+            }
+        }
+    }
+
     @Override
     protected void onActivityResult(int req, int res, Intent data) {
         super.onActivityResult(req, res, data);
         if (res != RESULT_OK || data == null) return;
+        if (req == REQ_BACKUP && data.getData() != null) {
+            final Uri target = data.getData();
+            mDoneMessage = "Backup saved. Keep this zip: \"Import texture pack\" sets the game up "
+                + "again from it, without downloading anything.";
+            startWork(() -> writeBackup(target));
+            return;
+        }
         if (req == REQ_GAME_FOLDER && data.getData() != null) {
             startWork(() -> importTree(data.getData()));
         } else if (req == REQ_EZEUS_ARCHIVE) {
@@ -259,7 +318,7 @@ public class ImportActivity extends Activity {
             try {
                 w.run();
                 msg = mCancel.get() ? "Import cancelled. Files copied so far are kept; run it again to resume."
-                                    : "Import finished.";
+                                    : (mDoneMessage != null ? mDoneMessage : "Import finished.");
             } catch (Exception e) {
                 Log.e(TAG, "import failed", e);
                 msg = "Import failed: " + e.getMessage()
@@ -268,6 +327,7 @@ public class ImportActivity extends Activity {
             final String m = msg;
             mUi.post(() -> {
                 mBusy = false;
+                mDoneMessage = null;
                 mProgressText.setText(m);
                 refreshStatus();
             });

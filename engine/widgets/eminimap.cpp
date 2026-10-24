@@ -1,4 +1,5 @@
 ﻿#include "eminimap.h"
+#include "platform/eplatform.h"
 
 #include "textures/egametextures.h"
 
@@ -43,10 +44,12 @@ bool eMiniMap::mousePressEvent(const eMouseEvent& e) {
     mMouseY = e.y();
 
     viewRelPix(e.x(), e.y());
+    mPressCenterX = mCenterX;
+    mPressCenterY = mCenterY;
 
     if(mChangeAction) mChangeAction();
 
-    SDL_ShowCursor(SDL_DISABLE);
+    if(!ePlatform::touchUi()) SDL_ShowCursor(SDL_DISABLE);
 
     return true;
 }
@@ -55,6 +58,16 @@ bool eMiniMap::mouseMoveEvent(const eMouseEvent& e) {
     if(!mBoard) return false;
     const bool pressed = static_cast<bool>(e.buttons() & eMouseButton::left);
     if(!pressed) return false;
+
+    if(ePlatform::touchUi()) {
+        // Port (touch): a finger cannot be "warped" back like the mouse
+        // cursor. The mini map scrolls with the view, so the view box moves
+        // by the finger's movement since the press (not to the point under
+        // the finger, which would feed back and jump around).
+        viewAbsPix(mPressCenterX + e.x() - mMouseX, mPressCenterY + e.y() - mMouseY);
+        if(mChangeAction) mChangeAction();
+        return true;
+    }
 
     const int dx = e.x() - mMouseX;
     const int dy = e.y() - mMouseY;
@@ -78,7 +91,7 @@ bool eMiniMap::mouseMoveEvent(const eMouseEvent& e) {
 
 bool eMiniMap::mouseReleaseEvent(const eMouseEvent& e) {
     (void)e;
-    SDL_ShowCursor(SDL_ENABLE);
+    if(!ePlatform::touchUi()) SDL_ShowCursor(SDL_ENABLE);
     return true;
 }
 

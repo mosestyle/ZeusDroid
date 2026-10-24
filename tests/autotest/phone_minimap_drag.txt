@@ -1,0 +1,33 @@
+# Mini map (Overview panel) drag: the view follows the finger smoothly (port: no mouse warping on touch).
+# Phone layout: Xvfb 2400x1080, settings width 2400 height 1080, EZEUS_TOUCH=1 EZEUS_UI_SCALE=large EZEUS_RENDER_FPS=60. Taps only.
+8000 finger_down 1 1700 150
+80 finger_up 1 1700 150
+2500 finger_down 1 570 514
+80 finger_up 1 570 514
+800 finger_down 1 1100 720
+80 finger_up 1 1100 720
+4000 finger_down 1 1680 832
+80 finger_up 1 1680 832
+1000 wait_game 120000
+2000 log start
+100 finger_down 1 2200 700
+200 log down
+60 finger_move 1 2210 710
+10 log move1
+60 finger_move 1 2220 720
+10 log move2
+60 finger_move 1 2230 730
+10 log move3
+60 finger_move 1 2240 740
+10 log move4
+60 finger_move 1 2250 750
+10 log move5
+60 finger_move 1 2260 760
+10 log move6
+60 finger_move 1 2270 770
+10 log move7
+60 finger_move 1 2280 780
+10 log move8
+60 finger_up 1 2280 780
+300 log up_expect_same_as_move8
+200 quit

@@ -1,5 +1,16 @@
 # Release notes
 
+## 0.1.18-dev
+* Undo is now a plain **Undo** button in the right-hand column (under ">>"), away from the
+  camera notch, in the same style as Save / Load / Menu. It disappears after 10 seconds by
+  default; Touch control options → "Undo button stays for": 10 seconds / 30 seconds /
+  1 minute.
+* Mini map (Overview panel): dragging moves the view smoothly with the finger instead of
+  jumping around.
+* Import screen: "Save a backup of the texture pack (.zip)…" writes the imported texture pack
+  to a file you choose (phone, memory card, cloud). "Import texture pack" sets the game up
+  again from that file, so the download from GitHub is never needed again.
+
 ## 0.1.17-dev
 * The app is now called **ZeusDroid** (icon label, title, importer). The importer speaks of
   the "texture pack"; only the pack's file name (eZeus-0.8.2-beta.zip) is still shown so you
