@@ -1,0 +1,80 @@
+# Camera after loading: map position and zoom are restored (.view side file); full-screen city view hides the side panel; R only shows for rotatable buildings.
+8000 finger_down 1 1200 150
+80 finger_up 1 1200 150
+2500 finger_down 1 570 346
+80 finger_up 1 570 346
+800 finger_down 1 1100 720
+80 finger_up 1 1100 720
+4000 finger_down 1 1680 832
+80 finger_up 1 1680 832
+1000 wait_game 120000
+1000 wait_game 120000
+2000 log start_expect_rotbtn0
+100 finger_down 1 900 600
+20 finger_down 2 1100 600
+30 finger_move 1 890 600
+1 finger_move 2 1110 600
+30 finger_move 1 880 600
+1 finger_move 2 1120 600
+30 finger_move 1 870 600
+1 finger_move 2 1130 600
+30 finger_move 1 860 600
+1 finger_move 2 1140 600
+30 finger_move 1 850 600
+1 finger_move 2 1150 600
+30 finger_move 1 840 600
+1 finger_move 2 1160 600
+30 finger_move 1 830 600
+1 finger_move 2 1170 600
+30 finger_move 1 820 600
+1 finger_move 2 1180 600
+30 finger_move 1 810 600
+1 finger_move 2 1190 600
+30 finger_move 1 800 600
+1 finger_move 2 1200 600
+50 finger_up 1 800 600
+20 finger_up 2 1200 600
+100 finger_down 1 1200 600
+40 finger_move 1 1150 580
+40 finger_move 1 1050 540
+40 finger_move 1 1000 520
+40 finger_up 1 1000 520
+400 log before_save_zoom2
+100 finger_down 1 1934 105
+80 finger_up 1 1934 105
+800 finger_down 1 1200 290
+80 finger_up 1 1200 290
+100 key V
+100 key I
+100 key E
+100 key W
+300 finger_down 1 1584 869
+80 finger_up 1 1584 869
+800 log saved_expect_quick_view
+100 finger_down 1 1000 600
+40 finger_move 1 1100 650
+40 finger_move 1 1300 700
+40 finger_move 1 1400 750
+40 finger_up 1 1400 750
+400 log moved_away
+100 finger_down 1 1934 190
+80 finger_up 1 1934 190
+800 finger_down 1 1200 290
+80 finger_up 1 1200 290
+100 key V
+100 key I
+100 key E
+100 key W
+300 finger_down 1 1584 869
+80 finger_up 1 1584 869
+1000 wait_game 60000
+2000 log after_load_expect_same_dx_dy_zoom_as_before_save
+100 finger_down 1 1934 275
+80 finger_up 1 1934 275
+600 log fullscreen_expect_panel_hidden
+200 screenshot build/run/fs_01.bmp
+100 finger_down 1 2300 275
+80 finger_up 1 2300 275
+600 log panel_back
+200 screenshot build/run/fs_02.bmp
+200 quit

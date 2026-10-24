@@ -343,3 +343,17 @@ Smart roads / Save / Load work; the keyboard popping up when opening Save/Load i
 * `tests/autotest/phone_save_keyboard.txt` (log now includes `textin` = SDL text input
   active): in game 0 → Load dialog opened 0 → tap on the name field 1 → Enter 0.
 APK 0.1.13-dev: versionCode 14, sha256 fbf8b8667c0cfaf5ca184bc5c820dae5d6b53ea454dc61ecc3bb8e7160a32fe0, v2/v3 OK
+
+### User report 2026-10-24 21:35 (0.1.13)
+Asked: what R does (nothing happened), full-screen city view, camera restored after loading.
+No vibration, no message changes.
+
+### 0.1.14-dev: full-screen view, camera restore, R only when useful
+* `tests/autotest/phone_view_restore.txt`: pinch to zoom 2 + pan → dx -600 dy -355 zoom 2;
+  Save as "view" (`view.ez.view` = zoom=2); pan away (dx -400 dy -280); Load "view" → dx -600
+  dy -355 zoom 2 (identical). ">>" → side panel off screen, Save button moves to the right
+  edge (x 1934 → 2306), screenshot shows the map over the full width; "<<" → back. R hidden
+  without a rotatable tool (code reading: `sRotatableMode` lists exactly the modes that use
+  the rotation in `egamewidgetbuild.cpp`; not exercised with a palace in an autotest).
+* Regressions: confirm, smart road, quick save, zoom/speed/lists, army, touch bar/pinch – pass.
+APK 0.1.14-dev: versionCode 15, sha256 0b29102276d8c777cc456fb89e9fe87076eb8b6c01913fee00b3fde7e13c6be3, v2/v3 OK

@@ -161,7 +161,7 @@ eInfoWidget* eGameWidget::openInfoWidget(eBuilding* const b) {
     }
     if(wid) {
         addWidget(wid);
-        wid->setX((width() - mGm->width() - wid->width())/2);
+        wid->setX((width() - panelW() - wid->width())/2);
         wid->align(eAlignment::vcenter);
         wid->setCloseAction([this, wid, closeAct]() {
             if(closeAct) closeAct();
@@ -178,7 +178,7 @@ eInfoWidget *eGameWidget::openInfoWidget(const std::vector<eCharacter*> chars) {
     wid->initialize(chars);
     if(wid) {
         addWidget(wid);
-        wid->setX((width() - mGm->width() - wid->width())/2);
+        wid->setX((width() - panelW() - wid->width())/2);
         wid->align(eAlignment::vcenter);
         wid->setCloseAction([this, wid]() {
             mInfoWidget = nullptr;

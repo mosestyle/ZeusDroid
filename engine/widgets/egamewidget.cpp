@@ -147,7 +147,7 @@ void eGameWidget::setBoard(eGameBoard* const board) {
                       eEpisodeIntroType::victory);
         addWidget(e);
         e->align(eAlignment::vcenter);
-        e->setX(x() + (width() - e->width() - mGm->width())/2);
+        e->setX(x() + (width() - e->width() - panelW())/2);
     });
     mBoard->setAutosaver([this]() {
         mBoard->waitUntilFinished();
@@ -563,7 +563,10 @@ void eGameWidget::initialize() {
         mSpeedButton = addTouchButton("50x", [this]() { setSpeedId(1); });
         updateSpeedButton();
         addTouchButton("+", [this]() { changeSpeed(1); });
-        addTouchButton("R", [this]() { rotateView(); });
+        // Rotates the building being placed (stadium, palace, gatehouse,
+        // horse ranch, sanctuaries, monuments); shown only for those.
+        mRotateButton = addTouchButton("R", [this]() { rotateView(); });
+        mRotateButton->hide();
         // Army box selection; shown only when the city has soldiers.
         mBoxSelectButton = addTouchButton("[ ]", [this]() {
             setTouchBoxSelect(!mTouchBoxSelect);
@@ -586,9 +589,8 @@ void eGameWidget::initialize() {
         mTouchCancelButton = addTouchButton("X", [this]() { touchCancel(); });
         mTouchCancelButton->hide();
 
-        // Save / Load at the right edge of the map, next to the side panel.
+        // Save / Load and the full-screen switch at the right edge of the map.
         {
-            int sy = mTopBar->height() + p;
             const auto addSideButton = [&](const std::string& txt,
                                            const eAction& act) {
                 const auto b = new eFramedButton(txt, window());
@@ -601,17 +603,12 @@ void eGameWidget::initialize() {
                 b->setPressAction(act);
                 addWidget(b);
                 mTouchBarButtons++;
-                b->move(width() - mGm->width() - b->width() - p, sy);
-                sy += b->height() + p/2;
                 return b;
             };
             mSaveButton = addSideButton("Save", [this]() { quickSave(); });
             mLoadButton = addSideButton("Load", [this]() { showLoadDialog(); });
-            const int bw = std::max(mSaveButton->width(), mLoadButton->width());
-            for(const auto b : {mSaveButton, mLoadButton}) {
-                b->setWidth(bw);
-                b->setX(width() - mGm->width() - bw - p);
-            }
+            mPanelButton = addSideButton(">>", [this]() { setPanelHidden(!mPanelHidden); });
+            layoutSideButtons();
         }
 
         // Confirm / cancel for two-step placement, positioned next to the
@@ -1272,7 +1269,7 @@ void eGameWidget::showTip(const ePlayerCityTarget& target,
     const int p = msgb->padding();
     addWidget(msgb);
     msgb->resize(msgb->width() + 2*p, msgb->height() + 2*p);
-    msgb->setX((width() - mGm->width() - msgb->width())/2);
+    msgb->setX((width() - panelW() - msgb->width())/2);
     eTip& etip = mTips.emplace_back();
     etip.fTarget = target;
     etip.fText = tip;
@@ -1303,7 +1300,7 @@ void eGameWidget::showQuestion(
     qw->initialize(title, q, acceptA, cancelA);
     addWidget(qw);
     qw->align(eAlignment::vcenter);
-    const int vw = width() - mGm->width();
+    const int vw = width() - panelW();
     const int w = qw->width();
     qw->setX((vw - w)/2);
     mLocked = true;
@@ -1649,7 +1646,7 @@ void eGameWidget::setPatrolBuilding(ePatrolBuildingBase* const pb) {
         fw->resize(60*p, 8*p);
         addWidget(fw);
         fw->align(eAlignment::bottom);
-        fw->move((width() - mGm->width() - fw->width())/2, fw->y() - 2*p);
+        fw->move((width() - panelW() - fw->width())/2, fw->y() - 2*p);
 
         const auto clearb = new eButton(eLanguage::text("clear"), window());
         clearb->fitContent();
@@ -1885,7 +1882,7 @@ void eGameWidget::switchPause() {
         mPausedLabel->setHugePadding();
         mPausedLabel->fitContent();
         addWidget(mPausedLabel);
-        const int vw = width() - mGm->width();
+        const int vw = width() - panelW();
         const int w = mPausedLabel->width();
         mPausedLabel->setX((vw - w)/2);
         const int p = mPausedLabel->padding();
@@ -2323,7 +2320,7 @@ void eGameWidget::showGoals() {
                   eEpisodeIntroType::goals);
     addWidget(e);
     e->align(eAlignment::vcenter);
-    e->setX(x() + (width() - e->width() - mGm->width())/2);
+    e->setX(x() + (width() - e->width() - panelW())/2);
     window()->execDialog(e);
 }
 
@@ -2608,7 +2605,7 @@ double eGameWidget::zoom() const {
 }
 
 int eGameWidget::worldViewW() const {
-    const int gmw = mGm ? mGm->width() : 0;
+    const int gmw = panelW();
     return static_cast<int>(std::ceil((width() - gmw)/mWorldScale));
 }
 
@@ -2753,7 +2750,7 @@ void eGameWidget::setWorldDirection(const eWorldDirection dir) {
 
 void eGameWidget::centerDialog(eWidget* const d) {
     d->setY((height() - d->height() - mTopBar->height())/2);
-    d->setX((width() - d->width() - mGm->width())/2);
+    d->setX((width() - d->width() - panelW())/2);
 }
 
 void eGameWidget::openDialog(eWidget* const d) {
@@ -2987,7 +2984,7 @@ void eGameWidget::touchEdgeScroll() {
     const int margin = std::max(height()/12, 40);
     const int left = mTouchCancelButton ?
                          mTouchCancelButton->x() + mTouchCancelButton->width() : 0;
-    const int right = width() - (mGm ? mGm->width() : 0);
+    const int right = width() - panelW();
     const int top = mTopBar ? mTopBar->height() : 0;
     const int bottom = height();
     // Up to ~900 screen px per second at the very edge.
@@ -3186,7 +3183,7 @@ void eGameWidget::updatePreviewPanel() {
     const int pw = mPreviewPanel->width();
     const int ph = mPreviewPanel->height();
     const int th = static_cast<int>(mTileH*s);
-    const int mapW = width() - (mGm ? mGm->width() : 0);
+    const int mapW = width() - panelW();
     // Below the preview, clear of a 3x3 building; above if no room.
     int y = ay + 2*th + ph/4;
     if(y + ph > height()) y = ay - 3*th - ph;
@@ -3330,6 +3327,11 @@ void eGameWidget::toggleTouchDrawMode() {
 }
 
 void eGameWidget::updateDrawButton() {
+    if(mRotateButton) {
+        const bool rot = mGm && !(mTem && mTem->visible()) &&
+                         sRotatableMode(mGm->mode());
+        mRotateButton->setVisible(rot);
+    }
     if(!mDrawButton) return;
     const bool tool = buildToolActive() && !(mTem && mTem->visible());
     mDrawButton->setVisible(tool);
@@ -3391,4 +3393,69 @@ bool eGameWidget::autosaveNow(const std::string& name) {
     mBoard->waitUntilFinished();
     const auto w = window();
     return w->saveGame(w->leaderSaveDir() + name + ".ez");
+}
+
+int eGameWidget::panelW() const {
+    if(mPanelHidden || !mGm) return 0;
+    return mGm->width();
+}
+
+void eGameWidget::layoutSideButtons() {
+    if(!mSaveButton) return;
+    const int p = padding();
+    int bw = 0;
+    for(const auto b : {mSaveButton, mLoadButton, mPanelButton}) {
+        bw = std::max(bw, b->width());
+    }
+    int sy = mTopBar->height() + p;
+    for(const auto b : {mSaveButton, mLoadButton, mPanelButton}) {
+        b->setWidth(bw);
+        b->move(width() - panelW() - bw - p, sy);
+        sy += b->height() + p/2;
+    }
+}
+
+void eGameWidget::setPanelHidden(const bool h) {
+    // Port (touch): full-screen city view. The side panel slides off the
+    // screen (it stays alive, so the current tool keeps working).
+    mPanelHidden = h;
+    const int x = h ? width() : width() - mGm->width();
+    mGm->setX(x);
+    if(mAm) mAm->setX(h ? width() : width() - mAm->width());
+    if(mPanelButton) mPanelButton->setText(h ? "<<" : ">>");
+    layoutSideButtons();
+    if(mPausedLabel) mPausedLabel->setX((width() - panelW() - mPausedLabel->width())/2);
+    updateTipPositions();
+}
+
+bool eGameWidget::sRotatableMode(const eBuildingMode m) {
+    switch(m) {
+    case eBuildingMode::stadium:
+    case eBuildingMode::palace:
+    case eBuildingMode::gatehouse:
+    case eBuildingMode::horseRanch:
+    case eBuildingMode::modestPyramid:
+    case eBuildingMode::pyramid:
+    case eBuildingMode::greatPyramid:
+    case eBuildingMode::majesticPyramid:
+    case eBuildingMode::smallMonumentToTheSky:
+    case eBuildingMode::monumentToTheSky:
+    case eBuildingMode::grandMonumentToTheSky:
+    case eBuildingMode::pyramidToThePantheon:
+    case eBuildingMode::altarOfOlympus:
+    case eBuildingMode::templeOfOlympus:
+    case eBuildingMode::observatoryKosmika:
+    case eBuildingMode::museumAtlantika:
+        return true;
+    default:
+        break;
+    }
+    const auto n = static_cast<int>(m);
+    const auto in = [n](const eBuildingMode a, const eBuildingMode b) {
+        return n >= static_cast<int>(a) && n <= static_cast<int>(b);
+    };
+    return in(eBuildingMode::templeAphrodite, eBuildingMode::templeZeus) ||
+           in(eBuildingMode::minorShrineAphrodite, eBuildingMode::minorShrineZeus) ||
+           in(eBuildingMode::shrineAphrodite, eBuildingMode::shrineZeus) ||
+           in(eBuildingMode::majorShrineAphrodite, eBuildingMode::majorShrineZeus);
 }

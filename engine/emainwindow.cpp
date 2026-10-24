@@ -485,6 +485,12 @@ bool eMainWindow::saveGame(const std::string& path) {
         std::filesystem::remove(tmpPath, ec);
         return false;
     }
+    // Port: the save format keeps the map position but not the zoom of the
+    // port's zoomable view; it goes to a small side file "<save>.view".
+    if(mGW) {
+        std::ofstream view(path + ".view", std::ios::out | std::ios::trunc);
+        if(view) view << "zoom=" << mGW->zoom() << "\n";
+    }
     return true;
 }
 
@@ -514,6 +520,14 @@ bool eMainWindow::loadGame(const std::string& path) {
     src.handlePostFuncs();
     file.close();
 
+    mPendingZoom = 0;
+    {
+        std::ifstream view(path + ".view");
+        std::string line;
+        while(view && std::getline(view, line)) {
+            if(line.rfind("zoom=", 0) == 0) mPendingZoom = std::atof(line.c_str() + 5);
+        }
+    }
     {
         const auto name = std::filesystem::path(path).filename().string();
         mQuickSavePath = name.rfind("autosave", 0) == 0 ? std::string() : path;
@@ -688,6 +702,11 @@ void eMainWindow::showGame(eGameBoard* b,
     mGW->resize(width(), height());
     mGW->initialize();
     mGW->setSettings(settings);
+    if(mPendingZoom > 0) {
+        // Keeps the map point at the top-left corner where it was saved.
+        mGW->setZoomAt(mPendingZoom, 0, 0);
+        mPendingZoom = 0;
+    }
     setWidget(mGW);
 }
 

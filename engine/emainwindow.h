@@ -127,6 +127,7 @@ private:
     eGameBoard* mBoard = nullptr;
     eGameWidget* mGW = nullptr;
     std::string mQuickSavePath;
+    double mPendingZoom = 0; // port: camera zoom restored after loading
     eWorldWidget* mWW = nullptr;
 
     eWidget* mWidget = nullptr;

@@ -107,3 +107,11 @@ anchored at the screen centre). Zoom is not stored in saves (save format unchang
   zoom-out step anchored at the pinch centre, a jittery tap that did not move the camera,
   and that a pinch starting on a message box is treated as a UI touch.
 * Not yet done: tests on a physical phone (no device is attached to this environment).
+
+## Save / Load / full screen (0.1.12–0.1.14)
+* Right edge of the map: **Save** (first time asks for a name, then quick-saves to the same
+  file), **Load**, **>>** full-screen city view (side panel slides away; **<<** brings it
+  back).
+* The keyboard opens only when the name field is tapped; Enter closes it.
+* **R** (rotate) appears only for buildings that can be rotated.
+* Autosave as "autosave" whenever the app goes to the background.

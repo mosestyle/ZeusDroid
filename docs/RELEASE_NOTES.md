@@ -1,5 +1,14 @@
 # Release notes
 
+## 0.1.14-dev
+* Full-screen city view: the ">>" button under Save / Load slides the right panel away so the
+  city fills the screen; "<<" brings it back. The selected building tool keeps working.
+* Loading a save puts the camera back where it was, including the zoom (stored in a small
+  "<save>.view" file next to the save; older saves load at normal zoom).
+* The "R" button (rotate) now only appears while placing a building that can be rotated:
+  stadium, palace, gatehouse, horse ranch, sanctuaries, pyramids and monuments. Before it
+  was always shown but only did something for those buildings.
+
 ## 0.1.13-dev
 * Save / Load dialogs no longer open the phone keyboard by themselves: it opens when you tap
   the name field, and Enter closes it. (Other text fields, e.g. a new leader's name, still

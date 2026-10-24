@@ -250,6 +250,9 @@ private:
     int worldViewH() const;
     eMouseEvent toWorld(const eMouseEvent& e) const;
     double mWorldScale = 1.0;
+    // Width of the right side panel as far as the map is concerned (0 in
+    // the full-screen city view).
+    int panelW() const;
     SDL_Texture* mWorldTarget = nullptr;
     int mWorldTargetW = 0;
     int mWorldTargetH = 0;
@@ -292,6 +295,12 @@ private:
     std::map<eBuildingMode, bool> mDrawModes;
     eFramedButton* mDrawButton = nullptr;
     eFramedButton* mSaveButton = nullptr;
+    eFramedButton* mRotateButton = nullptr;
+    eFramedButton* mPanelButton = nullptr;
+    bool mPanelHidden = false;
+    void setPanelHidden(const bool h);
+    void layoutSideButtons();
+    static bool sRotatableMode(const eBuildingMode m);
     eFramedButton* mLoadButton = nullptr;
     void updateDrawButton();
     eFramedButton* mBoxSelectButton = nullptr;

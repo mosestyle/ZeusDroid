@@ -24,7 +24,7 @@ _Branch `main`; see `git log` for the current commit._
 | Touch layer in real engine (desktop, EZEUS_TOUCH=1) | pan exact, continuous pinch zoom 0.5–3× pinned under the fingers, hold-to-draw at zoom 1 and 2, two-step placement (preview, move, ✓/✕), touch settings screen, list drag-scroll, speed label, jitter tap ignored, UI-vs-map routing |
 | Unit tests | gesture FSM 102/102 (x86-64 and ARM64-Android-under-qemu), ENG converter (synthetic + real files, Python == C++), importer rules 46/46 |
 | Android arm64 native build | builds: libmain.so + SDL2 family, AArch64, 16 KB-aligned, static libc++ |
-| APK | `dist/eZeusPort-debug-arm64-v8a.apk` 0.1.13-dev (versionCode 14, sha256 `fbf8b8667c0cfaf5ca184bc5c820dae5d6b53ea454dc61ecc3bb8e7160a32fe0`) |
+| APK | `dist/eZeusPort-debug-arm64-v8a.apk` 0.1.14-dev (versionCode 15, sha256 `0b29102276d8c777cc456fb89e9fe87076eb8b6c01913fee00b3fde7e13c6be3`) |
 | ARM64 audio codec | minimp3 decodes all 26 music tracks + voice (qemu) |
 | Real device | **runs on the user's Samsung Galaxy S25** (0.1.3: city simulation, date and speed advance, 60 FPS, user report 2026-10-22); 0.1.4–0.1.6 confirmed by the user (zoom, lists, speed, preview placement, settings, music/sound, save → kill → load, home/screen-off resume); 0.1.7 army controls confirmed; 0.1.8 not yet tried |
 
