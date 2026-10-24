@@ -294,3 +294,23 @@ APK 0.1.9-dev: versionCode 10, sha256 50a07d2f97c0e71cfaaf6ac012af13794517602d9e
   so no side-by-side of the new spread yet; the original's game speed is still at 100 %
   (was 90 %).
 APK 0.1.10-dev: versionCode 11, sha256 449480458a6ca0513e56d8953224a8453ade77b74b826170e7bfcbeb6ead8427, v2/v3 OK
+
+### User report 2026-10-24 19:07 (0.1.10)
+Houses right beside a road were refused with "Some plots are too far from a road" (screenshot);
+the user states the original allows building houses away from roads. Asked whether both Zeus
+and Poseidon (all adventures, custom adventures) are included.
+
+### 0.1.11-dev: road check removed, adventure coverage
+* House placement code is identical to upstream eZeus again (`git diff 0416715` shows no
+  change in the commonHousing case); the road check and its helper are deleted.
+* Adventures (desktop, test-only autotest commands `debug_adventures` and
+  `debug_start_adventure <i>`, game folder = the user's original Adventures folder): the list
+  has 26 entries – 2 eZeus-made + all 24 from the user's folder: Zeus and Poseidon campaigns
+  (file versions: 15 Zeus, 11 Poseidon .pak), Open Play ×6 and the custom adventures in
+  sub-folders (The Founding of Troy, The Mayan Revolution, The Odyssey, The Sinking of
+  Atlantis, The Youngest Twins). Each of the 24 was started: all reached the game screen
+  (wait_game ok, no crash); screenshots checked for The Birth of Atlantis (Poseidon) and The
+  Mayan Revolution (custom): map, terrain and UI render. Playing each campaign through is not
+  tested.
+* Unit tests 102/102 + 18/18 + 46/46; regressions build confirm and draw pass.
+APK 0.1.11-dev: versionCode 12, sha256 82f26ca251be0949a45041c355657b21fb8ffd3ae3e12f10446c6fd33c3ff566, v2/v3 OK

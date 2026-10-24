@@ -814,7 +814,6 @@ bool eGameWidget::buildMouseRelease() {
             }
         } break;
         case eBuildingMode::commonHousing: {
-            bool farPlots = false;
             const int sMinX = std::min(mPressedTX, mHoverTX);
             const int sMinY = std::min(mPressedTY, mHoverTY);
             const int sMaxX = std::max(mPressedTX, mHoverTX);
@@ -826,20 +825,10 @@ bool eGameWidget::buildMouseRelease() {
                     if(!cb) continue;
                     const auto t = mBoard->tile(x, y);
                     if(!t) continue;
-                    const bool built = mBoard->build(t->x(), t->y() + 1, 2, 2, cid, pid, mEditorMode,
-                          [this]() { return e::make_shared<eSmallHouse>(*mBoard, mViewedCityId); });
-                    r = built || r;
-                    // Port (parity): like the original, a plot that does not
-                    // touch a road is paid for but vanishes at once, with
-                    // "Some plots are too far from a road".
-                    if(built && !mEditorMode && !housePlotTouchesRoad(t->x(), t->y() + 1)) {
-                        const auto pt = mBoard->tile(t->x(), t->y() + 1);
-                        if(const auto b = pt ? pt->underBuilding() : nullptr) b->erase();
-                        farPlots = true;
-                    }
+                    r = mBoard->build(t->x(), t->y() + 1, 2, 2, cid, pid, mEditorMode,
+                          [this]() { return e::make_shared<eSmallHouse>(*mBoard, mViewedCityId); }) || r;
                 }
             }
-            if(farPlots) showTip(cid, eLanguage::zeusText(19, 26));
         } break;
         case eBuildingMode::gymnasium: {
             r = mBoard->build(mHoverTX, mHoverTY, 3, 3, cid, pid, mEditorMode,
@@ -2194,18 +2183,6 @@ bool eGameWidget::buildMouseRelease() {
         // eSounds::playSoundForBuilding(type);
     }
     return true;
-}
-
-bool eGameWidget::housePlotTouchesRoad(const int x, const int y) const {
-    // Tiles around the 2x2 plot (x..x+1, y..y+1), corners included.
-    for(int dx = -1; dx <= 2; dx++) {
-        for(int dy = -1; dy <= 2; dy++) {
-            if(dx >= 0 && dx <= 1 && dy >= 0 && dy <= 1) continue;
-            const auto t = mBoard->tile(x + dx, y + dy);
-            if(t && t->hasRoad()) return true;
-        }
-    }
-    return false;
 }
 
 bool eGameWidget::debugBuild(const std::string& what, const int tx, const int ty) {

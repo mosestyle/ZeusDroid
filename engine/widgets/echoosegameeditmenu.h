@@ -13,6 +13,9 @@ public:
     void initialize(const bool editor);
 
     void setGlossary(const eCampaignGlossary& g);
+    // All adventures shown in the list: eZeus folders + original .pak files
+    // (Zeus and Poseidon, incl. custom adventures in sub-folders).
+    static std::vector<eCampaignGlossary> sListAdventures();
 private:
     eCampaignGlossary mSelected;
     eBitmapWidget* mBitmap = nullptr;

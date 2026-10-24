@@ -1057,3 +1057,31 @@ int eMainWindow::exec() {
 
     return 0;
 }
+
+std::string eMainWindow::debugListAdventures() const {
+    const auto list = eChooseGameEditMenu::sListAdventures();
+    std::string r;
+    int i = 0;
+    for(const auto& g : list) {
+        r += std::to_string(i++) + ": " + g.fTitle + (g.fIsPak ? " [pak " +
+             g.fPakPath.substr(g.fPakPath.find_last_of('/') + 1) + "]" : " [eZeus]") + "\n";
+    }
+    return r;
+}
+
+bool eMainWindow::debugStartAdventure(const int index) {
+    const auto list = eChooseGameEditMenu::sListAdventures();
+    if(index < 0 || index >= (int)list.size()) return false;
+    const auto& g = list[index];
+    const auto c = std::make_shared<eCampaign>();
+    if(g.fIsPak) c->readPak(g.fTitle, g.fPakPath);
+    else c->load(g.fFolderName);
+    mCampaign = c;
+    mCampaign->startEpisode();
+    startGameAction([this]() {
+        eGameWidgetSettings settings;
+        settings.fPaused = true;
+        showGame(mCampaign, settings);
+    });
+    return true;
+}

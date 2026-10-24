@@ -76,9 +76,7 @@ bool readPakGlossary(const std::string& filename,
     return true;
 }
 
-void eChooseGameEditMenu::initialize(const bool editor) {
-    eMainMenuBase::initialize();
-
+std::vector<eCampaignGlossary> eChooseGameEditMenu::sListAdventures() {
     std::vector<eCampaignGlossary> glossaries;
     {
         const auto folder = eGameDir::adventuresDir();
@@ -115,6 +113,14 @@ void eChooseGameEditMenu::initialize(const bool editor) {
         const auto folder = eGameDir::pakAdventuresDir();
         procesFolder(folder);
     }
+
+    return glossaries;
+}
+
+void eChooseGameEditMenu::initialize(const bool editor) {
+    eMainMenuBase::initialize();
+
+    std::vector<eCampaignGlossary> glossaries = sListAdventures();
 
     const auto iww = new eWidget(window());
     iww->setNoPadding();

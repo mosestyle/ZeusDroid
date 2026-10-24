@@ -29,7 +29,7 @@ Phases from the brief (§17). ✅ done with evidence, 🟡 partly done, ⬜ not 
 * **F – Gameplay parity with the original 🟡 (started 2026-10-24)** done: data parity against
   the original Model files (costs, employees, desirability, tax table; tax low/very-low fix),
   Olympus blessing claim checked and rejected; side-by-side in the original: hut without food,
-  settlers in groups of 4, road-adjacent house plots (0.1.10); desirability spread and house
+  settlers in groups of 4 (0.1.10; a road check for houses was removed again in 0.1.11); desirability spread and house
   evolution rules from Zeus.exe (R6, 0.1.10). Next: (1) side-by-side of the new desirability
   (overlay values next to a gazebo/garden) and a house climbing levels in both games,
   (2) culture score instead of venue count, (3) fire/damage risk model, (4) immigration

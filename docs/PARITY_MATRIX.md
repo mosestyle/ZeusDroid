@@ -47,7 +47,7 @@ game's own autosave ran once).
 |---|---|---|---|
 | Build costs shown in the menus (Mortal): road 2/tile, hut 15, bench 10, flower garden 32, gazebo 36, hedge maze 70, fish pond 100 | as listed | same values now come from `Zeus_Model_Easy.txt` | `MATCHED` |
 | A hut with 8 occupants and no food stays a hut (10 months) and says "need food from an Agora before the house can improve" | stays a hut | level 1 needs food | `MATCHED` |
-| House plots must be next to a road ("Some plots are too far from a road"); plots 2 tiles away vanished after placement | yes | plots not touching a road (ring around the 2×2 incl. corners) are charged, removed and the same tip is shown | `MATCHED` (behaviour); exact timing of removal not compared |
+| House plots must be next to a road ("Some plots are too far from a road"); plots 2 tiles away vanished after placement | yes | 0.1.10 added a road check; it was wrong (it removed plots right beside a road) and the user reports the original lets you build houses away from roads. Removed in 0.1.11: house placement is exactly upstream eZeus again | `REVERTED` – no road rule in the port |
 | Settler group size | 4 | 8 → changed to 4 | `MATCHED` after fix |
 
 | Area | Status | Evidence so far | Known differences / notes |

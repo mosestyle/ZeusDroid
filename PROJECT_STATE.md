@@ -24,7 +24,7 @@ _Branch `main`; see `git log` for the current commit._
 | Touch layer in real engine (desktop, EZEUS_TOUCH=1) | pan exact, continuous pinch zoom 0.5–3× pinned under the fingers, hold-to-draw at zoom 1 and 2, two-step placement (preview, move, ✓/✕), touch settings screen, list drag-scroll, speed label, jitter tap ignored, UI-vs-map routing |
 | Unit tests | gesture FSM 102/102 (x86-64 and ARM64-Android-under-qemu), ENG converter (synthetic + real files, Python == C++), importer rules 46/46 |
 | Android arm64 native build | builds: libmain.so + SDL2 family, AArch64, 16 KB-aligned, static libc++ |
-| APK | `dist/eZeusPort-debug-arm64-v8a.apk` 0.1.10-dev (versionCode 11, sha256 `449480458a6ca0513e56d8953224a8453ade77b74b826170e7bfcbeb6ead8427`) |
+| APK | `dist/eZeusPort-debug-arm64-v8a.apk` 0.1.11-dev (versionCode 12, sha256 `82f26ca251be0949a45041c355657b21fb8ffd3ae3e12f10446c6fd33c3ff566`) |
 | ARM64 audio codec | minimp3 decodes all 26 music tracks + voice (qemu) |
 | Real device | **runs on the user's Samsung Galaxy S25** (0.1.3: city simulation, date and speed advance, 60 FPS, user report 2026-10-22); 0.1.4–0.1.6 confirmed by the user (zoom, lists, speed, preview placement, settings, music/sound, save → kill → load, home/screen-off resume); 0.1.7 army controls confirmed; 0.1.8 not yet tried |
 
@@ -47,5 +47,5 @@ desktop-verified only.
 
 ## Parity coverage (honest)
 
-Data parity against the original Model files (2026-10-24): building costs, employees, desirability values, tax sentiment, house capacities `MATCHED` (by reading the user's original files at run time / fixes); desirability spread (rings/steps, ±100, max under the house) and house evolution (devolve/evolve values with hysteresis) now follow the original rules found in Zeus.exe (research R6); fire/damage risk still `MISMATCH`. Side-by-side observations in the original: hut without food stays a hut, settlers in groups of 4, plots must touch a road – all `MATCHED`. Several systems confirmed to *run* in the
+Data parity against the original Model files (2026-10-24): building costs, employees, desirability values, tax sentiment, house capacities `MATCHED` (by reading the user's original files at run time / fixes); desirability spread (rings/steps, ±100, max under the house) and house evolution (devolve/evolve values with hysteresis) now follow the original rules found in Zeus.exe (research R6); fire/damage risk still `MISMATCH`. Side-by-side observations in the original: hut without food stays a hut, settlers in groups of 4. A house road check added in 0.1.10 was wrong and has been removed (0.1.11). All 24 adventures in the user's folder (Zeus, Poseidon, Open Play, custom) list and start. Several systems confirmed to *run* in the
 port (PARITY_MATRIX.md). The only gameplay-visible change made: text fields accept `q`.

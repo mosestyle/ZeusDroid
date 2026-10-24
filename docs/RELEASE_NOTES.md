@@ -1,13 +1,18 @@
 # Release notes
 
+## 0.1.11-dev
+* Removed the house road check added in 0.1.10: it wrongly refused houses right beside a
+  road. Houses can be placed anywhere again, as before.
+* Checked: the adventure list shows all 24 adventures from your game folder – Zeus and
+  Poseidon campaigns, Open Play maps and your custom adventures (see test report).
+
 ## 0.1.10-dev
 * Desirability now works like the original game: every building spreads its value in
   square rings with the original steps (from your Model files), and houses take the best
   value under them. Houses evolve and devolve with the original thresholds for your
   difficulty (with the original "buffer" between devolving and evolving). This changes how
   attractive areas must be, so existing cities may settle at different house levels.
-* Houses must touch a road, as in the original: plots that don't are removed and the tip
-  "Some plots are too far from a road" is shown.
+* (Removed again in 0.1.11) A house road check.
 * Settlers arrive in groups of up to 4 (as observed in the original).
 * Roads look paved above the original desirability limit.
 

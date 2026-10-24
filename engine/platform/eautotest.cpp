@@ -152,6 +152,14 @@ void execute(const Cmd& c, eMainWindow& w, const uint32_t now) {
             logLine("t=" + std::to_string(now) + " " + gw->debugDesirability(
                         std::stoi(c.fArgs[0]), std::stoi(c.fArgs[1])));
         }
+    } else if(c.fName == "debug_adventures") {
+        // Test-only: log every adventure the list would show.
+        std::istringstream in(w.debugListAdventures());
+        std::string line;
+        while(std::getline(in, line)) logLine("adventure " + line);
+    } else if(c.fName == "debug_start_adventure" && !c.fArgs.empty()) {
+        const bool ok = w.debugStartAdventure(std::stoi(c.fArgs[0]));
+        logLine("debug_start_adventure " + c.fArgs[0] + (ok ? " ok" : " failed"));
     } else if(c.fName == "wait_game") {
         s.fWaiting = true;
         const uint32_t timeout = c.fArgs.empty() ? 60000 : std::stoul(c.fArgs[0]);

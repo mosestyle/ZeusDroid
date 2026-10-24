@@ -306,7 +306,6 @@ private:
     using eApply = std::function<void(eTile* const)>;
     eApply editFunc();
     bool buildMouseRelease();
-    bool housePlotTouchesRoad(int x, int y) const;
 
     using eTileAction = std::function<void(eTile* const)>;
     void iterateOverVisibleTiles(const eTileAction& a);

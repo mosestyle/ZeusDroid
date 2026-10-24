@@ -95,6 +95,9 @@ public:
                     eWidget* const parent = nullptr);
 
     void showEpisodeIntroduction(const stdsptr<eCampaign>& c = nullptr);
+    // Test-only (autotest): list adventures / start one (index into the list).
+    std::string debugListAdventures() const;
+    bool debugStartAdventure(const int index);
     const stdsptr<eCampaign>& campaign() const { return mCampaign; }
 
     const std::string& leader() const { return mLeader; }
