@@ -80,7 +80,7 @@ public:
     void showMenuLoading();
     void showMainMenu();
     void showSettingsMenu();
-    void showChooseGameMenu();
+    void showChooseGameMenu(const bool custom = false);
     void showChooseGameEditMenu();
     void showGame(const stdsptr<eCampaign>& c,
                   const eGameWidgetSettings& settings);

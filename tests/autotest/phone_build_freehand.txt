@@ -1,9 +1,9 @@
 # Freehand roads (Draw mode): the road follows the finger incl. turns; dragging to the map edge auto-scrolls and extends the road.
 # Run with EZEUS_DRAW_STYLE=switch (Draw switch on the touch bar; default since 0.1.16 is the Draw button by the tick).
-8000 finger_down 1 1200 150
-80 finger_up 1 1200 150
-2500 finger_down 1 570 346
-80 finger_up 1 570 346
+8000 finger_down 1 1700 150
+80 finger_up 1 1700 150
+2500 finger_down 1 570 514
+80 finger_up 1 570 514
 800 finger_down 1 1100 720
 80 finger_up 1 1100 720
 4000 finger_down 1 1680 832

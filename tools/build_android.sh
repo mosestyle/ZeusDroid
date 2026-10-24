@@ -8,7 +8,7 @@
 #   D8_JAR        build-tools/*/lib/d8.jar
 #   aapt or aapt2, zipalign, apksigner, javac, keytool on PATH
 #
-# Output: dist/eZeusPort-debug-arm64-v8a.apk
+# Output: dist/ZeusDroid-debug-arm64-v8a.apk
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -23,7 +23,7 @@ D8_JAR="${D8_JAR:-/home/claude/android/android-sdk/build-tools/37.0.0/lib/d8.jar
 # is used for resource linking only (javac still compiles against ANDROID_JAR).
 RES_JAR="${RES_JAR:-/usr/lib/android-sdk/platforms/android-23/android.jar}"
 API=26
-APK_NAME="eZeusPort-debug-arm64-v8a.apk"
+APK_NAME="ZeusDroid-debug-arm64-v8a.apk"
 TB="$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64"
 STRIP="$TB/bin/llvm-strip"
 

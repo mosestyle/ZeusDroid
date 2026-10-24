@@ -24,6 +24,7 @@ void addButton(const std::string& text,
 }
 
 void eMainMenu::initialize(const eAction& newGameA,
+                           const eAction& customGameA,
                            const eAction& loadGameA,
                            const eAction& editGameA,
                            const eAction& settingsA,
@@ -50,6 +51,22 @@ void eMainMenu::initialize(const eAction& newGameA,
     addButton(eLanguage::zeusText(1, 5), quitA, buttons, w);
 
     buttons->layoutVertically();
+
+    // Port: "Custom Adventures" (the original's own text) beside "New
+    // Adventure", like the original's separate custom adventure list.
+    {
+        const auto newB = buttons->children().front();
+        const auto cb = new eFramedButton(w);
+        cb->setRenderBg(true);
+        cb->setUnderline(false);
+        cb->setPressAction(customGameA);
+        cb->setText(eLanguage::zeusText(293, 5));
+        cb->fitContent();
+        cb->setHeight(newB->height());
+        buttons->addWidget(cb);
+        const int gap = res.largePadding();
+        cb->move(newB->x() + newB->width() + gap, newB->y());
+    }
 
     const auto leader = new eFramedButton(w);
     leader->setRenderBg(true);

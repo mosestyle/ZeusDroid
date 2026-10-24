@@ -76,9 +76,16 @@ bool readPakGlossary(const std::string& filename,
     return true;
 }
 
-std::vector<eCampaignGlossary> eChooseGameEditMenu::sListAdventures() {
+std::vector<eCampaignGlossary> eChooseGameEditMenu::sListAdventures(const eList list) {
+    // Port: like the original, "Custom Adventures" are the adventures in
+    // their own sub-folder of Adventures/ (user-made / downloaded, e.g. Open
+    // Play Sandbox 2, The Odyssey) plus eZeus' own adventures; the official
+    // campaigns and Open Play maps (.pak files directly in Adventures/) are
+    // the original adventures.
+    const bool wantOriginal = list != eList::custom;
+    const bool wantCustom = list != eList::original;
     std::vector<eCampaignGlossary> glossaries;
-    {
+    if(wantCustom) {
         const auto folder = eGameDir::adventuresDir();
         std::filesystem::create_directories(folder);
         for(const auto& entry : fs::directory_iterator(folder)) {
@@ -94,7 +101,14 @@ std::vector<eCampaignGlossary> eChooseGameEditMenu::sListAdventures() {
     }
     {
         std::function<void(std::string)> procesFolder;
+        const auto root = fs::path(eGameDir::pakAdventuresDir()).lexically_normal();
         procesFolder = [&](const std::string& folder) {
+            const bool inSub = fs::path(folder).lexically_normal() != root &&
+                               fs::path(folder + "/").lexically_normal() != root;
+            if(inSub ? !wantCustom : !wantOriginal) {
+                // Still walk sub-folders of the root.
+                if(inSub) return;
+            }
             for(const auto& entry : fs::directory_iterator(folder)) {
                 const bool dir = entry.is_directory();
                 const auto path = entry.path();
@@ -105,6 +119,7 @@ std::vector<eCampaignGlossary> eChooseGameEditMenu::sListAdventures() {
                 }
                 const auto ext = pathStr.substr(pathStr.size() - 3);
                 if(ext != "pak") continue;
+                if(inSub ? !wantCustom : !wantOriginal) continue;
                 eCampaignGlossary glossary;
                 const bool r = readPakGlossary(pathStr, glossary);
                 if(r) glossaries.push_back(glossary);
@@ -113,14 +128,20 @@ std::vector<eCampaignGlossary> eChooseGameEditMenu::sListAdventures() {
         const auto folder = eGameDir::pakAdventuresDir();
         procesFolder(folder);
     }
+    if(list == eList::custom) {
+        std::sort(glossaries.begin(), glossaries.end(),
+                  [](const eCampaignGlossary& a, const eCampaignGlossary& b) {
+            return a.fTitle < b.fTitle;
+        });
+    }
 
     return glossaries;
 }
 
-void eChooseGameEditMenu::initialize(const bool editor) {
+void eChooseGameEditMenu::initialize(const bool editor, const eList list) {
     eMainMenuBase::initialize();
 
-    std::vector<eCampaignGlossary> glossaries = sListAdventures();
+    std::vector<eCampaignGlossary> glossaries = sListAdventures(list);
 
     const auto iww = new eWidget(window());
     iww->setNoPadding();
@@ -145,7 +166,8 @@ void eChooseGameEditMenu::initialize(const bool editor) {
     title->setHugeFontSize();
     title->setSmallPadding();
     title->setText(editor ? eLanguage::zeusText(287, 3) :
-                            eLanguage::zeusText(293, 9));
+                            (list == eList::custom ? eLanguage::zeusText(293, 5) :
+                                                     eLanguage::zeusText(293, 9)));
     title->fitContent();
     iw->addWidget(title);
     title->align(eAlignment::hcenter);

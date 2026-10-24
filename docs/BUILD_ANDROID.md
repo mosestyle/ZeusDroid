@@ -41,7 +41,7 @@ Environment variables (defaults are the agent environment's paths):
 
 ```
 tools/build_android.sh
-adb install -r dist/eZeusPort-debug-arm64-v8a.apk
+adb install -r dist/ZeusDroid-debug-arm64-v8a.apk
 ```
 
 ### How the restricted agent environment was set up (and its caveats)
@@ -79,7 +79,7 @@ The development container could reach GitHub, Ubuntu archives, PyPI and npm, but
 ## Installing on a phone
 
 1. Enable *Developer options → USB debugging* (or allow installs from your file manager).
-2. `adb install -r dist/eZeusPort-debug-arm64-v8a.apk`, or copy the APK to the phone and
+2. `adb install -r dist/ZeusDroid-debug-arm64-v8a.apk`, or copy the APK to the phone and
    open it.
 3. Launch **eZeus Port**, import your game folder and the eZeus data pack (GAME_DATA.md).
 4. Logs: `adb logcat -s SDL SDL/APP ZeusImport`.

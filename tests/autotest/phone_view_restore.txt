@@ -1,8 +1,8 @@
 # Camera after loading: map position and zoom are restored (.view side file); full-screen city view hides the side panel; R only shows for rotatable buildings.
-8000 finger_down 1 1200 150
-80 finger_up 1 1200 150
-2500 finger_down 1 570 346
-80 finger_up 1 570 346
+8000 finger_down 1 1700 150
+80 finger_up 1 1700 150
+2500 finger_down 1 570 514
+80 finger_up 1 570 514
 800 finger_down 1 1100 720
 80 finger_up 1 1100 720
 4000 finger_down 1 1680 832
@@ -69,12 +69,12 @@
 80 finger_up 1 1584 869
 1000 wait_game 60000
 2000 log after_load_expect_same_dx_dy_zoom_as_before_save
-100 finger_down 1 1934 275
-80 finger_up 1 1934 275
+100 finger_down 1 1934 360
+80 finger_up 1 1934 360
 600 log fullscreen_expect_panel_hidden
 200 screenshot build/run/fs_01.bmp
-100 finger_down 1 2300 275
-80 finger_up 1 2300 275
+100 finger_down 1 2300 360
+80 finger_up 1 2300 360
 600 log panel_back
 200 screenshot build/run/fs_02.bmp
 200 quit

@@ -180,7 +180,7 @@ int main(int argc, char* argv[]) {
     checkTextureSize(eGameDir::i60BinaryPath(), settings.fLargeTextures);
     if(!found) {
         ePlatform::fatal("Could not find any textures!\n"
-                         "Make sure you have i15.e, i30.e, i45.e, or i60.e file in eZeus directory.");
+                         "Make sure the texture pack (i15.e, i30.e, i45.e or i60.e) is imported.");
         close();
         return 1;
     }

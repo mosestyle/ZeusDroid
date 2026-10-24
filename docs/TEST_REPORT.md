@@ -389,3 +389,28 @@ controls" to something like "touch controls options".
 * Note: phone_back_touch_settings switches "Placing buildings" to instant and saves it; reset
   `build_confirm "on"` in the local port_settings.txt before later tests.
 APK 0.1.16-dev: versionCode 17, sha256 2d70fd172217be77b86ee1644d8914726e9acc57983024ed7ecbcfd84bf81e72, v2/v3 OK
+
+### User report 2026-10-24 22:35 (0.1.16)
+The game menu needs Back twice; asked for a menu button under Load. Options: resolution gone,
+"Touch control options" outside the frame, tiny/small ticked while medium/large have no
+box. Asked for "Custom Adventures" beside New Adventure (photos of the original's two custom
+lists), and to rename the app (chosen: ZeusDroid). Then: remove the "based on eZeus" line.
+
+### 0.1.17-dev: ZeusDroid, Menu button, Custom Adventures, phone Options
+* Main menu screenshot: "Custom Adventures" (original text 293/5) right of New Adventure;
+  its list (screenshot): Economic Open Play 2, Open Play Military 2, Open Play Sandbox 2,
+  The Founding of Athens, The Founding of Troy, … alphabetical; New Adventure lists only the
+  .pak files directly in Adventures/.
+* `tests/autotest/phone_menu_button.txt`: Menu → game menu (screenshot).
+* Options (screenshot): compact window, textures with "(not installed)" for i45/i60, Touch
+  control options inside the frame.
+* Autotests start Founding of Athens, which moved to Custom Adventures: start taps changed
+  to the Custom Adventures button (1700,150) and row 4 (570,514) in all scripts; Full-screen
+  button now 4th side button (y 360).
+* Full regression (build/run/regress.sh): confirm, repeat, undo, info, army, zoom/speed/
+  lists, touch bar/pinch, quick save, save keyboard, view restore, rotate, draw button,
+  background autosave, menu, stats overlay; switch mode draw/smart/freehand; instant
+  hold-to-draw – all pass. Unit tests 102/18/46 pass.
+* APK label "ZeusDroid" (resources.arsc); same package id and debug key, installs over the
+  previous version and keeps imported data and saves.
+APK 0.1.17-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 18, sha256 51cf091fe6c2e009187510a8b51042490a72aa8c816d1f1386f638a89d2f9deb, v2/v3 OK

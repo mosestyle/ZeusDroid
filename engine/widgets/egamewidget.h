@@ -134,6 +134,8 @@ public:
     void togglePause() { switchPause(); }
     // Port: quick save (first time asks for a name), load dialog, autosave.
     void quickSave();
+    // In-game menu (resume, save, load, options, exit); Escape / Back.
+    void openGameMenu();
     void showSaveDialog();
     void showLoadDialog();
     bool autosaveNow(const std::string& name);
@@ -329,6 +331,7 @@ private:
     void layoutSideButtons();
     static bool sRotatableMode(const eBuildingMode m);
     eFramedButton* mLoadButton = nullptr;
+    eFramedButton* mMenuButton = nullptr;
     void updateDrawButton();
     eFramedButton* mBoxSelectButton = nullptr;
     // Tap on the map with soldiers selected / on a banner (touch only).

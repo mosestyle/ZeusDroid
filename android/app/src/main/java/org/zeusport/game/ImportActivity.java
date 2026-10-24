@@ -127,7 +127,7 @@ public class ImportActivity extends Activity {
         try {
             ver = " · v" + getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
         } catch (Exception ignored) { }
-        title.setText("Zeus + Poseidon — native Android port (eZeus engine)" + ver);
+        title.setText("ZeusDroid — Zeus + Poseidon for Android" + ver);
         title.setTextColor(Color.rgb(0xF2, 0xE6, 0xC8));
         title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
         title.setTypeface(Typeface.DEFAULT_BOLD);
@@ -140,21 +140,18 @@ public class ImportActivity extends Activity {
         body.setText(
             "This app contains only the open-source engine. To play you need your own copy of "
             + "Zeus: Master of Olympus with the Poseidon expansion (for example the GOG edition) "
-            + "and the free eZeus data pack (eZeus-0.8.2-beta.zip from the eZeus GitHub releases).\n\n"
+            + "and the free texture pack.\n\n"
             + "1. Copy your \"Zeus and Poseidon\" install folder from your PC to this device "
-            + "(USB, SD card or cloud) and pick it below. If you already unpacked eZeus into that "
-            + "folder (eZeus-0.8.2-beta/), it is imported too.\n"
-            + "2. The eZeus textures (interface.e, i15.e, i30.e) are NOT part of the original game: eZeus "
-            + "publishes them only in the release file eZeus-0.8.2-beta.zip (339 MB). Tap \"Download eZeus data "
-            + "pack\" below, or import that file if you already have it. GitHub's \"Source code (zip)\" "
-            + "does not contain them.\n\n"
+            + "(USB, SD card or cloud) and pick it below.\n"
+            + "2. Tap \"Download texture pack\" (339 MB, free), or import the pack file "
+            + "(eZeus-0.8.2-beta.zip) if you already have it.\n\n"
             + "Files are copied into this app's private storage. Your saves are kept when you re-import. "
             + "Nothing is uploaded anywhere.");
         col.addView(body);
 
         mPickFolder = button("Import game folder…", v -> pickFolder());
-        mPickZip = button("Import eZeus data pack (.zip)…", v -> pickZip());
-        mDownload = button("Download eZeus data pack from GitHub (339 MB)", v -> startWork(this::downloadPack));
+        mPickZip = button("Import texture pack (.zip)…", v -> pickZip());
+        mDownload = button("Download texture pack (339 MB)", v -> startWork(this::downloadPack));
         mCancelButton = button("Cancel import", v -> mCancel.set(true));
         mCancelButton.setVisibility(View.GONE);
         mStart = button("Start game", v -> launchGame());
@@ -419,11 +416,11 @@ public class ImportActivity extends Activity {
         }
         boolean hasPacks = new File(root, ImportRules.EZEUS + "/interface.e").isFile();
         if (sourceArchive && !hasPacks) {
-            throw new IOException("this is the eZeus SOURCE CODE zip. It has no texture packs "
-                + "(interface.e, i15.e, i30.e). Use \"Download eZeus data pack\" or import "
-                + "eZeus-0.8.2-beta.zip from the eZeus release page.");
+            throw new IOException("this is a source code zip. It has no textures "
+                + "(interface.e, i15.e, i30.e). Use \"Download texture pack\" or import "
+                + "eZeus-0.8.2-beta.zip.");
         }
-        if (files == 0) throw new IOException("the archive did not contain eZeus data (expected eZeus-*/interface.e)");
+        if (files == 0) throw new IOException("the archive is not the texture pack (expected */interface.e)");
         progress(total, total, "Extracted " + files + " files");
     }
 
@@ -465,7 +462,7 @@ public class ImportActivity extends Activity {
                     n += r;
                     if (n - lastUi > (1 << 20)) {
                         lastUi = n;
-                        progress(n, ImportRules.EZEUS_PACK_SIZE, "Downloading eZeus-0.8.2-beta.zip");
+                        progress(n, ImportRules.EZEUS_PACK_SIZE, "Downloading texture pack");
                     }
                 }
             } finally {

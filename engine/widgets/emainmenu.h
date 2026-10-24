@@ -8,6 +8,7 @@ public:
     using eMainMenuBase::eMainMenuBase;
 
     void initialize(const eAction& newGameA,
+                    const eAction& customGameA,
                     const eAction& loadGameA,
                     const eAction& editGameA,
                     const eAction& settingsA,

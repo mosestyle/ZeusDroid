@@ -1,8 +1,8 @@
 # Autosave when the app goes to the background: autosave.ez is written, the game continues.
-8000 finger_down 1 1200 150
-80 finger_up 1 1200 150
-2500 finger_down 1 570 346
-80 finger_up 1 570 346
+8000 finger_down 1 1700 150
+80 finger_up 1 1700 150
+2500 finger_down 1 570 514
+80 finger_up 1 570 514
 800 finger_down 1 1100 720
 80 finger_up 1 1100 720
 4000 finger_down 1 1680 832

@@ -237,7 +237,7 @@ bool eMainWindow::initialize(const eSettings& settings) {
     const auto& res = settings.fRes;
     const int w = res.width();
     const int h = res.height();
-    const auto window = SDL_CreateWindow("eZeus",
+    const auto window = SDL_CreateWindow("ZeusDroid",
                                          SDL_WINDOWPOS_UNDEFINED,
                                          SDL_WINDOWPOS_UNDEFINED,
                                          w, h, SDL_WINDOW_SHOWN);
@@ -621,7 +621,11 @@ void eMainWindow::showMainMenu() {
         showRosterOfLeaders();
     };
 
+    const auto customGameAction = [this]() {
+        showChooseGameMenu(true);
+    };
     mm->initialize(newGameAction,
+                   customGameAction,
                    loadGameAction,
                    editGameAction,
                    settingsAction,
@@ -656,10 +660,11 @@ void eMainWindow::showSettingsMenu() {
     setWidget(esm);
 }
 
-void eMainWindow::showChooseGameMenu() {
+void eMainWindow::showChooseGameMenu(const bool custom) {
     const auto gem = new eChooseGameEditMenu(this);
     gem->resize(width(), height());
-    gem->initialize(false);
+    gem->initialize(false, custom ? eChooseGameEditMenu::eList::custom :
+                                    eChooseGameEditMenu::eList::original);
     setWidget(gem);
 }
 

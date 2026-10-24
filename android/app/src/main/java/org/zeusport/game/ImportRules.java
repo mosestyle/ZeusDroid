@@ -194,10 +194,10 @@ public final class ImportRules {
                 && (exists(root, "Zeus_MM.eng") || exists(root, EZEUS + "/Zeus_MM.xml"))));
         r.add(new Item("Game model data (Model/)", true, exists(root, "Model/Zeus eventmsg.txt")));
         r.add(new Item("Adventures (Adventures/*.pak)", true, dirHasFiles(root, "Adventures", ".pak")));
-        r.add(new Item("eZeus interface pack (interface.e)", true, exists(root, EZEUS + "/interface.e")));
-        r.add(new Item("eZeus textures (i15.e or i30.e)", true,
+        r.add(new Item("Interface pack (interface.e)", true, exists(root, EZEUS + "/interface.e")));
+        r.add(new Item("Textures (i15.e or i30.e)", true,
             exists(root, EZEUS + "/i15.e") || exists(root, EZEUS + "/i30.e")));
-        r.add(new Item("eZeus font and language (Fonts/Zeus.ttf, Text/language.txt)", true,
+        r.add(new Item("Font and language (Fonts/Zeus.ttf, Text/language.txt)", true,
             exists(root, EZEUS + "/Fonts/Zeus.ttf") && exists(root, EZEUS + "/Text/language.txt")));
         r.add(new Item("Music (Audio/Music)", false, dirHasFiles(root, "Audio/Music", null)));
         r.add(new Item("Sound effects and voices (Audio/Wavs, Audio/Voice)", false,

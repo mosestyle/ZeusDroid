@@ -624,6 +624,7 @@ void eGameWidget::initialize() {
             };
             mSaveButton = addSideButton("Save", [this]() { quickSave(); });
             mLoadButton = addSideButton("Load", [this]() { showLoadDialog(); });
+            mMenuButton = addSideButton("Menu", [this]() { openGameMenu(); });
             mPanelButton = addSideButton(">>", [this]() { setPanelHidden(!mPanelHidden); });
             layoutSideButtons();
         }
@@ -1987,62 +1988,66 @@ bool eGameWidget::keyPressEvent(const eKeyPressEvent& e) {
             viewBookmark(4);
         }
     } else if(k == SDL_Scancode::SDL_SCANCODE_ESCAPE) {
-        if(!mMsgBox && !mBoard->editorMode()) {
-            mBoard->waitUntilFinished();
-            const auto menu = new eGameMainMenu(window());
-            menu->resize(width()/4, height()/2);
-            const auto w = window();
-            const auto resumeAct = [menu]() {
-                menu->deleteLater();
-            };
-            const auto saveAct = [this, w]() {
-                const auto fw = new eFileWidget(w);
-                const auto func = [w](const std::string& path) {
-                    const bool r = w->saveGame(path);
-                    if(r) w->setQuickSavePath(path);
-                    return r;
-                };
-                const auto closeAct = [this, fw]() {
-                    removeWidget(fw);
-                    fw->deleteLater();
-                };
-                const auto dir = w->leaderSaveDir();
-                fw->intialize(eLanguage::zeusText(1, 4),
-                              dir, func, closeAct);
-                addWidget(fw);
-                fw->align(eAlignment::center);
-                w->execDialog(fw);
-            };
-            const auto loadAct = [this, w]() {
-                const auto fw = new eFileWidget(w);
-                const auto func = [w](const std::string& path) {
-                    return w->loadGame(path);
-                };
-                const auto closeAct = [this, fw]() {
-                    removeWidget(fw);
-                    fw->deleteLater();
-                };
-                const auto dir = w->leaderSaveDir();
-                fw->intialize(eLanguage::zeusText(1, 3),
-                              dir, func, closeAct);
-                addWidget(fw);
-                fw->align(eAlignment::center);
-                w->execDialog(fw);
-            };
-            const auto exitAct = [w]() {
-                w->closeGame();
-            };
-            eAction touchAct;
-            if(ePlatform::touchUi()) {
-                touchAct = [this, w]() { w->showTouchSettings(this); };
-            }
-            menu->initialize(resumeAct, saveAct, loadAct, exitAct, touchAct);
-            addWidget(menu);
-            menu->align(eAlignment::center);
-            w->execDialog(menu);
-        }
+        openGameMenu();
     }
     return true;
+}
+
+void eGameWidget::openGameMenu() {
+    if(!mMsgBox && !mBoard->editorMode()) {
+        mBoard->waitUntilFinished();
+        const auto menu = new eGameMainMenu(window());
+        menu->resize(width()/4, height()/2);
+        const auto w = window();
+        const auto resumeAct = [menu]() {
+            menu->deleteLater();
+        };
+        const auto saveAct = [this, w]() {
+            const auto fw = new eFileWidget(w);
+            const auto func = [w](const std::string& path) {
+                const bool r = w->saveGame(path);
+                if(r) w->setQuickSavePath(path);
+                return r;
+            };
+            const auto closeAct = [this, fw]() {
+                removeWidget(fw);
+                fw->deleteLater();
+            };
+            const auto dir = w->leaderSaveDir();
+            fw->intialize(eLanguage::zeusText(1, 4),
+                          dir, func, closeAct);
+            addWidget(fw);
+            fw->align(eAlignment::center);
+            w->execDialog(fw);
+        };
+        const auto loadAct = [this, w]() {
+            const auto fw = new eFileWidget(w);
+            const auto func = [w](const std::string& path) {
+                return w->loadGame(path);
+            };
+            const auto closeAct = [this, fw]() {
+                removeWidget(fw);
+                fw->deleteLater();
+            };
+            const auto dir = w->leaderSaveDir();
+            fw->intialize(eLanguage::zeusText(1, 3),
+                          dir, func, closeAct);
+            addWidget(fw);
+            fw->align(eAlignment::center);
+            w->execDialog(fw);
+        };
+        const auto exitAct = [w]() {
+            w->closeGame();
+        };
+        eAction touchAct;
+        if(ePlatform::touchUi()) {
+            touchAct = [this, w]() { w->showTouchSettings(this); };
+        }
+        menu->initialize(resumeAct, saveAct, loadAct, exitAct, touchAct);
+        addWidget(menu);
+        menu->align(eAlignment::center);
+        w->execDialog(menu);
+    }
 }
 
 bool eGameWidget::mousePressEvent(const eMouseEvent& screenE) {
@@ -3460,11 +3465,11 @@ void eGameWidget::layoutSideButtons() {
     if(!mSaveButton) return;
     const int p = padding();
     int bw = 0;
-    for(const auto b : {mSaveButton, mLoadButton, mPanelButton}) {
+    for(const auto b : {mSaveButton, mLoadButton, mMenuButton, mPanelButton}) {
         bw = std::max(bw, b->width());
     }
     int sy = mTopBar->height() + p;
-    for(const auto b : {mSaveButton, mLoadButton, mPanelButton}) {
+    for(const auto b : {mSaveButton, mLoadButton, mMenuButton, mPanelButton}) {
         b->setWidth(bw);
         b->move(width() - panelW() - bw - p, sy);
         sy += b->height() + p/2;

@@ -1,4 +1,4 @@
-# Zeus + Poseidon – native Android port (eZeus engine)
+# ZeusDroid – Zeus + Poseidon for Android (native port, built on the eZeus engine)
 
 A native **arm64-v8a** Android build of [eZeus](https://github.com/MaurycyLiebner/eZeus),
 the open-source C++/SDL2 reimplementation of *Zeus: Master of Olympus* + *Poseidon*,
@@ -23,10 +23,10 @@ in the APK: you import your own original game files.
 
 ## Quick start (player)
 
-1. Install the APK (`adb install -r eZeusPort-debug-arm64-v8a.apk`).
+1. Install the APK (`adb install -r ZeusDroid-debug-arm64-v8a.apk`).
 2. Copy your **Zeus and Poseidon** install folder (e.g. from GOG) to the phone.
 3. Download **eZeus-0.8.2-beta.zip** from the eZeus GitHub releases (on the phone or PC).
-4. Start *eZeus Port* → *Import game folder…* → *Import eZeus data pack (.zip)…* → *Start game*.
+4. Start *ZeusDroid* → *Import game folder…* → *Download texture pack* (or *Import texture pack (.zip)…*) → *Start game*.
 
 Details: `docs/GAME_DATA.md`. Controls: `docs/TOUCH_CONTROLS.md`.
 

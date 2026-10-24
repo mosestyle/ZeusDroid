@@ -29,6 +29,9 @@ eWidget* createTextureBox(eMainWindow* const window,
                           const std::string& path) {
     const bool missing = !std::filesystem::exists(path);
     const auto w = new eWidget(window);
+    // Port: say why a size cannot be ticked (its texture pack, e.g. the
+    // optional i45.zip / i60.zip, was not imported).
+    const std::string label = missing ? text + " (not installed)" : text;
     w->setNoPadding();
 
     const auto b = new eCheckBox(window);
@@ -41,8 +44,9 @@ eWidget* createTextureBox(eMainWindow* const window,
     const auto l = new eLabel(window);
     l->setNoPadding();
     l->setSmallFontSize();
-    l->setText(text);
+    l->setText(label);
     l->fitContent();
+    if(missing) l->setDarkFontColor();
 
     w->addWidget(b);
     w->addWidget(l);
@@ -220,19 +224,50 @@ void eSettingsMenu::initialize(const eApplyAction& settingsA,
 
     if(ePlatform::touchUi()) { // port
         // Phones always run full screen at the native resolution
-        // (ePlatform::adjustSettings), so these choices would do nothing.
+        // (ePlatform::adjustSettings), so resolution / window choices would
+        // do nothing: a compact screen with textures and the touch options.
         col2->hide();
         col3->hide();
+        eWidget* texs = nullptr;
         for(const auto c : col1->children()) {
             if(dynamic_cast<eFramedButton*>(c)) c->hide();
+            else texs = c;
         }
+        const auto title = new eLabel(window());
+        title->setHugeFontSize();
+        title->setText("Options");
+        title->fitContent();
         const auto tb = new eFramedButton(window());
         tb->setUnderline(false);
         tb->setText("Touch control options");
         tb->fitContent();
         tb->setPressAction([this]() { window()->showTouchSettings(this); });
-        col1->addWidget(tb);
-        tb->align(eAlignment::hcenter);
+        if(texs) col1->removeWidget(texs);
+        col1->hide();
+        const auto col = new eWidget(window());
+        col->setNoPadding();
+        col->addWidget(title);
+        if(texs) col->addWidget(texs);
+        col->addWidget(tb);
+        col->stackVertically(2*p);
+        col->fitContent();
+        for(const auto c : col->children()) c->align(eAlignment::hcenter);
+        inner->addWidget(col);
+        const int fw = std::max(col->width() + 8*p, frame->width()/2);
+        const auto okb = new eOkButton(window());
+        const int fh = col->height() + okb->height() + 8*p;
+        frame->resize(fw, fh);
+        frame->align(eAlignment::center);
+        inner->resize(fw - 4*p, fh - 4*p);
+        col->setWidth(inner->width());
+        for(const auto c : col->children()) c->align(eAlignment::hcenter);
+        frame->addWidget(okb);
+        okb->setPressAction([this, settingsA]() {
+            settingsA(mSettings);
+        });
+        okb->align(eAlignment::bottom | eAlignment::right);
+        okb->move(okb->x() - 2*p, okb->y() - 2*p);
+        return;
     }
 
     col1->layoutVertically();

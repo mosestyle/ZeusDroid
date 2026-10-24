@@ -1,7 +1,7 @@
 # Phone layout (Xvfb 2400x1080, settings 2400x1080, EZEUS_TOUCH=1 EZEUS_UI_SCALE=large EZEUS_RENDER_FPS=60):
 # big list rows + drag-scroll in the adventure list, continuous pinch zoom, speed label.
-8000 finger_down 1 1200 150
-80 finger_up 1 1200 150
+8000 finger_down 1 1700 150
+80 finger_up 1 1700 150
 2500 screenshot build/run/zl_01_list.bmp
 # drag the adventure list up by ~250 px: must scroll, must not select
 100 finger_down 1 600 520
@@ -19,8 +19,8 @@
 40 finger_up 1 600 560
 300 screenshot build/run/zl_03_list_back.bmp
 # tap "The Founding of Athens" (second row), then Begin Adventure
-200 finger_down 1 570 346
-80 finger_up 1 570 346
+200 finger_down 1 570 514
+80 finger_up 1 570 514
 500 screenshot build/run/zl_04_selected.bmp
 100 finger_down 1 1100 720
 80 finger_up 1 1100 720

@@ -1,5 +1,21 @@
 # Release notes
 
+## 0.1.17-dev
+* The app is now called **ZeusDroid** (icon label, title, importer). The importer speaks of
+  the "texture pack"; only the pack's file name (eZeus-0.8.2-beta.zip) is still shown so you
+  can find it. Internal folders keep their names, so imports and saves stay where they are.
+  APK file: ZeusDroid-debug-arm64-v8a.apk.
+* **Menu** button under Save / Load opens the game menu (Resume, Save, Load, Touch control
+  options, Exit) without the Back gesture.
+* **Custom Adventures** button beside New Adventure (the original's own text). Like in the
+  original, adventures in their own folder (Open Play Economic/Military/Sandbox 2, The
+  Odyssey, The Founding of Troy, The Mayan Revolution, The Sinking of Atlantis, The Youngest
+  Twins) and eZeus' two own adventures are listed there, alphabetically; New Adventure shows
+  the original campaigns and Open Play maps.
+* Options on the phone: a compact window with the texture sizes and Touch control options
+  (the button no longer sticks out of the frame). Sizes whose texture pack is not imported
+  say "(not installed)" instead of showing no tick box.
+
 ## 0.1.16-dev
 * New default way to draw rows, areas and roads: a one-finger drag always moves the map, also
   with a building tool selected. Tap to place a preview, then tap **Draw** next to ✓ / ✕:

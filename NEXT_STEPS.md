@@ -51,7 +51,7 @@ preview kept. Phase D confirmed on the phone (2026-10-23). 0.1.8: Draw mode, sta
 Next: phone FPS/memory numbers from the user, remaining small panels, then Phase F parity.
 
 ## 1. First on-device run  ← partly done (runs on the user's phone)
-* Install `dist/eZeusPort-debug-arm64-v8a.apk` on an arm64 phone (Android 8+).
+* Install `dist/ZeusDroid-debug-arm64-v8a.apk` on an arm64 phone (Android 8+).
 * Import the game folder + `eZeus-0.8.2-beta.zip`; start; capture `adb logcat -s SDL SDL/APP eZeus ZeusImport`.
 * Pass: main menu renders, leader can be created with the soft keyboard, *Zeus and Europa*
   starts, map pans/zooms, a building can be placed, the game saves and reloads after the
