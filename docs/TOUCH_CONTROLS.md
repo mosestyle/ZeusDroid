@@ -113,5 +113,7 @@ anchored at the screen centre). Zoom is not stored in saves (save format unchang
   file), **Load**, **>>** full-screen city view (side panel slides away; **<<** brings it
   back).
 * The keyboard opens only when the name field is tapped; Enter closes it.
-* **R** (rotate) appears only for buildings that can be rotated.
+* Rotate icon next to ✓ / ✕ for buildings that can be rotated (0.1.15).
+* Undo icon on the left bar for 30 s after building: removes the last placement and refunds
+  it; the right panel's Undo does the same (0.1.15).
 * Autosave as "autosave" whenever the app goes to the background.

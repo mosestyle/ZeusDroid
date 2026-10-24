@@ -173,6 +173,7 @@ public:
     // Test-only (autotest): place a structure / report desirability.
     bool debugBuild(const std::string& what, const int tx, const int ty);
     std::string debugDesirability(const int tx, const int ty) const;
+    void debugSetTool(const std::string& name);
     bool touchPreviewSupported() const;
     bool touchPreviewActive() const { return mPreview.fActive; }
     bool touchPreviewAt(int x, int y);
@@ -295,7 +296,25 @@ private:
     std::map<eBuildingMode, bool> mDrawModes;
     eFramedButton* mDrawButton = nullptr;
     eFramedButton* mSaveButton = nullptr;
-    eFramedButton* mRotateButton = nullptr;
+    eWidget* mRotateButton = nullptr;     // in the preview panel, next to X
+    eWidget* mUndoButton = nullptr;       // touch bar
+    eWidget* mPanelBs = nullptr;
+    int mPreviewBs = 0;
+    // Undo of the last build action (port; the original's Undo button).
+    struct eUndoRecord {
+        std::vector<std::tuple<int, int, eBuilding*>> fBuildings; // tile + building
+        int fRefund = 0;
+        uint32_t fTime = 0;
+    };
+    eUndoRecord mUndo;
+    std::vector<eBuilding*> mUndoSnapshot;
+    int mUndoDrachmas = 0;
+    void beginUndoRecord();
+    void endUndoRecord();
+public:
+    bool undoAvailable() const;
+    void undoLastBuild();
+private:
     eFramedButton* mPanelButton = nullptr;
     bool mPanelHidden = false;
     void setPanelHidden(const bool h);

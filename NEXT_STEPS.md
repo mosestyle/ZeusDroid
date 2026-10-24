@@ -32,9 +32,8 @@ Phases from the brief (§17). ✅ done with evidence, 🟡 partly done, ⬜ not 
   the original Model files (costs, employees, desirability, tax table; tax low/very-low fix),
   Olympus blessing claim checked and rejected; side-by-side in the original: hut without food,
   settlers in groups of 4 (0.1.10; a road check for houses was removed again in 0.1.11); desirability spread and house
-  evolution rules from Zeus.exe (R6, 0.1.10). Next: (1) side-by-side of the new desirability
-  (overlay values next to a gazebo/garden) and a house climbing levels in both games,
-  (2) culture score instead of venue count, (3) fire/damage risk model, (4) immigration
+  evolution rules from Zeus.exe (R6, 0.1.10). Next (user: houses level up fine in play, no side-by-side wanted): (1) only on reported
+  differences, (2) culture score instead of venue count, (3) fire/damage risk model, (4) immigration
   timing, (5) food/storage/distribution and walkers. Original
   plan: compare eZeus with the original game on the
   user's PC (screen control, with permission), most visible systems first: immigration and

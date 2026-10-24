@@ -1,3 +1,5 @@
+#include <set>
+#include <tuple>
 #include <filesystem>
 #include "egamewidget.h"
 #include "eacceptbutton.h"
@@ -563,10 +565,25 @@ void eGameWidget::initialize() {
         mSpeedButton = addTouchButton("50x", [this]() { setSpeedId(1); });
         updateSpeedButton();
         addTouchButton("+", [this]() { changeSpeed(1); });
-        // Rotates the building being placed (stadium, palace, gatehouse,
-        // horse ranch, sanctuaries, monuments); shown only for those.
-        mRotateButton = addTouchButton("R", [this]() { rotateView(); });
-        mRotateButton->hide();
+        // Undo the last build (the original's Undo); shown while possible.
+        {
+            const auto& intrfc = eGameTextures::interface();
+            const int ir = static_cast<int>(resolution().uiScale());
+            const auto f = new eFramedButton(window());
+            f->setUnderline(false);
+            f->setRenderBg(true);
+            f->resize(minTouch, minTouch);
+            const auto icon = eButton::sCreate(intrfc[ir].fUndo, window(), f);
+            icon->align(eAlignment::center);
+            icon->setPressAction([this]() { undoLastBuild(); });
+            f->setPressAction([this]() { undoLastBuild(); });
+            addWidget(f);
+            mTouchBarButtons++;
+            f->move(p, y);
+            y += f->height() + p/2;
+            f->hide();
+            mUndoButton = f;
+        }
         // Army box selection; shown only when the city has soldiers.
         mBoxSelectButton = addTouchButton("[ ]", [this]() {
             setTouchBoxSelect(!mTouchBoxSelect);
@@ -644,6 +661,25 @@ void eGameWidget::initialize() {
         }
         addIconButton(new eCancelButton(window()),
                       [this]() { touchPreviewClear(); }, bs + p);
+        {
+            // Rotate the building being placed (stadium, palace, gatehouse,
+            // horse ranch, sanctuaries, monuments); shown only for those.
+            const auto& intrfc = eGameTextures::interface();
+            const int ir = static_cast<int>(resolution().uiScale());
+            const auto f = new eFramedButton(window());
+            f->setUnderline(false);
+            f->setRenderBg(true);
+            f->resize(bs, bs);
+            const auto icon = eButton::sCreate(intrfc[ir].fRotateCompany, window(), f);
+            icon->align(eAlignment::center);
+            icon->setPressAction([this]() { rotateView(); });
+            f->setPressAction([this]() { rotateView(); });
+            mPreviewPanel->addWidget(f);
+            f->move(2*(bs + p), 0);
+            f->hide();
+            mRotateButton = f;
+        }
+        mPreviewBs = bs;
         mPreviewPanel->resize(2*bs + p, bs);
         addWidget(mPreviewPanel);
         mTouchBarButtons++;
@@ -2202,7 +2238,10 @@ bool eGameWidget::mouseReleaseEvent(const eMouseEvent& screenE) {
         mBoard->clearBannerSelection();
         mBoard->clearTriremeSelection();
         mLeftPressed = false;
+        const bool rec = mGm->mode() != eBuildingMode::none;
+        if(rec) beginUndoRecord();
         const bool r = buildMouseRelease();
+        if(rec) endUndoRecord();
         if(!r && mGm->mode() == eBuildingMode::none) {
             if(mMovedSincePress) {
                 const auto selected = selectedTiles();
@@ -2551,6 +2590,8 @@ std::string eGameWidget::debugCameraState() const {
            " loadbtn=" + (mLoadButton ? std::to_string(mLoadButton->x() + mLoadButton->width()/2) + "," +
                           std::to_string(mLoadButton->y() + mLoadButton->height()/2) : std::string("-")) +
            " quick=" + window()->quickSavePath().substr(window()->quickSavePath().find_last_of('/') + 1) +
+           " undo=" + std::to_string(undoAvailable() ? (int)mUndo.fBuildings.size() : 0) +
+           " rotbtn=" + std::to_string(mRotateButton && mRotateButton->visible() ? 1 : 0) +
            " corners=" + std::to_string(mPreview.fCorners.empty() ? 0 : mPreview.fCorners.size() - 1) +
            " draw=" + std::to_string(touchDrawModeActive() ? 1 : 0) +
            " drawbtn=" + std::to_string(mDrawButton && mDrawButton->visible() ? 1 : 0) +
@@ -3092,8 +3133,10 @@ void eGameWidget::touchPreviewConfirm() {
     const auto ppid = mBoard->personPlayer();
     const int before = mBoard->drachmas(ppid);
     const auto saved = mPreview;
+    beginUndoRecord();
     if(mPreview.fArea && !mPreview.fRoad.empty()) buildRoadPreview();
     else buildMouseRelease();
+    endUndoRecord();
     touchPreviewClear();
     if(mBoard->drachmas(ppid) < before) ePlatform::vibrate(sBuildHaptics ? 25 : 0);
     // Was something built? (Free buildings: check the tile.)
@@ -3327,11 +3370,17 @@ void eGameWidget::toggleTouchDrawMode() {
 }
 
 void eGameWidget::updateDrawButton() {
-    if(mRotateButton) {
+    if(mRotateButton && mPreviewPanel) {
         const bool rot = mGm && !(mTem && mTem->visible()) &&
                          sRotatableMode(mGm->mode());
-        mRotateButton->setVisible(rot);
+        if(rot != mRotateButton->visible()) {
+            mRotateButton->setVisible(rot);
+            const int bs = mPreviewBs;
+            const int p = padding();
+            mPreviewPanel->setWidth(rot ? 3*bs + 2*p : 2*bs + p);
+        }
     }
+    if(mUndoButton) mUndoButton->setVisible(undoAvailable());
     if(!mDrawButton) return;
     const bool tool = buildToolActive() && !(mTem && mTem->visible());
     mDrawButton->setVisible(tool);
@@ -3458,4 +3507,81 @@ bool eGameWidget::sRotatableMode(const eBuildingMode m) {
            in(eBuildingMode::minorShrineAphrodite, eBuildingMode::minorShrineZeus) ||
            in(eBuildingMode::shrineAphrodite, eBuildingMode::shrineZeus) ||
            in(eBuildingMode::majorShrineAphrodite, eBuildingMode::majorShrineZeus);
+}
+
+// Port: Undo. The buildings placed by the last build action are removed
+// again and their price is refunded, for a short time after building (as
+// long as nothing else was built). Demolition is not undone.
+namespace {
+const uint32_t kUndoMs = 30000;
+}
+
+void eGameWidget::beginUndoRecord() {
+    mUndoSnapshot.clear();
+    if(!mBoard) return;
+    const int w = mBoard->width();
+    const int h = mBoard->height();
+    mUndoSnapshot.resize(size_t(w)*h, nullptr);
+    for(int x = 0; x < w; x++) {
+        for(int y = 0; y < h; y++) {
+            const auto t = mBoard->dtile(x, y);
+            if(t) mUndoSnapshot[size_t(x)*h + y] = t->underBuilding();
+        }
+    }
+    mUndoDrachmas = mBoard->drachmas(mBoard->personPlayer());
+}
+
+void eGameWidget::endUndoRecord() {
+    if(!mBoard || mUndoSnapshot.empty()) return;
+    const int w = mBoard->width();
+    const int h = mBoard->height();
+    eUndoRecord r;
+    std::set<eBuilding*> seen;
+    for(int x = 0; x < w; x++) {
+        for(int y = 0; y < h; y++) {
+            const auto t = mBoard->dtile(x, y);
+            if(!t) continue;
+            const auto b = t->underBuilding();
+            if(!b || b == mUndoSnapshot[size_t(x)*h + y]) continue;
+            if(!seen.insert(b).second) continue;
+            r.fBuildings.emplace_back(x, y, b);
+        }
+    }
+    mUndoSnapshot.clear();
+    const int spent = mUndoDrachmas - mBoard->drachmas(mBoard->personPlayer());
+    if(r.fBuildings.empty()) {
+        // Nothing new (e.g. demolition): the previous build can no longer
+        // be undone safely.
+        if(mGm && mGm->mode() == eBuildingMode::erase) mUndo = eUndoRecord();
+        return;
+    }
+    r.fRefund = std::max(0, spent);
+    r.fTime = SDL_GetTicks();
+    mUndo = r;
+}
+
+bool eGameWidget::undoAvailable() const {
+    if(mUndo.fBuildings.empty() || mEditorMode) return false;
+    return SDL_GetTicks() - mUndo.fTime < kUndoMs;
+}
+
+void eGameWidget::undoLastBuild() {
+    if(!undoAvailable() || !mBoard) return;
+    mBoard->waitUntilFinished();
+    bool any = false;
+    for(const auto& e : mUndo.fBuildings) {
+        const auto t = mBoard->dtile(std::get<0>(e), std::get<1>(e));
+        const auto b = std::get<2>(e);
+        // Only buildings that still stand where they were placed.
+        if(!t || t->underBuilding() != b) continue;
+        b->erase();
+        any = true;
+    }
+    if(any && mUndo.fRefund > 0) {
+        mBoard->incDrachmas(mBoard->personPlayer(), mUndo.fRefund,
+                            eFinanceTarget::construction);
+    }
+    mUndo = eUndoRecord();
+    mBoard->scheduleTerrainUpdate();
+    eSounds::playButtonSound();
 }

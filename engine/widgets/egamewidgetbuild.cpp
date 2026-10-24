@@ -2220,3 +2220,11 @@ std::string eGameWidget::debugDesirability(const int tx, const int ty) const {
     }
     return o.str();
 }
+
+void eGameWidget::debugSetTool(const std::string& name) {
+    if(!mGm) return;
+    if(name == "palace") mGm->debugSetMode(eBuildingMode::palace);
+    else if(name == "stadium") mGm->debugSetMode(eBuildingMode::stadium);
+    else if(name == "farm") mGm->debugSetMode(eBuildingMode::wheatFarm);
+    else if(name == "none") mGm->debugSetMode(eBuildingMode::none);
+}

@@ -1025,7 +1025,11 @@ void eGameMenu::initialize(eGameBoard* const b,
         e->setPressAction([this]() {
             setMode(eBuildingMode::erase);
         });
-        eButton::sCreate(coll.fUndo, window(), btmButtons);
+        // Port: the original's Undo button (was not connected in eZeus).
+        const auto ub = eButton::sCreate(coll.fUndo, window(), btmButtons);
+        ub->setPressAction([this]() {
+            if(mGW) mGW->undoLastBuild();
+        });
 
         const int x = mult*24;
         const int y = std::round(mult*217.5);

@@ -80,6 +80,8 @@ public:
     void update();
 
     void setShowAllPossibleBuildings(const bool b);
+    // Test-only (autotest).
+    void debugSetMode(const eBuildingMode mode) { setMode(mode); }
 protected:
     bool mousePressEvent(const eMouseEvent& e);
 private:

@@ -357,3 +357,17 @@ No vibration, no message changes.
   the rotation in `egamewidgetbuild.cpp`; not exercised with a palace in an autotest).
 * Regressions: confirm, smart road, quick save, zoom/speed/lists, army, touch bar/pinch – pass.
 APK 0.1.14-dev: versionCode 15, sha256 0b29102276d8c777cc456fb89e9fe87076eb8b6c01913fee00b3fde7e13c6be3, v2/v3 OK
+
+### User report 2026-10-24 21:53 (0.1.14)
+Rotate as an icon next to the X of the preview; a small undo button; no bigger panel buttons.
+Houses do level up in play – no side-by-side check wanted.
+
+### 0.1.15-dev: rotate icon in the preview panel, undo
+* `tests/autotest/phone_rotate_button.txt` (test-only `debug_tool palace`): palace preview →
+  panel 445 px wide with the rotate icon (rotbtn=1); tap → the palace preview turns
+  (screenshots before/after compared).
+* `tests/autotest/phone_undo.txt`: farm ✓ → 9955 dr, undo=1 and the icon shows on the left
+  bar; tap → 10000 dr, farm gone (screenshot), undo=0. In other runs: an 11-tile road → undo
+  covers 11 tiles.
+* Regressions: confirm, repeat, army, draw, view restore – pass.
+APK 0.1.15-dev: versionCode 16, sha256 f59be84993db981a8485288865eaac2a7971ef1b25414b79fbd8ca8c28a9aa50, v2/v3 OK

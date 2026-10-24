@@ -1,5 +1,14 @@
 # Release notes
 
+## 0.1.15-dev
+* Rotate moved next to ✓ / ✕: a rotate icon (the original's rotate arrow) appears beside ✕
+  while placing a building that can be rotated (stadium, palace, gatehouse, horse ranch,
+  sanctuaries, pyramids, monuments). The "R" on the left bar is gone.
+* Undo: after building, an undo icon (the original's Undo arrow) appears on the left bar for
+  30 seconds; it removes everything placed by the last ✓ (one building, a row, a road) and
+  gives the money back. The Undo button in the right panel (round arrow, next to demolish)
+  now works too. Demolishing cannot be undone.
+
 ## 0.1.14-dev
 * Full-screen city view: the ">>" button under Save / Load slides the right panel away so the
   city fills the screen; "<<" brings it back. The selected building tool keeps working.
