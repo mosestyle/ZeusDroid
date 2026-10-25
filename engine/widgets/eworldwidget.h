@@ -47,6 +47,7 @@ private:
     void openOrders();
     void layoutSideButtons();
     eFramedButton* mBackButton = nullptr;
+    eWidget* mTray = nullptr;
     int mStripW = 0;
 
     stdsptr<eWorldCity> mCity;

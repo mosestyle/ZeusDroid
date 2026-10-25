@@ -1,4 +1,5 @@
 #include "eworldwidget.h"
+#include "epainter.h"
 
 #include "eworldmenu.h"
 #include "eworldmapwidget.h"
@@ -435,23 +436,51 @@ void eWorldWidget::selectCity(const stdsptr<eWorldCity>& ct) {
     mWM->setCity(ct);
 }
 
+namespace {
+// Port: a small tray in the panel's colours at the bottom-left of the world
+// menu, for the buttons that do not fit the screen height (compact).
+class eWorldTray : public eWidget {
+public:
+    using eWidget::eWidget;
+protected:
+    void paintEvent(ePainter& p) override {
+        p.fillRect(rect(), {0, 100, 140, 255});
+        p.drawRect(rect(), {120, 200, 230, 255}, 2);
+    }
+};
+}
+
 void eWorldWidget::layoutSideButtons() {
+    if(!mWM->compact() || !mBackButton) {
+        mStripW = 0;
+        return;
+    }
     const int p = padding();
-    std::vector<eWidget*> ws;
-    if(mBackButton) ws.push_back(mBackButton);
-    if(mWM->compact()) {
-        ws.push_back(mWM->raidButton());
-        ws.push_back(mWM->conquerButton());
+    const auto raid = mWM->raidButton();
+    const auto conq = mWM->conquerButton();
+    const int rowW = raid->width() + p + conq->width();
+    const int w = std::max(rowW, mBackButton->width()) + 2*p;
+    const int h = 3*p + raid->height() + mBackButton->height() + p;
+    mStripW = w;
+    if(!mTray) {
+        mTray = new eWorldTray(window());
+        prependWidget(mTray);
+        // keep it above the map but below the buttons
+        removeWidget(mTray);
+        addWidget(mTray);
+        for(const auto b : std::vector<eWidget*>{raid, conq, mBackButton}) {
+            removeWidget(b);
+            addWidget(b);
+        }
     }
-    int w = 0;
-    for(const auto b : ws) w = std::max(w, b->width());
-    mStripW = ws.empty() ? 0 : w + 2*p;
-    const int right = width() - mWM->width() - p;
-    int y = p;
-    for(const auto b : ws) {
-        b->move(right - (w + b->width())/2, y);
-        y += b->height() + p;
-    }
+    const int x0 = width() - mWM->width() - w;
+    const int y0 = height() - h;
+    mTray->move(x0, y0);
+    mTray->resize(w, h);
+    raid->move(x0 + (w - rowW)/2, y0 + p);
+    conq->move(raid->x() + raid->width() + p, y0 + p);
+    mBackButton->move(x0 + (w - mBackButton->width())/2,
+                      y0 + 2*p + raid->height());
 }
 
 void eWorldWidget::openOrders() {

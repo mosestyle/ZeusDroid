@@ -1,4 +1,5 @@
 #include "eworldmenu.h"
+#include "epainter.h"
 
 #include "textures/egametextures.h"
 
@@ -441,4 +442,9 @@ void eWorldMenu::updateButtonsEnabled0() const {
             if(mConquerButton2) mConquerButton2->setTooltip(eLanguage::zeusText(44, 313));
         }
     }
+}
+
+void eWorldMenu::paintEvent(ePainter& p) {
+    p.fillRect(rect(), {0, 100, 140, 255});
+    eLabel::paintEvent(p);
 }

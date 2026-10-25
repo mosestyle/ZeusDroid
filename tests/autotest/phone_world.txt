@@ -27,8 +27,8 @@
 100 finger_down 1 1316 446
 80 finger_up 1 1316 446
 500 log gift_closed
-100 finger_down 1 1846 64
-80 finger_up 1 1846 64
+100 finger_down 1 1840 996
+80 finger_up 1 1840 996
 1500 log back_to_city_expect_game1
 100 finger_down 1 2069 979
 80 finger_up 1 2069 979

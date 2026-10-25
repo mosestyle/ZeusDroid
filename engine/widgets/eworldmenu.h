@@ -15,6 +15,11 @@ class eWorldBoard;
 class eWorldMenu : public eLabel {
 public:
     using eLabel::eLabel;
+protected:
+    // Port: the panel art has see-through slots behind its buttons; they
+    // get a solid backing so the map never shows through.
+    void paintEvent(ePainter& p) override;
+public:
 
     void initialize(const eAction& openRequest,
                     const eAction& openFulfill,

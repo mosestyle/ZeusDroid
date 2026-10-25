@@ -527,3 +527,20 @@ wanted. Suggests changing the interface size.
   see-through slot at (73, 241.5) is filled.
 * Unit tests pass; full regression at the large size (19 scripts): pass, values unchanged.
 APK 0.1.22-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 23, sha256 772fc6588f52145094016be8d0e1faf0a0d195b7588aec40110d3fc4b4ae35a3, v2/v3 OK
+
+### User report 2026-10-25 14:27 (0.1.22 on the phone)
+Everything smaller, main menu with black bars; wants Large back. See-through lines at the
+panel's bottom right. World buttons in the middle of the screen not wanted.
+
+### 0.1.23-dev
+* Cause of the see-through lines: the panel art (eZeus 30 and 60 px packs too) has
+  transparent slots behind buttons; eZeus' 45 px pack happens to have them filled, the built
+  one does not. Panels now paint a solid backing before their art. Zoomed in to 3× at Large:
+  no map visible through the panel (screenshot).
+* Auto interface size on Android: Large again for ≥ 1080 px (restored 0.1.21 logic).
+* Large, 2400×1080: two test fire alerts visible next to the Messages scroll (screenshot);
+  main menu as wide as before (screenshot); world map tray with raid / conquer / Back to City
+  at the panel's bottom-left (screenshot). `phone_world.txt` (Back to City at its new place)
+  and `phone_messages.txt`: pass.
+* Unit tests and full regression (19 scripts): pass, values unchanged.
+APK 0.1.23-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 24, sha256 9d47ff7dbe327bf7afb92d38cc0b1548f04daaa1ace94a5ee18978cf98e2181d, v2/v3 OK

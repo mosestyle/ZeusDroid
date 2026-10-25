@@ -1,5 +1,19 @@
 # Release notes
 
+## 0.1.23-dev
+* **Interface size "Auto" is Large again** on 1080-px phones (as before 0.1.22): bigger
+  buttons and text, main menu as wide as before. Medium stays available in Touch control
+  options → Interface size (restart) for the complete, smaller panel.
+* **See-through spots in the panels fixed**: the panel art has see-through slots behind its
+  buttons (empty alert slots, the slot where the Messages scroll used to be, raid / conquer
+  slots on the world map); the map showed through them. The panels now have a solid
+  backing (city panel, army panel, world map panel).
+* Large panel on a 1080-px phone: the **alert icons** (fire, god, monster …) are back, in the
+  bottom row next to the Messages scroll (the message text box, which covered them, is not
+  shown there; messages: the scroll's list and the pop-ups).
+* World map, large: **Raid, Conquer and Back to City** in a small tray at the bottom-left
+  corner of the world panel (no buttons in the middle of the screen or over the map's top).
+
 ## 0.1.22-dev
 * **Interface size "Auto" now fits the screen**: on a 1080-px-high phone the interface uses
   the 1.5× art (as eZeus itself does at 1080p) instead of 2×. Then the right-hand panel is

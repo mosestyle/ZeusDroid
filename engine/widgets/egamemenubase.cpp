@@ -1,4 +1,5 @@
 #include "egamemenubase.h"
+#include "epainter.h"
 
 #include "datawidgets/edatawidget.h"
 
@@ -118,4 +119,9 @@ bool eGameMenuBase::mouseEnterEvent(const eMouseEvent& e) {
 bool eGameMenuBase::mouseLeaveEvent(const eMouseEvent& e) {
     (void)e;
     return true;
+}
+
+void eGameMenuBase::paintEvent(ePainter& p) {
+    p.fillRect(rect(), {0, 100, 140, 255});
+    eLabel::paintEvent(p);
 }

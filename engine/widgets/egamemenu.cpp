@@ -34,19 +34,6 @@
 #include "edownbutton.h"
 #include "epainter.h"
 
-namespace {
-// Port: covers a see-through slot of the panel art whose button moved
-// (compact layout).
-class ePanelFill : public eWidget {
-public:
-    using eWidget::eWidget;
-protected:
-    void paintEvent(ePainter& p) override {
-        p.fillRect(rect(), {0, 92, 136, 255});
-    }
-};
-}
-
 #include "elabel.h"
 
 struct eSubButtonData {
@@ -1090,14 +1077,6 @@ void eGameMenu::initialize(eGameBoard* const b,
     mCompact = std::round(mult*299.) > screenH;
     const int row3Y = mCompact ? screenH - std::round(mult*16.5) : 0;
     const int row2Y = mCompact ? row3Y - mult*17 : 0;
-    if(mCompact) {
-        // The Messages scroll's slot in the art is see-through; it moved.
-        const auto fill = new ePanelFill(window());
-        prependWidget(fill);
-        fill->move(mult*73, std::round(mult*241.5));
-        fill->resize(std::round(mult*16.5), mult*14);
-    }
-
     {
         // Text box with the latest message (tap: read it).
         mMessageLine = new eButton(window());
@@ -1144,6 +1123,13 @@ void eGameMenu::initialize(eGameBoard* const b,
         addWidget(mMessageLine);
         addWidget(up);
         addWidget(down);
+        // Compact panel: no room for the text box; the alert icons take
+        // that row (messages: the scroll's list and the pop-ups).
+        if(mCompact) {
+            mMessageLine->hide();
+            up->hide();
+            down->hide();
+        }
     }
     {
         // Messages scroll: number of messages, tap opens the list.
