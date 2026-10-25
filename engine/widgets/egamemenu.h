@@ -35,6 +35,8 @@ class eDataWidget;
 struct eSubButtonData;
 
 class eSubButton;
+class eMessageLog;
+class eLabel;
 
 struct eSPR {
     eBuildingMode fMode;
@@ -82,6 +84,15 @@ public:
     void setShowAllPossibleBuildings(const bool b);
     // Test-only (autotest).
     void debugSetMode(const eBuildingMode mode) { setMode(mode); }
+    // Port: number on the Messages scroll and the latest message in the
+    // text box under it.
+    void updateMessages(const eMessageLog& log);
+    // Port: the map tab at the top of the panel (shows the city map where
+    // the category information is).
+    void setMapMode(const bool map);
+    bool mapMode() const { return mMapMode; }
+    // Port: the lower rows did not fit the screen (phones); laid out tighter.
+    bool compactLayout() const { return mCompact; }
 protected:
     bool mousePressEvent(const eMouseEvent& e);
 private:
@@ -131,6 +142,22 @@ private:
     eButton* mWorldButton = nullptr;
 
     eMiniMap* mMiniMap = nullptr;
+    eWidget* mMapHome = nullptr;   // overview group holding the mini map
+    int mMapHomeX = 0;
+    int mMapHomeY = 0;
+    int mMapHomeW = 0;
+    int mMapHomeH = 0;
+    int mMapX = 0;                 // map tab: where the category info is
+    int mMapY = 0;
+    int mMapW = 0;
+    int mMapH = 0;
+    bool mMapMode = false;
+    eCheckableButton* mInfoTab = nullptr;
+    eCheckableButton* mMapTab = nullptr;
+    eButton* mMessagesButton = nullptr;
+    eLabel* mMessagesCount = nullptr;
+    eButton* mMessageLine = nullptr;
+    bool mCompact = false;
 
     int mTradeCityId = -1;
     eBuildingMode mMode{eBuildingMode::none};

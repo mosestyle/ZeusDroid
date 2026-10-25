@@ -39,6 +39,14 @@ bool eRotateButton::mousePressEvent(const eMouseEvent& e) {
     if(!mEnabled) return false;
     const auto b = e.button();
     if(b == eMouseButton::left) {
+        // Port (touch): a tap brings no hover moves first, so take the
+        // part of the button (left / centre / right) from the press.
+        const int x = e.x();
+        const int w = width()/3;
+        if(x < w) mHovered = eButtonHoverPortion::left;
+        else if(x < 2*w) mHovered = eButtonHoverPortion::center;
+        else mHovered = eButtonHoverPortion::right;
+        mHover = true;
         mPressed = true;
 
         eSounds::playButtonSound();

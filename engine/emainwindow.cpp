@@ -492,6 +492,8 @@ bool eMainWindow::saveGame(const std::string& path) {
     if(mGW) {
         std::ofstream view(path + ".view", std::ios::out | std::ios::trunc);
         if(view) view << "zoom=" << mGW->zoom() << "\n";
+        // Port: the message list (Messages button), "<save>.msgs".
+        mGW->messageLog().save(path + ".msgs");
     }
     return true;
 }
@@ -523,6 +525,7 @@ bool eMainWindow::loadGame(const std::string& path) {
     file.close();
 
     mPendingZoom = 0;
+    mPendingMsgs = path + ".msgs";
     {
         std::ifstream view(path + ".view");
         std::string line;
@@ -714,6 +717,11 @@ void eMainWindow::showGame(eGameBoard* b,
         mGW->setZoomAt(mPendingZoom, 0, 0);
         mPendingZoom = 0;
     }
+    if(!mPendingMsgs.empty()) {
+        mGW->messageLog().load(mPendingMsgs);
+        mPendingMsgs.clear();
+    }
+    mGW->messagesChanged();
     setWidget(mGW);
 }
 

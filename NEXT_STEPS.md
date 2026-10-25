@@ -28,7 +28,8 @@ Phases from the brief (§17). ✅ done with evidence, 🟡 partly done, ⬜ not 
   military, long texts) and info-panel buttons, (3) tablet layout check, (4) FPS/frame-time
   and memory measurements on the phone, (5) optional: fling scrolling, start zoom > 1,
   haptic feedback on ✓. Done in 0.1.12: smart straight roads, Save/Load buttons
-  with quick save, autosave on going to the background. Open: in-game FPS 56 (11 ms) on the
+  with quick save, autosave on going to the background. 0.1.20: compact right panel on 1080-px phones (goals / rotate / world visible), Messages
+  list + count + text box, map tab, Delete in Save/Load, portrait set-up screen. Open: in-game FPS 56 (11 ms) on the
   S25 – profile the map draw if it drops further.
 * **F – Gameplay parity with the original 🟡 (started 2026-10-24)** done: data parity against
   the original Model files (costs, employees, desirability, tax table; tax low/very-low fix),

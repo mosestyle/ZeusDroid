@@ -1,0 +1,87 @@
+# Messages: a received message is listed (count on the scroll, text box), the list opens,
+# a row reopens the message, the list is saved with the game and restored on load,
+# long-press deletes. Phone layout (2400x1080, EZEUS_TOUCH=1, EZEUS_UI_SCALE=large).
+15000 log menu
+100 debug_start_adventure 17
+100 wait_game 120000
+3000 log start_expect_msgs0_compact1
+100 finger_down 1 68 118
+80 finger_up 1 68 118
+300 finger_down 1 68 430
+80 finger_up 1 68 430
+300 finger_down 1 68 430
+80 finger_up 1 68 430
+300 finger_down 1 68 430
+80 finger_up 1 68 430
+300 finger_down 1 68 430
+80 finger_up 1 68 430
+300 finger_down 1 68 430
+80 finger_up 1 68 430
+60000 log after_run_expect_msgs1_msgbox1
+200 screenshot build/run/msg_01.bmp
+100 finger_down 1 1558 986
+80 finger_up 1 1558 986
+300 finger_down 1 68 118
+80 finger_up 1 68 118
+500 log closed_and_paused_expect_msgbox0
+100 finger_down 1 2363 1047
+80 finger_up 1 2363 1047
+1000 log list_open
+200 screenshot build/run/msg_02.bmp
+100 finger_down 1 900 372
+80 finger_up 1 900 372
+1000 log row_tap_expect_msgbox1
+200 screenshot build/run/msg_03.bmp
+100 finger_down 1 1558 986
+80 finger_up 1 1558 986
+500 log closed_expect_msgbox0
+100 finger_down 1 1934 105
+80 finger_up 1 1934 105
+800 key M
+100 key S
+100 key G
+100 key T
+300 finger_down 1 1584 869
+80 finger_up 1 1584 869
+800 log saved_expect_quick_msgt
+100 finger_down 1 1934 190
+80 finger_up 1 1934 190
+100 finger_down 1 830 424
+80 finger_up 1 830 424
+300 finger_down 1 1598 870
+80 finger_up 1 1598 870
+1000 wait_game 120000
+3000 log loaded_expect_msgs1
+200 screenshot build/run/msg_05.bmp
+100 finger_down 1 2310 25
+80 finger_up 1 2310 25
+500 log map_tab_expect_map1
+200 screenshot build/run/msg_06.bmp
+100 finger_down 1 2190 25
+80 finger_up 1 2190 25
+500 log info_tab_expect_map0
+100 finger_down 1 2363 1047
+80 finger_up 1 2363 1047
+1000 finger_down 1 900 372
+900 finger_up 1 900 372
+500 log longpress_row_expect_msgs0
+200 screenshot build/run/msg_07.bmp
+100 finger_down 1 1414 870
+80 finger_up 1 1414 870
+500 finger_down 1 2069 979
+80 finger_up 1 2069 979
+1000 log goals_tap
+200 screenshot build/run/msg_08.bmp
+100 key Escape
+500 finger_down 1 1934 190
+80 finger_up 1 1934 190
+800 finger_down 1 830 424
+80 finger_up 1 830 424
+300 finger_down 1 1198 874
+80 finger_up 1 1198 874
+800 screenshot build/run/msg_09.bmp
+100 finger_down 1 1280 644
+80 finger_up 1 1280 644
+800 log deleted_save_msgt
+200 screenshot build/run/msg_10.bmp
+200 quit

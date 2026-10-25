@@ -9,6 +9,8 @@
 #include "escrollwidgetcomplete.h"
 
 #include "elineedit.h"
+#include "eframedbutton.h"
+#include "equestionwidget.h"
 
 #include <string>
 #include <iostream>
@@ -83,17 +85,47 @@ void eFileWidget::intialize(const std::string& title,
     scrollCont->initialize();
     const int swwidth = scrollCont->listWidth();
 
+    mScroll = scrollCont;
+    fillFiles();
+
+    // Port: delete a saved game (between the cross and the tick).
+    mDelete = new eFramedButton(window());
+    mDelete->setUnderline(false);
+    mDelete->setSmallFontSize();
+    mDelete->setSmallPadding();
+    mDelete->setText("Delete");
+    mDelete->fitContent();
+    addWidget(mDelete);
+    mDelete->align(eAlignment::hcenter);
+    mDelete->setY(mOk->y() + (mOk->height() - mDelete->height())/2);
+    mDelete->setPressAction([this]() {
+        deleteSelected();
+    });
+
+    mLineEdit->resize(swwidth - 2*p, mLineEdit->height());
+    lineW->resize(swwidth, mLineEdit->height());
+
+    // Touch: the keyboard opens when the name field is tapped.
+    mLineEdit->setSoftKeyboardOnTap(true);
+    mLineEdit->grabKeyboard();
+}
+
+void eFileWidget::fillFiles() {
+    const int swwidth = mScroll->listWidth();
     const auto filesWidget = new eWidget(window());
 
     std::map<time_t, fs::path> sorted;
-    if(std::filesystem::exists(folder)) {
-        for(const auto& entry : fs::directory_iterator(folder)) {
+    std::error_code ec;
+    if(std::filesystem::exists(mFolder, ec)) {
+        for(const auto& entry : fs::directory_iterator(mFolder, ec)) {
             const auto path = entry.path();
             const auto ext = path.extension();
             if(ext != ".ez") continue;
-            const auto lwt = fs::last_write_time(path);
+            const auto lwt = fs::last_write_time(path, ec);
             const auto time = to_time_t(lwt);
-            sorted[-time] = path;
+            auto key = -time;
+            while(sorted.count(key)) key--;
+            sorted[key] = path;
         }
     }
 
@@ -125,14 +157,33 @@ void eFileWidget::intialize(const std::string& title,
     filesWidget->setNoPadding();
     filesWidget->fitContent();
 
-    scrollCont->setScrollArea(filesWidget);
+    const auto old = mFiles;
+    mFiles = filesWidget;
+    mScroll->setScrollArea(filesWidget);
+    if(old) old->deleteLater();
+}
 
-    mLineEdit->resize(swwidth - 2*p, mLineEdit->height());
-    lineW->resize(swwidth, mLineEdit->height());
-
-    // Touch: the keyboard opens when the name field is tapped.
-    mLineEdit->setSoftKeyboardOnTap(true);
-    mLineEdit->grabKeyboard();
+void eFileWidget::deleteSelected() {
+    const auto name = mLineEdit->text();
+    if(name.empty()) return;
+    const auto path = filePath();
+    std::error_code ec;
+    if(!fs::exists(path, ec)) return;
+    const auto q = new eQuestionWidget(window());
+    const auto acceptA = [this, path]() {
+        std::error_code ec;
+        for(const auto& ext : {"", ".view", ".msgs", ".bak", ".tmp"}) {
+            fs::remove(path + ext, ec);
+        }
+        if(window()->quickSavePath() == path) window()->setQuickSavePath("");
+        mLineEdit->setText("");
+        fillFiles();
+    };
+    q->initialize("Delete " + name + "?",
+                  "This deletes the saved game. Do you really want to do that?",
+                  acceptA, nullptr);
+    window()->execDialog(q);
+    q->align(eAlignment::center);
 }
 
 void eFileWidget::setFileName(const std::string& path) {

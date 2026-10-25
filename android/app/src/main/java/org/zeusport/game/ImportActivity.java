@@ -34,9 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 /**
  * First-run screen: explains that user-owned game files are required, imports
@@ -46,8 +43,6 @@ import java.util.zip.ZipOutputStream;
 public class ImportActivity extends Activity {
     private static final String TAG = "ZeusImport";
     private static final int REQ_GAME_FOLDER = 1;
-    private static final int REQ_EZEUS_ARCHIVE = 2;
-    private static final int REQ_BACKUP = 3;
     private static final long SPACE_MARGIN = 64L * 1024 * 1024;
 
     private final Handler mUi = new Handler(Looper.getMainLooper());
@@ -57,7 +52,7 @@ public class ImportActivity extends Activity {
     private LinearLayout mStatusList;
     private TextView mProgressText;
     private ProgressBar mProgress;
-    private Button mStart, mPickFolder, mPickZip, mCancelButton, mDownload, mBackup;
+    private Button mStart, mPickFolder, mCancelButton;
     private String mDoneMessage = null;
 
     private File root() {
@@ -148,6 +143,8 @@ public class ImportActivity extends Activity {
     }
 
     private void buildUi() {
+        // The set-up screen is read upright; the game itself runs in landscape.
+        setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         ScrollView scroll = new ScrollView(this);
         scroll.setBackgroundColor(Color.rgb(0x16, 0x22, 0x30));
         LinearLayout col = new LinearLayout(this);
@@ -178,25 +175,15 @@ public class ImportActivity extends Activity {
             + "(USB, SD card or cloud) and pick it below with \"Import game folder\".\n"
             + "2. Tap \"Start game\". The first start prepares the game graphics from your own "
             + "game files (about a minute, only once).\n\n"
-            + "Optional: instead of preparing them, a texture pack zip can be imported or "
-            + "downloaded below.\n\n"
             + "Files are copied into this app's private storage. Your saves are kept when you re-import. "
             + "Nothing is uploaded anywhere.");
         col.addView(body);
 
         mPickFolder = button("Import game folder…", v -> pickFolder());
-        mPickZip = button("Optional: import texture pack (.zip)…", v -> pickZip());
-        mDownload = button("Optional: download texture pack (339 MB)", v -> startWork(this::downloadPack));
         mCancelButton = button("Cancel import", v -> mCancel.set(true));
         mCancelButton.setVisibility(View.GONE);
         mStart = button("Start game", v -> launchGame());
         col.addView(mPickFolder);
-        col.addView(mPickZip);
-        col.addView(mDownload);
-        // Keep your own copy of the texture pack (e.g. on the PC or a memory card), so the
-        // game can always be set up again without downloading it.
-        mBackup = button("Save a backup of the texture pack (.zip)…", v -> pickBackupTarget());
-        col.addView(mBackup);
 
         mProgress = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
         mProgress.setMax(1000);
@@ -239,9 +226,6 @@ public class ImportActivity extends Activity {
         mStart.setEnabled(ok && !mBusy);
         mStart.setText(ok ? "Start game" : "Start game (missing required files)");
         mPickFolder.setEnabled(!mBusy);
-        mPickZip.setEnabled(!mBusy);
-        mDownload.setEnabled(!mBusy);
-        mBackup.setEnabled(!mBusy && new File(root(), ImportRules.EZEUS + "/interface.e").isFile());
         mCancelButton.setVisibility(mBusy ? View.VISIBLE : View.GONE);
         mProgress.setVisibility(mBusy ? View.VISIBLE : View.GONE);
     }
@@ -252,89 +236,12 @@ public class ImportActivity extends Activity {
         startActivityForResult(i, REQ_GAME_FOLDER);
     }
 
-    private void pickZip() {
-        Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        i.addCategory(Intent.CATEGORY_OPENABLE);
-        i.setType("*/*");
-        i.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {
-            "application/zip", "application/x-zip-compressed", "application/octet-stream"});
-        i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        startActivityForResult(i, REQ_EZEUS_ARCHIVE);
-    }
-
-    private void pickBackupTarget() {
-        Intent i = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-        i.addCategory(Intent.CATEGORY_OPENABLE);
-        i.setType("application/zip");
-        i.putExtra(Intent.EXTRA_TITLE, "ZeusDroid-texture-pack.zip");
-        startActivityForResult(i, REQ_BACKUP);
-    }
-
-    /** Writes the imported texture pack as a zip that "Import texture pack" accepts. */
-    private void writeBackup(Uri target) throws IOException {
-        final String[] names = {"interface.e", "i15.e", "i30.e", "i45.e", "i60.e",
-                                "Fonts/Zeus.ttf", "Text/language.txt"};
-        File base = new File(root(), ImportRules.EZEUS);
-        long total = 0;
-        for (String n : names) {
-            File f = new File(base, n);
-            if (f.isFile()) total += f.length();
-        }
-        long done = 0;
-        byte[] buf = new byte[1 << 20];
-        try (OutputStream os = getContentResolver().openOutputStream(target, "w")) {
-            if (os == null) throw new IOException("cannot write to the chosen file");
-            try (ZipOutputStream zos = new ZipOutputStream(new java.io.BufferedOutputStream(os, 1 << 20))) {
-                zos.setLevel(java.util.zip.Deflater.NO_COMPRESSION);
-                for (String n : names) {
-                    File f = new File(base, n);
-                    if (!f.isFile()) continue;
-                    // Top folder name is what the importer recognises as the pack.
-                    zos.putNextEntry(new ZipEntry("eZeus-texture-pack/" + n));
-                    try (InputStream in = new java.io.FileInputStream(f)) {
-                        int r;
-                        while ((r = in.read(buf)) > 0) {
-                            if (mCancel.get()) throw new IOException("cancelled");
-                            zos.write(buf, 0, r);
-                            done += r;
-                            progress(done, total, "Saving texture pack backup");
-                        }
-                    }
-                    zos.closeEntry();
-                }
-            }
-        }
-    }
-
     @Override
     protected void onActivityResult(int req, int res, Intent data) {
         super.onActivityResult(req, res, data);
         if (res != RESULT_OK || data == null) return;
-        if (req == REQ_BACKUP && data.getData() != null) {
-            final Uri target = data.getData();
-            mDoneMessage = "Backup saved. Keep this zip: \"Import texture pack\" sets the game up "
-                + "again from it, without downloading anything.";
-            startWork(() -> writeBackup(target));
-            return;
-        }
         if (req == REQ_GAME_FOLDER && data.getData() != null) {
             startWork(() -> importTree(data.getData()));
-        } else if (req == REQ_EZEUS_ARCHIVE) {
-            final List<Uri> uris = new ArrayList<>();
-            if (data.getClipData() != null) {
-                for (int i = 0; i < data.getClipData().getItemCount(); i++) {
-                    uris.add(data.getClipData().getItemAt(i).getUri());
-                }
-            } else if (data.getData() != null) {
-                uris.add(data.getData());
-            }
-            startWork(() -> {
-                for (Uri u : uris) {
-                    if (mCancel.get()) break;
-                    importZip(u);
-                }
-            });
         }
     }
 
@@ -475,125 +382,6 @@ public class ImportActivity extends Activity {
         return "";
     }
 
-    // ------------------------------------------------------------- zip import
-
-    private void importZip(Uri zip) throws IOException {
-        File root = root();
-        if (!root.isDirectory() && !root.mkdirs()) throw new IOException("cannot create " + root);
-        long total = querySize(zip);
-        checkSpace(root, total > 0 ? total * 2 : 0);
-        long done = 0;
-        long expanded = 0;
-        int files = 0;
-        boolean sourceArchive = false;
-        byte[] buf = new byte[1 << 16];
-        try (InputStream raw = getContentResolver().openInputStream(zip);
-             ZipInputStream zin = new ZipInputStream(raw)) {
-            ZipEntry ze;
-            while ((ze = zin.getNextEntry()) != null && !mCancel.get()) {
-                if (ze.isDirectory()) continue;
-                if (ImportRules.looksLikeSourceArchiveEntry(ze.getName())) sourceArchive = true;
-                String dest = ImportRules.mapEZeusArchiveEntry(ze.getName());
-                if (dest == null) continue;
-                File dst = ImportRules.safeResolve(root, dest);
-                long declared = ze.getSize();
-                if (declared > ImportRules.MAX_FILE_BYTES) throw new IOException("entry too large: " + ze.getName());
-                progress(done, total, "Extracting " + dest);
-                long n = copyAtomic(zin, dst, buf, declared);
-                expanded += n;
-                if (expanded > ImportRules.MAX_ARCHIVE_BYTES) throw new IOException("archive expands too much");
-                done += ze.getCompressedSize() > 0 ? ze.getCompressedSize() : n;
-                files++;
-            }
-        }
-        boolean hasPacks = new File(root, ImportRules.EZEUS + "/interface.e").isFile();
-        if (sourceArchive && !hasPacks) {
-            throw new IOException("this is a source code zip. It has no textures "
-                + "(interface.e, i15.e, i30.e). Use \"Download texture pack\" or import "
-                + "eZeus-0.8.2-beta.zip.");
-        }
-        if (files == 0) throw new IOException("the archive is not the texture pack (expected */interface.e)");
-        progress(total, total, "Extracted " + files + " files");
-    }
-
-    /** Downloads the official release pack, verifies size + SHA-256, then imports it. */
-    private void downloadPack() throws IOException {
-        File cache = getExternalCacheDir() != null ? getExternalCacheDir() : getCacheDir();
-        File part = new File(cache, "eZeus-0.8.2-beta.zip.part");
-        File done = new File(cache, "eZeus-0.8.2-beta.zip");
-        checkSpace(cache, ImportRules.EZEUS_PACK_SIZE * 2);
-        if (!(done.isFile() && done.length() == ImportRules.EZEUS_PACK_SIZE)) {
-            java.net.URL url = new java.net.URL(ImportRules.EZEUS_PACK_URL);
-            java.net.HttpURLConnection c = null;
-            long have = part.isFile() ? part.length() : 0;
-            for (int hop = 0; hop < 5; hop++) {   // follow GitHub's redirect to its CDN
-                c = (java.net.HttpURLConnection) url.openConnection();
-                c.setInstanceFollowRedirects(false);
-                c.setConnectTimeout(20000);
-                c.setReadTimeout(30000);
-                if (have > 0) c.setRequestProperty("Range", "bytes=" + have + "-");
-                int code = c.getResponseCode();
-                if (code / 100 == 3) {
-                    url = new java.net.URL(url, c.getHeaderField("Location"));
-                    c.disconnect();
-                    continue;
-                }
-                if (code == 200) have = 0;  // server ignored Range: restart
-                else if (code != 206) throw new IOException("download failed: HTTP " + code);
-                break;
-            }
-            byte[] buf = new byte[1 << 16];
-            try (InputStream in = c.getInputStream();
-                 OutputStream out = new FileOutputStream(part, have > 0)) {
-                long n = have;
-                int r;
-                long lastUi = 0;
-                while ((r = in.read(buf)) > 0) {
-                    if (mCancel.get()) throw new IOException("cancelled (partial download kept, it resumes next time)");
-                    out.write(buf, 0, r);
-                    n += r;
-                    if (n - lastUi > (1 << 20)) {
-                        lastUi = n;
-                        progress(n, ImportRules.EZEUS_PACK_SIZE, "Downloading texture pack");
-                    }
-                }
-            } finally {
-                c.disconnect();
-            }
-            if (part.length() != ImportRules.EZEUS_PACK_SIZE) {
-                throw new IOException("download incomplete (" + part.length() + " of "
-                    + ImportRules.EZEUS_PACK_SIZE + " bytes); tap Download again to resume");
-            }
-            if (done.exists()) done.delete();
-            if (!part.renameTo(done)) throw new IOException("cannot finalize download");
-        }
-        progress(0, 1, "Verifying SHA-256…");
-        String sha = sha256(done);
-        if (!ImportRules.EZEUS_PACK_SHA256.equals(sha)) {
-            done.delete();
-            throw new IOException("checksum mismatch (got " + sha + "); the file was deleted, try again");
-        }
-        importZip(Uri.fromFile(done));
-        //noinspection ResultOfMethodCallIgnored
-        done.delete();   // keep storage small; extracted files are kept
-    }
-
-    private static String sha256(File f) throws IOException {
-        try {
-            java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-256");
-            byte[] buf = new byte[1 << 16];
-            try (InputStream in = new java.io.FileInputStream(f)) {
-                int r;
-                while ((r = in.read(buf)) > 0) md.update(buf, 0, r);
-            }
-            StringBuilder sb = new StringBuilder();
-            for (byte x : md.digest()) sb.append(String.format(Locale.ROOT, "%02x", x));
-            return sb.toString();
-        } catch (java.security.NoSuchAlgorithmException e) {
-            throw new IOException(e);
-        }
-    }
-
     /** Removes source files an older importer version copied from a source-code zip. */
     private void cleanLeftoverSources() {
         File ez = new File(root(), ImportRules.EZEUS);
@@ -613,14 +401,6 @@ public class ImportActivity extends Activity {
                 }
             }
         }
-    }
-
-    private long querySize(Uri u) {
-        try (Cursor c = getContentResolver().query(u,
-                new String[] {android.provider.OpenableColumns.SIZE}, null, null, null)) {
-            if (c != null && c.moveToFirst() && !c.isNull(0)) return c.getLong(0);
-        } catch (Exception ignored) { }
-        return 0;
     }
 
     private void checkSpace(File dir, long need) throws IOException {

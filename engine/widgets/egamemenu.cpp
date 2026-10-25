@@ -29,6 +29,8 @@
 #include "ebuildwidget.h"
 #include "ebasicbutton.h"
 #include "erotatebutton.h"
+#include "emessagelog.h"
+#include "elabel.h"
 
 struct eSubButtonData {
     eBuildingMode fMode;
@@ -1043,14 +1045,19 @@ void eGameMenu::initialize(eGameBoard* const b,
         const auto butts = new eWidget(window());
         const auto info = eCheckableButton::sCreate(coll.fShowInfo, window(), butts);
         const auto map = eCheckableButton::sCreate(coll.fShowMap, window(), butts);
+        mInfoTab = info;
+        mMapTab = map;
         info->setChecked(true);
-        info->setCheckAction([info, map](const bool c) {
+        // Port: the map tab shows the city map (was not connected in eZeus).
+        info->setCheckAction([this, info, map](const bool c) {
             if(!c) return info->setChecked(true);
             map->setChecked(false);
+            setMapMode(false);
         });
-        map->setCheckAction([info, map](const bool c) {
+        map->setCheckAction([this, info, map](const bool c) {
             if(!c) return map->setChecked(true);
             info->setChecked(false);
+            setMapMode(true);
         });
         butts->resize(info->width() + map->width(), info->height());
         butts->layoutHorizontally();
@@ -1058,9 +1065,52 @@ void eGameMenu::initialize(eGameBoard* const b,
         addWidget(butts);
     }
 
+    // Port: the rows from here down end at 299 (x mult) px; on a phone at
+    // the large interface size (1080 px high) that is below the screen, which
+    // hid the goals / rotate / world buttons. Then the rows are laid out
+    // tighter so everything stays on screen.
+    const int screenH = resolution().height();
+    mCompact = std::round(mult*299.) > screenH;
+    const int row3Y = mCompact ? screenH - std::round(mult*16.5) : 0;
+    const int row2Y = mCompact ? row3Y - mult*17 : 0;
+
     {
-        const auto m = eCheckableButton::sCreate(coll.fMessages, window(), this);
-        m->move(mult*73, mult*239);
+        // Text box with the latest message (tap: read it).
+        mMessageLine = new eButton(window());
+        mMessageLine->setUnderline(false);
+        mMessageLine->setTinyFontSize();
+        mMessageLine->setNoPadding();
+        mMessageLine->setTextAlignment(eAlignment::left | eAlignment::vcenter);
+        if(mCompact) {
+            mMessageLine->move(mult*4, row3Y);
+            mMessageLine->resize(mult*70, std::round(mult*16.5));
+        } else {
+            mMessageLine->move(mult*7, mult*257);
+            mMessageLine->resize(mult*80, mult*22);
+        }
+        mMessageLine->setWrapWidth(mMessageLine->width());
+        mMessageLine->setPressAction([this]() {
+            if(mGW) mGW->showLoggedMessage(0);
+        });
+        addWidget(mMessageLine);
+    }
+    {
+        // Messages scroll: number of messages, tap opens the list.
+        const auto m = eButton::sCreate(coll.fMessages, window(), this);
+        mMessagesButton = m;
+        if(mCompact) {
+            m->move(width() - m->width() - mult, row3Y);
+        } else {
+            m->move(mult*73, mult*239);
+        }
+        m->setPressAction([this]() {
+            if(mGW) mGW->showMessagesDialog();
+        });
+        mMessagesCount = new eLabel(window());
+        mMessagesCount->setSmallFontSize();
+        mMessagesCount->setDarkFontColor();
+        mMessagesCount->setNoPadding();
+        m->addWidget(mMessagesCount);
     }
     {
         const auto butts = new eWidget(window());
@@ -1074,25 +1124,87 @@ void eGameMenu::initialize(eGameBoard* const b,
         mWorldButton = eButton::sCreate(coll.fWorld, window(), butts);
         mWorldButton->setTooltip(eLanguage::zeusText(68, 17));
         const int w = goals->width() + mRotateButton->width() + mWorldButton->width() + 5;
-        butts->resize(w, mWorldButton->height());
-        butts->layoutHorizontally();
-        butts->setX(mult*5);
-        butts->setY(std::round(mult*282.5));
+        if(mCompact) {
+            butts->resize(std::min(width() - 3*mult, w + 2*mult), mWorldButton->height());
+            butts->layoutHorizontally();
+            butts->setX(mult*2);
+            butts->setY(row2Y);
+        } else {
+            butts->resize(w, mWorldButton->height());
+            butts->layoutHorizontally();
+            butts->setX(mult*5);
+            butts->setY(std::round(mult*282.5));
+        }
         addWidget(butts);
     }
 
     {
         mEventW = new eEventWidget(window());
         mEventW->setNoPadding();
-        mEventW->setX(mult*5);
-        mEventW->setY(mult*240);
+        if(mCompact) {
+            mEventW->setX(mult*3);
+            mEventW->setY(row3Y);
+        } else {
+            mEventW->setX(mult*5);
+            mEventW->setY(mult*240);
+        }
         mEventW->setWidth(dataWidWidth);
         addWidget(mEventW);
     }
 
+    // Map tab geometry: where the category information is shown.
+    mMapHome = mMiniMap->parent();
+    mMapHomeX = mMiniMap->x();
+    mMapHomeY = mMiniMap->y();
+    mMapHomeW = mMiniMap->width();
+    mMapHomeH = mMiniMap->height();
+    mMapX = wx + mPopDataW->x();
+    mMapY = 12*mult + mPopDataW->y();
+    mMapW = mPopDataW->width();
+    mMapH = mPopDataW->height();
+
     mMiniMap->setBoard(b);
 
     updateButtonsVisibility();
+}
+
+void eGameMenu::updateMessages(const eMessageLog& log) {
+    if(mMessagesCount) {
+        const int n = log.size();
+        mMessagesCount->setText(n > 0 ? std::to_string(n) : "");
+        mMessagesCount->fitContent();
+        if(mMessagesButton) {
+            mMessagesCount->move((mMessagesButton->width() - mMessagesCount->width())/2,
+                                 (mMessagesButton->height() - mMessagesCount->height())/2);
+        }
+    }
+    if(mMessageLine) {
+        const int w = mMessageLine->width();
+        const int h = mMessageLine->height();
+        mMessageLine->setText(log.empty() ? "" : log.items().front().fTitle);
+        mMessageLine->resize(w, h);
+    }
+}
+
+void eGameMenu::setMapMode(const bool map) {
+    if(map == mMapMode) return;
+    mMapMode = map;
+    for(const auto& w : mWidgets) {
+        if(w.fDW) w.fDW->setVisible(!map);
+    }
+    if(!mMiniMap) return;
+    if(map) {
+        if(mMapHome) mMapHome->removeWidget(mMiniMap);
+        addWidget(mMiniMap);
+        mMiniMap->move(mMapX, mMapY);
+        mMiniMap->resize(mMapW, mMapH);
+    } else {
+        removeWidget(mMiniMap);
+        if(mMapHome) mMapHome->addWidget(mMiniMap);
+        mMiniMap->move(mMapHomeX, mMapHomeY);
+        mMiniMap->resize(mMapHomeW, mMapHomeH);
+    }
+    if(mGW) mGW->updateViewBoxSize();
 }
 
 void eGameMenu::setGameWidget(eGameWidget* const gw) {

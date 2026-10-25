@@ -7,6 +7,8 @@ class eLabel;
 class eAcceptButton;
 class eCancelButton;
 class eLineEdit;
+class eFramedButton;
+class eScrollWidgetComplete;
 
 class eFileWidget : public eFramedWidget {
 public:
@@ -21,6 +23,12 @@ public:
     void setFileName(const std::string& path);
     std::string filePath() const;
 private:
+    void fillFiles();
+    void deleteSelected();
+
+    eScrollWidgetComplete* mScroll = nullptr;
+    eWidget* mFiles = nullptr;
+    eFramedButton* mDelete = nullptr;
     eLabel* mTitleLabel = nullptr;
     eAcceptButton* mOk = nullptr;
     eCancelButton* mCancel = nullptr;

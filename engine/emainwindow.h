@@ -128,6 +128,7 @@ private:
     eGameWidget* mGW = nullptr;
     std::string mQuickSavePath;
     double mPendingZoom = 0; // port: camera zoom restored after loading
+    std::string mPendingMsgs; // port: message list file restored after loading
     eWorldWidget* mWW = nullptr;
 
     eWidget* mWidget = nullptr;

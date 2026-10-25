@@ -1,5 +1,24 @@
 # Release notes
 
+## 0.1.20-dev
+* Right panel on phones: the **Review episode goals** (tick), **Rotate city** and **View
+  world** buttons were below the bottom of the screen at the phone's interface size. When
+  the panel does not fit, its lowest rows are now laid out tighter, so all of them are on
+  screen (on bigger screens the panel is unchanged). The rotate button turns the city with a
+  tap on its left or right part (centre: back to north), also on touch.
+* **Messages** button (the scroll): shows how many messages there are; tapping it opens the
+  original's Messages list (date, subject). Tap a message to read it again, hold it to
+  delete it, "Delete opened messages" clears the read ones. The text box under it shows the
+  latest message; tap it to read that message. The list is kept with each saved game
+  (a small "<save>.msgs" file next to it).
+* The **map tab** at the top of the panel works: it shows the city map where the category
+  information is; the other tab goes back to the information.
+* **Delete** button in the Save / Load window, between the cross and the tick: deletes the
+  selected saved game after asking.
+* Set-up screen: upright (portrait); the game itself stays in landscape. The optional
+  texture-pack buttons are gone (the graphics are made from your game files), and the app no
+  longer asks for internet access.
+
 ## 0.1.19-dev
 * **Texture builder**: the game graphics are now made from your own original game files
   (`DATA/*.sg3`, `*.555`, `*.jpg`) on the first start – "Preparing the game graphics from

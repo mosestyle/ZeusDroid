@@ -2872,6 +2872,8 @@ set(EZEUS_SOURCES
     widgets/emenuloadingwidget.cpp
     widgets/emenuloadingwidget.h
     widgets/emessagebox.cpp
+    widgets/emessagelog.cpp
+    widgets/emessageswidget.cpp
     widgets/emessagebox.h
     widgets/emessagewidget.cpp
     widgets/emessagewidget.h

@@ -37,6 +37,7 @@ void eMessageBox::initialize(eGameBoard& board,
                              const eAction& closeFunc,
                              eMessage msg) {
     mCloseFunc = closeFunc;
+    mShown = msg;
     setType(eFrameType::message);
 
     const int p = padding();
@@ -514,6 +515,7 @@ void eMessageBox::initialize(eGameBoard& board,
         addWidget(wid);
     }
 
+    mShown = msg;
     text->setText(msg.fText);
     text->fitContent();
     text->setX(p);

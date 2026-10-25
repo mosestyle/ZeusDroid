@@ -126,3 +126,17 @@ anchored at the screen centre). Zoom is not stored in saves (save format unchang
 * Undo icon on the left bar for 30 s after building: removes the last placement and refunds
   it; the right panel's Undo does the same (0.1.15).
 * Autosave as "autosave" whenever the app goes to the background.
+
+## Right panel on phones (0.1.20)
+* At the large interface size a 1080-px-high screen ends 116 px above the panel's last row
+  (tick / rotate / world). When the panel does not fit (`eGameMenu::compactLayout()`), the
+  goals / rotate / world row moves up to where the four alert slots are, and the alert icons,
+  the latest-message text box and the Messages scroll share the bottom row. Taller screens
+  keep the eZeus layout.
+* Messages scroll: number of messages; tap = Messages list (tap reads, hold deletes,
+  "Delete opened messages"). Text box: latest message, tap reads it. Saved as `<save>.msgs`.
+* Map tab (top of the panel): the city map in place of the category information.
+* Rotate button: left / centre / right part is taken from the tap itself.
+* Save / Load window: **Delete** between ✕ and ✓ (asks first; also removes the save's
+  `.view`, `.msgs` and `.bak` files).
+* Tests: `tests/autotest/phone_messages.txt`, `tests/autotest/phone_panel_bottom.txt`.

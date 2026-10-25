@@ -457,3 +457,28 @@ Make the texture packs from the original game files so the eZeus download is not
   importer rules 50/50. Full regression (19 scripts) – all pass.
 * Not tested here: the builder on the phone (time, memory, window switch on Android).
 APK 0.1.19-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 20, sha256 b42d154a0ef385d283dd5d3be6a3878592b28c25ccf040414d53c4dc0d5b2e27, v2/v3 OK
+
+### User report 2026-10-25 10:17 (0.1.19 on the phone)
+Asks whether the optional texture-pack buttons are still needed (remove them), an upright
+set-up screen, a Delete button for saved games, a working map tab, the missing tick /
+rotate / world buttons, and a working Messages scroll (number + list, like the original).
+
+### 0.1.20-dev: panel bottom rows, messages, map tab, delete saves, portrait set-up
+* Cause of the missing buttons: at the large interface size the panel's tick / rotate / world
+  row starts at 1130 px; the phone screen is 1080 px high (screenshot at 2400×1400 shows the
+  whole panel). Compact layout when it does not fit; `compact=1` at 2400×1080, `compact=0`
+  at 2400×1400 (panel unchanged, screenshot).
+* `tests/autotest/phone_messages.txt` (Open Play Sandbox 2, speed up, 60 s): msgs 0 → 1 with
+  the "Pythian Games" pop-up, scroll shows "1", text box "Pythian Games"; list opens (date,
+  subject), tapping the row reopens the message (msgbox=1); saved as MSGT → `msgt.ez.msgs`
+  written (1 message, text intact); loaded → msgs=1; map tab → map=1 (city map in the info
+  area, screenshot), info tab → map=0; holding the row → msgs=0; tick → episode goals
+  window; Load → MSGT → Delete → question → ✓: msgt.ez, .view, .msgs gone, quick save path
+  cleared.
+* `tests/autotest/phone_panel_bottom.txt`: rotate (left part) turns the city (map and mini
+  map rotated, screenshot), world button opens the world map (game=0).
+* Unit test `tests/native/test_message_log.cpp`: 30 checks, 0 failures. Other unit tests and
+  the full regression (19 scripts) unchanged – all pass.
+* APK: only the game activity is landscape; no INTERNET permission. The portrait set-up
+  screen is set at run time – not tried on a phone here.
+APK 0.1.20-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 21, sha256 e94423fc3a9ed16fd7d44897a81fc0c3bd27ff1dc9c74941bebeae3f6f323a6c, v2/v3 OK

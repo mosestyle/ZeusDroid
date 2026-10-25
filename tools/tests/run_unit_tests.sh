@@ -17,6 +17,9 @@ g++ -std=c++17 -Wall -Wextra -O1 -I"$ROOT/engine" $(sdl2-config --cflags 2>/dev/
 g++ -std=c++17 -Wall -O1 -I"$ROOT/engine" "$ROOT/tests/native/test_qoi_resample.cpp" \
     "$ROOT/engine/texbuild/eqoi.cpp" "$ROOT/engine/texbuild/eresample.cpp" -o "$B/test_qoi_resample"
 "$B/test_qoi_resample" | tail -1 || fail=1
+g++ -std=c++17 -Wall -O1 -I"$ROOT/engine" $(sdl2-config --cflags 2>/dev/null) "$ROOT/tests/native/test_message_log.cpp" \
+    "$ROOT/engine/widgets/emessagelog.cpp" -o "$B/test_message_log"
+"$B/test_message_log" | tail -1 || fail=1
 g++ -std=c++17 -O2 -I"$ROOT/engine" "$ROOT/tests/native/eng_convert_cli.cpp" \
     "$ROOT/engine/platform/eengconverter.cpp" -o "$B/eng_convert_cli"
 python3 "$ROOT/tests/test_eng_to_xml.py" "$B/eng_convert_cli" || fail=1

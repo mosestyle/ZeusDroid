@@ -25,6 +25,9 @@ public:
 
     void close();
     bool closable() const { return mClosable; }
+    // Port: the message as shown (names, amounts etc. filled in), for the
+    // message list.
+    const eMessage& shownMessage() const { return mShown; }
 
     eWidget* createTributeWidget(const eResourceType type,
                                  const int count, const int space,
@@ -37,6 +40,7 @@ protected:
 private:
     bool mClosable = false;
     eAction mCloseFunc;
+    eMessage mShown;
 //    eAction mDone;
 };
 

@@ -23,6 +23,7 @@
 #include "echeckbox.h"
 
 #include "engine/eeventdata.h"
+#include "widgets/emessagelog.h"
 
 class eTerrainEditMenu;
 class eDomesticatedAnimal;
@@ -326,7 +327,13 @@ private:
 public:
     bool undoAvailable() const;
     void undoLastBuild();
+    // Port: received messages (the original's Messages button and list).
+    eMessageLog& messageLog() { return mMsgLog; }
+    void showMessagesDialog();
+    void showLoggedMessage(const int i);
+    void messagesChanged();
 private:
+    eMessageLog mMsgLog;
     eFramedButton* mPanelButton = nullptr;
     bool mPanelHidden = false;
     void setPanelHidden(const bool h);

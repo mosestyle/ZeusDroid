@@ -1,0 +1,15 @@
+# Bottom row of the right panel on a phone (compact layout): rotate city and world map buttons.
+15000 log menu
+100 debug_start_adventure 17
+100 wait_game 120000
+3000 log start_expect_compact1
+200 screenshot build/run/pb_01.bmp
+100 finger_down 1 2130 979
+80 finger_up 1 2130 979
+1500 log after_rotate
+200 screenshot build/run/pb_02.bmp
+100 finger_down 1 2318 979
+80 finger_up 1 2318 979
+3000 log after_world_expect_game0
+200 screenshot build/run/pb_03.bmp
+200 quit

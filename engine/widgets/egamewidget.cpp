@@ -57,6 +57,7 @@
 #include "elanguage.h"
 
 #include "widgets/efilewidget.h"
+#include "widgets/emessageswidget.h"
 #include "evectorhelpers.h"
 #include "etilehelper.h"
 #include "widgets/equestionwidget.h"
@@ -1417,6 +1418,76 @@ void eGameWidget::showMessage(eEventData& ed,
     msgb->align(eAlignment::bottom | eAlignment::hcenter);
     msgb->setY(msgb->y() - mGm->width()/10);
     msgb->setX(msgb->x() - mGm->width()/2);
+
+    // Port: keep it in the message list (Messages button).
+    {
+        eLoggedMessage lm;
+        lm.fDate = ed.fDate;
+        lm.fTitle = msgb->shownMessage().fTitle;
+        lm.fText = msgb->shownMessage().fText;
+        if(const auto t = ed.fChar ? ed.fChar->tile() : ed.fTile) {
+            lm.fTileX = t->dx();
+            lm.fTileY = t->dy();
+        }
+        if(target.isCityTarget()) {
+            lm.fCity = static_cast<int>(target.cityTarget());
+        }
+        mMsgLog.add(lm);
+        messagesChanged();
+    }
+}
+
+void eGameWidget::messagesChanged() {
+    if(mGm) mGm->updateMessages(mMsgLog);
+}
+
+void eGameWidget::showLoggedMessage(const int i) {
+    if(mMsgBox || !mBoard) return;
+    if(i < 0 || i >= mMsgLog.size()) return;
+    const auto m = mMsgLog.items()[i];
+    mMsgLog.markOpened(i);
+    eEventData ed;
+    if(m.fCity >= 0) {
+        ed.fTarget = ePlayerCityTarget(static_cast<eCityId>(m.fCity));
+    }
+    ed.fDate = m.fDate;
+    ed.fPlayerName = window()->leader();
+    eTile* const tile = m.fTileX >= 0 ? mBoard->dtile(m.fTileX, m.fTileY) : nullptr;
+    eAction a;
+    if(tile) {
+        a = [this, tile]() {
+            viewTile(tile);
+        };
+    }
+    const auto msgb = new eMessageBox(window());
+    mMsgBox = msgb;
+    msgb->setHeight(height()/3);
+    msgb->setWidth(width()/2);
+    const auto close = [this]() {
+        mMsgBox = nullptr;
+        if(mSavedMsgs.empty()) return;
+        auto& msg = mSavedMsgs.front();
+        showMessage(msg.fEd, msg.fMsg);
+        mSavedMsgs.pop_front();
+    };
+    eMessage msg;
+    msg.fTitle = m.fTitle;
+    msg.fText = m.fText;
+    msgb->initialize(*mBoard, ed, a, close, msg);
+    window()->execDialog(msgb, msgb->closable(), close, this);
+    msgb->align(eAlignment::bottom | eAlignment::hcenter);
+    msgb->setY(msgb->y() - mGm->width()/10);
+    msgb->setX(msgb->x() - mGm->width()/2);
+    messagesChanged();
+}
+
+void eGameWidget::showMessagesDialog() {
+    if(mMsgBox) return;
+    const auto d = new eMessagesWidget(window());
+    d->initialize(this);
+    window()->execDialog(d, true, nullptr, this);
+    d->setX((width() - panelW() - d->width())/2);
+    d->align(eAlignment::vcenter);
 }
 
 bool eGameWidget::roadPath(std::vector<eOrientation>& path) {
@@ -2602,6 +2673,9 @@ std::string eGameWidget::debugCameraState() const {
            " boxsel=" + std::to_string(mTouchBoxSelect ? 1 : 0) +
            " boxbtn=" + std::to_string(mBoxSelectButton && mBoxSelectButton->visible() ? 1 : 0) +
            " sel=" + std::to_string(mBoard ? mBoard->selectedSoldiers().size() : 0) +
+           " msgs=" + std::to_string(mMsgLog.size()) +
+           " map=" + std::to_string(mGm && mGm->mapMode() ? 1 : 0) +
+           " compact=" + std::to_string(mGm && mGm->compactLayout() ? 1 : 0) +
            " banners=" + [this]() {
                std::string r;
                if(!mBoard) return r;
