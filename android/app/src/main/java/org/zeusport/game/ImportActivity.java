@@ -128,6 +128,23 @@ public class ImportActivity extends Activity {
         refreshStatus();
     }
 
+    /** Full screen: status and navigation bars hidden (a swipe shows them briefly). */
+    @SuppressWarnings("deprecation")
+    private void hideSystemBars() {
+        getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().getDecorView().setSystemUiVisibility(
+            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            | View.SYSTEM_UI_FLAG_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus && mStatusList != null) hideSystemBars();
+    }
+
     private int dp(float v) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, v,
             getResources().getDisplayMetrics());
@@ -145,6 +162,7 @@ public class ImportActivity extends Activity {
     private void buildUi() {
         // The set-up screen is read upright; the game itself runs in landscape.
         setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+        hideSystemBars();
         ScrollView scroll = new ScrollView(this);
         scroll.setBackgroundColor(Color.rgb(0x16, 0x22, 0x30));
         LinearLayout col = new LinearLayout(this);

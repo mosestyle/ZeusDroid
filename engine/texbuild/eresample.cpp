@@ -21,7 +21,7 @@ double cubic(const double x) {
     return 0;
 }
 
-struct eTap { int fFirst; std::vector<float> fW; };
+struct eTap { int fFirst; std::vector<float> fW; std::vector<char> fIn; };
 
 std::vector<eTap> taps(const int src, const int dst, const eResample::eFilter f) {
     std::vector<eTap> out(dst);
@@ -39,7 +39,16 @@ std::vector<eTap> taps(const int src, const int dst, const eResample::eFilter f)
             const double x = (j + 0.5 - c)/fs;
             const double w = f == eResample::eFilter::triangle ? triangle(x) : cubic(x);
             t.fW.push_back(static_cast<float>(w));
+            // inside the destination pixel's area (nearest pixel when enlarging)
+            t.fIn.push_back(std::fabs(x) <= 0.5 ? 1 : 0);
             sum += w;
+        }
+        bool any = false;
+        for(const char c : t.fIn) any = any || c;
+        if(!any && !t.fW.empty()) {
+            size_t best = 0;
+            for(size_t k = 1; k < t.fW.size(); k++) if(t.fW[k] > t.fW[best]) best = k;
+            t.fIn[best] = 1;
         }
         if(sum != 0) for(auto& w : t.fW) w = static_cast<float>(w/sum);
     }
@@ -49,7 +58,7 @@ std::vector<eTap> taps(const int src, const int dst, const eResample::eFilter f)
 
 void eResample::resize(const uint8_t* src, const int sw, const int sh,
                        std::vector<uint8_t>& dst, const int dw, const int dh,
-                       const eFilter filter, const bool binaryAlpha) {
+                       const eFilter filter, const eAlpha alpha) {
     dst.assign(size_t(dw)*dh*4, 0);
     if(sw <= 0 || sh <= 0 || dw <= 0 || dh <= 0) return;
     // Premultiplied float source.
@@ -64,31 +73,39 @@ void eResample::resize(const uint8_t* src, const int sw, const int sh,
     const auto tx = taps(sw, dw, filter);
     const auto ty = taps(sh, dh, filter);
     std::vector<float> tmp(size_t(dw)*sh*4, 0.f);
+    std::vector<float> tmax(size_t(dw)*sh, 0.f);
     for(int y = 0; y < sh; y++) {
         for(int x = 0; x < dw; x++) {
             const auto& t = tx[x];
             float acc[4] = {0, 0, 0, 0};
+            float mx = 0;
             for(size_t k = 0; k < t.fW.size(); k++) {
                 const float* p = &pm[(size_t(y)*sw + t.fFirst + k)*4];
                 const float w = t.fW[k];
                 acc[0] += p[0]*w; acc[1] += p[1]*w; acc[2] += p[2]*w; acc[3] += p[3]*w;
+                if(t.fIn[k]) mx = std::max(mx, p[3]);
             }
             float* o = &tmp[(size_t(y)*dw + x)*4];
             o[0] = acc[0]; o[1] = acc[1]; o[2] = acc[2]; o[3] = acc[3];
+            tmax[size_t(y)*dw + x] = mx;
         }
     }
     for(int y = 0; y < dh; y++) {
         const auto& t = ty[y];
         for(int x = 0; x < dw; x++) {
             float acc[4] = {0, 0, 0, 0};
+            float mx = 0;
             for(size_t k = 0; k < t.fW.size(); k++) {
-                const float* p = &tmp[(size_t(t.fFirst + k)*dw + x)*4];
+                const size_t row = size_t(t.fFirst + k)*dw + x;
+                const float* p = &tmp[row*4];
                 const float w = t.fW[k];
                 acc[0] += p[0]*w; acc[1] += p[1]*w; acc[2] += p[2]*w; acc[3] += p[3]*w;
+                if(t.fIn[k]) mx = std::max(mx, tmax[row]);
             }
             uint8_t* o = &dst[(size_t(y)*dw + x)*4];
             float a = std::clamp(acc[3], 0.f, 255.f);
-            if(binaryAlpha) a = a >= 127.5f ? 255.f : 0.f;
+            if(alpha == eAlpha::binary) a = a >= 127.5f ? 255.f : 0.f;
+            else if(alpha == eAlpha::cover) a = mx;
             if(a <= 0.f) continue;
             const float inv = 255.f/std::clamp(acc[3], 1e-3f, 255.f);
             o[0] = static_cast<uint8_t>(std::clamp(acc[0]*inv + 0.5f, 0.f, 255.f));

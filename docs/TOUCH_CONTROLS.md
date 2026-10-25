@@ -140,3 +140,12 @@ anchored at the screen centre). Zoom is not stored in saves (save format unchang
 * Save / Load window: **Delete** between ✕ and ✓ (asks first; also removes the save's
   `.view`, `.msgs` and `.bak` files).
 * Tests: `tests/autotest/phone_messages.txt`, `tests/autotest/phone_panel_bottom.txt`.
+
+## World map and dialogs on phones (0.1.21)
+* "Back to City" beside the world menu; when the menu is taller than the screen the raid /
+  conquer buttons are shown there too and the map moves left to make room.
+* Arrows: previous / next city. Orders: the trade building's orders for that city.
+* Close X on request / gift / gift amount / fulfil dialogs, "Right-click to continue"
+  messages and the episode goals window.
+* Messages scroll at the left end of the panel's bottom row.
+* Test: `tests/autotest/phone_world.txt`.

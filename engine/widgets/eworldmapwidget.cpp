@@ -707,6 +707,16 @@ void eWorldMapWidget::armyDrawXY(eWorldCity& c1, eWorldCity& c2,
     y = (hy + (ccy - hy)*frac)*height();
 }
 
+std::vector<stdsptr<eWorldCity>> eWorldMapWidget::selectableCities() const {
+    std::vector<stdsptr<eWorldCity>> r;
+    if(!mWorldBoard) return r;
+    const bool editor = mWorldBoard->editorMode();
+    for(const auto& ct : mWorldBoard->cities()) {
+        if(cityVisible(ct, editor)) r.push_back(ct);
+    }
+    return r;
+}
+
 bool eWorldMapWidget::cityVisible(const stdsptr<eWorldCity>& c,
                                   const bool editor) const {
     if(!editor && !c->visible()) return false;

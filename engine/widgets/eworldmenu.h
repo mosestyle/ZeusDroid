@@ -28,7 +28,22 @@ public:
     void setText(const std::string& text);
     void updateLabels() const;
     void updateButtonsEnabled() const;
+    void updateButtonsEnabled0() const;
+
+    // Port: previous / next city arrows, the goods Orders button.
+    void setPrevNextAction(const std::function<void(bool)>& a) { mPrevNext = a; }
+    void setOrdersAction(const eAction& a);
+    // Port: the lowest rows (raid / conquer, help / back to city) did not fit
+    // the screen (phones); the world screen shows them beside the menu.
+    bool compact() const { return mCompact; }
+    // Copies of the raid / conquer buttons for beside the menu (compact).
+    eButton* raidButton() const { return mRaidButton2; }
+    eButton* conquerButton() const { return mConquerButton2; }
 private:
+    eButton* mRaidButton2 = nullptr;
+    eButton* mConquerButton2 = nullptr;
+    std::function<void(bool)> mPrevNext;
+    bool mCompact = false;
     eWorldBoard* mBoard = nullptr;
 
     eLabel* mTextLabel = nullptr;

@@ -27,6 +27,10 @@
 #include "widgets/echoosecitydialog.h"
 
 #include "buildings/eheroshall.h"
+#include "buildings/etradepost.h"
+#include "engine/eboardcity.h"
+#include "eportclosebutton.h"
+#include "platform/eplatform.h"
 
 void eWorldWidget::initialize() {
     mWM = new eWorldMenu(window());
@@ -105,10 +109,23 @@ void eWorldWidget::initialize() {
     addWidget(mWMW);
 
     mWMW->setSelectCityAction([this](const stdsptr<eWorldCity>& ct) {
-        mCity = ct;
-        const bool editor = mWorldBoard && mWorldBoard->editorMode();
-        mSettingsButton->setVisible(mCity && editor);
-        mWM->setCity(ct);
+        selectCity(ct);
+    });
+    // Port: previous / next city arrows and the Orders button.
+    mWM->setPrevNextAction([this](const bool next) {
+        const auto cs = mWMW->selectableCities();
+        if(cs.empty()) return;
+        int i = -1;
+        for(int k = 0; k < static_cast<int>(cs.size()); k++) {
+            if(cs[k] == mCity) i = k;
+        }
+        const int n = cs.size();
+        if(i < 0) i = next ? 0 : n - 1;
+        else i = next ? (i + 1) % n : (i + n - 1) % n;
+        selectCity(cs[i]);
+    });
+    mWM->setOrdersAction([this]() {
+        openOrders();
     });
     mWMW->setSetTextAction([this](const std::string& text) {
         mWM->setText(text);
@@ -118,6 +135,29 @@ void eWorldWidget::initialize() {
     mWM->align(eAlignment::right | eAlignment::top);
 
     const int p = padding();
+
+    // Port: "Back to City" beside the menu (touch screens; the menu's own
+    // button can be below the screen), and on short screens the raid /
+    // conquer buttons, which would be cut off.
+    if(ePlatform::touchUi() || mWM->compact()) {
+        mBackButton = new eFramedButton(window());
+        mBackButton->setUnderline(false);
+        mBackButton->setRenderBg(true);
+        mBackButton->setText(eLanguage::zeusText(47, 8)); // Back to City
+        mBackButton->fitContent();
+        addWidget(mBackButton);
+        mBackButton->setPressAction([this]() {
+            const bool editor = mWorldBoard && mWorldBoard->editorMode();
+            if(editor) return;
+            window()->showGame(static_cast<eGameBoard*>(nullptr),
+                               eGameWidgetSettings());
+        });
+    }
+    if(mWM->compact()) {
+        addWidget(mWM->raidButton());
+        addWidget(mWM->conquerButton());
+    }
+    layoutSideButtons();
 
     mMapButton = new eFramedButton(window());
     mMapButton->setUnderline(false);
@@ -344,12 +384,14 @@ void eWorldWidget::openRequestDialog() {
     auto& world = mBoard->world();
     d->initialize(mCity, world, func, requestAid, requestStrike, ppid);
     openDialog(d);
+    ePortAddCloseButton(d, [d]() { d->deleteLater(); });
 }
 
 void eWorldWidget::openFulfillDialog() {
     const auto d = new eFulfillDialog(window(), this);
     d->initialize(mBoard, mCity);
     openDialog(d);
+    ePortAddCloseButton(d, [d]() { d->deleteLater(); });
 }
 
 void eWorldWidget::openGiftDialog() {
@@ -369,15 +411,75 @@ void eWorldWidget::openGiftDialog() {
         };
         dd->initialize(type, mCity, func, *mBoard, cid);
         openDialog(dd);
+        ePortAddCloseButton(dd, [dd]() { dd->deleteLater(); });
     };
     d->initialize(mCity, func, *mBoard);
     openDialog(d);
+    ePortAddCloseButton(d, [d]() { d->deleteLater(); });
 }
 
 void eWorldWidget::setMap(const eWorldMap map) {
     mWMW->setMap(map);
     mWMW->align(eAlignment::center);
-    mWMW->setX((width() - mWM->width() - mWMW->width())/2);
+    const int avail = width() - mWM->width();
+    int x = (avail - mWMW->width())/2;
+    // Port: keep a strip right of the map for the side buttons.
+    if(mStripW > 0) x = std::max(0, std::min(x, avail - mWMW->width() - mStripW));
+    mWMW->setX(x);
+}
+
+void eWorldWidget::selectCity(const stdsptr<eWorldCity>& ct) {
+    mCity = ct;
+    const bool editor = mWorldBoard && mWorldBoard->editorMode();
+    mSettingsButton->setVisible(mCity && editor);
+    mWM->setCity(ct);
+}
+
+void eWorldWidget::layoutSideButtons() {
+    const int p = padding();
+    std::vector<eWidget*> ws;
+    if(mBackButton) ws.push_back(mBackButton);
+    if(mWM->compact()) {
+        ws.push_back(mWM->raidButton());
+        ws.push_back(mWM->conquerButton());
+    }
+    int w = 0;
+    for(const auto b : ws) w = std::max(w, b->width());
+    mStripW = ws.empty() ? 0 : w + 2*p;
+    const int right = width() - mWM->width() - p;
+    int y = p;
+    for(const auto b : ws) {
+        b->move(right - (w + b->width())/2, y);
+        y += b->height() + p;
+    }
+}
+
+void eWorldWidget::openOrders() {
+    // Port: the original's Orders button shows the trade orders of the
+    // trade building that trades with this city.
+    if(!mBoard || !mCity) return;
+    const auto ppid = mBoard->personPlayer();
+    eTradePost* post = nullptr;
+    for(const auto cid : mBoard->playerCitiesOnBoard(ppid)) {
+        const auto c = mBoard->boardCityWithId(cid);
+        if(!c) continue;
+        for(const auto tp : c->tradePosts()) {
+            if(&tp->city() == mCity.get()) {
+                post = tp;
+                break;
+            }
+        }
+        if(post) break;
+    }
+    if(!post) {
+        const auto qw = new eMessageWidget(window());
+        qw->initialize(eLanguage::zeusText(54, 0), // Trade Status
+                       eLanguage::zeusText(54, 8)); // build a trade building
+        openDialog(qw);
+        return;
+    }
+    window()->showGame(static_cast<eGameBoard*>(nullptr), eGameWidgetSettings());
+    if(const auto gw = window()->gameWidget()) gw->openTradePostOrders(post);
 }
 
 void eWorldWidget::openDialog(eWidget* const d) {

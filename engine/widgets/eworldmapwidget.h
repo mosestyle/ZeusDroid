@@ -21,6 +21,8 @@ public:
     void setSetTextAction(const eSetTextAction& s);
 
     void updateWidgets();
+    // Port: the cities that can be selected (previous / next city arrows).
+    std::vector<stdsptr<eWorldCity>> selectableCities() const;
 
     void setMap(const eWorldMap map);
 protected:

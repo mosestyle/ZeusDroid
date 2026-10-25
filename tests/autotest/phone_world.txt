@@ -1,0 +1,39 @@
+# World map on a phone (2400x1080, large UI): next/previous city arrows, Orders, request and
+# gift dialogs with a close X, raid/conquer and "Back to City" beside the menu.
+15000 log menu
+100 debug_start_adventure 17
+100 wait_game 120000
+2000 debug_world
+2000 log world_expect_game0
+100 finger_down 1 2299 214
+80 finger_up 1 2299 214
+500 finger_down 1 2299 214
+80 finger_up 1 2299 214
+800 screenshot build/run/pw_01.bmp
+100 finger_down 1 2214 440
+80 finger_up 1 2214 440
+800 screenshot build/run/pw_02.bmp
+200 key Escape
+300 finger_down 1 2103 970
+80 finger_up 1 2103 970
+800 screenshot build/run/pw_03.bmp
+100 finger_down 1 1320 356
+80 finger_up 1 1320 356
+500 log request_closed
+200 screenshot build/run/pw_04.bmp
+100 finger_down 1 2332 970
+80 finger_up 1 2332 970
+800 screenshot build/run/pw_05.bmp
+100 finger_down 1 1316 446
+80 finger_up 1 1316 446
+500 log gift_closed
+100 finger_down 1 1846 64
+80 finger_up 1 1846 64
+1500 log back_to_city_expect_game1
+100 finger_down 1 2069 979
+80 finger_up 1 2069 979
+1000 screenshot build/run/pw_06.bmp
+100 finger_down 1 1484 840
+80 finger_up 1 1484 840
+800 log goals_closed_expect_children19
+200 quit

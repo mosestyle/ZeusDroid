@@ -58,6 +58,7 @@
 
 #include "widgets/efilewidget.h"
 #include "widgets/emessageswidget.h"
+#include "widgets/eportclosebutton.h"
 #include "evectorhelpers.h"
 #include "etilehelper.h"
 #include "widgets/equestionwidget.h"
@@ -1435,6 +1436,13 @@ void eGameWidget::showMessage(eEventData& ed,
         mMsgLog.add(lm);
         messagesChanged();
     }
+}
+
+void eGameWidget::openTradePostOrders(eTradePost* const post) {
+    if(!post) return;
+    if(mInfoWidget) return;
+    mInfoWidget = openInfoWidget(post);
+    viewTile(post->centerTile());
 }
 
 void eGameWidget::messagesChanged() {

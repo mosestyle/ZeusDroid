@@ -1,4 +1,5 @@
 #include "eepisodeintroductionwidget.h"
+#include "ecancelbutton.h"
 
 #include "textures/egametextures.h"
 
@@ -257,6 +258,12 @@ void eEpisodeIntroductionWidget::initialize(
         rpc->fitContent();
         lowerButtons->addWidget(rpc);
         rpc->align(eAlignment::hcenter);
+        // Port: close button (a right-click is not possible on a touch screen).
+        const auto closeB = new eCancelButton(window());
+        closeB->setPressAction(proceedA);
+        lowerButtons->addWidget(closeB);
+        closeB->align(eAlignment::right);
+        rpc->align(eAlignment::vcenter);
     } else if(type == eEpisodeIntroType::victory ||
               type == eEpisodeIntroType::campaingVictory) {
         const auto p = new eFramedButton(window());

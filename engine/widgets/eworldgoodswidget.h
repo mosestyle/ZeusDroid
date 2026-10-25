@@ -43,6 +43,8 @@ public:
 
     void setCity(const stdsptr<eWorldCity>& c);
     void setPlayerId(const ePlayerId pid) { mPid = pid; }
+    // Port: the Orders button (was not connected in eZeus).
+    void setOrdersAction(const eAction& a);
 private:
     void updateTradeY() const;
 

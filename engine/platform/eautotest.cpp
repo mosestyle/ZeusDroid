@@ -164,6 +164,9 @@ void execute(const Cmd& c, eMainWindow& w, const uint32_t now) {
     } else if(c.fName == "debug_tool" && !c.fArgs.empty()) {
         // Test-only: select a build tool ("palace", "stadium", "farm", "none").
         if(const auto gw = w.gameWidget()) gw->debugSetTool(c.fArgs[0]);
+    } else if(c.fName == "debug_world") {
+        // Test-only: open the world map.
+        w.showWorld();
     } else if(c.fName == "app_background") {
         // Test-only: the app goes to the background and comes back
         // (Android sends MINIMIZED ... RESTORED around a pause).

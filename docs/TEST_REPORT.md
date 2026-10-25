@@ -482,3 +482,29 @@ rotate / world buttons, and a working Messages scroll (number + list, like the o
 * APK: only the game activity is landscape; no INTERNET permission. The portrait set-up
   screen is set at run time – not tried on a phone here.
 APK 0.1.20-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 21, sha256 e94423fc3a9ed16fd7d44897a81fc0c3bd27ff1dc9c74941bebeae3f6f323a6c, v2/v3 OK
+
+### User report 2026-10-25 12:20 (0.1.20 on the phone)
+Black lines over the whole map past a zoom-out limit; world map: no reachable "Back to
+City", raid/conquer cut off, arrows / history / Orders do nothing, request and gift dialogs
+cannot be closed; goals window only "right-click to continue"; Messages scroll under the
+curved screen edge; set-up screen should be full screen.
+
+### 0.1.21-dev
+* Black lines: reproduced on the desktop with the built packs (`build/run/zoomout.txt`,
+  pinch steps of ×0.9): from zoom 0.729 (s15 tiles) black zig-zag lines along every tile
+  edge; none with the eZeus pack. Cause: 15-px terrain tiles with half-transparent rims
+  (19–27 % partially transparent pixels vs 7–10 % in the eZeus pack). Fix: `eAlpha::cover`
+  for scaled map atlases; builder version file `texbuild.version` (2) makes packs of older
+  builders again. After: no lines at 0.729 / 0.59 / 0.5 (screenshots), dark-pixel share
+  0.19–0.20 % vs 0.27–0.30 % with the eZeus pack. The rebuild started by itself
+  ("Texture builder: done, frames 38235, without source 0"). Unit test: 27 checks (3 new).
+* `tests/autotest/phone_world.txt` (2400×1080): Back to City + raid + conquer in the strip
+  right of the map (screenshot); right arrow ×2 → Troezan, Pholoe; Orders without a trading
+  post → "Trade Status / Build some trade building to import/export" window with X;
+  request dialog with X → closed; gift dialog with X → closed; Back to City → game=1;
+  goals window X → closed (children back to 19). Orders with an existing trading post
+  (opens its info window) is not covered by a test.
+* `tests/autotest/phone_messages.txt` with the scroll at its new place: all steps as before.
+* Unit tests and full regression (19 scripts): pass, values unchanged.
+* Set-up screen full screen: set in code (immersive), not tried on a phone here.
+APK 0.1.21-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 22, sha256 15ea0d917fb68af4dba912a6782bb655f471c507bae04ac9d3787b6e73e2bef2, v2/v3 OK

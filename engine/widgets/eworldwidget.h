@@ -42,6 +42,12 @@ private:
     void openFulfillDialog();
     void openGiftDialog();
     void setMap(const eWorldMap map);
+    // Port
+    void selectCity(const stdsptr<eWorldCity>& ct);
+    void openOrders();
+    void layoutSideButtons();
+    eFramedButton* mBackButton = nullptr;
+    int mStripW = 0;
 
     stdsptr<eWorldCity> mCity;
     eWorldMenu* mWM = nullptr;

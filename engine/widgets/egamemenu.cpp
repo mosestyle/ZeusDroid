@@ -1082,8 +1082,10 @@ void eGameMenu::initialize(eGameBoard* const b,
         mMessageLine->setNoPadding();
         mMessageLine->setTextAlignment(eAlignment::left | eAlignment::vcenter);
         if(mCompact) {
-            mMessageLine->move(mult*4, row3Y);
-            mMessageLine->resize(mult*70, std::round(mult*16.5));
+            // Right of the Messages scroll (the scroll stays away from the
+            // screen edge, which is curved on some phones).
+            mMessageLine->move(mult*22, row3Y);
+            mMessageLine->resize(width() - mult*26, std::round(mult*16.5));
         } else {
             mMessageLine->move(mult*7, mult*257);
             mMessageLine->resize(mult*80, mult*22);
@@ -1099,7 +1101,7 @@ void eGameMenu::initialize(eGameBoard* const b,
         const auto m = eButton::sCreate(coll.fMessages, window(), this);
         mMessagesButton = m;
         if(mCompact) {
-            m->move(width() - m->width() - mult, row3Y);
+            m->move(mult*3, row3Y);
         } else {
             m->move(mult*73, mult*239);
         }
@@ -1142,7 +1144,7 @@ void eGameMenu::initialize(eGameBoard* const b,
         mEventW = new eEventWidget(window());
         mEventW->setNoPadding();
         if(mCompact) {
-            mEventW->setX(mult*3);
+            mEventW->setX(mult*21);
             mEventW->setY(row3Y);
         } else {
             mEventW->setX(mult*5);

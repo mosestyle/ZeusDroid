@@ -150,6 +150,10 @@ void eWorldGoodsWidget::initialize() {
     updateTradeY();
 }
 
+void eWorldGoodsWidget::setOrdersAction(const eAction& a) {
+    mOrdersButton->setPressAction(a);
+}
+
 void eWorldGoodsWidget::setCity(const stdsptr<eWorldCity>& c) {
     const auto buys = c ? &c->buys() : nullptr;
     const auto sells = c ? &c->sells() : nullptr;

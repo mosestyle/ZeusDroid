@@ -36,6 +36,7 @@ class eGameBoard;
 class eAgoraBase;
 class eInfoWidget;
 class eFramedButton;
+class eTradePost;
 
 enum class eAgoraOrientation;
 enum class eGodType;
@@ -330,6 +331,8 @@ public:
     // Port: received messages (the original's Messages button and list).
     eMessageLog& messageLog() { return mMsgLog; }
     void showMessagesDialog();
+    // Port: world map Orders button -> the trade building's orders.
+    void openTradePostOrders(eTradePost* const post);
     void showLoggedMessage(const int i);
     void messagesChanged();
 private:

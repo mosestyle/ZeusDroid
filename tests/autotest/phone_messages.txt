@@ -24,8 +24,8 @@
 300 finger_down 1 68 118
 80 finger_up 1 68 118
 500 log closed_and_paused_expect_msgbox0
-100 finger_down 1 2363 1047
-80 finger_up 1 2363 1047
+100 finger_down 1 2073 1047
+80 finger_up 1 2073 1047
 1000 log list_open
 200 screenshot build/run/msg_02.bmp
 100 finger_down 1 900 372
@@ -60,8 +60,8 @@
 100 finger_down 1 2190 25
 80 finger_up 1 2190 25
 500 log info_tab_expect_map0
-100 finger_down 1 2363 1047
-80 finger_up 1 2363 1047
+100 finger_down 1 2073 1047
+80 finger_up 1 2073 1047
 1000 finger_down 1 900 372
 900 finger_up 1 900 372
 500 log longpress_row_expect_msgs0

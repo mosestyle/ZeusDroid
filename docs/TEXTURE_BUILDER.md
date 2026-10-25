@@ -37,12 +37,14 @@ download is not needed.
 * `engine/texbuild/etexturebuilder.*` writes the atlas pages with the positions from
   `engine/spriteData/*` : 30 = original pixels, 15 / 45 / 60 scaled (`eresample`:
   area-correct triangle filter down, Catmull-Rom up, premultiplied alpha; interface
-  atlases keep hard edges). Pages are stored as QOI images (`eqoi`), with an index file
+  atlases keep hard edges; map atlases use "cover" alpha – a pixel is as opaque as the
+  most opaque original pixel inside it – so terrain tiles have no see-through rims). Pages are stored as QOI images (`eqoi`), with an index file
   `<pack>.idx` (name position size); `eBinaryImageLoader` uses that index when present.
 * On the first start without packs (`main.cpp`), the game shows "Preparing the game
   graphics…" with a progress bar and builds them once (desktop, 2 cores: about 16 s;
   `i15.e` + `i30.e` + `interface.e` ≈ 480 MB). `EZEUS_TEXBUILD_LARGE=1` also builds
   `i45.e` / `i60.e` (scaled up from the originals).
+* `texbuild.version` next to the packs: packs from an older builder are made again.
 * Only the user's own game folder is read; nothing from the originals is stored in the
   repository (the map holds numbers only).
 

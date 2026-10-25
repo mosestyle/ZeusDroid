@@ -20,6 +20,8 @@ void eWorldMenu::initialize(const eAction& openRequest,
     int iRes;
     int mult;
     iResAndMult(iRes, mult);
+    // Port: the rows below the gift button end near 302 (x mult) px.
+    mCompact = std::round(mult*302.) > resolution().height();
 
     const auto& intrfc = eGameTextures::interface();
     const auto& coll = intrfc[iRes];
@@ -40,6 +42,16 @@ void eWorldMenu::initialize(const eAction& openRequest,
         const int ywlab = std::round(48.5*mult);
         const int ywhb = std::round(44.5*mult);
         const int ywrab = ywlab;
+
+        wlab->setTooltip(eLanguage::zeusText(44, 331));
+        wrab->setTooltip(eLanguage::zeusText(44, 332));
+        whb->setTooltip(eLanguage::zeusText(44, 335));
+        wlab->setPressAction([this]() {
+            if(mPrevNext) mPrevNext(false);
+        });
+        wrab->setPressAction([this]() {
+            if(mPrevNext) mPrevNext(true);
+        });
 
         wlab->setX(xwlab);
         wlab->setY(ywlab);
@@ -114,6 +126,16 @@ void eWorldMenu::initialize(const eAction& openRequest,
             if(editor) return;
             if(openConquer) openConquer();
         });
+
+        if(mCompact) {
+            // Port: copies shown beside the menu, as these rows are cut off.
+            mRaidButton2 = eButton::sCreate(coll.fRaidButton, window(), nullptr);
+            mRaidButton2->setTooltip(eLanguage::zeusText(44, 312));
+            mRaidButton2->setPressAction([this]() { mRaidButton->trigger(); });
+            mConquerButton2 = eButton::sCreate(coll.fConquerButton, window(), nullptr);
+            mConquerButton2->setTooltip(eLanguage::zeusText(44, 313));
+            mConquerButton2->setPressAction([this]() { mConquerButton->trigger(); });
+        }
 
         const auto wh = eButton::sCreate(coll.fHelpButton, window(), this);
         const int whx = 6*mult;
@@ -252,6 +274,10 @@ void eWorldMenu::setCity(const stdsptr<eWorldCity>& c) {
     mTributeWidget->setCity(c);
 }
 
+void eWorldMenu::setOrdersAction(const eAction& a) {
+    mGoodsWidget->setOrdersAction(a);
+}
+
 void eWorldMenu::setWorldBoard(eWorldBoard* const b) {
     mBoard = b;
 }
@@ -355,6 +381,14 @@ void eWorldMenu::updateLabels() const {
 }
 
 void eWorldMenu::updateButtonsEnabled() const {
+    updateButtonsEnabled0();
+    if(mRaidButton2) {
+        mRaidButton2->setEnabled(mRaidButton->enabled());
+        mConquerButton2->setEnabled(mConquerButton->enabled());
+    }
+}
+
+void eWorldMenu::updateButtonsEnabled0() const {
     if(!mCity) {
         mRequestButton->setEnabled(false);
         mFulfillButton->setEnabled(false);
@@ -398,11 +432,13 @@ void eWorldMenu::updateButtonsEnabled() const {
         if(sendReinforcements) {
             mConquerButton->setEnabled(true);
             mConquerButton->setTooltip(eLanguage::zeusText(41, 7));
+            if(mConquerButton2) mConquerButton2->setTooltip(eLanguage::zeusText(41, 7));
         } else {
             mConquerButton->setEnabled((!vassalOrColony || mCity->conqueredByRival() || onBoardEnemyColony) &&
                                        !distant && !cc && !ownedOnBoardColony &&
                                        !onBoardNeutral);
             mConquerButton->setTooltip(eLanguage::zeusText(44, 313));
+            if(mConquerButton2) mConquerButton2->setTooltip(eLanguage::zeusText(44, 313));
         }
     }
 }

@@ -2,6 +2,7 @@
 
 #include "elabel.h"
 #include "elanguage.h"
+#include "eportclosebutton.h"
 
 void eMessageWidget::initialize(const std::string& title,
                                 const std::string& text) {
@@ -43,4 +44,6 @@ void eMessageWidget::initialize(const std::string& title,
     resize(cw->width() + 2*p, cw->height() + 2*p);
     titleLabel->align(eAlignment::hcenter);
     rightClickL->align(eAlignment::hcenter);
+    // Port: close button (a right-click is not possible on a touch screen).
+    ePortAddCloseButton(this, [this]() { deleteLater(); });
 }

@@ -1,5 +1,27 @@
 # Release notes
 
+## 0.1.21-dev
+* **Black lines when zoomed out** fixed. Below about 0.75× the game uses the small
+  graphics; the texture builder made their tile edges half-transparent, so thin black
+  lines showed between all tiles. Scaled map graphics now keep closed edges (a pixel is as
+  opaque as the most opaque original pixel inside it; shadows stay half-transparent). The
+  graphics are made again automatically on the next start (about a minute, once).
+* World map:
+  * **Back to City** button beside the menu (the menu's own button was below the screen).
+  * On phones the **Raid** and **Conquer** buttons are shown there too (they were cut off);
+    the map moves left to make room.
+  * The **left / right arrows** select the previous / next city.
+  * **Orders** opens the trade orders of the trading post or pier that trades with that city
+    (back in the city view); without one it says to build a trade building.
+  * Request, gift (and amount) and fulfil dialogs have a close **X**; so do the small
+    "Right-click to continue" message windows.
+* **Review episode goals**: close **X** button.
+* Right panel on phones: the Messages scroll moved to the left end of its row (away from a
+  curved screen edge); the latest message is shown to its right.
+* Set-up screen: full screen (status and navigation bars hidden).
+* Not done: the world map's "review history" button. eZeus keeps no history of the
+  relationship with a city, so there is nothing to show yet.
+
 ## 0.1.20-dev
 * Right panel on phones: the **Review episode goals** (tick), **Rotate city** and **View
   world** buttons were below the bottom of the screen at the phone's interface size. When

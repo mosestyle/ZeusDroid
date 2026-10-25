@@ -150,7 +150,7 @@ bool buildJpg(const std::string& src, const int size, const std::string& tmp,
     std::vector<uint8_t> scaled;
     eResample::resize(px.data(), w, h, scaled, dw, dh,
                       size < 30 ? eResample::eFilter::triangle : eResample::eFilter::cubic,
-                      false);
+                      eResample::eAlpha::smooth);
     SDL_Surface* const surf = SDL_CreateRGBSurfaceWithFormatFrom(
                 scaled.data(), dw, dh, 32, dw*4, SDL_PIXELFORMAT_RGBA32);
     if(!surf) return false;
@@ -171,11 +171,27 @@ bool eTextureBuilder::sourcesPresent(const std::string& dataDir) {
            fs::exists(dataDir + "/SprMain.sg3", ec);
 }
 
+namespace {
+// Bump when the builder's output changes, so packs built by an older
+// version are made again (2: map art keeps closed edges when scaled).
+const int kBuilderVersion = 2;
+std::string versionPath(const std::string& outDir) {
+    return outDir + "/texbuild.version";
+}
+}
+
 bool eTextureBuilder::needed(const std::string& outDir) {
     std::error_code ec;
     const bool iface = fs::exists(outDir + "/interface.e", ec);
     const bool any = fs::exists(outDir + "/i15.e", ec) || fs::exists(outDir + "/i30.e", ec);
-    return !iface || !any;
+    if(!iface || !any) return true;
+    // Packs made by this builder (they have an index) of an older version.
+    if(fs::exists(outDir + "/interface.e.idx", ec)) {
+        std::ifstream v(versionPath(outDir));
+        int ver = 0;
+        if(!(v >> ver) || ver != kBuilderVersion) return true;
+    }
+    return false;
 }
 
 int eTextureBuilder::lastFrames() { return gFrames; }
@@ -274,7 +290,9 @@ bool eTextureBuilder::build(const std::string& dataDir, const std::string& outDi
                         const auto f = sd.fW < c.fW ? eResample::eFilter::triangle :
                                                       eResample::eFilter::cubic;
                         eResample::resize(c.fRGBA.data(), c.fW, c.fH, scaled,
-                                          sd.fW, sd.fH, f, atlas.fInterface);
+                                          sd.fW, sd.fH, f,
+                                          atlas.fInterface ? eResample::eAlpha::binary :
+                                                             eResample::eAlpha::cover);
                         blit(page, pw, ph, scaled.data(), sd.fW, sd.fH, sd.fX, sd.fY);
                     }
                 }
@@ -308,6 +326,10 @@ bool eTextureBuilder::build(const std::string& dataDir, const std::string& outDi
     if(!ok) {
         error = "could not finish writing the texture files";
         return false;
+    }
+    {
+        std::ofstream v(versionPath(outDir), std::ios::trunc);
+        v << kBuilderVersion << "\n";
     }
     if(progress) progress(1.0, "done");
     return true;
