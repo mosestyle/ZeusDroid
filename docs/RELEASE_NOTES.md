@@ -1,5 +1,17 @@
 # Release notes
 
+## 0.1.24-dev
+* **Interface sizes** (Touch control options → Interface size, restart):
+  * **Medium (new default)**: the Large interface art, drawn just small enough (about 0.9 of
+    Large on a 1080-px phone) that the whole original panel fits: alert icons, Messages
+    scroll, message text box, goals / rotate / world, and on the world map the complete
+    panel down to "Back to City". The god picture is below the screen. The map is scaled the
+    same way (through one texture, so no seams between tiles).
+  * **Large**: the Large art at full size (as in 0.1.23, tighter panel, world tray).
+  * **Small**: the 1.5× art (the "Medium" of 0.1.22).
+* The main menu picture has the same size with Medium and Large.
+* Earlier "Interface size" choices: Large stays Large; the old Medium is now Small.
+
 ## 0.1.23-dev
 * **Interface size "Auto" is Large again** on 1080-px phones (as before 0.1.22): bigger
   buttons and text, main menu as wide as before. Medium stays available in Touch control

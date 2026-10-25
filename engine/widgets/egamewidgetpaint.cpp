@@ -1,4 +1,5 @@
 ﻿#include "egamewidget.h"
+#include "platform/eplatform.h"
 #include "buildings/eheatgetters.h"
 #include "platform/eframeclock.h"
 
@@ -322,7 +323,9 @@ void eGameWidget::paintEvent(ePainter& p) {
     // Port zoom: at scale 1 paint directly (upstream path). Otherwise paint
     // the world 1:1 into an off-screen texture of (widget size / scale) and
     // draw it stretched; children (menus, touch bar) stay unscaled.
-    if(mWorldScale == 1.0) {
+    // With the fitted interface size (logical scaling) the world always goes
+    // through the texture, so the scaled tiles leave no seams.
+    if(mWorldScale == 1.0 && ePlatform::logicalFactor() >= 0.999) {
         paintWorld(p);
         return;
     }

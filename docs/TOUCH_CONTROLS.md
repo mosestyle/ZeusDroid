@@ -156,3 +156,12 @@ anchored at the screen centre). Zoom is not stored in saves (save format unchang
   medium (1.5×), ≥ 1208 px → large (2×). Medium shows the original panel unchanged.
 * Large on a 1080-px screen: the compact panel of 0.1.20 (see above).
 * Test: `tests/autotest/phone_medium_panel.txt` (EZEUS_UI_SCALE=medium).
+
+## Interface size Medium = fitted Large (0.1.24)
+* `ui_scale "fit"` (default on phones ≥ 1080 px): Large art (2×), logical resolution
+  height 1212 (world panel 302 × 4 + 4), width by aspect; `SDL_RenderSetLogicalSize` scales
+  to the screen (2400×1080 → 2693×1212, factor 0.891). Finger positions map onto the logical
+  size. The world layer always goes through the off-screen texture in this mode (no tile
+  seams). Main menu picture drawn at 1/factor so it matches Large.
+* Settings values: Small = 1.5× ("medium" art), Medium = "fit", Large = 2× native.
+* Test: `tests/autotest/phone_fit_medium.txt` (EZEUS_UI_SCALE=fit).

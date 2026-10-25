@@ -1,0 +1,23 @@
+# Interface size Medium (fitted large art, EZEUS_UI_SCALE=fit) at 2400x1080: complete panel,
+# taps map from screen to logical coordinates. Coordinates are screen pixels.
+15000 log menu
+200 screenshot build/run/fm_menu.bmp
+100 debug_start_adventure 17
+100 wait_game 120000
+3000 log start_expect_compact0
+300 debug_alert
+300 screenshot build/run/fm_game.bmp
+100 finger_down 1 1976 96
+80 finger_up 1 1976 96
+800 log save_tap_expect_dialog_children20
+200 screenshot build/run/fm_save.bmp
+100 finger_down 1 840 832
+80 finger_up 1 840 832
+500 finger_down 1 2320 1032
+80 finger_up 1 2320 1032
+2000 log world_button_expect_game0
+200 screenshot build/run/fm_world.bmp
+100 finger_down 1 2266 1037
+80 finger_up 1 2266 1037
+2000 log back_to_city_expect_game1
+200 quit

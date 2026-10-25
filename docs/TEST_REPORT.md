@@ -544,3 +544,18 @@ panel's bottom right. World buttons in the middle of the screen not wanted.
   and `phone_messages.txt`: pass.
 * Unit tests and full regression (19 scripts): pass, values unchanged.
 APK 0.1.23-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 24, sha256 9d47ff7dbe327bf7afb92d38cc0b1548f04daaa1ace94a5ee18978cf98e2181d, v2/v3 OK
+
+### User report 2026-10-25 16:16 (0.1.23)
+Wants the current Large look as the default "Medium", a bit smaller so everything fits
+(god picture may go below the screen), Large as now, main menu the same size for both.
+
+### 0.1.24-dev
+* `tests/autotest/phone_fit_medium.txt` (EZEUS_UI_SCALE=fit, 2400×1080): compact=0, the
+  whole panel (alert icon, scroll, message box with arrows, goals / rotate / world) on
+  screen (screenshot); taps in screen pixels hit Save (dialog), the dialog's X, the world
+  button (game=0) and the world panel's own Back to City (game=1); world panel complete
+  (screenshot); main menu picture as wide as with Large (screenshot). First run showed
+  diamond seams on the map at the 0.891 scale; fixed by drawing the world through the
+  off-screen texture in this mode (screenshot: no seams).
+* Unit tests and full regression (Large, 19 scripts): pass, values unchanged.
+APK 0.1.24-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 25, sha256 b1dd6011e11b6b8a7e3258133d2cab237a4eb1b0ce360ea5bec2252b65995c5a, v2/v3 OK

@@ -90,6 +90,7 @@ void ePortSettings::load() {
         else if(s == "small") fUIScale = 1;
         else if(s == "medium") fUIScale = 2;
         else if(s == "large") fUIScale = 3;
+        else if(s == "fit") fUIScale = 4;
     }
 }
 
@@ -111,9 +112,9 @@ void ePortSettings::save() const {
         std::snprintf(buf, sizeof(buf), "%g", v);
         return std::string(buf);
     };
-    static const char* const scales[] = {"tiny", "small", "medium", "large"};
+    static const char* const scales[] = {"tiny", "small", "medium", "large", "fit"};
     o << "render_fps " << q(fRenderFps < 20 ? "auto" : num(fRenderFps)) << "\n";
-    o << "ui_scale " << q(fUIScale < 0 || fUIScale > 3 ? "auto" : scales[fUIScale]) << "\n";
+    o << "ui_scale " << q(fUIScale < 0 || fUIScale > 4 ? "auto" : scales[fUIScale]) << "\n";
     o << "pan_sensitivity " << q(num(fPanSensitivity)) << "\n";
     o << "long_press_ms " << q(num(fLongPressMs)) << "\n";
     o << "pinch_deadband " << q(num(fPinchDeadband)) << "\n";

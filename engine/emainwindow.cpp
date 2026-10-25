@@ -206,7 +206,10 @@ void eMainWindow::handleFingerEvent(const SDL_Event& e) {
     if(!mTouch) return;
     int ww = width();
     int wh = height();
-    if(mSdlWindow) SDL_GetWindowSize(mSdlWindow, &ww, &wh);
+    int pw, ph;
+    // With logical scaling the normalized finger position maps onto the
+    // logical (game) size.
+    if(mSdlWindow && !ePlatform::logicalScaling(pw, ph)) SDL_GetWindowSize(mSdlWindow, &ww, &wh);
     const float x = e.tfinger.x*ww;
     const float y = e.tfinger.y*wh;
     const uint32_t t = e.tfinger.timestamp;
@@ -236,8 +239,11 @@ eMainWindow::~eMainWindow() {
 
 bool eMainWindow::initialize(const eSettings& settings) {
     const auto& res = settings.fRes;
-    const int w = res.width();
-    const int h = res.height();
+    int w = res.width();
+    int h = res.height();
+    // Port: "Medium" interface size draws at a logical resolution that is
+    // scaled to the real window.
+    ePlatform::logicalScaling(w, h);
     const auto window = SDL_CreateWindow("ZeusDroid",
                                          SDL_WINDOWPOS_UNDEFINED,
                                          SDL_WINDOWPOS_UNDEFINED,
@@ -258,6 +264,12 @@ bool eMainWindow::initialize(const eSettings& settings) {
         return false;
     }
 
+    {
+        int pw, ph;
+        if(ePlatform::logicalScaling(pw, ph)) {
+            SDL_RenderSetLogicalSize(renderer, res.width(), res.height());
+        }
+    }
     if(mSdlWindow) SDL_DestroyWindow(mSdlWindow);
     if(mSdlRenderer) SDL_DestroyRenderer(mSdlRenderer);
     mSdlWindow = window;
@@ -297,8 +309,9 @@ void eMainWindow::setResolution(const eResolution& res) {
     if(mSettings.fRes == res && !mFirstFullscrenSetting) return;
     mFirstResolutionSetting = false;
     mSettings.fRes = res;
-    const int w = res.width();
-    const int h = res.height();
+    int w = res.width();
+    int h = res.height();
+    ePlatform::logicalScaling(w, h);
     SDL_SetWindowSize(mSdlWindow, w, h);
 }
 

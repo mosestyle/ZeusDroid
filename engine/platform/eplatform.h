@@ -15,6 +15,14 @@ namespace ePlatform {
     // runs fullscreen at the native display size).
     void adjustSettings(eSettings& settings);
 
+    // Interface size "Medium" (fitted): the large (2x) interface art drawn
+    // at a logical resolution just tall enough for the side panels, scaled
+    // to the screen. Returns true and the real (physical) window size when
+    // active; the game's resolution is then the logical one.
+    bool logicalScaling(int& physW, int& physH);
+    // physical / logical (1 when not active).
+    double logicalFactor();
+
     // Converts Zeus_Text.eng / Zeus_MM.eng from the game root into the XML
     // files eZeus reads, if they are missing. Returns false only on a hard
     // conversion error (missing source files are reported, not fatal).

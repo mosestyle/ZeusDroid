@@ -1,3 +1,4 @@
+#include <cmath>
 #include "eplatform.h"
 
 #include <SDL2/SDL.h>
@@ -80,41 +81,70 @@ int uiScaleFromEnv() {
     if(s == "small") return 1;
     if(s == "medium") return 2;
     if(s == "large") return 3;
+    if(s == "fit") return 4;
     return -1;
 }
+
+bool gLogical = false;
+int gPhysW = 0;
+int gPhysH = 0;
+double gFactor = 1.;
+// Height the side panels need at the large art size (world panel down to
+// "Back to City": 302 px x 4, plus a little).
+const int kFitHeight = 1212;
+}
+
+bool ePlatform::logicalScaling(int& physW, int& physH) {
+    if(!gLogical) return false;
+    physW = gPhysW;
+    physH = gPhysH;
+    return true;
+}
+
+double ePlatform::logicalFactor() {
+    return gLogical ? gFactor : 1.;
 }
 
 void ePlatform::adjustSettings(eSettings& settings) {
     auto& ps = ePortSettings::instance();
     ps.load();
-    eResolution::sUIScaleOverride = uiScaleFromEnv();
-    if(eResolution::sUIScaleOverride < 0) eResolution::sUIScaleOverride = ps.fUIScale;
+    int mode = uiScaleFromEnv();
+    if(mode < 0) mode = ps.fUIScale;
+    int physW = settings.fRes.width();
+    int physH = settings.fRes.height();
 #ifdef __ANDROID__
-    if(eResolution::sUIScaleOverride < 0) {
-        // Phones: eZeus' interface art exists for 4 scales (0.5x .. 2x).
-        // Pick the largest that keeps >= ~540 logical rows, so buttons are
-        // finger-sized: 1080p -> 2x, 720p -> 1x. (The side panels use a
-        // tighter layout where they are taller than the screen.)
-        SDL_DisplayMode m;
-        if(SDL_GetCurrentDisplayMode(0, &m) == 0) {
-            const int h = std::min(m.w, m.h);
-            if(h >= 1080) eResolution::sUIScaleOverride = 3;
-            else if(h >= 810) eResolution::sUIScaleOverride = 2;
-            else eResolution::sUIScaleOverride = 1;
-        }
-    }
     SDL_DisplayMode dm;
     if(SDL_GetCurrentDisplayMode(0, &dm) == 0 && dm.w > 0 && dm.h > 0) {
-        const int w = std::max(dm.w, dm.h);
-        const int h = std::min(dm.w, dm.h);
-        settings.fRes = eResolution(w, h);
+        physW = std::max(dm.w, dm.h);
+        physH = std::min(dm.w, dm.h);
+    }
+    if(mode < 0) {
+        // Phones: Medium (fitted large art) where the screen is at least
+        // 1080 px high; smaller screens: the art size that keeps buttons
+        // finger-sized.
+        if(physH >= 1080) mode = 4;
+        else if(physH >= 810) mode = 2;
+        else mode = 1;
     }
     settings.fFullscreen = true;
-#else
-    if(eResolution::sUIScaleOverride >= 0) {
-        settings.fRes = eResolution(settings.fRes.width(), settings.fRes.height());
-    }
 #endif
+    gLogical = false;
+    if(mode == 4) {
+        eResolution::sUIScaleOverride = 3;
+        if(physH > 0 && physH < kFitHeight) {
+            gLogical = true;
+            gPhysW = physW;
+            gPhysH = physH;
+            const int lh = kFitHeight;
+            const int lw = static_cast<int>(std::lround(double(physW)*lh/physH));
+            gFactor = double(physH)/lh;
+            settings.fRes = eResolution(lw, lh);
+            return;
+        }
+    } else {
+        eResolution::sUIScaleOverride = mode;
+    }
+    settings.fRes = eResolution(physW, physH);
 }
 
 bool ePlatform::prepareLanguageFiles() {
