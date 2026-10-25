@@ -63,6 +63,13 @@ sed "s|<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"|<m
   "$ROOT/android/app/src/main/AndroidManifest.xml" > "$OUT/AndroidManifest.xml"
 mkdir -p "$OUT/assets/licenses"
 cp "$ROOT"/LICENSES/* "$OUT/assets/licenses/"
+# Engine files from the eZeus source (GPL): font, interface texts and its own
+# adventures; installed by the importer so no download is needed.
+rm -rf "$OUT/assets/ezeus"
+mkdir -p "$OUT/assets/ezeus/Fonts" "$OUT/assets/ezeus/Text"
+cp "$ROOT/engine/fonts/Zeus.ttf" "$OUT/assets/ezeus/Fonts/Zeus.ttf"
+cp "$ROOT/engine/text/language.txt" "$OUT/assets/ezeus/Text/language.txt"
+cp -r "$ROOT/engine/Adventures" "$OUT/assets/ezeus/Adventures"
 aapt2 compile --dir "$ROOT/android/app/src/main/res" -o "$OUT/res-compiled/res.zip"
 aapt2 link -o "$OUT/base.apk" -I "$RES_JAR" -A "$OUT/assets" \
   --manifest "$OUT/AndroidManifest.xml" \

@@ -194,9 +194,14 @@ public final class ImportRules {
                 && (exists(root, "Zeus_MM.eng") || exists(root, EZEUS + "/Zeus_MM.xml"))));
         r.add(new Item("Game model data (Model/)", true, exists(root, "Model/Zeus eventmsg.txt")));
         r.add(new Item("Adventures (Adventures/*.pak)", true, dirHasFiles(root, "Adventures", ".pak")));
-        r.add(new Item("Interface pack (interface.e)", true, exists(root, EZEUS + "/interface.e")));
-        r.add(new Item("Textures (i15.e or i30.e)", true,
-            exists(root, EZEUS + "/i15.e") || exists(root, EZEUS + "/i30.e")));
+        boolean packs = exists(root, EZEUS + "/interface.e")
+            && (exists(root, EZEUS + "/i15.e") || exists(root, EZEUS + "/i30.e"));
+        // The game builds the packs from the original sprite files on its first start.
+        boolean buildable = exists(root, "DATA/Zeus_Interface.sg3") && exists(root, "DATA/Zeus_General.sg3")
+            && exists(root, "DATA/SprMain.sg3");
+        r.add(new Item(packs ? "Game graphics (ready)"
+                             : "Game graphics (prepared from your game files on first start)",
+            true, packs || buildable));
         r.add(new Item("Font and language (Fonts/Zeus.ttf, Text/language.txt)", true,
             exists(root, EZEUS + "/Fonts/Zeus.ttf") && exists(root, EZEUS + "/Text/language.txt")));
         r.add(new Item("Music (Audio/Music)", false, dirHasFiles(root, "Audio/Music", null)));

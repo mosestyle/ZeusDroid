@@ -756,6 +756,14 @@ set(EZEUS_SOURCES
     platform/eframeclock.h
     platform/eportsettings.cpp
     platform/eportsettings.h
+    texbuild/esg3file.cpp
+    texbuild/esg3file.h
+    texbuild/eqoi.cpp
+    texbuild/eqoi.h
+    texbuild/eresample.cpp
+    texbuild/eresample.h
+    texbuild/etexturebuilder.cpp
+    texbuild/etexturebuilder.h
     egamedir.h
     einvasionhandler.cpp
     einvasionhandler.h

@@ -20,11 +20,12 @@ _Branch `main`; see `git log` for the current commit._
 | Item | Status |
 |---|---|
 | Desktop Linux build of eZeus + port layer | builds; runs headless with the user's real data |
+| Texture builder | packs made from the original DATA files on first start: desktop verified (13–16 s, all 38235 frames, size 30 identical to the eZeus pack); not yet run on the phone |
 | Real game content on desktop | menus, roster, adventure list (Zeus + Poseidon), briefing, Thebes map, running simulation, Hydra event – screenshots in `build/run/` (local only) |
 | Touch layer in real engine (desktop, EZEUS_TOUCH=1) | pan exact, continuous pinch zoom 0.5–3× pinned under the fingers, hold-to-draw at zoom 1 and 2, two-step placement (preview, move, ✓/✕), touch settings screen, list drag-scroll, speed label, jitter tap ignored, UI-vs-map routing |
 | Unit tests | gesture FSM 102/102 (x86-64 and ARM64-Android-under-qemu), ENG converter (synthetic + real files, Python == C++), importer rules 46/46 |
 | Android arm64 native build | builds: libmain.so + SDL2 family, AArch64, 16 KB-aligned, static libc++ |
-| APK | `dist/ZeusDroid-debug-arm64-v8a.apk` 0.1.18-dev (versionCode 19, sha256 `9f0a1c5334bc5386f2f5fba03633b335257e9ccf2862606657b89b42ddee878f`) |
+| APK | `dist/ZeusDroid-debug-arm64-v8a.apk` 0.1.19-dev (versionCode 20, sha256 `b42d154a0ef385d283dd5d3be6a3878592b28c25ccf040414d53c4dc0d5b2e27`) |
 | ARM64 audio codec | minimp3 decodes all 26 music tracks + voice (qemu) |
 | Real device | **runs on the user's Samsung Galaxy S25** (0.1.3: city simulation, date and speed advance, 60 FPS, user report 2026-10-22); 0.1.4–0.1.6 confirmed by the user (zoom, lists, speed, preview placement, settings, music/sound, save → kill → load, home/screen-off resume); 0.1.7 army controls confirmed; 0.1.8 not yet tried |
 

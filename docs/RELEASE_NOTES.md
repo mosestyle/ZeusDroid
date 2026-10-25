@@ -1,5 +1,16 @@
 # Release notes
 
+## 0.1.19-dev
+* **Texture builder**: the game graphics are now made from your own original game files
+  (`DATA/*.sg3`, `*.555`, `*.jpg`) on the first start – "Preparing the game graphics from
+  your game files" with a progress bar, about a minute, only once. The texture pack
+  download from GitHub is no longer needed (it stays as an optional choice in the importer).
+  The normal zoom size is the original pixels exactly; the small zoom size is scaled down.
+  See docs/TEXTURE_BUILDER.md.
+* Importer: only the game folder is needed; the checklist says "Game graphics (prepared
+  from your game files on first start)".
+* The fonts, language file and ZeusDroid's own adventures now come with the app.
+
 ## 0.1.18-dev
 * Undo is now a plain **Undo** button in the right-hand column (under ">>"), away from the
   camera notch, in the same style as Save / Load / Menu. It disappears after 10 seconds by

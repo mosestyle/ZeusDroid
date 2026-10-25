@@ -432,3 +432,28 @@ that the GitHub texture download could disappear one day.
   the backup through the Android file picker is not tested here (needs the phone).
 * Regressions: undo, draw (switch), army – pass; unit tests pass.
 APK 0.1.18-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 19, sha256 9f0a1c5334bc5386f2f5fba03633b335257e9ccf2862606657b89b42ddee878f, v2/v3 OK
+
+### User request 2026-10-25: "build a texture builder"
+Make the texture packs from the original game files so the eZeus download is not needed.
+
+### 0.1.19-dev: texture builder
+* Mapping (local, `tools/texbuild/`): 363 atlases, 38235 frames. Every frame has an original
+  source; in the final check 71 frames of 16 atlases (banners, paneling, pyramids …) are
+  "near" (mean difference < 6 of 255, edge pixels), the rest byte-exact at size 30.
+* Host build (`build/texbuild/texbuild_cli <DATA> <out>`, 2 cores): `frames=38235 missing=0
+  time=12.9s`; i15.e 112 MB, i30.e 278 MB, interface.e 94 MB (+ `.idx`).
+* `compare_built.py` against the eZeus 0.8.2 pack: size 30 – 384 pages, mean difference
+  0.002 (max 0.276); scaled sizes (other filter): 15 – 6.5, 45 – 7.0, 60 – 4.4. The 128
+  full-screen pictures: size 30 byte-identical to `DATA/*.jpg`, the other sizes have the same
+  dimensions as in the pack.
+* Desktop game started with no packs at all (`build/texroot`, only the game folder): progress
+  screen, "Texture builder: done, frames 38235, without source 0", main menu, Custom
+  Adventures list, briefing and the city of "The Founding of Athens" (screenshots); no
+  "Could not find" / "missing in the built pack" messages. Same scene as with the eZeus pack:
+  mean pixel difference 1.2 of 255 (animated water, scaled interface).
+  An earlier mapping without the tree/fertile atlas showed black tiles at the coast – found
+  this way and fixed (zeusTrees from Zeus_Terrain).
+* Unit tests: QOI/resample 24/24, gestures 102/102 (host + ARM64 qemu), desirability 18/18,
+  importer rules 50/50. Full regression (19 scripts) – all pass.
+* Not tested here: the builder on the phone (time, memory, window switch on Android).
+APK 0.1.19-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 20, sha256 b42d154a0ef385d283dd5d3be6a3878592b28c25ccf040414d53c4dc0d5b2e27, v2/v3 OK

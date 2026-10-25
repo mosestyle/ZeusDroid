@@ -3,10 +3,15 @@
 // rename main(); desktop builds keep eZeus' own entry point.
 #define SDL_MAIN_HANDLED
 #endif
+#include "texbuild/etexturebuilder.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_main.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
+
+#include <algorithm>
+#include <cstdlib>
 
 #include <string>
 
@@ -107,6 +112,74 @@ bool getDisplayResolutions(std::vector<SDL_DisplayMode>& resolutions) {
     return true;
 }
 
+// Port (texture builder): when the texture packs are missing but the
+// original game's sprite files are there, build the packs from them, with a
+// simple progress screen (first start after importing the game folder).
+static bool buildTexturesIfNeeded() {
+    const std::string out = eGameDir::exeDir() + "..";
+    const std::string data = eGameDir::path("DATA");
+    if(!eTextureBuilder::needed(out)) return true;
+    if(!eTextureBuilder::sourcesPresent(data)) return true; // old checks report it
+    ePlatform::log("Building textures from " + data);
+    SDL_Window* win = SDL_CreateWindow("ZeusDroid", SDL_WINDOWPOS_CENTERED,
+                                       SDL_WINDOWPOS_CENTERED, 960, 540,
+                                       SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI);
+    SDL_Renderer* ren = win ? SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED |
+                                                          SDL_RENDERER_PRESENTVSYNC) : nullptr;
+    TTF_Font* font = nullptr;
+    int ww = 960;
+    int wh = 540;
+    if(ren) {
+        SDL_GetRendererOutputSize(ren, &ww, &wh);
+        font = TTF_OpenFont((eGameDir::exeDir() + "../Fonts/Zeus.ttf").c_str(), std::max(16, wh/24));
+    }
+    const auto text = [&](const std::string& t, const int y) {
+        if(!font || t.empty()) return;
+        SDL_Color c{0xF2, 0xE6, 0xC8, 0xFF};
+        SDL_Surface* s = TTF_RenderUTF8_Blended(font, t.c_str(), c);
+        if(!s) return;
+        SDL_Texture* tx = SDL_CreateTextureFromSurface(ren, s);
+        SDL_Rect r{(ww - s->w)/2, y, s->w, s->h};
+        SDL_RenderCopy(ren, tx, nullptr, &r);
+        SDL_DestroyTexture(tx);
+        SDL_FreeSurface(s);
+    };
+    uint32_t last = 0;
+    const auto progress = [&](const double f, const std::string& what) {
+        const uint32_t now = SDL_GetTicks();
+        if(now - last < 50 && f < 1) return;
+        last = now;
+        SDL_Event e;
+        while(SDL_PollEvent(&e)) {}
+        if(!ren) return;
+        SDL_SetRenderDrawColor(ren, 0x10, 0x30, 0x50, 0xFF);
+        SDL_RenderClear(ren);
+        text("Preparing the game graphics from your game files", wh/4);
+        text("(only once, about a minute)", wh/4 + wh/12);
+        const int bw = ww*2/3;
+        const int bh = std::max(12, wh/20);
+        const SDL_Rect frame{(ww - bw)/2, wh/2, bw, bh};
+        SDL_SetRenderDrawColor(ren, 0x40, 0x60, 0x80, 0xFF);
+        SDL_RenderFillRect(ren, &frame);
+        const SDL_Rect bar{frame.x, frame.y, static_cast<int>(bw*std::clamp(f, 0., 1.)), bh};
+        SDL_SetRenderDrawColor(ren, 0xF2, 0xC8, 0x50, 0xFF);
+        SDL_RenderFillRect(ren, &bar);
+        text(std::to_string(static_cast<int>(f*100)) + " %  " + what, wh/2 + bh + wh/24);
+        SDL_RenderPresent(ren);
+    };
+    std::string error;
+    const char* const large = std::getenv("EZEUS_TEXBUILD_LARGE");
+    const bool ok = eTextureBuilder::build(data, out, large && *large == '1', progress, error);
+    if(font) TTF_CloseFont(font);
+    if(ren) SDL_DestroyRenderer(ren);
+    if(win) SDL_DestroyWindow(win);
+    ePlatform::log("Texture builder: " + std::string(ok ? "done" : "failed: " + error) +
+                   ", frames " + std::to_string(eTextureBuilder::lastFrames()) +
+                   ", without source " + std::to_string(eTextureBuilder::lastMissing()));
+    if(!ok) ePlatform::fatal("Could not prepare the game graphics: " + error);
+    return ok;
+}
+
 int main(int argc, char* argv[]) {
     (void)argc;
     (void)argv;
@@ -153,6 +226,11 @@ int main(int argc, char* argv[]) {
             const auto res = eResolution(dm.w, dm.h);
             eResolution::sResolutions.push_back(res);
         }
+    }
+
+    if(!buildTexturesIfNeeded()) {
+        close();
+        return 1;
     }
 
     if(!std::filesystem::exists(eGameDir::iBinaryPath())) {

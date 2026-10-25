@@ -14,7 +14,9 @@ Phases from the brief (§17). ✅ done with evidence, 🟡 partly done, ⬜ not 
 * **B – Android-native proof ✅** arm64 APK, SDL glue, logcat, build script; runs on the
   user's Samsung Galaxy S25.
 * **C – Original assets ✅** importer, ENG→XML, eZeus pack download, real menus, maps,
-  music and sound on the phone (user, 2026-10-23).
+  music and sound on the phone (user, 2026-10-23). 0.1.19: texture builder makes the packs
+  from the user's own DATA files on first start (docs/TEXTURE_BUILDER.md); open: confirm on
+  the phone (time, memory), optional i45/i60 from the originals in Options.
 * **D – Gameplay and persistence ✅ (long session open)** on the phone: simulation, building,
   save → kill app → load, home button / screen off and back (user, 2026-10-23). Open: a
   longer session (an hour, memory), autosave check, save/load autotest on desktop.

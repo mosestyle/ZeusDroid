@@ -88,10 +88,41 @@ public class ImportActivity extends Activity {
         }
     }
 
+    /** Copies the font, texts and adventures shipped in the APK (from the open-source
+     *  engine) into the game folder when they are missing. */
+    private void installBundledFiles() {
+        File base = new File(root(), ImportRules.EZEUS);
+        copyAssetTree("ezeus", base);
+    }
+
+    private void copyAssetTree(String asset, File dest) {
+        try {
+            String[] list = getAssets().list(asset);
+            if (list != null && list.length > 0) {
+                for (String n : list) copyAssetTree(asset + "/" + n, new File(dest, n));
+                return;
+            }
+            if (dest.isFile() && dest.length() > 0) return;
+            File parent = dest.getParentFile();
+            if (parent != null) parent.mkdirs();
+            File tmp = new File(dest.getPath() + ".part");
+            try (InputStream in = getAssets().open(asset);
+                 OutputStream out = new FileOutputStream(tmp)) {
+                byte[] buf = new byte[1 << 16];
+                int r;
+                while ((r = in.read(buf)) > 0) out.write(buf, 0, r);
+            }
+            if (!tmp.renameTo(dest)) tmp.delete();
+        } catch (IOException e) {
+            Log.w(TAG, "bundled file " + asset + " not installed", e);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle b) {
         super.onCreate(b);
         registerShortcut();
+        installBundledFiles();
         if (ImportRules.allRequiredOk(ImportRules.validate(root()))
                 && !getIntent().getBooleanExtra("forceImportScreen", false)) {
             launchGame();
@@ -141,20 +172,21 @@ public class ImportActivity extends Activity {
         body.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         body.setPadding(0, dp(12), 0, dp(12));
         body.setText(
-            "This app contains only the open-source engine. To play you need your own copy of "
-            + "Zeus: Master of Olympus with the Poseidon expansion (for example the GOG edition) "
-            + "and the free texture pack.\n\n"
+            "To play you need your own copy of Zeus: Master of Olympus with the Poseidon "
+            + "expansion (for example the GOG edition). Nothing else is needed.\n\n"
             + "1. Copy your \"Zeus and Poseidon\" install folder from your PC to this device "
-            + "(USB, SD card or cloud) and pick it below.\n"
-            + "2. Tap \"Download texture pack\" (339 MB, free), or import the pack file "
-            + "(eZeus-0.8.2-beta.zip) if you already have it.\n\n"
+            + "(USB, SD card or cloud) and pick it below with \"Import game folder\".\n"
+            + "2. Tap \"Start game\". The first start prepares the game graphics from your own "
+            + "game files (about a minute, only once).\n\n"
+            + "Optional: instead of preparing them, a texture pack zip can be imported or "
+            + "downloaded below.\n\n"
             + "Files are copied into this app's private storage. Your saves are kept when you re-import. "
             + "Nothing is uploaded anywhere.");
         col.addView(body);
 
         mPickFolder = button("Import game folder…", v -> pickFolder());
-        mPickZip = button("Import texture pack (.zip)…", v -> pickZip());
-        mDownload = button("Download texture pack (339 MB)", v -> startWork(this::downloadPack));
+        mPickZip = button("Optional: import texture pack (.zip)…", v -> pickZip());
+        mDownload = button("Optional: download texture pack (339 MB)", v -> startWork(this::downloadPack));
         mCancelButton = button("Cancel import", v -> mCancel.set(true));
         mCancelButton.setVisibility(View.GONE);
         mStart = button("Start game", v -> launchGame());
