@@ -138,6 +138,12 @@ void eMainWindow::pointerPosition(int& x, int& y) const {
         y = mPointerY;
     } else {
         SDL_GetMouseState(&x, &y);
+        // Fitted interface size: mouse positions are window pixels.
+        const double f = ePlatform::logicalFactor();
+        if(f < 0.999) {
+            x = static_cast<int>(x/f);
+            y = static_cast<int>(y/f);
+        }
     }
 }
 
@@ -232,6 +238,7 @@ void eMainWindow::handleFingerEvent(const SDL_Event& e) {
 eMainWindow::eMainWindow() {}
 
 eMainWindow::~eMainWindow() {
+    if(mUiTarget) SDL_DestroyTexture(mUiTarget);
     if(mSdlWindow) SDL_DestroyWindow(mSdlWindow);
     if(mSdlRenderer) SDL_DestroyRenderer(mSdlRenderer);
     setWidget(nullptr);
@@ -264,12 +271,6 @@ bool eMainWindow::initialize(const eSettings& settings) {
         return false;
     }
 
-    {
-        int pw, ph;
-        if(ePlatform::logicalScaling(pw, ph)) {
-            SDL_RenderSetLogicalSize(renderer, res.width(), res.height());
-        }
-    }
     if(mSdlWindow) SDL_DestroyWindow(mSdlWindow);
     if(mSdlRenderer) SDL_DestroyRenderer(mSdlRenderer);
     mSdlWindow = window;
@@ -861,6 +862,7 @@ int eMainWindow::exec() {
     auto statStart = high_resolution_clock::now();
     std::string statText;
     stdsptr<eTexture> statTex;
+    bool resetUiTarget = false;
     while(!mQuit) {
         const auto fpsStart = high_resolution_clock::now();
         fpsClamp = ePlatform::renderFps(); // can change in touch settings
@@ -1016,7 +1018,28 @@ int eMainWindow::exec() {
 
         if(resetRenderTargets) {
             resetRenderTargets = false;
+            resetUiTarget = true;
             if(mWidget) mWidget->renderTargetsReset();
+        }
+
+        // Port: fitted interface size ("Medium"): the frame is drawn 1:1 at
+        // the logical resolution into one texture, which is then scaled to
+        // the window in one piece (scaling each tile / frame piece on its
+        // own would leave thin seams between them).
+        SDL_Texture* uiTarget = nullptr;
+        {
+            int pw, ph;
+            if(ePlatform::logicalScaling(pw, ph)) {
+                if(!mUiTarget || resetUiTarget) {
+                    if(mUiTarget) SDL_DestroyTexture(mUiTarget);
+                    mUiTarget = SDL_CreateTexture(mSdlRenderer, SDL_PIXELFORMAT_RGBA8888,
+                                                  SDL_TEXTUREACCESS_TARGET,
+                                                  width(), height());
+                    resetUiTarget = false;
+                }
+                uiTarget = mUiTarget;
+                if(uiTarget) SDL_SetRenderTarget(mSdlRenderer, uiTarget);
+            }
         }
 
         SDL_SetRenderDrawColor(mSdlRenderer, 0x0, 0x0, 0x0, 0xFF);
@@ -1068,6 +1091,13 @@ int eMainWindow::exec() {
                               statTex->width() + 2*pad, statTex->height() + 2*pad};
             p.fillRect(bg, {0, 0, 0, 170});
             p.drawTexture(pad, bg.y + pad, statTex);
+        }
+
+        if(uiTarget) {
+            SDL_SetRenderTarget(mSdlRenderer, nullptr);
+            SDL_SetRenderDrawColor(mSdlRenderer, 0x0, 0x0, 0x0, 0xFF);
+            SDL_RenderClear(mSdlRenderer);
+            SDL_RenderCopy(mSdlRenderer, uiTarget, nullptr, nullptr);
         }
 
         eAutotest::beforePresent(*this);

@@ -242,12 +242,18 @@ void eSettingsMenu::initialize(const eApplyAction& settingsA,
         tb->setText("Touch control options");
         tb->fitContent();
         tb->setPressAction([this]() { window()->showTouchSettings(this); });
-        if(texs) col1->removeWidget(texs);
+        // The texture sizes are not offered on phones: the small and normal
+        // zoom sets are made from the game files and always used; the larger
+        // sets would only be enlarged copies (no sharper graphics).
+        (void)texs;
+        mSettings.fTinyTextures = true;
+        mSettings.fSmallTextures = true;
+        mSettings.fMediumTextures = false;
+        mSettings.fLargeTextures = false;
         col1->hide();
         const auto col = new eWidget(window());
         col->setNoPadding();
         col->addWidget(title);
-        if(texs) col->addWidget(texs);
         col->addWidget(tb);
         col->stackVertically(2*p);
         col->fitContent();

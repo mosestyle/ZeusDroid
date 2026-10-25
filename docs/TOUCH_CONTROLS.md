@@ -159,9 +159,9 @@ anchored at the screen centre). Zoom is not stored in saves (save format unchang
 
 ## Interface size Medium = fitted Large (0.1.24)
 * `ui_scale "fit"` (default on phones ≥ 1080 px): Large art (2×), logical resolution
-  height 1212 (world panel 302 × 4 + 4), width by aspect; `SDL_RenderSetLogicalSize` scales
-  to the screen (2400×1080 → 2693×1212, factor 0.891). Finger positions map onto the logical
-  size. The world layer always goes through the off-screen texture in this mode (no tile
-  seams). Main menu picture drawn at 1/factor so it matches Large.
+  height 1212 (world panel 302 × 4 + 4), width by aspect; each frame is drawn 1:1 into a
+  render target of the logical size (2400×1080 → 2693×1212, factor 0.891) and copied scaled
+  to the window in one piece (0.1.25; per-piece scaling with `SDL_RenderSetLogicalSize` left
+  seams on the phone). Finger and mouse positions are mapped onto the logical size. Main menu picture drawn at 1/factor so it matches Large.
 * Settings values: Small = 1.5× ("medium" art), Medium = "fit", Large = 2× native.
 * Test: `tests/autotest/phone_fit_medium.txt` (EZEUS_UI_SCALE=fit).

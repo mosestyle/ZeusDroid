@@ -559,3 +559,19 @@ Wants the current Large look as the default "Medium", a bit smaller so everythin
   off-screen texture in this mode (screenshot: no seams).
 * Unit tests and full regression (Large, 19 scripts): pass, values unchanged.
 APK 0.1.24-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 25, sha256 b1dd6011e11b6b8a7e3258133d2cab237a4eb1b0ce360ea5bec2252b65995c5a, v2/v3 OK
+
+### User report 2026-10-25 17:32 (0.1.24 on the phone)
+Medium almost perfect, but thin black lines over all buttons, panels, dialogs. Remove the
+medium / large texture options.
+
+### 0.1.25-dev
+* Cause: `SDL_RenderSetLogicalSize` scales every drawn piece (frame tiles of buttons and
+  dialogs) separately; on the phone's GPU that leaves seams. Now the frame is rendered 1:1
+  into a logical-size target and copied to the window once. Desktop screenshots (Medium): side
+  buttons, in-game menu and panel without lines; `phone_fit_medium.txt` taps (Save, X, world,
+  Back to City, Menu) still land. The software renderer here did not show the seams of
+  0.1.24, so the fix is confirmed only by construction until tried on the phone.
+* Options on touch screens: texture tick boxes removed (screenshot); importer item "High zoom
+  textures" removed.
+* Unit tests, full regression (19 scripts): pass, values unchanged.
+APK 0.1.25-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 26, sha256 92b6720f2582135a471736f1f993a7a5e85e1eff2f4954aa20ee635ddbb31f05, v2/v3 OK

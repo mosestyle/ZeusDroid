@@ -207,8 +207,6 @@ public final class ImportRules {
         r.add(new Item("Music (Audio/Music)", false, dirHasFiles(root, "Audio/Music", null)));
         r.add(new Item("Sound effects and voices (Audio/Wavs, Audio/Voice)", false,
             new File(root, "Audio/Wavs").isDirectory() && new File(root, "Audio/Voice").isDirectory()));
-        r.add(new Item("High zoom textures (i45.e / i60.e)", false,
-            exists(root, EZEUS + "/i45.e") || exists(root, EZEUS + "/i60.e")));
         return r;
     }
 

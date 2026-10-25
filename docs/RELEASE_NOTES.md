@@ -1,5 +1,14 @@
 # Release notes
 
+## 0.1.25-dev
+* **Thin black lines over buttons, panels and dialogs (Medium) fixed.** The interface is
+  made of many small picture pieces; with Medium each piece was scaled on its own, which
+  left thin seams between them on the phone's graphics chip. Now the whole frame is drawn at
+  full size into one picture first, and that picture is scaled to the screen in one step.
+* Options on the phone: the texture size tick boxes are gone (the zoom graphics are always
+  made from your game files; the larger sets would only be enlarged copies). The importer
+  no longer lists "High zoom textures".
+
 ## 0.1.24-dev
 * **Interface sizes** (Touch control options → Interface size, restart):
   * **Medium (new default)**: the Large interface art, drawn just small enough (about 0.9 of

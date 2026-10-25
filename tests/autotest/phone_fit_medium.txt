@@ -20,4 +20,7 @@
 100 finger_down 1 2266 1037
 80 finger_up 1 2266 1037
 2000 log back_to_city_expect_game1
+300 finger_down 1 1976 261
+80 finger_up 1 1976 261
+800 screenshot build/run/fm_menu2.bmp
 200 quit
