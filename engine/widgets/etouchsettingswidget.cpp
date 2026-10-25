@@ -133,7 +133,7 @@ void eTouchSettingsWidget::initialize(const eAction& closeAction) {
            [&ps]() { return ps.fShowStats ? 1. : 0.; },
            [&ps](const double v) { ps.fShowStats = v > 0.5; });
     addRow("Interface size (restart)",
-           {{"Auto", -1}, {"Small", 1}, {"Medium", 2}, {"Large", 3}},
+           {{"Auto (fits)", -1}, {"Small", 1}, {"Medium", 2}, {"Large", 3}},
            [&ps]() { return double(ps.fUIScale); },
            [&ps](const double v) { ps.fUIScale = static_cast<int>(v); });
 

@@ -508,3 +508,22 @@ curved screen edge; set-up screen should be full screen.
 * Unit tests and full regression (19 scripts): pass, values unchanged.
 * Set-up screen full screen: set in code (immersive), not tried on a phone here.
 APK 0.1.21-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 22, sha256 15ea0d917fb68af4dba912a6782bb655f471c507bae04ac9d3787b6e73e2bef2, v2/v3 OK
+
+### User report 2026-10-25 13:42 (0.1.21 on the phone)
+Alert icons (fire, god …) no longer visible since the panel was made tighter; a see-through
+spot in the panel when zoomed in; raid / conquer / Back to City over the world map not
+wanted. Suggests changing the interface size.
+
+### 0.1.22-dev
+* Auto interface size on Android: largest scale with 302 px × (scale+1) ≤ screen height
+  (1080 → medium). Desktop run at 2400×1080 with EZEUS_UI_SCALE=medium
+  (`tests/autotest/phone_medium_panel.txt`): compact=0; after 60 s the "Pythian Games"
+  message (msgs=1) shows in the text box with up / down arrows; a test fire alert
+  (`debug_alert`) shows in the alert slot beside the Messages scroll; goals / rotate / world
+  row and god picture visible (screenshot); world map panel complete with its own Back to
+  City, raid and conquer; no extra buttons over the map (screenshot). Main menu at medium
+  checked (screenshot).
+* Large (compact) panel: alert icon visible next to the scroll (screenshot); the art's
+  see-through slot at (73, 241.5) is filled.
+* Unit tests pass; full regression at the large size (19 scripts): pass, values unchanged.
+APK 0.1.22-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 23, sha256 772fc6588f52145094016be8d0e1faf0a0d195b7588aec40110d3fc4b4ae35a3, v2/v3 OK

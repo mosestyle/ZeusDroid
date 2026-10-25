@@ -164,6 +164,9 @@ void execute(const Cmd& c, eMainWindow& w, const uint32_t now) {
     } else if(c.fName == "debug_tool" && !c.fArgs.empty()) {
         // Test-only: select a build tool ("palace", "stadium", "farm", "none").
         if(const auto gw = w.gameWidget()) gw->debugSetTool(c.fArgs[0]);
+    } else if(c.fName == "debug_alert") {
+        // Test-only: an alert icon (fire) in the panel's alert slots.
+        if(const auto gw = w.gameWidget()) gw->debugPushAlert();
     } else if(c.fName == "debug_world") {
         // Test-only: open the world map.
         w.showWorld();

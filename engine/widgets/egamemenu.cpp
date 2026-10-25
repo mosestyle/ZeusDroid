@@ -30,6 +30,23 @@
 #include "ebasicbutton.h"
 #include "erotatebutton.h"
 #include "emessagelog.h"
+#include "eupbutton.h"
+#include "edownbutton.h"
+#include "epainter.h"
+
+namespace {
+// Port: covers a see-through slot of the panel art whose button moved
+// (compact layout).
+class ePanelFill : public eWidget {
+public:
+    using eWidget::eWidget;
+protected:
+    void paintEvent(ePainter& p) override {
+        p.fillRect(rect(), {0, 92, 136, 255});
+    }
+};
+}
+
 #include "elabel.h"
 
 struct eSubButtonData {
@@ -1073,6 +1090,13 @@ void eGameMenu::initialize(eGameBoard* const b,
     mCompact = std::round(mult*299.) > screenH;
     const int row3Y = mCompact ? screenH - std::round(mult*16.5) : 0;
     const int row2Y = mCompact ? row3Y - mult*17 : 0;
+    if(mCompact) {
+        // The Messages scroll's slot in the art is see-through; it moved.
+        const auto fill = new ePanelFill(window());
+        prependWidget(fill);
+        fill->move(mult*73, std::round(mult*241.5));
+        fill->resize(std::round(mult*16.5), mult*14);
+    }
 
     {
         // Text box with the latest message (tap: read it).
@@ -1090,11 +1114,36 @@ void eGameMenu::initialize(eGameBoard* const b,
             mMessageLine->move(mult*7, mult*257);
             mMessageLine->resize(mult*80, mult*22);
         }
+        // Up / down arrows at its right end step through the messages,
+        // like the original's text box.
+        const auto up = new eUpButton(window());
+        const auto down = new eDownButton(window());
+        const int ax = mMessageLine->x() + mMessageLine->width() - up->width();
+        if(up->height() + down->height() <= mMessageLine->height()) {
+            up->move(ax, mMessageLine->y());
+            down->move(ax, mMessageLine->y() + mMessageLine->height() - down->height());
+            mMessageLine->setWidth(mMessageLine->width() - up->width() - mult);
+        } else { // compact row: side by side
+            const int cy = mMessageLine->y() + (mMessageLine->height() - up->height())/2;
+            down->move(ax, cy);
+            up->move(ax - up->width(), cy);
+            mMessageLine->setWidth(mMessageLine->width() - 2*up->width() - mult);
+        }
         mMessageLine->setWrapWidth(mMessageLine->width());
         mMessageLine->setPressAction([this]() {
-            if(mGW) mGW->showLoggedMessage(0);
+            if(mGW) mGW->showLoggedMessage(mMessageIndex);
+        });
+        up->setPressAction([this]() {
+            if(mMessageIndex > 0) mMessageIndex--;
+            if(mGW) updateMessages(mGW->messageLog());
+        });
+        down->setPressAction([this]() {
+            mMessageIndex++;
+            if(mGW) updateMessages(mGW->messageLog());
         });
         addWidget(mMessageLine);
+        addWidget(up);
+        addWidget(down);
     }
     {
         // Messages scroll: number of messages, tap opens the list.
@@ -1183,7 +1232,8 @@ void eGameMenu::updateMessages(const eMessageLog& log) {
     if(mMessageLine) {
         const int w = mMessageLine->width();
         const int h = mMessageLine->height();
-        mMessageLine->setText(log.empty() ? "" : log.items().front().fTitle);
+        if(mMessageIndex >= log.size()) mMessageIndex = std::max(0, log.size() - 1);
+        mMessageLine->setText(log.empty() ? "" : log.items()[mMessageIndex].fTitle);
         mMessageLine->resize(w, h);
     }
 }

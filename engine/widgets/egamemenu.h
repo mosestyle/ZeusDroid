@@ -87,6 +87,7 @@ public:
     // Port: number on the Messages scroll and the latest message in the
     // text box under it.
     void updateMessages(const eMessageLog& log);
+    void showNewestMessage() { mMessageIndex = 0; }
     // Port: the map tab at the top of the panel (shows the city map where
     // the category information is).
     void setMapMode(const bool map);
@@ -157,6 +158,7 @@ private:
     eButton* mMessagesButton = nullptr;
     eLabel* mMessagesCount = nullptr;
     eButton* mMessageLine = nullptr;
+    int mMessageIndex = 0; // message shown in the text box (0 = newest)
     bool mCompact = false;
 
     int mTradeCityId = -1;

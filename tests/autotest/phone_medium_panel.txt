@@ -1,0 +1,26 @@
+# Phone at the automatic interface size (2400x1080 -> medium, EZEUS_UI_SCALE=medium): full original panel with
+# alert icon, message text box with arrows, goals / rotate / world row; world map with its own Back to City.
+15000 log menu
+100 debug_start_adventure 17
+100 wait_game 120000
+3000 log ingame
+100 finger_down 1 64 98
+80 finger_up 1 64 98
+300 finger_down 1 64 416
+80 finger_up 1 64 416
+300 finger_down 1 64 416
+80 finger_up 1 64 416
+300 finger_down 1 64 416
+80 finger_up 1 64 416
+300 finger_down 1 64 416
+80 finger_up 1 64 416
+60000 log run
+100 key Escape
+300 finger_down 1 64 98
+80 finger_up 1 64 98
+300 debug_alert
+800 log alert
+200 screenshot build/run/pm_01.bmp
+200 debug_world
+2000 screenshot build/run/pm_02.bmp
+200 quit

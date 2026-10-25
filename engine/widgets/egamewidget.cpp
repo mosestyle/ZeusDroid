@@ -59,6 +59,7 @@
 #include "widgets/efilewidget.h"
 #include "widgets/emessageswidget.h"
 #include "widgets/eportclosebutton.h"
+#include "engine/eevent.h"
 #include "evectorhelpers.h"
 #include "etilehelper.h"
 #include "widgets/equestionwidget.h"
@@ -1434,6 +1435,7 @@ void eGameWidget::showMessage(eEventData& ed,
             lm.fCity = static_cast<int>(target.cityTarget());
         }
         mMsgLog.add(lm);
+        if(mGm) mGm->showNewestMessage();
         messagesChanged();
     }
 }
@@ -1443,6 +1445,13 @@ void eGameWidget::openTradePostOrders(eTradePost* const post) {
     if(mInfoWidget) return;
     mInfoWidget = openInfoWidget(post);
     viewTile(post->centerTile());
+}
+
+void eGameWidget::debugPushAlert() {
+    if(!mBoard || !mGm) return;
+    eEventData ed;
+    ed.fTile = mBoard->tile(mBoard->width()/2, mBoard->height()/2);
+    mGm->pushEvent(eEvent::fire, ed);
 }
 
 void eGameWidget::messagesChanged() {

@@ -92,13 +92,15 @@ void ePlatform::adjustSettings(eSettings& settings) {
 #ifdef __ANDROID__
     if(eResolution::sUIScaleOverride < 0) {
         // Phones: eZeus' interface art exists for 4 scales (0.5x .. 2x).
-        // Pick the largest that keeps >= ~540 logical rows, so buttons are
-        // finger-sized: 1080p -> 2x, 720p -> 1x.
+        // Pick the largest at which the right-hand panels (city panel down
+        // to the goals / rotate / world row, world map panel down to "Back
+        // to City", about 302 px at 1x... x(scale+1)) fit the screen height,
+        // so the original layout stays complete: 1080p -> 1.5x, 1200p+ -> 2x.
         SDL_DisplayMode m;
         if(SDL_GetCurrentDisplayMode(0, &m) == 0) {
             const int h = std::min(m.w, m.h);
-            if(h >= 1080) eResolution::sUIScaleOverride = 3;
-            else if(h >= 810) eResolution::sUIScaleOverride = 2;
+            if(h >= 4*302) eResolution::sUIScaleOverride = 3;
+            else if(h >= 3*302) eResolution::sUIScaleOverride = 2;
             else eResolution::sUIScaleOverride = 1;
         }
     }

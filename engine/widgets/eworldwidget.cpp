@@ -139,7 +139,7 @@ void eWorldWidget::initialize() {
     // Port: "Back to City" beside the menu (touch screens; the menu's own
     // button can be below the screen), and on short screens the raid /
     // conquer buttons, which would be cut off.
-    if(ePlatform::touchUi() || mWM->compact()) {
+    if(mWM->compact()) {
         mBackButton = new eFramedButton(window());
         mBackButton->setUnderline(false);
         mBackButton->setRenderBg(true);

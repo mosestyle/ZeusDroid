@@ -149,3 +149,10 @@ anchored at the screen centre). Zoom is not stored in saves (save format unchang
   messages and the episode goals window.
 * Messages scroll at the left end of the panel's bottom row.
 * Test: `tests/autotest/phone_world.txt`.
+
+## Interface size (0.1.22)
+* Auto (default on phones): the largest art size at which the panels fit the screen height
+  (city panel to the goals row, world panel to "Back to City", 302 px × scale): 1080 px →
+  medium (1.5×), ≥ 1208 px → large (2×). Medium shows the original panel unchanged.
+* Large on a 1080-px screen: the compact panel of 0.1.20 (see above).
+* Test: `tests/autotest/phone_medium_panel.txt` (EZEUS_UI_SCALE=medium).

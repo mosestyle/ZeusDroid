@@ -335,6 +335,7 @@ public:
     void openTradePostOrders(eTradePost* const post);
     void showLoggedMessage(const int i);
     void messagesChanged();
+    void debugPushAlert(); // test-only: a fire alert icon
 private:
     eMessageLog mMsgLog;
     eFramedButton* mPanelButton = nullptr;

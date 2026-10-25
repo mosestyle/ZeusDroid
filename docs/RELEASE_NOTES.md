@@ -1,5 +1,19 @@
 # Release notes
 
+## 0.1.22-dev
+* **Interface size "Auto" now fits the screen**: on a 1080-px-high phone the interface uses
+  the 1.5× art (as eZeus itself does at 1080p) instead of 2×. Then the right-hand panel is
+  complete, exactly like the original: alert icons (fire, collapse, god, monster, invasion …,
+  tap one to go there) with the Messages scroll beside them, the message text box with its
+  up / down arrows, the goals / rotate / world row, and the world map panel with its own
+  "Back to City", raid and conquer buttons (no extra buttons over the map). Tablets (1200 px
+  and more) keep 2×. "Large" can still be chosen in Touch control options → Interface size
+  (restart); it uses the tighter panel of 0.1.20.
+* Message text box: up / down arrows step through the messages; tapping the text reads the
+  one shown.
+* Large interface: the see-through hole in the panel (the Messages scroll's place in the art)
+  that showed the map when zoomed in is covered.
+
 ## 0.1.21-dev
 * **Black lines when zoomed out** fixed. Below about 0.75× the game uses the small
   graphics; the texture builder made their tile edges half-transparent, so thin black
