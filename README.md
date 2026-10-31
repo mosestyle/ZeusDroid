@@ -5,8 +5,11 @@ the open-source C++/SDL2 reimplementation of *Zeus: Master of Olympus* + *Poseid
 with a touch-first input layer. No emulation (no Box64/Wine/Winlator), no game content
 in the APK: you import your own original game files.
 
-> Status: early development build. See `PROJECT_STATE.md` for what is verified and what is
-> not (notably: **not yet run on a physical Android device**).
+> Status: development build, played on a Samsung Galaxy S25. See `PROJECT_STATE.md` for
+> what is verified and `docs/RELEASE_NOTES.md` for the changes per version.
+
+**Download:** the APK is attached to each version on the
+[Releases page](https://github.com/mosestyle/ZeusDroid/releases).
 
 ## What is in this repository
 
@@ -23,10 +26,11 @@ in the APK: you import your own original game files.
 
 ## Quick start (player)
 
-1. Install the APK (`adb install -r ZeusDroid-debug-arm64-v8a.apk`).
-2. Copy your **Zeus and Poseidon** install folder (e.g. from GOG) to the phone.
-3. Download **eZeus-0.8.2-beta.zip** from the eZeus GitHub releases (on the phone or PC).
-4. Start *ZeusDroid* → *Import game folder…* → *Download texture pack* (or *Import texture pack (.zip)…*) → *Start game*.
+1. Install the APK from the Releases page (or `adb install -r ZeusDroid-debug-arm64-v8a.apk`).
+2. Copy your own **Zeus and Poseidon** install folder (e.g. the GOG edition) to the phone.
+3. Start *ZeusDroid* → *Import game folder…* → *Start game*. The first start prepares the
+   game graphics from your own game files (about a minute, once; see
+   `docs/TEXTURE_BUILDER.md`). Nothing else is downloaded.
 
 Details: `docs/GAME_DATA.md`. Controls: `docs/TOUCH_CONTROLS.md`.
 
