@@ -25,6 +25,10 @@ jobs:
           if gh release view "$tag" -R "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             echo "Release $tag exists already"; exit 0
           fi
-          gh release create "$tag" release/*.apk -R "$GITHUB_REPOSITORY" \
-            --target "$sha" --title "ZeusDroid $ver" \
-            --notes-file release/notes.md --prerelease --latest
+          if ! out=$(gh release create "$tag" release/*.apk -R "$GITHUB_REPOSITORY" \
+                --target "$sha" --title "ZeusDroid $ver" \
+                --notes-file release/notes.md --latest 2>&1); then
+            echo "::error::release failed: $out"
+            exit 1
+          fi
+          echo "$out"
