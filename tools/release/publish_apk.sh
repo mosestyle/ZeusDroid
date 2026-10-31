@@ -4,6 +4,8 @@
 # its workflow (.github/workflows/release-apk.yml) creates release v<version> with the APK,
 # tagged at the current main commit. Notes: the version's section of docs/RELEASE_NOTES.md.
 # usage: tools/release/publish_apk.sh            (run after pushing main)
+#        REPLACES="v0.1.25-dev" tools/release/publish_apk.sh   (also delete those releases)
+# Version names are plain numbers (0.1.26), the asset is ZeusDroid-<version>.apk.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
@@ -26,7 +28,9 @@ cd "$WT"
 mkdir -p .github/workflows release
 cp "$ROOT/tools/release/release-apk.yml" .github/workflows/release-apk.yml
 rm -f release/*.apk
-cp "$ROOT/$APK" "release/ZeusDroid-$VER-arm64-v8a.apk"
+cp "$ROOT/$APK" "release/ZeusDroid-$VER.apk"
+# Releases this one replaces (e.g. the same version with a "-dev" name), deleted by the workflow.
+printf "%s\n" ${REPLACES:-} > release/replaces.txt
 echo "$VER" > release/version.txt
 echo "$SHA" > release/commit.txt
 python3 - "$ROOT/docs/RELEASE_NOTES.md" "$VER" "$(sha256sum "$ROOT/$APK" | cut -d' ' -f1)" > release/notes.md <<'PY'

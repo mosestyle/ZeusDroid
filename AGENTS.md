@@ -22,4 +22,6 @@
 10. Never replace a failing native build with a mock or a visual demo.
 11. **GitHub (mosestyle/ZeusDroid) is kept current.** After every change: commit, push
     `main`; after every new APK also run `tools/release/publish_apk.sh` (APK to the `apk`
-    branch, whose workflow creates the release `v<version>`). Never push game data.
+    branch, whose workflow creates the release `v<version>`). Version names are plain
+    numbers without "-dev" (`VERSION_NAME=0.1.26`); the release asset is
+    `ZeusDroid-<version>.apk`. Never push game data.

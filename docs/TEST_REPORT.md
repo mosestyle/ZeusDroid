@@ -583,3 +583,7 @@ APK 0.1.25-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 26, sha256 92b67
   `tools/release/publish_apk.sh` pushes the APK to the `apk` branch, whose workflow created
   release `v0.1.25-dev` with `ZeusDroid-0.1.25-dev-arm64-v8a.apk` (25037089 bytes, same as
   the local APK). First workflow run failed (prerelease cannot be "latest"); fixed.
+
+### 2026-10-31: plain version names
+User: no "-dev" in names. 0.1.25-dev rebuilt as **0.1.25** (versionCode 27, same code),
+release asset `ZeusDroid-0.1.25.apk`, sha256 10c5352c638689910ef23d2f6de49000679e0141d0fc911a24996493d12cd4a7; release v0.1.25-dev replaced.

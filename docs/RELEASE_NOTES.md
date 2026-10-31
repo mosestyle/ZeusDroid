@@ -1,6 +1,6 @@
 # Release notes
 
-## 0.1.25-dev
+## 0.1.25
 * **Thin black lines over buttons, panels and dialogs (Medium) fixed.** The interface is
   made of many small picture pieces; with Medium each piece was scaled on its own, which
   left thin seams between them on the phone's graphics chip. Now the whole frame is drawn at
