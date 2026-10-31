@@ -575,3 +575,11 @@ medium / large texture options.
   textures" removed.
 * Unit tests, full regression (19 scripts): pass, values unchanged.
 APK 0.1.25-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 26, sha256 92b6720f2582135a471736f1f993a7a5e85e1eff2f4954aa20ee635ddbb31f05, v2/v3 OK
+
+### 2026-10-31: GitHub repository
+* Source pushed to https://github.com/mosestyle/ZeusDroid `main` (full history; checked
+  before: no game data, saves, screenshots or decompiled code tracked).
+* Releases cannot be created from the agent session (API 403) and tag pushes are refused;
+  `tools/release/publish_apk.sh` pushes the APK to the `apk` branch, whose workflow created
+  release `v0.1.25-dev` with `ZeusDroid-0.1.25-dev-arm64-v8a.apk` (25037089 bytes, same as
+  the local APK). First workflow run failed (prerelease cannot be "latest"); fixed.

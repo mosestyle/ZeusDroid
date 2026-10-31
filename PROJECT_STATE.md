@@ -1,7 +1,7 @@
 # Project state
 
 _Session 1 – 2026-10-22 (agent: Claude, cloud container linked to the user's PC for file access)._
-_Branch `main`; see `git log` for the current commit._
+_Branch `main`; see `git log` for the current commit. Public repository: https://github.com/mosestyle/ZeusDroid (source on `main`, APKs on the Releases page via the `apk` branch; see AGENTS.md rule 11)._
 
 ## Environment
 
