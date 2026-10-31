@@ -22,6 +22,13 @@ jobs:
           ver=$(cat release/version.txt)
           sha=$(cat release/commit.txt)
           tag="v$ver"
+          # Old releases replaced by this one (tag and release removed).
+          if [ -f release/replaces.txt ]; then
+            while read -r old; do
+              [ -n "$old" ] || continue
+              gh release delete "$old" -R "$GITHUB_REPOSITORY" --cleanup-tag -y || true
+            done < release/replaces.txt
+          fi
           if gh release view "$tag" -R "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             echo "Release $tag exists already"; exit 0
           fi
