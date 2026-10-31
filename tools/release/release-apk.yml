@@ -1,0 +1,30 @@
+# Lives on the "apk" branch as .github/workflows/release-apk.yml (copied there by
+# tools/release/publish_apk.sh). A push to "apk" with a new release/ folder creates the
+# GitHub release v<version> with the APK attached, tagged at the source commit on main.
+name: Release APK
+on:
+  push:
+    branches: [apk]
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: apk
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          ver=$(cat release/version.txt)
+          sha=$(cat release/commit.txt)
+          tag="v$ver"
+          if gh release view "$tag" -R "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $tag exists already"; exit 0
+          fi
+          gh release create "$tag" release/*.apk -R "$GITHUB_REPOSITORY" \
+            --target "$sha" --title "ZeusDroid $ver" \
+            --notes-file release/notes.md --prerelease --latest

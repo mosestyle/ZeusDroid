@@ -47,6 +47,10 @@ tools/build_android.sh            # or: cd android && ./gradlew assembleDebug
 ```
 See `docs/BUILD_ANDROID.md` and `docs/BUILD_WINDOWS.md`.
 
+Releases: `tools/release/publish_apk.sh` puts the built APK on the `apk` branch; its GitHub
+Action creates the release `v<version>` (tagged at the source commit on `main`) with the APK
+and the version's notes from `docs/RELEASE_NOTES.md`.
+
 ## Licence
 
 GPL-3.0 (inherits eZeus). Third-party notices: `LICENSES/NOTICE.md`. Zeus: Master of
