@@ -5,7 +5,9 @@
 2. **Do not break the desktop build.** `cmake -S engine -B build/desktop -DEZEUS_SYSTEM_SDL=ON`
    must keep building; with `EZEUS_RENDER_FPS` unset the desktop loop is upstream-identical.
 3. **No original game assets in git** (DATA, Audio, Adventures, .eng, .e packs, saves,
-   screenshots of copyrighted art). `local-assets/`, `build/`, `dist/` are ignored. Only
+   screenshots of copyrighted art). Exception: the few gameplay screenshots the user
+   provided for the README in `docs/screenshots/` (downscaled). `local-assets/`, `build/`,
+   `dist/` are ignored. Only
    names/sizes/digests (`tools/assets/asset_manifest.json`) may be committed.
 4. **Never modify the user's installation** (`C:\GOG Games\Zeus and Poseidon`); treat it as
    read-only source material.
