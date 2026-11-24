@@ -1,0 +1,5 @@
+# Main menu with the leader name (leader "Moses" exists): logos below the name button
+8000 click left 456 262
+500 click left 790 524
+2500 screenshot build/run/mm_name.bmp
+200 quit

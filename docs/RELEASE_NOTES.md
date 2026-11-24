@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.1.30
+* Main menu: the "Zeus + Poseidon" logos are drawn **below the leader's name button**
+  (they covered it in 0.1.29). They move down below any small button in that corner.
+
 ## 0.1.29
 * **0.1.28 crashed at start – fixed.** The new logo code freed a picture twice (the
   engine's texture loader already frees it); the phone's memory allocator stops the app

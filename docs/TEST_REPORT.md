@@ -639,3 +639,11 @@ the fix the same run and `phone_game_menu.txt` (2400×1080 Medium, into a game a
 end with exit 0. The logo set is also never destroyed (no texture freed after the renderer
 at exit). Lesson: run new code once under strict malloc checking before an APK.
 APK 0.1.29: versionCode 31, 25102625 bytes, sha256 549e2f2c3d1237eaca5309934303b45d5ab5801993f45d2e9f951a7e9839e498, v2/v3 OK, same signer (70be0641…84d596).
+
+### 2026-11-24: 0.1.30 (logos below the leader name)
+User screenshot (0.1.29): the logos cover the leader-name button. The logo group now moves
+below any visible child of the menu smaller than a quarter of its height that overlaps it.
+`main_menu_logos.txt` (desktop 1280×720) and `phone_main_menu_logos.txt` (2400×1080
+Medium and Large, touch), both under `MALLOC_CHECK_=3` with libc_malloc_debug: name button
+at the top left, "Zeus + Poseidon" below it, exit 0.
+APK 0.1.30: versionCode 32, 25102625 bytes, sha256 66afc8d63454b5a76379c2b04c846612748ed99d39fbc76b06473e8d4d9eddf5, v2/v3 OK, same signer (70be0641…84d596).

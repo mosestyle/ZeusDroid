@@ -1,0 +1,7 @@
+# Phone (2400x1080 Medium, touch): main menu with leader name, logos below it
+15000 finger_down 1 920 390
+80 finger_up 1 920 390
+500 finger_down 1 1424 786
+80 finger_up 1 1424 786
+2500 screenshot build/run/mm_name_phone.bmp
+200 quit

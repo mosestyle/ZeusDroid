@@ -139,7 +139,20 @@ void eMainMenuBase::paintLogos(ePainter& p, const SDL_Rect& bg) {
     }
     const int gap = static_cast<int>(6*s);
     const int x0 = bg.x + static_cast<int>(18*s);
-    const int y0 = bg.y + static_cast<int>(135*s);
+    int y0 = bg.y + static_cast<int>(135*s);
+    // Below any button of the menu in that corner (e.g. the leader's name).
+    const int groupW = zw + gap + plusW + gap + pw;
+    const int groupH = std::max(zh, ph);
+    for(const auto c : children()) {
+        if(!c->visible()) continue;
+        if(c->height() > height()/4) continue; // dialogs, layout containers
+        const int cx = x() + c->x();
+        const int cy = y() + c->y();
+        const bool overlapX = cx < x0 + groupW && cx + c->width() > x0;
+        if(overlapX && cy < y0 + groupH) {
+            y0 = std::max(y0, cy + c->height() + gap);
+        }
+    }
     const SDL_Rect zr{x0, y0, zw, zh};
     SDL_RenderCopy(r, zt->tex(), nullptr, &zr);
     int x = x0 + zw + gap;
