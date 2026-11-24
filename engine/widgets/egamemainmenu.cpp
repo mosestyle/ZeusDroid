@@ -1,5 +1,7 @@
 #include "egamemainmenu.h"
 
+#include <algorithm>
+
 #include "eframedbutton.h"
 
 #include "elanguage.h"
@@ -66,6 +68,21 @@ void eGameMainMenu::initialize(const eAction& resumeAct,
     exitButt->setPressAction(exitAct);
     addWidget(exitButt);
     exitButt->align(eAlignment::hcenter);
+
+    // Port: with the extra buttons (touch options, cheats) the fixed height
+    // was too small and the buttons overlapped the frame. Grow the menu so
+    // every button fits with a gap above, between and below them.
+    int buttonsH = 0;
+    int buttonsW = 0;
+    for(const auto c : children()) {
+        buttonsH += c->height();
+        buttonsW = std::max(buttonsW, c->width());
+    }
+    const int n = children().size();
+    const int gap = std::max(2*padding(), n > 0 ? buttonsH/(3*n) : 0);
+    setHeight(std::max(height(), buttonsH + (n + 1)*gap));
+    setWidth(std::max(width(), buttonsW + 4*padding()));
+    for(const auto c : children()) c->align(eAlignment::hcenter);
 
     layoutVertically();
 }

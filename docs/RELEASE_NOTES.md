@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.1.27
+* **In-game Menu fits again.** With the new *Cheats* button the six buttons no longer fit
+  the menu's fixed height ("Resume adventure" lay over the frame). The menu now grows with
+  its buttons, with even gaps above, between and below them.
+
 ## 0.1.26
 * **Sanctuaries were invisible (all gods) – fixed.** Placing a sanctuary took the drachmas
   and marble but nothing appeared. The sanctuary layouts (where the stairs, statues, altar

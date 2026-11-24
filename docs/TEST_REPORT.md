@@ -614,3 +614,10 @@ built by the texture builder, no `Sanctuaries/`) was used for the tests below.
   Bowvine and Arrow (no tower firing), SoundFrags (audio is a dummy driver here).
 * Unit tests: pass (102 + 50 checks, unchanged).
 APK 0.1.26: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 28, 25098529 bytes, sha256 439807e95771a629aef7b6a1ec4586f1af80564a9af4d26cfea840375e3494ed, v2/v3 OK, signer SHA-256 70be0641…84d596 (new key, copy on the user's PC).
+
+### 2026-11-24: 0.1.27 (game menu height)
+User screenshot (0.1.26, phone): "Resume adventure" overlaps the top of the Menu frame.
+`eGameMainMenu` had a fixed height (half the screen) for 4–6 buttons; it now grows to fit.
+`tests/autotest/phone_game_menu.txt` screenshots: 2400×1080 Medium and Large (6 buttons)
+and desktop 1280×720 (5 buttons): all buttons inside the frame, evenly spaced.
+APK 0.1.27: versionCode 29, 25098529 bytes, sha256 7ad6ab0dcb56adcc27c30096f11581d36c5c11d616de10611359e88724a6fc35, v2/v3 OK, same signer as 0.1.26 (70be0641…84d596).

@@ -1,0 +1,8 @@
+# Phone (Xvfb 2400x1080, EZEUS_UI_SCALE=medium, touch) and desktop: the in-game Menu
+# (Resume, Save, Load, Touch control options, Cheats, Exit) fits inside its frame.
+15000 log menu
+100 debug_start_adventure 17
+100 wait_game 120000
+3000 key Escape
+1000 screenshot build/run/gm_01.bmp
+200 quit
