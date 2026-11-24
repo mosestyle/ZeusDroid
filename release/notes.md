@@ -2,9 +2,8 @@ Native arm64 Android build of Zeus: Master of Olympus + Poseidon on the eZeus en
 
 **You need your own copy of the game** (e.g. the GOG edition): install the APK, tap *Import game folder…*, pick your "Zeus and Poseidon" folder, then *Start game*. The first start prepares the graphics from your game files (about a minute, once). No game files are included.
 
-### Changes in 0.1.29
-* **0.1.28 crashed at start – fixed.** The new logo code freed a picture twice (the
-  engine's texture loader already frees it); the phone's memory allocator stops the app
-  on that. The logos stay.
+### Changes in 0.1.30
+* Main menu: the "Zeus + Poseidon" logos are drawn **below the leader's name button**
+  (they covered it in 0.1.29). They move down below any small button in that corner.
 
-Earlier versions: docs/RELEASE_NOTES.md. APK sha256: `549e2f2c3d1237eaca5309934303b45d5ab5801993f45d2e9f951a7e9839e498`
+Earlier versions: docs/RELEASE_NOTES.md. APK sha256: `66afc8d63454b5a76379c2b04c846612748ed99d39fbc76b06473e8d4d9eddf5`
