@@ -1,5 +1,11 @@
 # Release notes
 
+## 0.1.28
+* **"Zeus + Poseidon" logos in the main menu**: the original game's animated Zeus and
+  Poseidon logos, side by side with a "+", in the sky at the top left of the menu picture.
+  They are read from your own game files (`DATA/PoseidonImps.sg3`) when the menu opens;
+  nothing is added to the app or the repository.
+
 ## 0.1.27
 * **In-game Menu fits again.** With the new *Cheats* button the six buttons no longer fit
   the menu's fixed height ("Resume adventure" lay over the frame). The menu now grows with

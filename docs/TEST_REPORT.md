@@ -621,3 +621,11 @@ User screenshot (0.1.26, phone): "Resume adventure" overlaps the top of the Menu
 `tests/autotest/phone_game_menu.txt` screenshots: 2400×1080 Medium and Large (6 buttons)
 and desktop 1280×720 (5 buttons): all buttons inside the frame, evenly spaced.
 APK 0.1.27: versionCode 29, 25098529 bytes, sha256 7ad6ab0dcb56adcc27c30096f11581d36c5c11d616de10611359e88724a6fc35, v2/v3 OK, same signer as 0.1.26 (70be0641…84d596).
+
+### 2026-11-24: 0.1.28 (Zeus + Poseidon logos in the main menu)
+The logos are the bitmaps "ZeusLogo" (records 8531–8534, 108×64) and "Poseidonlogo"
+(8528–8530, 112×54) of the user's `DATA/PoseidonImps.sg3`, decoded at runtime with the
+texture builder's sg3 reader (sizes checked; another file version shows no logos). Main menu
+screenshots (local only): 2400×1080 Medium and Large and desktop 1280×720: "Zeus + Poseidon"
+in the sky left of the Roster dialog, animated.
+APK 0.1.28: versionCode 30, 25102625 bytes, sha256 672369757839868b14b7aef6135aa36126ddff83b9c1144b61f9abe5e2a51a12, v2/v3 OK, same signer (70be0641…84d596).
