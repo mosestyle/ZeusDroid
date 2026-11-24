@@ -487,10 +487,9 @@ void eGameMenu::initialize(eGameBoard* const b,
                              r2, 0, 0, &coll.fResources, nullptr, r2spr},
                             {eBuildingMode::none,
                              eLanguage::zeusText(28, 52),
-                             p2, 0, 1, &coll.fProcessing, nullptr, p2spr},
-                            {eBuildingMode::artisansGuild,
-                             eLanguage::zeusText(28, 56),
-                             bg2, cost3, 2, &coll.fArtisansGuild, nullptr}};
+                             p2, 0, 1, &coll.fProcessing, nullptr, p2spr}};
+    // Port: the Artisans' Guild is in the Mythology menu (as in the original
+    // game, below the Sanctuaries), not here.
     const auto ww2 = createDataWidget(mEmplDataW, buttonsVec2,
                                       eLanguage::zeusText(88, 2));
 
@@ -762,7 +761,10 @@ void eGameMenu::initialize(eGameBoard* const b,
                              eLanguage::zeusText(28, 125),
                              hs7, 0, 1, &coll.fHeroShrines,
                              &coll.fPoseidonHeroShrines,
-                             hs7spr}};
+                             hs7spr},
+                            {eBuildingMode::artisansGuild,
+                             eLanguage::zeusText(28, 56),
+                             bg2, cost3, 2, &coll.fArtisansGuild, nullptr}};
     const auto ww8 = createDataWidget(mMythDataW, buttonsVec7,
                                       eLanguage::zeusText(88, 7));
 

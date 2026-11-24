@@ -1,0 +1,46 @@
+# Sanctuary placement (desktop 1920x1080, mouse): an Ares sanctuary placed in Open Play Sandbox 2 must
+# appear on the map. It used to be paid for but invisible when the eZeus pack's Sanctuaries/ folder was
+# missing (always on Android); the layouts are now built in. Then Menu > Cheats.
+# Run with EZEUS_BIN_DIR pointing at a data folder without eZeus/Sanctuaries (like the phone).
+15000 log menu
+100 debug_start_adventure 17
+100 wait_game 120000
+3000 log ingame
+200 debug_tool warehouse
+300 mouse_move 400 300
+500 click left 400 300
+800 debug_build marble 32 0
+200 key P
+3000 log running
+200 debug_tool ares
+300 mouse_move 900 840
+300 click left 900 840
+200 mouse_move 900 500
+100 log placed
+100 screenshot build/run/sa_01.bmp
+200 key P
+200 key Escape
+800 screenshot build/run/sa_02.bmp
+200 mouse_move 640 427
+300 click left 640 427
+800 screenshot build/run/sa_03.bmp
+300 click left 956 204
+300 click left 956 204
+300 click left 956 270
+300 click left 956 335
+300 click left 956 400
+300 click left 956 465
+500 screenshot build/run/sa_04.bmp
+300 click left 1057 586
+500 log cheats_used
+200 key P
+6000 log fireballs
+100 screenshot build/run/sa_05.bmp
+200 key Escape
+800 click left 640 427
+800 click left 956 530
+300 click left 1057 586
+200 key P
+8000 log ambrosia
+100 screenshot build/run/sa_06.bmp
+200 quit

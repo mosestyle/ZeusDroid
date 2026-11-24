@@ -14,7 +14,8 @@ public:
                     const eAction& saveAct,
                     const eAction& loadAct,
                     const eAction& exitAct,
-                    const eAction& touchSettingsAct = nullptr);
+                    const eAction& touchSettingsAct = nullptr,
+                    const eAction& cheatsAct = nullptr);
 };
 
 #endif // EGAMEMAINMENU_H

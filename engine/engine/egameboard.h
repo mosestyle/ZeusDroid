@@ -609,6 +609,24 @@ public:
 
     void setEpisodeLost() const;
     bool episodeLost() const { return mEpisodeLost; }
+
+    // ZeusDroid: cheats (in-game Menu > Cheats). Toggles last until the game
+    // is closed or another one is loaded; they are not written to saves.
+    struct eCheats {
+        bool fUnlimitedFood = false; // Lots of Fishy
+        bool fBowvine = false;       // Bowvine and Arrow
+        bool fFireballs = false;     // Fireballs from Heaven
+        bool fSoundFrags = false;    // SoundFrags
+        int fFireballTime = 0;
+        int fFoodTime = 0;
+    };
+    eCheats& cheats() { return mCheats; }
+    const eCheats& cheats() const { return mCheats; }
+    void cheatAddDrachmas(const int by);           // Delian Treasury
+    void cheatWinEpisode();                        // Ambrosia
+    void cheatFeedHouses(const eCityId cid);       // Lots of Fishy
+    void cheatFireball(const eCityId cid);         // Fireballs from Heaven
+    void cheatsIncTime(const int by);
     int tradingPartners() const;
 
     void earthquake(eTile* const startTile, const int size);
@@ -863,6 +881,10 @@ private:
     int mGoalsCheckTime = 0;
     std::vector<stdsptr<eEpisodeGoal>> mGoals;
     bool mGoalsFulfilled = false;
+
+    eCheats mCheats;
+    eCityId mCheatCity = eCityId::neutralFriendly;
+    std::vector<std::pair<eTile*, int>> mCheatFireballHits;
 
     struct eEarthquake {
         eTile* fStartTile = nullptr;

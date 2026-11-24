@@ -834,6 +834,7 @@ set(EZEUS_SOURCES
     engine/efunctask.cpp
     engine/efunctask.h
     engine/egameboard.cpp
+    engine/egameboardcheats.cpp
     engine/egameboard.h
     engine/egameboardread.cpp
     engine/egameboardwrite.cpp
@@ -2939,6 +2940,8 @@ set(EZEUS_SOURCES
     widgets/eselectcolonywidget.h
     widgets/esettingsmenu.cpp
     widgets/etouchsettingswidget.cpp
+    widgets/echeatswidget.cpp
+    widgets/echeatswidget.h
     widgets/etouchsettingswidget.h
     widgets/esettingsmenu.h
     widgets/esmalldownbutton.cpp

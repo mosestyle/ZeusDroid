@@ -11,7 +11,8 @@ void eGameMainMenu::initialize(const eAction& resumeAct,
                                const eAction& saveAct,
                                const eAction& loadAct,
                                const eAction& exitAct,
-                               const eAction& touchSettingsAct) {
+                               const eAction& touchSettingsAct,
+                               const eAction& cheatsAct) {
     setType(eFrameType::message);
 
     const auto resButt = new eFramedButton(window());
@@ -46,6 +47,16 @@ void eGameMainMenu::initialize(const eAction& resumeAct,
         tButt->setPressAction(touchSettingsAct);
         addWidget(tButt);
         tButt->align(eAlignment::hcenter);
+    }
+
+    if(cheatsAct) { // port: ZeusDroid cheats
+        const auto cButt = new eFramedButton(window());
+        cButt->setUnderline(false);
+        cButt->setText("Cheats");
+        cButt->fitContent();
+        cButt->setPressAction(cheatsAct);
+        addWidget(cButt);
+        cButt->align(eAlignment::hcenter);
     }
 
     const auto exitButt = new eFramedButton(window());

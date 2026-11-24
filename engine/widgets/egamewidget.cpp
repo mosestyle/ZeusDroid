@@ -2,6 +2,8 @@
 #include <tuple>
 #include <filesystem>
 #include "egamewidget.h"
+#include "echeatswidget.h"
+#include "egamemainmenu.h"
 #include "eacceptbutton.h"
 #include "ecancelbutton.h"
 #include "elabel.h"
@@ -2119,7 +2121,18 @@ void eGameWidget::openGameMenu() {
         if(ePlatform::touchUi()) {
             touchAct = [this, w]() { w->showTouchSettings(this); };
         }
-        menu->initialize(resumeAct, saveAct, loadAct, exitAct, touchAct);
+        const auto cheatsAct = [this, w, menu]() {
+            const auto cw = new eCheatsWidget(w);
+            cw->initialize(*mBoard, mViewedCityId, [cw, menu]() {
+                cw->deleteLater();
+                menu->deleteLater();
+            });
+            addWidget(cw);
+            cw->align(eAlignment::center);
+            w->execDialog(cw, true, nullptr, this);
+        };
+        menu->initialize(resumeAct, saveAct, loadAct, exitAct, touchAct,
+                         cheatsAct);
         addWidget(menu);
         menu->align(eAlignment::center);
         w->execDialog(menu);

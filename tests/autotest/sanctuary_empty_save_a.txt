@@ -1,0 +1,19 @@
+# Part A (run with EZEUS_TEST_NO_SANCT_LAYOUTS=1, desktop 1280x720 mouse): places an Ares sanctuary
+# the way 0.1.25 did on the phone (no layout: paid, invisible) and saves. Part B loads it.
+15000 log menu
+100 debug_start_adventure 17
+100 wait_game 120000
+3000 log ingame
+200 debug_tool warehouse
+300 mouse_move 400 300
+500 click left 400 300
+800 debug_build marble 32 0
+200 key P
+3000 log running
+200 debug_tool ares
+300 mouse_move 900 840
+300 click left 900 840
+200 mouse_move 900 500
+500 log placed_empty
+200 debug_save build/run/empty_sanct.sav
+200 quit

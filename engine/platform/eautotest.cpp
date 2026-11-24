@@ -167,6 +167,11 @@ void execute(const Cmd& c, eMainWindow& w, const uint32_t now) {
     } else if(c.fName == "debug_alert") {
         // Test-only: an alert icon (fire) in the panel's alert slots.
         if(const auto gw = w.gameWidget()) gw->debugPushAlert();
+    } else if(c.fName == "debug_save" && !c.fArgs.empty()) {
+        // Test-only: save the game to a file / load it.
+        logLine("debug_save " + c.fArgs[0] + (w.saveGame(c.fArgs[0]) ? " ok" : " failed"));
+    } else if(c.fName == "debug_load" && !c.fArgs.empty()) {
+        logLine("debug_load " + c.fArgs[0] + (w.loadGame(c.fArgs[0]) ? " ok" : " failed"));
     } else if(c.fName == "debug_world") {
         // Test-only: open the world map.
         w.showWorld();

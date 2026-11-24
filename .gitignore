@@ -1,5 +1,6 @@
 # Never commit original game data, saves, or derived proprietary assets
 local-assets/
+local-assets-droid/
 build/
 build-*/
 dist/

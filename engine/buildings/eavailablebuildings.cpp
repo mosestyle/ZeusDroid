@@ -465,6 +465,11 @@ void eAvailableBuildings::built(
     }
 }
 
+bool eAvailableBuildings::isBuilt(const eBuildingType type) const {
+    const auto a = const_cast<eAvailableBuildings*>(this)->availablePtr(type);
+    return a && *a == eAvailable::built;
+}
+
 void eAvailableBuildings::destroyed(
         const eBuildingType type, const int id) {
     const bool pyramid = eBuilding::sPyramidBuilding(type);

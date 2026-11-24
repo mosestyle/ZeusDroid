@@ -1,0 +1,13 @@
+# Phone (Xvfb 2400x1080, EZEUS_UI_SCALE=medium, touch): Industry shows Resources and Processing;
+# Mythology shows Sanctuaries and the Artisans' Guild (below them, as in the original game).
+15000 log menu
+100 debug_start_adventure 17
+100 wait_game 120000
+3000 log ingame
+300 finger_down 1 2156 190
+80 finger_up 1 2156 190
+1000 screenshot build/run/pi_02.bmp
+300 finger_down 1 2162 495
+80 finger_up 1 2162 495
+1000 screenshot build/run/pi_03.bmp
+200 quit

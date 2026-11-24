@@ -1136,6 +1136,32 @@ void eBoardCity::built(const eBuildingType type,
     mBoard.updateButtonsVisibility();
 }
 
+std::vector<eBuildingType> eBoardCity::repairMissingSanctuaries() {
+    std::vector<eBuildingType> result;
+    const eBuildingType types[] = {
+        eBuildingType::templeAphrodite, eBuildingType::templeApollo,
+        eBuildingType::templeAres, eBuildingType::templeArtemis,
+        eBuildingType::templeAthena, eBuildingType::templeAtlas,
+        eBuildingType::templeDemeter, eBuildingType::templeDionysus,
+        eBuildingType::templeHades, eBuildingType::templeHephaestus,
+        eBuildingType::templeHera, eBuildingType::templeHermes,
+        eBuildingType::templePoseidon, eBuildingType::templeZeus};
+    for(const auto t : types) {
+        if(!mAvailableBuildings.isBuilt(t)) continue;
+        bool exists = false;
+        for(const auto s : sanctuaries()) {
+            if(s->type() == t) {
+                exists = true;
+                break;
+            }
+        }
+        if(exists) continue;
+        mAvailableBuildings.destroyed(t);
+        result.push_back(t);
+    }
+    return result;
+}
+
 void eBoardCity::destroyed(const eBuildingType type,
                            const int id) {
     if(!mBoard.registerBuildingsEnabled()) return;

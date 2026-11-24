@@ -1,0 +1,14 @@
+# Part B (normal run): after loading the save from part A (the empty sanctuary is not in it,
+# the drachmas stay spent) the Ares sanctuary can be placed again and is visible.
+15000 log menu
+100 debug_start_adventure 17
+100 wait_game 120000
+2000 debug_load build/run/empty_sanct.sav
+3000 log loaded
+200 debug_tool ares
+300 mouse_move 900 840
+300 click left 900 840
+200 mouse_move 900 500
+500 log placed_again
+100 screenshot build/run/se_01.bmp
+200 quit

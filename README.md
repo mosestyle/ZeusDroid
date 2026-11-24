@@ -52,6 +52,8 @@ real arm64 code, played with your own copy of the game.
   camera position is restored when you load a game.
 - **Full original interface** – side panel with alerts, the Messages list, episode goals,
   rotate city and world map; three interface sizes to fit your screen.
+- **Cheats** in the in-game Menu – extra drachmas, unlimited food, fireballs, cows from
+  the towers, death sounds and an instant win, switched on and off with a tap.
 - **Your own game files only** – the importer copies your installation into the app; the
   graphics packs are built on the phone from your original files (about a minute, once).
 

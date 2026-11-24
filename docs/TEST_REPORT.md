@@ -587,3 +587,30 @@ APK 0.1.25-dev: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 26, sha256 92b67
 ### 2026-10-31: plain version names
 User: no "-dev" in names. 0.1.25-dev rebuilt as **0.1.25** (versionCode 27, same code),
 release asset `ZeusDroid-0.1.25.apk`, sha256 10c5352c638689910ef23d2f6de49000679e0141d0fc911a24996493d12cd4a7; release v0.1.25-dev replaced.
+
+### 2026-11-24: 0.1.26 (sanctuaries, Artisans' Guild, cheats)
+New workspace (the previous one was reset): toolchain rebuilt as in BUILD_ANDROID.md (NDK r29
+archive sha256 `02e10e4d…684b`, SDK archive `8a23d2a1…71ad`, same as before; Ubuntu clang-20 /
+lld-20, Debian aapt2 2.19). Game data staged again read-only from the linked PC. A second
+data folder without the eZeus pack (`local-assets-droid/`, like the phone: texture packs
+built by the texture builder, no `Sanctuaries/`) was used for the tests below.
+* **User report:** every sanctuary (e.g. Ares in *Zeus and Europa*) takes the drachmas but
+  does not appear. Cause: `eSanctBlueprints` read the layouts from `eZeus/Sanctuaries/*.txt`
+  (part of the eZeus data pack, never imported on Android) → 0×0 layout → nothing built.
+  Fix: layouts embedded (`esanctuaryblueprintdata.inc`, generated from the eZeus source
+  `sanctuaries/`). `tests/autotest/sanctuary_place.txt` (sandbox, warehouse + 32 marble via
+  test commands, Ares placed): drachmas 14975 → 14015, stairs/platform drawn (screenshot).
+* `sanctuary_empty_save_a/b.txt`: part A with `EZEUS_TEST_NO_SANCT_LAYOUTS=1` reproduces
+  0.1.25 (drachmas 14975 → 14015, nothing visible) and saves; part B loads that save: no
+  sanctuary in it, Ares can be placed again (14015 → 13055) and is visible.
+* **Artisans' Guild:** the user's PC screenshot shows it in the Mythology menu below
+  Sanctuaries; eZeus had it in Industry. Moved. `phone_industry_menu.txt` (2400×1080,
+  Medium, touch): Industry = Resources + Processing; Mythology = Sanctuaries + Artisans'
+  Guild (screenshot).
+* **Cheats** (Menu → Cheats, `sanctuary_place.txt`): dialog with six rows (screenshot);
+  Delian Treasury ×2: 14015 → 16015; Fireballs from Heaven: fireball fell on the sanctuary
+  and set it on fire (screenshot); Ambrosia: Victory screen within the next goals check
+  (screenshot). Not checked in a test: Lots of Fishy (no inhabited houses in the test),
+  Bowvine and Arrow (no tower firing), SoundFrags (audio is a dummy driver here).
+* Unit tests: pass (102 + 50 checks, unchanged).
+APK 0.1.26: dist/ZeusDroid-debug-arm64-v8a.apk, versionCode 28, 25098529 bytes, sha256 439807e95771a629aef7b6a1ec4586f1af80564a9af4d26cfea840375e3494ed, v2/v3 OK, signer SHA-256 70be0641…84d596 (new key, copy on the user's PC).

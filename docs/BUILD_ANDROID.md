@@ -70,6 +70,16 @@ The development container could reach GitHub, Ubuntu archives, PyPI and npm, but
 * **Tests on ARM64:** unit tests are additionally built as static `aarch64-linux-android26`
   executables and run under `qemu-aarch64` (Ubuntu `qemu-user`).
 
+### Signing key
+
+All releases are signed with the same key, which lives on the user's PC:
+`C:\Users\Mousa\Documents\ZeusDroid-signing\zeusdroid-debug.keystore` (password
+`android`, alias `androiddebugkey`). Stage it into the workspace as
+`build/keys/debug.keystore` (git-ignored) before running the script; without it the script
+stops instead of making a new key (`ALLOW_NEW_KEY=1` forces a new one, which breaks updates
+over the installed app). The key used up to 0.1.25 was created in an earlier workspace and
+lost with it; 0.1.26 is the first APK with the current key (users had to uninstall once).
+
 ### Checks performed by the script
 
 * Every packaged `.so` is an AArch64 ELF and none depends on `libc++_shared.so`.

@@ -8,6 +8,7 @@
 #include "gameEvents/ereceiverequestevent.h"
 #include "gameEvents/etroopsrequestevent.h"
 #include "eplague.h"
+#include "edifficulty.h"
 
 void eGameBoard::read(eReadStream& src) {
     int w;
@@ -184,5 +185,21 @@ void eGameBoard::read(eReadStream& src) {
     updateTerritoryBorders();
     for(const auto& c : mCitiesOnBoard) {
         c->updateResources();
+    }
+
+    // ZeusDroid: before 0.1.26 the sanctuary layouts were missing on Android,
+    // so a placed sanctuary cost drachmas and marble but nothing was built.
+    // Should a save mark such a god's sanctuary as built while the city has
+    // none, make it available again and give the drachmas back.
+    for(const auto& c : mCitiesOnBoard) {
+        const auto repaired = c->repairMissingSanctuaries();
+        const auto cid = c->id();
+        const auto pid = cityIdToPlayerId(cid);
+        for(const auto t : repaired) {
+            const int cost = eDifficultyHelpers::buildingCost(difficulty(pid), t);
+            setDrachmas(pid, drachmas(pid) + cost);
+            printf("ZeusDroid: missing sanctuary (type %d) made available again, refunded %d\n",
+                   static_cast<int>(t), cost);
+        }
     }
 }

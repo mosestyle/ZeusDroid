@@ -2201,6 +2201,11 @@ bool eGameWidget::debugBuild(const std::string& what, const int tx, const int ty
     } else if(what == "hedgemaze") {
         return mBoard->build(tx, ty, 3, 3, cid, pid, false, [this]() {
             return e::make_shared<eHedgeMaze>(*mBoard, mViewedCityId); });
+    } else if(what == "warehouse") {
+        return mBoard->build(tx, ty, 3, 3, cid, pid, false, [this]() {
+            return e::make_shared<eWarehouse>(*mBoard, mViewedCityId); });
+    } else if(what == "marble") { // tx = count (ty unused)
+        return mBoard->addResource(cid, eResourceType::marble, tx) > 0;
     }
     return false;
 }
@@ -2226,5 +2231,9 @@ void eGameWidget::debugSetTool(const std::string& name) {
     if(name == "palace") mGm->debugSetMode(eBuildingMode::palace);
     else if(name == "stadium") mGm->debugSetMode(eBuildingMode::stadium);
     else if(name == "farm") mGm->debugSetMode(eBuildingMode::wheatFarm);
+    else if(name == "warehouse") mGm->debugSetMode(eBuildingMode::warehouse);
+    else if(name == "ares") mGm->debugSetMode(eBuildingMode::templeAres);
+    else if(name == "zeus") mGm->debugSetMode(eBuildingMode::templeZeus);
+    else if(name == "artisans") mGm->debugSetMode(eBuildingMode::artisansGuild);
     else if(name == "none") mGm->debugSetMode(eBuildingMode::none);
 }

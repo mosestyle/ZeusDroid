@@ -2468,6 +2468,8 @@ void eGameBoard::incTime(const int by) {
     for(const auto& c : mActiveCitiesOnBoard) {
         c->incDistributeEmployees(by);
     }
+
+    cheatsIncTime(by);
 }
 
 void eGameBoard::incFrame() {

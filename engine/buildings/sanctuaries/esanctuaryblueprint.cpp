@@ -1,9 +1,18 @@
 #include "esanctuaryblueprint.h"
 
+#include <cstdlib>
+#include <cstring>
 #include <fstream>
 #include <regex>
+#include <sstream>
+#include <utility>
 
 #include "egamedir.h"
+
+// ZeusDroid: the layouts are built in (eZeus keeps them in the Sanctuaries/
+// folder of its data pack, which the Android importer never copies, so every
+// sanctuary used to be placed with an empty layout: paid for, but invisible).
+#include "esanctuaryblueprintdata.inc"
 
 eSanctBlueprints eSanctBlueprints::instance;
 
@@ -82,13 +91,35 @@ bool loadLineBP(const int x,
     return true;
 }
 
+static const char* builtInBP(const std::string& path) {
+    // Test-only: behave like 0.1.25 and earlier (no layouts) to check that
+    // saves with the resulting empty sanctuaries are repaired on load.
+    if(std::getenv("EZEUS_TEST_NO_SANCT_LAYOUTS")) return nullptr;
+    const auto slash = path.find_last_of("/\\");
+    const auto name = slash == std::string::npos ? path : path.substr(slash + 1);
+    for(const auto& d : gSanctBlueprintData) {
+        if(name == d.first) return d.second;
+    }
+    return nullptr;
+}
+
 bool loadBP(eSanctBlueprint& bp,
             const std::string& path) {
-    std::ifstream file(path);
-    if(!file.good()) {
-        printf("File missing %s\n", path.c_str());
-        return false;
+    std::istringstream builtIn;
+    std::ifstream disk;
+    std::istream* in = nullptr;
+    if(const auto data = builtInBP(path)) {
+        builtIn.str(data);
+        in = &builtIn;
+    } else {
+        disk.open(path);
+        if(!disk.good()) {
+            printf("File missing %s\n", path.c_str());
+            return false;
+        }
+        in = &disk;
     }
+    auto& file = *in;
     std::string str;
     int x = 0;
     int s = -1;

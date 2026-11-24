@@ -133,6 +133,10 @@ public:
                const int id = -1);
     void destroyed(const eBuildingType type,
                    const int id = -1);
+    // Port: sanctuary types marked "built" with no such sanctuary in the city
+    // (saves from 0.1.25 and earlier, see eGameBoard::read) are made
+    // available again; returns those types.
+    std::vector<eBuildingType> repairMissingSanctuaries();
     void allow(const eBuildingType type,
                const int id = -1);
     void disallow(const eBuildingType type,

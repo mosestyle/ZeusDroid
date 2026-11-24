@@ -107,9 +107,14 @@ void eCharacter::killWithCorpse() {
     const auto finish = std::make_shared<eChar_killWithCorpseFinish>(
                             getBoard(), this);
     auto& board = getBoard();
-    board.ifVisible(tile(), [&]() {
+    if(board.cheats().fSoundFrags) {
+        // ZeusDroid cheat "SoundFrags": every death is heard, on screen or not.
         eSounds::playDieSound(this);
-    });
+    } else {
+        board.ifVisible(tile(), [&]() {
+            eSounds::playDieSound(this);
+        });
+    }
     const auto a = e::make_shared<eDieAction>(this);
     a->setFailAction(finish);
     a->setFinishAction(finish);

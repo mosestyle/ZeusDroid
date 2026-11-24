@@ -98,13 +98,24 @@ cp "$OUT/base.apk" "$OUT/unaligned.apk"
 step "zipalign (-p: page-align .so)"
 zipalign -f -p 4 "$OUT/unaligned.apk" "$OUT/aligned.apk"
 
-step "sign (debug key, never committed)"
+step "sign (ZeusDroid key, never committed)"
+# The key must be the same for every release, otherwise Android refuses to
+# update the installed app. It is kept on the user's PC:
+#   C:\Users\Mousa\Documents\ZeusDroid-signing\zeusdroid-debug.keystore
+# Stage it from there to build/keys/debug.keystore (see docs/BUILD_ANDROID.md).
 KS="${DEBUG_KEYSTORE:-$ROOT/build/keys/debug.keystore}"
 if [ ! -f "$KS" ]; then
+  if [ "${ALLOW_NEW_KEY:-0}" != 1 ]; then
+    echo "signing key missing: $KS"
+    echo "copy it from the PC (Documents\ZeusDroid-signing\zeusdroid-debug.keystore);"
+    echo "a new key (ALLOW_NEW_KEY=1) makes the APK not install over the current app"
+    exit 1
+  fi
   mkdir -p "$(dirname "$KS")"
   keytool -genkeypair -v -keystore "$KS" -storepass android -keypass android \
-    -alias androiddebugkey -dname "CN=Android Debug,O=Android,C=US" \
-    -keyalg RSA -keysize 2048 -validity 10000 >/dev/null 2>&1
+    -alias androiddebugkey -dname "CN=ZeusDroid,O=ZeusDroid,C=SE" \
+    -keyalg RSA -keysize 2048 -validity 20000 >/dev/null 2>&1
+  echo "NEW signing key created: save a copy on the user's PC now"
 fi
 mkdir -p "$DIST"
 apksigner sign --ks "$KS" --ks-pass pass:android --key-pass pass:android \

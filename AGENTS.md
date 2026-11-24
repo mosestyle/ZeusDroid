@@ -27,3 +27,9 @@
     branch, whose workflow creates the release `v<version>`). Version names are plain
     numbers without "-dev" (`VERSION_NAME=0.1.26`); the release asset is
     `ZeusDroid-<version>.apk`. Never push game data.
+12. **One signing key, kept on the user's PC.** Every APK is signed with
+    `C:\Users\Mousa\Documents\ZeusDroid-signing\zeusdroid-debug.keystore` (stage it to
+    `build/keys/debug.keystore` before building; never commit it). The cloud workspace can
+    be reset at any time, so a key that exists only there gets lost and the next APK will
+    not install over the old app (this happened once, 0.1.25 → 0.1.26). If a new key is
+    ever created, save a copy on the PC immediately.

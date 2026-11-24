@@ -41,6 +41,8 @@ struct eAvailableBuildings {
                   const int id = -1);
 
     void startEpisode(const eAvailableBuildings& o);
+    // Port: true when the state of this (sanctuary / hall) type is "built".
+    bool isBuilt(const eBuildingType type) const;
 private:    
     void startEpisode(const eAvailableBuildings& o,
                       bool eAvailableBuildings::* ptr);
