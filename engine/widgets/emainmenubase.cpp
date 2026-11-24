@@ -20,7 +20,8 @@ struct eLogos {
     std::vector<std::shared_ptr<eTexture>> fPoseidon;
     std::shared_ptr<eTexture> fPlus;
 };
-eLogos gLogos;
+// Never destroyed: its textures must not be freed after the renderer at exit.
+eLogos& gLogos = *new eLogos;
 
 std::string findDataFile(const std::string& name) {
     namespace fs = std::filesystem;
@@ -62,8 +63,7 @@ void loadLogoFrames(SDL_Renderer* const r, eSg3File& f, const int first,
             return;
         }
         const auto t = std::make_shared<eTexture>();
-        const bool ok = t->load(r, s);
-        SDL_FreeSurface(s);
+        const bool ok = t->load(r, s); // load() frees the surface
         if(!ok) {
             out.clear();
             return;

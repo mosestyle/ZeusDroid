@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.1.29
+* **0.1.28 crashed at start – fixed.** The new logo code freed a picture twice (the
+  engine's texture loader already frees it); the phone's memory allocator stops the app
+  on that. The logos stay.
+
 ## 0.1.28
 * **"Zeus + Poseidon" logos in the main menu**: the original game's animated Zeus and
   Poseidon logos, side by side with a "+", in the sky at the top left of the menu picture.

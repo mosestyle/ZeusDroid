@@ -629,3 +629,13 @@ texture builder's sg3 reader (sizes checked; another file version shows no logos
 screenshots (local only): 2400×1080 Medium and Large and desktop 1280×720: "Zeus + Poseidon"
 in the sky left of the Roster dialog, animated.
 APK 0.1.28: versionCode 30, 25102625 bytes, sha256 672369757839868b14b7aef6135aa36126ddff83b9c1144b61f9abe5e2a51a12, v2/v3 OK, same signer (70be0641…84d596).
+
+### 2026-11-24: 0.1.29 (crash of 0.1.28 fixed)
+User: 0.1.28 crashes on the phone, 0.1.27 worked. Cause: `eMainMenuBase` logo loading called
+`SDL_FreeSurface` on a surface that `eTexture::load(renderer, surface)` had already freed
+(double free; Android's allocator aborts, glibc did not notice). Reproduced on desktop with
+`LD_PRELOAD=libc_malloc_debug.so.0 MALLOC_CHECK_=3`: main menu → exit 139 (segfault). After
+the fix the same run and `phone_game_menu.txt` (2400×1080 Medium, into a game and the Menu)
+end with exit 0. The logo set is also never destroyed (no texture freed after the renderer
+at exit). Lesson: run new code once under strict malloc checking before an APK.
+APK 0.1.29: versionCode 31, 25102625 bytes, sha256 549e2f2c3d1237eaca5309934303b45d5ab5801993f45d2e9f951a7e9839e498, v2/v3 OK, same signer (70be0641…84d596).
